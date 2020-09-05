@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col s12">
+        <div class="row">
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <a href="/user/change_password/" class="btn blue white-text darken-1">اضغط لتغيير كلمة
+                            المرور</a>
+                    </div>
+                    <div class="input-field col s12">
+                        <a href="#" class="btn red white-text darken-1">حذف الحساب</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="username" type="text" name="username" class="validate" placeholder="اسم المستخدم">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 l6">
+                        <input id="last_name" type="text" name="first_name" class="validate" placeholder="الاسم الاخير">
+                    </div>
+                    <div class="input-field col s12 l6">
+                        <input id="first_name" type="text" name="last_name" class="validate" placeholder="الاسم الاول">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="email" type="email" class="validate" name="email" placeholder="الايميل">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s5">
+                        <select name="country">
+                            <option value="" disabled selected>الدولة</option>
+                            <option value='Algeria'>الجزائر</option>
+                            <option value="Jordan">الاردن</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn blue white-text darken-1">تعديل</button>
+            </form>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <h3>منشوراتي</h3>
+                <a href="#">
+                    <div class="card-panel white black-text">رايكم في جهاز</div>
+                </a>
+                <a href="#">
+                    <div class="card-panel white black-text">رايكم في جهاز</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

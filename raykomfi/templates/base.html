@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+
+<head>
+    <meta charset="utf-8">
+    <title>
+        رايكم في
+    </title>
+</head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://www.fontstatic.com/f=vip-hakm-bold" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<link rel="stylesheet" href="{% static "css/style.css" %}">
+
+<body>
+    <div class="container main">
+        <nav class="blue darken-1 raykomfi-nav">
+            <div class="nav-wrapper d-flex h-100 split-items split-items-no-wrap  valign-wrapper">
+                <a href="/" class="brand-logo"> رايكم في <i class="fa fa-comments-o fa-2x" aria-hidden="true"></i>
+                </a>
+                <p class="hide-on-small-only">موقع يجمع المشترين لأخذ اراء الناس قبل الشراء</p>
+                <ul id="nav-mobile" class="burger-menu">
+                    <li>
+                        <a href="#" data-target="slide-out" class="sidenav-trigger">
+                            <i class="material-icons">menu</i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <ul id="slide-out" class="sidenav">
+            <li><a class="bold center" href="/user/profile/1">احمد علي</a></li>
+            <li>
+                <div class="divider"></div>
+            </li>
+            <li><a class="bold center" href="#">تسجيل خروج</a></li>
+            <li><a class="bold center" href="/user/signin">تسجيل دخول</a></li>
+            <li><a class="bold center" href="/user/register">حساب جديد</a></li>
+        </ul>
+
+        <nav class="white blue-text darken-1  raykomfi-tabs">
+            <div class="row">
+                <a href="#" class="blue-text darken-1">
+                    <p class="custom-tab center col s2 right"><span class="">الأحدث</span></p>
+                </a>
+                <a href="#" class="blue-text darken-1">
+                    <p class="custom-tab col s3 right"><span class="active">الأكثر مناقشة</span></p>
+                </a>
+                <div class="dropdown-custom col s3 left">
+                    <span>حسب التصنيف</span>
+                    <div class="dropdown-content-custom blue darken-1">
+                        <div class="hoverable">
+                            <a href="#">كمبيوتر &nbsp;&nbsp;<i class="fa fa-desktop" aria-hidden="true"></i></a>
+                        </div>
+                        <div class="hoverable">
+                            <a href="#">كمبيوتر &nbsp;&nbsp;<i class="fa fa-desktop" aria-hidden="true"></i></a>
+                        </div>
+                        <div class="hoverable">
+                            <a href="#">كمبيوتر &nbsp;&nbsp;<i class="fa fa-desktop" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="raykomfi-content">
+            {% block content %}{% endblock %}
+        </div>
+        <div class="raykomfi-footer">
+            <footer class="page-footer blue darken-1">
+                <div class="container">
+                    <div class="row">
+                        <div class="col s12">
+                            <h5 class="white-text">رايكم في <i class="fa fa-comments-o fa-2x" aria-hidden="true"></i>
+                            </h5>
+                            <p class="grey-text text-lighten-4">يهتم في جمع المشترين العرب للاستفسار عن منتج او جهاز قبل
+                                الشراء
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h5>تواصل معنا</h5>
+                        <div class="">
+                            <div><a href="mailto:info@raykomfi.com" class="white-text">info@raykomfi.com</a></div>
+                            <div><a href="mailto:support@raykomfi.com" class="white-text">support@raykomfi.com</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-copyright">
+                    <div class="container">
+                        <div>جميع الحقوق محفوظة 2020</div>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="{% static "js/scripts.js" %}"></script>
+</body>
+
+</html>
