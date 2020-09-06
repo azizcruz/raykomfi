@@ -135,3 +135,6 @@ AUTH_USER_MODEL = 'raykomfi.User'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Allow slugs to be written in arabic
+ALLOW_UNICODE_SLUGS = True
