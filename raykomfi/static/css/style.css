@@ -21,7 +21,7 @@ hr {
 
 .main {
     direction: rtl;
-    padding: 5% 0 0 0;
+    padding: 10px 10px 0 10px;
     display: flex;
     flex-direction: column;
 }
@@ -34,6 +34,12 @@ hr {
 .raykomfi-footer {
     min-height: 4vh;
 }
+
+.raykomfi-footer .top,
+.raykomfi-footer .bottom {
+    padding: 15px;
+}
+
 
 .raykomfi-content {
     min-height: 85vh;
@@ -98,6 +104,10 @@ nav .burger-menu a {
 
 .custom-tab span.active {
     border-bottom: 2px solid #1e88e5;
+}
+
+.help-block {
+    color: #f44336 !important;
 }
 
 input[type=text]:not(.browser-default):focus:not([readonly]),

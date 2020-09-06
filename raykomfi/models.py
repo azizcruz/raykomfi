@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django_countries.fields import CountryField
 from django.urls import reverse
+from django.utils.translation import ugettext_lazy as _
+from django import forms
 
 
 def slugify(str):
@@ -15,10 +17,10 @@ def slugify(str):
 
 
 class User(AbstractUser):
-    bio = models.TextField(max_length=500, blank=True)
-    birth_date = models.DateField(null=True, blank=True)
-    country = CountryField()
+    bio = models.TextField(blank=True)
+    country = models.CharField(max_length=255)
     isBlocked = models.BooleanField(default=False)
+    email = models.EmailField(unique=True)
 
 
 class Category(models.Model):

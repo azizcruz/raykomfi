@@ -1,24 +1,16 @@
 {% extends "base.html" %}
+{% load materializecss %}
 
 {% block content %}
 
 <div class="row">
-    <form class="col s12">
-        <h1 class="center">تسجيل دخول</h1>
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="username" type="text" class="validate" placeholder="اسم المستخدم">
-            </div>
+    <h3 class="center">تسجيل الدخول</h3>
+    <form action="{% url 'raykomfi:user-signin' %}" method='post'>
+        {% csrf_token %}
+        {{ form|materializecss }}
+        <div class="col s12">
+            <button type='submit' class='btn blue darken-1'>تسجيل دخول</button>
         </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="password" type="password" class="validate" placeholder="كلمة المرور">
-            </div>
-        </div>
-        <div class="row">
-            نسيت كلمة المرور؟ <a href="/user/forgot">اضغط هنا </a>
-        </div>
-        <button type="submit" class="btn btn blue white-text darken-1">تسجيل دخول</button>
     </form>
 </div>
 

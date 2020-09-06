@@ -1,46 +1,16 @@
 {% extends "base.html" %}
+{% load materializecss %}
 
 {% block content %}
 
 <div class="row">
-    <form class="col s12">
-        <h1 class="center">تسجيل حساب جديد</h1>
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="username" type="text" name="username" placeholder="اسم المستخدم" class="validate">
-            </div>
+    <h3 class="center">حساب جديد</h3>
+    <form action="{% url 'raykomfi:user-register' %}" method='post'>
+        {% csrf_token %}
+        {{ form|materializecss }}
+        <div class="col s12">
+            <button type='submit' class='btn blue darken-1'>تسجيل</button>
         </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="username" type="text" name="password1" placeholder="كلمة المرور" class="validate">
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="username" type="text" name="password_repeat" placeholder="تأكيد كلمة المرور"
-                    class="validate">
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12 l6">
-                <input id="last_name" type="text" name="last_name" placeholder="الاسم الاخير" class="validate">
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="email" type="email" name="email" placeholder="الايميل" class="validate">
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s5">
-                <select name="country">
-                    <option value="" disabled selected>الدولة</option>
-                    <option value='Algeria'>الجزائر</option>
-                    <option value="Jordan">الاردن</option>
-                </select>
-            </div>
-        </div>
-        <button type="submit" class="btn btn blue white-text darken-1">تسجيل حساب</button>
     </form>
 </div>
 

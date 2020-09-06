@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+from django.utils.translation import gettext_lazy as _
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -40,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'raykomfi',
-    'django_countries'
+    'django_countries',
 ]
 
 MIDDLEWARE = [
@@ -90,16 +92,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'raykomfi.custom_validators.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'raykomfi.custom_validators.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'raykomfi.custom_validators.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'raykomfi.custom_validators.NumericPasswordValidator',
     },
 ]
 
@@ -136,5 +138,9 @@ AUTH_USER_MODEL = 'raykomfi.User'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Allow slugs to be written in arabic
-ALLOW_UNICODE_SLUGS = True
+# Configure email server
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.raykomfi.com'
+EMAIL_HOST_USER = 'info@raykomfi.com'
+EMAIL_HOST_PASSWORD = 'SX0A9w7BHFlh0NfSUfl3x4iOXy0pwN'
+EMAIL_PORT = 465
