@@ -8,11 +8,15 @@
 
 body {
     font-family: 'vip-hakm-bold', serif, sans-serif;
-    color: #212121;
+    color: #484848;
 }
 
 body {
     background-color: #EEE;
+}
+
+hr {
+    border-color: #1e88e5;
 }
 
 .main {
@@ -79,6 +83,10 @@ nav .burger-menu a {
     margin-top: 10px;
 }
 
+.new-post-icon {
+    margin: 8px auto;
+}
+
 
 .custom-tab {
     line-height: 39px;
@@ -95,7 +103,8 @@ nav .burger-menu a {
 input[type=text]:not(.browser-default):focus:not([readonly]),
 input[type=password]:not(.browser-default):focus:not([readonly]),
 input[type=email]:not(.browser-default):focus:not([readonly]),
-.select-wrapper input.select-dropdown:focus {
+.select-wrapper input.select-dropdown:focus,
+textarea.materialize-textarea:focus:not([readonly]) {
     border-bottom: 1px solid #1e88e5
 }
 
@@ -262,6 +271,52 @@ input[type=email]:not(.browser-default):focus:not([readonly]),
 
 /* End home styles */
 
+/* Start post view style */
+.comment-box {
+    background-color: #fff;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    display: flex;
+    padding: 10px;
+}
+
+.comment-box .like-dislike-side {
+    flex: 0 1 5%;
+    align-self: auto;
+}
+
+.comment-box .like-dislike-side>div {
+    font-size: 24px !important;
+}
+
+.comment-box .like-dislike-side>a {
+    color: #1e88e5;
+}
+
+
+.comment-box .comment-side {
+    flex: 0 1 95%;
+    align-self: auto;
+    margin-top: 18px;
+}
+
+.comment-box .comment-side .name {
+    font-size: 24px;
+}
+
+.comment-box .comment-side .comment {
+    line-height: 2em;
+}
+
+.comment-box .comment-side .replies {
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* End post view style */
+
 /* Media Query */
 
 /* Larger than mobile */
@@ -304,6 +359,10 @@ input[type=email]:not(.browser-default):focus:not([readonly]),
 
     .dropdown-content-custom {
         right: -56px
+    }
+
+    .comment-box .comment-side .name {
+        font-size: 16px;
     }
 
 }
@@ -394,6 +453,10 @@ input[type=email]:not(.browser-default):focus:not([readonly]),
     .dropdown-content-custom {
         right: 0
     }
+
+    .comment-box .comment-side .name {
+        font-size: 18px;
+    }
 }
 
 /* Larger than desktop */
@@ -455,6 +518,10 @@ input[type=email]:not(.browser-default):focus:not([readonly]),
 
     .tabs .tab a {
         font-size: 14px;
+    }
+
+    .comment-box .comment-side .name {
+        font-size: 24px;
     }
 }
 

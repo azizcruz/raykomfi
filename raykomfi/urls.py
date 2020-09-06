@@ -15,8 +15,8 @@ urlpatterns = [
     # path('user/delete/', views.profile_view, name='user-delete'),
     path('user/forgot/', views.forgot_password_view, name='user-forgot-password'),
 
-    # path('post/new', views.profile_view, name='post-new'),
+    path('post/new', views.create_post, name='post-new'),
     # path('post/edit', views.profile_view, name='post-edit'),
-    # path('post/details', views.profile_view, name='post-edit'),
+    path('post/details/<int:id>', views.post_view, name='post-edit'),
     # path('post/delete', views.profile_view, name='post-edit'),
 ]
