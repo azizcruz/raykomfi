@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<center>
+    <h3>مرحبا {{ user.username }}</h3>,
+    <p>اضغط على الرابط لتفعيل حسابك</p>
+
+    <a href="http://{{ domain }}{% url 'raykomfi:user-activate' uidb64=uid token=token %}" target="_blank">تفعيل
+        الحساب</a>
+</center>
+
+{% endblock content %}

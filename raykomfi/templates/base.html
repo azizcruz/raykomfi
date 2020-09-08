@@ -16,21 +16,23 @@
 <link rel="stylesheet" href="{% static "css/style.css" %}">
 
 <body>
-    <div class="container main white">
-        <nav class="blue darken-1 raykomfi-nav">
-            <div class="nav-wrapper d-flex h-100 split-items split-items-no-wrap  valign-wrapper">
-                <a href="/" class="brand-logo"> رايكم في <i class="fa fa-comments-o fa-2x" aria-hidden="true"></i>
+    <nav id="navbar"
+        class="nav-wrapper d-flex split-items split-items-no-wrap  valign-wrapper blue darken-1 raykomfi-nav">
+        <a href="/" class="raykomfi-logo" id="raykomfi-logo"> رايكم في <i class="fa fa-comments-o fa-2x"
+                aria-hidden="true"></i>
+        </a>
+        <p class="hide-on-small-only center-block" id="main-paragraph">منصة تجمع المشترين العرب لأخذ اراء الناس قبل
+            الشراء
+        </p>
+        <ul id="nav-mobile" class="burger-menu left">
+            <li>
+                <a href="#" data-target="slide-out" class="sidenav-trigger">
+                    <i class="material-icons">menu</i>
                 </a>
-                <p class="hide-on-small-only">منصة تجمع المشترين العرب لأخذ اراء الناس قبل الشراء</p>
-                <ul id="nav-mobile" class="burger-menu">
-                    <li>
-                        <a href="#" data-target="slide-out" class="sidenav-trigger">
-                            <i class="material-icons">menu</i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+            </li>
+        </ul>
+    </nav>
+    <div class="container main white">
 
         <ul id="slide-out" class="sidenav">
             <li><a class="bold center" href="/user/profile/1">احمد علي</a></li>
@@ -45,13 +47,18 @@
         <nav class="white blue-text darken-1  raykomfi-tabs">
             <div class="row">
                 <a href="#" class="blue-text darken-1">
-                    <p class="custom-tab center col s2 right"><span class="">الأحدث</span></p>
+                    <p class="custom-tab center col s2 right"><span class=""><i class="fa fa-sort-amount-desc"
+                                aria-hidden="true"></i>
+                            الأحدث</span></p>
                 </a>
                 <a href="#" class="blue-text darken-1">
-                    <p class="custom-tab col s3 right"><span class="active">الأكثر مناقشة</span></p>
+                    <p class="custom-tab col s3 right"><span class="active"><i class="fa fa-pie-chart"
+                                aria-hidden="true"></i>
+                            الأكثر مناقشة</span></p>
                 </a>
                 <div class="dropdown-custom col s3 left">
-                    <span>حسب التصنيف</span>
+                    <span><i class="fa fa-tags" aria-hidden="true"></i>
+                        حسب التصنيف</span>
                     <div class="dropdown-content-custom blue darken-1">
                         <div class="hoverable">
                             <a href="#">كمبيوتر &nbsp;&nbsp;<i class="fa fa-desktop" aria-hidden="true"></i></a>
