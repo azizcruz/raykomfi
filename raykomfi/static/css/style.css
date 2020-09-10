@@ -41,6 +41,11 @@ hr {
   min-height: 7vh;
 }
 
+.sidenav li>a>i {
+  float: unset;
+  margin: 0
+}
+
 .raykomfi-tabs,
 .raykomfi-footer {
   min-height: 4vh;
@@ -83,7 +88,7 @@ hr {
 }
 
 /* Add some top padding to the page content to prevent sudden quick movement (as the navigation bar gets a new position at the top of the page (position:fixed and top:0) */
-.sticky + .content {
+.sticky+.content {
   padding-top: 60px;
 }
 
@@ -166,8 +171,8 @@ textarea.materialize-textarea:focus:not([readonly]) {
   border-bottom: 1px solid #1e88e5;
 }
 
-.dropdown-content li > a,
-.dropdown-content li > span {
+.dropdown-content li>a,
+.dropdown-content li>span {
   color: #1e88e5;
 }
 
@@ -188,11 +193,11 @@ textarea.materialize-textarea:focus:not([readonly]) {
   right: 0;
 }
 
-.dropdown-content-custom > div {
+.dropdown-content-custom>div {
   padding-right: 10px;
 }
 
-.dropdown-content-custom > div i {
+.dropdown-content-custom>div i {
   height: 10px;
 }
 
@@ -364,11 +369,11 @@ textarea.materialize-textarea:focus:not([readonly]) {
   align-self: auto;
 }
 
-.comment-box .like-dislike-side > div {
+.comment-box .like-dislike-side>div {
   font-size: 24px !important;
 }
 
-.comment-box .like-dislike-side > a {
+.comment-box .like-dislike-side>a {
   color: #1e88e5;
 }
 

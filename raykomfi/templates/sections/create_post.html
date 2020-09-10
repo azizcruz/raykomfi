@@ -1,44 +1,16 @@
 {% extends "base.html" %}
+{% load materializecss %}
 
 {% block content %}
 
 <div class="row">
-    <form class="col s12">
-        <h1 class="center">موضوع جديد</h1>
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="title" type="text" name="title" placeholder="موضوع" class="validate">
-            </div>
+    <h3 class="center">موضوع جديد</h3>
+    <form action="{% url 'raykomfi:post-new' %}" method='post'>
+        {% csrf_token %}
+        {{ form|materializecss }}
+        <div class="col s12">
+            <button type='submit' class='btn blue darken-1'>تأكيد</button>
         </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <textarea id="textarea1" class="materialize-textarea" name="content"
-                    placeholder="شرح عن الموضوع"></textarea>
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <div class="file-field input-field">
-                    <div class="btn blue darken-1">
-                        <span>صورة</span>
-                        <input type="file">
-                    </div>
-                    <div class="file-path-wrapper">
-                        <input class="file-path validate" type="text" rows="30" placeholder="ارفع صورة اذا وجدت">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s5">
-                <select name="category">
-                    <option value="" disabled selected>التصنيف</option>
-                    <option value='Algeria'>كمبيوتر</option>
-                    <option value="Jordan">جوالات</option>
-                </select>
-            </div>
-        </div>
-        <button type="submit" class="btn btn blue white-text darken-1">انشاء</button>
     </form>
 </div>
 

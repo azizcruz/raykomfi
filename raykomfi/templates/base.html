@@ -24,10 +24,11 @@
         <p class="hide-on-small-only center-block" id="main-paragraph">منصة تجمع المشترين العرب لأخذ اراء الناس قبل
             الشراء
         </p>
+
         <ul id="nav-mobile" class="burger-menu left">
             <li>
                 <a href="#" data-target="slide-out" class="sidenav-trigger">
-                    <i class="material-icons">menu</i>
+                    <i class="fa fa-bars fa-3x" aria-hidden="true"></i>
                 </a>
             </li>
         </ul>
@@ -35,13 +36,21 @@
     <div class="container main white">
 
         <ul id="slide-out" class="sidenav">
-            <li><a class="bold center" href="/user/profile/1">احمد علي</a></li>
+            {% if user.is_authenticated %}
+            <li><a class="bold center" href="/user/profile/1">{{ user.username }}<i
+                        class="fa fa-user-o blue-text darken-1" aria-hidden="true"></i>
+                </a></li>
             <li>
                 <div class="divider"></div>
             </li>
-            <li><a class="bold center" href="#">تسجيل خروج</a></li>
-            <li><a class="bold center" href="/user/signin">تسجيل دخول</a></li>
-            <li><a class="bold center" href="/user/register">حساب جديد</a></li>
+            <li><a class="bold center" href="{% url 'raykomfi:user-signout' %}">تسجيل
+                    خروج<i class="fa fa-sign-out blue-text darken-1" aria-hidden="true"></i></a></li>
+            {% else %}
+            <li><a class="bold center" href="/user/signin">تسجيل دخول<i class="fa fa-sign-in blue-text darken-1"
+                        aria-hidden="true"></i></a></li>
+            <li><a class="bold center" href="/user/register">حساب جديد<i class="fa fa-plus blue-text darken-1"
+                        aria-hidden="true"></i></a></li>
+            {% endif %}
         </ul>
 
         <nav class="white blue-text darken-1  raykomfi-tabs">

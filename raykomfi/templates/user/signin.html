@@ -5,10 +5,18 @@
 
 <div class="row">
     <h3 class="center">تسجيل الدخول</h3>
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.tags == 'warning' %}
+    <div class="center yallow">{{message}}</div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
     <form action="{% url 'raykomfi:user-signin' %}" method='post'>
         {% csrf_token %}
         {{ form|materializecss }}
         <div class="col s12">
+            <p><a href="{% url 'raykomfi:user-forgot-password' %}" class="blue-text darken-1">نسيت كلمة المرور؟</a></p>
             <button type='submit' class='btn blue darken-1'>تسجيل دخول</button>
         </div>
     </form>

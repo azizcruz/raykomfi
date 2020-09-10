@@ -1,5 +1,7 @@
 from django.urls import path, re_path
 from . import views
+from django.contrib.auth import views as auth_views
+
 
 app_name = 'raykomfi'
 
@@ -8,7 +10,7 @@ urlpatterns = [
     path('', views.index, name='raykomfi-home'),
     path('user/profile/<int:id>', views.profile_view, name='user-profile'),
     path('user/signin/', views.sign_in_view, name='user-signin'),
-    # path('user/signout/', views.profile_view, name='user-signout'),
+    path('user/signout/', views.user_logout, name='user-signout'),
     path('user/register/', views.sign_up_view, name='user-register'),
     path('user/change_password/', views.change_password_view,
          name='user-change-password'),

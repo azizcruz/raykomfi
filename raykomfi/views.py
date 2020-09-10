@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-from .forms import SignupForm, SigninForm
+from .forms import SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, CustomPasswordResetForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -13,6 +13,8 @@ from django.contrib import messages
 from django.db.utils import IntegrityError
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.contrib.auth import update_session_auth_hash
+from django.shortcuts import render, redirect
 
 
 from pdb import set_trace
@@ -32,7 +34,7 @@ def profile_view(request, id):
 
 def sign_in_view(request):
     if request.method == 'POST':
-        form = SigninForm(request.POST)
+        form = SigninForm(request.POST, use_required_attribute=False)
         if form.is_valid():
             username = request.POST.get('username')
             password = request.POST.get('password')
@@ -42,22 +44,26 @@ def sign_in_view(request):
                     login(request, user)
                     return HttpResponseRedirect(reverse('raykomfi:raykomfi-home'))
             else:
-                render(request, 'user/signin.html', context={'form': form})
+                messages.warning(request, 'حساب غير موجود')
+                return render(request, 'user/signin.html', context={'form': form})
         else:
             return render(request, 'user/signin.html', context={'form': form})
     else:
-        form = SigninForm()
+        if request.user.is_anonymous and request.GET['next']:
+            messages.warning(request, 'يجب عليك تسجيل الدخول اولا')
+        form = SigninForm(use_required_attribute=False)
         return render(request, 'user/signin.html', context={'form': form})
 
 
 def user_logout(request):
     logout(request)
-    return HttpResponseRedirect('raykomfi:user-signin')
+    messages.success(request, 'تم تسجيل الخروج')
+    return HttpResponseRedirect('/user/signin/')
 
 
 def sign_up_view(request):
     if request.method == 'POST':
-        form = SignupForm(request.POST)
+        form = SignupForm(request.POST, use_required_attribute=False)
 
         if form.is_valid():
             user = form.save(commit=False)
@@ -84,7 +90,7 @@ def sign_up_view(request):
             return render(request, 'user/register.html', context={'form': form})
 
     else:
-        form = SignupForm()
+        form = SignupForm(use_required_attribute=False)
         return render(request, 'user/register.html', context={'form': form})
 
 
@@ -95,16 +101,46 @@ def post_view(request, id):
 
 @ login_required
 def create_post(request):
-    return render(request, 'sections/create_post.html')
+    if request.method == 'POST':
+        pass
+    else:
+        form = NewPostForm()
+    return render(request, 'sections/create_post.html', context={'form': form})
 
 
-@ login_required
 def change_password_view(request):
-    return render(request, 'user/change_password.html')
+    if request.method == 'POST':
+        form = CustomChangePasswordForm(
+            request.user, request.POST, use_required_attribute=False)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(
+                request, 'Your password was successfully updated!')
+            return redirect('raykomfi:raykomfi-home')
+        else:
+            return render(request, 'user/change_password.html', {
+                'form': form
+            })
+    else:
+        form = CustomChangePasswordForm(
+            request.user, use_required_attribute=False)
+        return render(request, 'user/change_password.html', {
+            'form': form
+        })
 
 
 def forgot_password_view(request):
-    return render(request, 'user/_password.html')
+    if request.method == 'POST':
+        form = CustomPasswordResetForm(
+            request.POST, use_required_attribute=False)
+        if form.is_valid():
+            pass
+        else:
+            return render(request, 'user/forgot_password.html', context={'form': form})
+    else:
+        form = CustomPasswordResetForm(use_required_attribute=False)
+        return render(request, 'user/forgot_password.html', context={'form': form})
 
 
 def activate(request, uidb64, token):
@@ -118,6 +154,6 @@ def activate(request, uidb64, token):
         user.save()
         login(request, user)
         # return redirect('home')
-        return render(request, 'user/activate_success_fail.html', context={'condition': 'success', 'message': 'تم تفعيل حسابك'})
+        return render(request, 'user/change_password.html', context={'condition': 'success', 'message': 'يرجى ادخال كلمة '})
     else:
         return render(request, 'user/activate_success_fail.html', context={'condition': 'fail', 'message': 'رابط التفعيل منتهي الصلاحية حاول مرة اخرى'})
