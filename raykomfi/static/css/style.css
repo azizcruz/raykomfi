@@ -37,6 +37,11 @@ hr {
   flex-direction: column;
 }
 
+.custom-collection {
+  padding: 0;
+  text-align: center;
+}
+
 .raykomfi-nav {
   min-height: 7vh;
 }
@@ -171,6 +176,15 @@ textarea.materialize-textarea:focus:not([readonly]) {
   border-bottom: 1px solid #1e88e5;
 }
 
+input::placeholder,
+textarea::placeholder,
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder,
+input::-ms-input-placeholder,
+textarea::-ms-input-placeholder {
+  color: #9e9e9e;
+}
+
 .dropdown-content li>a,
 .dropdown-content li>span {
   color: #1e88e5;
@@ -191,6 +205,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
   padding: 12px 16px;
   z-index: 1;
   right: 0;
+  top: 64px;
 }
 
 .dropdown-content-custom>div {
@@ -268,6 +283,35 @@ textarea.materialize-textarea:focus:not([readonly]) {
   margin-top: 10px;
 }
 
+.new-post-icon {
+  margin-top: 38px;
+}
+
+.card-user-section {
+  padding: 5px;
+  background-color: #1e88e5;
+  color: #FFF;
+  border-radius: 8px;
+}
+
+.card-content>span {
+  display: inline !important;
+}
+
+
+.card-content h4 {
+  font-size: 21px;
+  color: #1e88e5;
+}
+
+.card-content .h4-for-post-view {
+  margin-bottom: 20px;
+}
+
+.card-content .p-for-post-view {
+  margin-bottom: 20px !important;
+}
+
 .poster-image img {
   margin: 10px 10px -10px 0;
 }
@@ -340,6 +384,10 @@ textarea.materialize-textarea:focus:not([readonly]) {
   margin: 0;
 }
 
+.edit-post-btn {
+  margin: 10px;
+}
+
 /* End home styles */
 
 /* Start post view style */
@@ -403,6 +451,34 @@ textarea.materialize-textarea:focus:not([readonly]) {
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
+}
+
+.file-field>div:nth-child(1) {
+  background-color: #1e88e5;
+}
+
+.mt-1 {
+  margin-top: 10px;
+}
+
+.select-wrapper ul {
+  padding: 0
+}
+
+.select-wrapper .caret {
+  fill: transparent !important
+}
+
+.select-wrapper input.select-dropdown {
+  color: #9e9e9e;
+}
+
+.select-wrapper ul li:hover {
+  background-color: #1e88e5 !important;
+}
+
+.select-wrapper ul li:hover span {
+  color: #FFF !important;
 }
 
 /* End post view style */

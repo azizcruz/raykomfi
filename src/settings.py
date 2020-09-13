@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'cloudinary',
     'materializecssform',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,8 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'raykomfi',
     'django_countries',
+    'sorl.thumbnail'
 ]
 
 MIDDLEWARE = [
@@ -134,7 +137,6 @@ STATICFILES_DIRS = [
 AUTH_USER_MODEL = 'raykomfi.User'
 
 # Media settings.
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -142,14 +144,20 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_URL = 'raykomfi:user-signin'
 LOGIN_REDIRECT_URL = 'raykomf:raykomfi-home'
 
+# Language settings
 LOCAL_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
-
 LANGUAGES = (
     ('ar', _('Arabic')),
 )
-
 MULTILINGUAL_LANGUAGES = (
     "ar-ae",
 )
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'azizcruz11111@gmail.com'
+EMAIL_HOST_PASSWORD = 'abdelaziz77??'
+DEFAULT_FROM_EMAIL = 'azizcruz11111@gmail.com'

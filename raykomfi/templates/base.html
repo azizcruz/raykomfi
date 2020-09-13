@@ -84,6 +84,13 @@
         </nav>
 
         <div class="raykomfi-content">
+            {% if messages %}
+            <ul class="collection custom-collection">
+                {% for message in messages %}
+                <li class="collection-item {{message.tags}}">{{message}}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
             {% block content %}{% endblock %}
         </div>
         <div class="raykomfi-footer">

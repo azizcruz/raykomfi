@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% load thumbnail %}
+{% load humanize %}
+
 
 {% block content %}
 
@@ -39,150 +42,51 @@
                             new-post-icon hoverable" title="استفسر عن شيء"><i class="material-icons">add</i>
                         </a>
                     </div>
-                    <div class="card hoverable">
-                        <div class="card-content home-cards">
-                            <span class="card-title black-text"> سامر غالي</span>
-                            <p>رايكم في اجهزة سامسونغ</p>
-                            <div class="post-img">
-                                <img src="https://via.placeholder.com/800x150" alt="" class="responsive-img">
-                            </div>
-                        </div>
-                        <div class="card-action d-flex split-items blue darken-1">
-                            <span class="white-text">15<i class="fa fa-comments-o" aria-hidden="true"></i></span>
-                            <span class="white-text">كمبيوتر <i class="fa fa-tag" aria-hidden="true"></i></span>
-                            <span class="white-text">منذ 5 ساعات</span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </a>
 
-        <a href="/post/details/1">
+        {% if posts %}
+        {% for post in posts %}
+        <a href="/post/details/{{post.id}}/{{post.slug}}">
             <div class="row">
                 <div class="col s12">
-                    <div class="card hoverable">
+                    <div class="card hoverable z-depth-5">
                         <div class="card-content home-cards">
-                            <span class="card-title black-text"><i class="fa fa-user" aria-hidden="true"></i>
-                                سامر غالي </span>
-                            <p>رايكم في اجهزة سامسونغ</p>
+                            <span class="card-title black-text">
+                                <span class="card-user-section">
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                    {{post.creator}}
+                                </span>
+                            </span>
+                            <h4>{{post.title |truncatechars:100}}</h4>
                         </div>
+                        {% if post.image %}
+                        <div class="post-image-section center">
+                            {% thumbnail post.image.url "250x250" crop="center" as im %}
+                            <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
+                                class="responsive-img" />
+                            {% endthumbnail %}
+                        </div>
+                        {% endif %}
+                        {% if user.id == post.creator.id %}
+                        <a href="{% url 'raykomfi:post-edit' id=post.id slug=post.slug %}"
+                            class="btn blue darken-1 edit-post-btn">تعديل</a>
+                        {% endif %}
                         <div class="card-action d-flex split-items blue darken-1">
                             <span class="white-text">15<i class="fa fa-comments-o" aria-hidden="true"></i></span>
-                            <span class="white-text">كمبيوتر <i class="fa fa-tag" aria-hidden="true"></i></span>
-                            <span class="white-text">منذ 5 ساعات</span>
+                            <span class="white-text">{{post.category}} <i class="fa fa-tag"
+                                    aria-hidden="true"></i></span>
+                            <span class="white-text">{{post.created | naturaltime}}</span>
                         </div>
                     </div>
                 </div>
             </div>
         </a>
-
-        <a href="#">
-            <div class="row">
-                <div class="col s12">
-                    <div class="card hoverable">
-                        <div class="card-content home-cards">
-                            <span class="card-title black-text"> سامر غالي</span>
-                            <p>رايكم في اجهزة سامسونغ</p>
-                        </div>
-                        <div class="card-action d-flex split-items blue darken-1">
-                            <span class="white-text">15<i class="fa fa-comments-o" aria-hidden="true"></i></span>
-                            <span class="white-text">كمبيوتر <i class="fa fa-tag" aria-hidden="true"></i></span>
-                            <span class="white-text">منذ 5 ساعات</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        <a href="#">
-            <div class="row">
-                <div class="col s12">
-                    <div class="card hoverable">
-                        <div class="card-content home-cards">
-                            <span class="card-title black-text"> سامر غالي</span>
-                            <p>رايكم في اجهزة سامسونغ</p>
-                        </div>
-                        <div class="card-action d-flex split-items blue darken-1">
-                            <span class="white-text">15<i class="fa fa-comments-o" aria-hidden="true"></i></span>
-                            <span class="white-text">كمبيوتر <i class="fa fa-tag" aria-hidden="true"></i></span>
-                            <span class="white-text">منذ 5 ساعات</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        <a href="#">
-            <div class="row">
-                <div class="col s12">
-                    <div class="card hoverable">
-                        <div class="card-content home-cards">
-                            <span class="card-title black-text"> سامر غالي</span>
-                            <p>رايكم في اجهزة سامسونغ</p>
-                        </div>
-                        <div class="card-action d-flex split-items blue darken-1">
-                            <span class="white-text">15<i class="fa fa-comments-o" aria-hidden="true"></i></span>
-                            <span class="white-text">كمبيوتر <i class="fa fa-tag" aria-hidden="true"></i></span>
-                            <span class="white-text">منذ 5 ساعات</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        <a href="#">
-            <div class="row">
-                <div class="col s12">
-                    <div class="card hoverable">
-                        <div class="card-content home-cards">
-                            <span class="card-title black-text"> سامر غالي</span>
-                            <p>رايكم في اجهزة سامسونغ</p>
-                        </div>
-                        <div class="card-action d-flex split-items blue darken-1">
-                            <span class="white-text">15<i class="fa fa-comments-o" aria-hidden="true"></i></span>
-                            <span class="white-text">كمبيوتر <i class="fa fa-tag" aria-hidden="true"></i></span>
-                            <span class="white-text">منذ 5 ساعات</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        <a href="#">
-            <div class="row">
-                <div class="col s12">
-                    <div class="card hoverable">
-                        <div class="card-content home-cards">
-                            <span class="card-title black-text"> سامر غالي</span>
-                            <p>رايكم في اجهزة سامسونغ</p>
-                        </div>
-                        <div class="card-action d-flex split-items blue darken-1">
-                            <span class="white-text">15<i class="fa fa-comments-o" aria-hidden="true"></i></span>
-                            <span class="white-text">كمبيوتر <i class="fa fa-tag" aria-hidden="true"></i></span>
-                            <span class="white-text">منذ 5 ساعات</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        <a href="#">
-            <div class="row">
-                <div class="col s12">
-                    <div class="card hoverable">
-                        <div class="card-content home-cards">
-                            <span class="card-title black-text"> سامر غالي</span>
-                            <p>رايكم في اجهزة سامسونغ</p>
-                        </div>
-                        <div class="card-action d-flex split-items blue darken-1">
-                            <span class="white-text">15<i class="fa fa-comments-o" aria-hidden="true"></i></span>
-                            <span class="white-text">كمبيوتر <i class="fa fa-tag" aria-hidden="true"></i></span>
-                            <span class="white-text">منذ 5 ساعات</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
+        {% endfor %}
+        {% else %}
+        <div class="center">لا يوجد منشورات </div>
+        {% endif %}
     </div>
 </div>
 

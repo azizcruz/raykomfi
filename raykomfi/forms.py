@@ -6,6 +6,48 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
 from django.utils.translation import gettext_lazy as _
+from django.utils.safestring import mark_safe
+from django import forms
+from sorl.thumbnail import ImageField
+from materializecssform.templatetags import materializecss
+
+
+def custom_render(element, markup_classes):
+    element_type = element.__class__.__name__.lower()
+
+    # Get the icon set setting
+    icon_set = materializecss.config.MATERIALIZECSS_ICON_SET
+
+    if element_type == 'boundfield':
+        materializecss.add_input_classes(element)
+        template = materializecss.get_template(
+            "materialcss_override/field.html")
+        context = {'field': element,
+                   'classes': markup_classes, 'icon_set': icon_set}
+    else:
+        has_management = getattr(element, 'management_form', None)
+        if has_management:
+            for form in element.forms:
+                for field in form.visible_fields():
+                    materializecss.add_input_classes(field)
+
+            template = materializecss.get_template(
+                "materializecssform/formset.html")
+            context = {'formset': element,
+                       'classes': markup_classes, 'icon_set': icon_set}
+        else:
+            for field in element.visible_fields():
+                materializecss.add_input_classes(field)
+
+            template = materializecss.get_template(
+                "materializecssform/form.html")
+            context = {'form': element,
+                       'classes': markup_classes, 'icon_set': icon_set}
+
+    return template.render(context)
+
+
+materializecss.render = custom_render
 
 
 class SignupForm(UserCreationForm):
@@ -56,11 +98,45 @@ class CustomPasswordResetForm(PasswordResetForm):
                 self.fields[fieldname].label = ''
 
 
-class NewPostForm(forms.Form):
+class NewPostForm(forms.ModelForm):
 
     class Meta:
         model = Post
         fields = ('category', 'title', 'content', 'image')
+
+    def __init__(self, *args, **kwargs):
+        super(NewPostForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['category', 'title', 'content', 'image']:
+
+            if fieldname == 'category':
+                self.fields[fieldname].widget.attrs['placeholder'] = 'تصنيف الموضوع'
+                self.fields[fieldname].label = ''
+                self.fields[fieldname].empty_label = 'تصنيف الموضوع'
+            if fieldname == 'title':
+                self.fields[fieldname].widget.attrs['placeholder'] = 'عنوان الموضوع'
+                self.fields[fieldname].label = ''
+            if fieldname == 'content':
+                self.fields[fieldname].widget.attrs['placeholder'] = 'نبذة عن الموضوع'
+                self.fields[fieldname].label = ''
+            if fieldname == 'image':
+                self.fields[fieldname].widget.attrs['placeholder'] = 'صورة'
+
+    def clean_image(self):
+        image = self.cleaned_data.get('image')
+        ALLOWED_EXT = ['jpg', 'png', 'jpeg']
+        filesize = image.size
+        extension = image.name.split('.')[1].lower()
+
+        if filesize > 10485760:  # 10MB
+            raise forms.ValidationError(
+                "حجم الصورة يجب ان يكون اصغر من 10 ميغابايت")
+
+        if extension not in ALLOWED_EXT:
+            raise forms.ValidationError(
+                "ملف الصورة تالف أو نوع الملف ليس صورة")
+
+        return image
 
 
 class CustomChangePasswordForm(PasswordChangeForm):

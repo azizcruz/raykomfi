@@ -5,7 +5,7 @@
 
 <div class="row">
     <h3 class="center">موضوع جديد</h3>
-    <form action="{% url 'raykomfi:post-new' %}" method='post'>
+    <form action="{% url 'raykomfi:post-new' %}" enctype="multipart/form-data" method='post'>
         {% csrf_token %}
         {{ form|materializecss }}
         <div class="col s12">

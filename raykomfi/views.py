@@ -1,13 +1,14 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from .forms import SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, CustomPasswordResetForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
-from django.contrib.auth.models import User
+from .models import User, Post
 from django.core.mail import EmailMessage
 from django.contrib import messages
 from django.db.utils import IntegrityError
@@ -15,16 +16,19 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render, redirect
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.functional import SimpleLazyObject
+from django.db.models import Q
 
 
 from pdb import set_trace
 
 
-# Create your views here.
-
-
 def index(request):
-    return render(request, 'sections/home.html')
+    posts = Post.objects.all()
+    return render(request, 'sections/home.html', context={'posts': posts})
 
 
 @login_required
@@ -44,20 +48,23 @@ def sign_in_view(request):
                     login(request, user)
                     return HttpResponseRedirect(reverse('raykomfi:raykomfi-home'))
             else:
-                messages.warning(request, 'حساب غير موجود')
+                messages.success(
+                    request, 'اسم المستخدم أو كلمة المرور خاطئة', extra_tags='red white-text')
                 return render(request, 'user/signin.html', context={'form': form})
         else:
             return render(request, 'user/signin.html', context={'form': form})
     else:
-        if request.user.is_anonymous and request.GET['next']:
-            messages.warning(request, 'يجب عليك تسجيل الدخول اولا')
+        if request.user.is_anonymous and 'next' in request.GET:
+            messages.success(
+                request, 'يجب عليك تسجيل الدخول اولا', extra_tags='yellow accent-4 black-text')
         form = SigninForm(use_required_attribute=False)
         return render(request, 'user/signin.html', context={'form': form})
 
 
 def user_logout(request):
     logout(request)
-    messages.success(request, 'تم تسجيل الخروج')
+    messages.success(
+        request, 'تم تسجيل الخروج', extra_tags='green white-text')
     return HttpResponseRedirect('/user/signin/')
 
 
@@ -68,23 +75,28 @@ def sign_up_view(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.is_active = False
-            # user.save()
+            user.save()
             current_site = get_current_site(request)
             mail_subject = 'تفعيل حسابك على رايكم في'
-            message = render_to_string('user/acc_activate_email.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': account_activation_token.make_token(user),
-            })
             to_email = form.cleaned_data.get('email')
-            email = EmailMessage(
-                mail_subject, message, to=[to_email]
+            from_email = 'no-reply@raykomfi.com'
+            # Send data to email template and get email template.
+            html_email_template = get_template("user/acc_activate_email.html").render(
+                {
+                    'site': SimpleLazyObject(lambda: get_current_site(request)),
+                    'user': user,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': default_token_generator.make_token(user),
+                }
             )
-            email.send()
+            msg = EmailMultiAlternatives(
+                f"{mail_subject}", "nothing", from_email, [to_email])
+            msg.attach_alternative(html_email_template, "text/html")
+            msg.send()
             messages.success(
-                request, 'تم انشاء الحساب, يرجى مراجعة ايميليك لتفعيل الحساب')
-            return render(request, 'user/signin.com')
+                request, 'تم انشاء الحساب, يرجى مراجعة بريدك الالكتروني, سوف تجد رسالة فيها رابط التفعيل لتفعيل حسابك', extra_tags='green white-text')
+
+            return HttpResponseRedirect('/user/signin')
 
         else:
             return render(request, 'user/register.html', context={'form': form})
@@ -95,17 +107,44 @@ def sign_up_view(request):
 
 
 @ login_required
-def post_view(request, id):
-    return render(request, 'sections/post_view.html')
+def post_view(request, id, slug):
+    post = Post.objects.get(Q(id__exact=id) & Q(slug__exact=slug))
+    return render(request, 'sections/post_view.html', context={'post': post})
+
+
+@ login_required
+def post_edit(request, id, slug):
+    instance = get_object_or_404(Post, id=id, slug=slug)
+    if request.method == 'POST':
+        form = NewPostForm(request.POST or None, request.FILES or None, instance=instance,
+                           use_required_attribute=False)
+        if form.is_valid():
+            form.save()
+            instance = get_object_or_404(Post, id=id)
+            return render(request, 'sections/post_view.html', context={'form': form, 'post': instance})
+        else:
+            return render(request, 'sections/edit_post.html', context={'form': form, 'post': instance})
+    else:
+        post = Post.objects.get(Q(id__exact=id) & Q(slug__exact=slug))
+        form = NewPostForm(instance=instance, use_required_attribute=False)
+        return render(request, 'sections/edit_post.html', context={'form': form, 'post': post})
 
 
 @ login_required
 def create_post(request):
     if request.method == 'POST':
-        pass
+        form = NewPostForm(request.POST or None, request.FILES or None,
+                           use_required_attribute=False)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.creator = request.user
+            post.save()
+            return render(request, 'sections/post_view.html', context={'post': post})
+        else:
+            return render(request, 'sections/create_post.html', context={'form': form})
     else:
-        form = NewPostForm()
-    return render(request, 'sections/create_post.html', context={'form': form})
+        form = NewPostForm(use_required_attribute=False)
+        return render(request, 'sections/create_post.html', context={'form': form})
 
 
 def change_password_view(request):
@@ -145,15 +184,15 @@ def forgot_password_view(request):
 
 def activate(request, uidb64, token):
     try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
+        uid = urlsafe_base64_decode(uidb64).decode()
         user = User.objects.get(pk=uid)
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
-    if user is not None and account_activation_token.check_token(user, token):
+    if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        login(request, user)
-        # return redirect('home')
-        return render(request, 'user/change_password.html', context={'condition': 'success', 'message': 'يرجى ادخال كلمة '})
+        messages.success(
+            request, 'تم تفعيل حسابك, يمكنك الان استخدام الموقع', extra_tags='green white-text')
+        return redirect('raykomfi:user-signin')
     else:
-        return render(request, 'user/activate_success_fail.html', context={'condition': 'fail', 'message': 'رابط التفعيل منتهي الصلاحية حاول مرة اخرى'})
+        return render(request, 'user/activate_fail.html')

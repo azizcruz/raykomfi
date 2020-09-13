@@ -22,7 +22,8 @@ urlpatterns = [
 
     # Post routes
     path('post/new', views.create_post, name='post-new'),
-    # path('post/edit', views.profile_view, name='post-edit'),
-    path('post/details/<int:id>', views.post_view, name='post-edit'),
+    path('post/details/<int:id>/<str:slug>',
+         views.post_view, name='post-view'),
+    path('post/edit/<int:id>/<str:slug>', views.post_edit, name='post-edit'),
     # path('post/delete', views.profile_view, name='post-edit'),
 ]

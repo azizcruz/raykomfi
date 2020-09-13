@@ -5,6 +5,14 @@ from django_countries.fields import CountryField
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django import forms
+from sorl.thumbnail import ImageField
+import cloudinary
+
+cloudinary.config(
+    cloud_name='raykomfi',
+    api_key='366983134385685',
+    api_secret='A6e7RDJrBrA1bTQPoHsPFjGjSyw'
+)
 
 
 def slugify(str):
@@ -47,15 +55,15 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-
+    creator = models.ForeignKey(
+        User, related_name='posts', verbose_name='صورة', on_delete=models.CASCADE, default=None,  null=True)
     category = models.ForeignKey(
         Category, related_name='posts', verbose_name='التصنيف', null=True, on_delete=models.SET_NULL)
     title = models.CharField(
         max_length=200, verbose_name='الموضوع', db_index=True)
     slug = models.CharField(
         max_length=200, db_index=True, null=True, blank=True)
-    image = models.ImageField(
-        upload_to='post_images', verbose_name='صورة', default=None, null=True, blank=True)
+    image = cloudinary.models.CloudinaryField('image')
     content = models.TextField(verbose_name='نبذة عن الموضوع', max_length=144)
     isActive = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -74,9 +82,10 @@ class Post(models.Model):
         return reverse('raykomfi:post_detail', args=[self.id, self.slug])
 
     def get_image_url(self):
-        return self.Image.url
+        return self.image.url
 
     def save(self, *args, **kwargs):
+        # Generate slug
         self.slug = slugify(self.title)
         super(Post, self).save(*args, **kwargs)
 

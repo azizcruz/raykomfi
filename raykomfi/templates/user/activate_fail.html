@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+    <ul class="collection custom-collection">
+        <li class="collection-item red white-text">رابط التفعيل منتهي الصلاحية, اضغط لطلب رابط تفعيل جديد</li>
+    </ul>
+    <div class="center">
+        <a href="{% url 'raykomfi:user-signin' %}" class="btn blue darken-1">طلب</a>
+    </div>
+</div>
+
+
+{% endblock content %}

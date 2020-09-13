@@ -1,19 +1,34 @@
 {% extends "base.html" %}
+{% load thumbnail %}
+{% load humanize %}
 
 {% block content %}
 
 <div class="row">
-    <div class="col s12">
+    <div class="col s12 m3">
+        others
+    </div>
+    <div class="col s12 m9">
         <div class="card hoverable">
             <div class="card-content home-cards">
-                <span class="card-title black-text"><i class="fa fa-user" aria-hidden="true"></i>
-                    سامر غالي</span>
-                <p>رايكم في اجهزة سامسونغ</p>
-                <img src="https://via.placeholder.com/3000x3000" class="responsive-img" alt="">
+                <span class="card-title card-user-section"><i class="fa fa-user" aria-hidden="true"></i>
+                    {{post.creator}}</span>
+                <h4 class="h4-for-post-view">{{ post.title }}</h4>
+                {% if post.content %}
+                <p class="p-for-post-view">{{post.content}}</p>
+                {% endif %}
+                {% if post.image %}
+                <div class="post-image-section center">
+                    {% thumbnail post.image.url "400x600" crop="center" as im %}
+                    <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
+                        class="responsive-img materialboxed" />
+                    {% endthumbnail %}
+                </div>
+                {% endif %}
             </div>
             <div class="card-action d-flex split-items blue darken-1">
-                <span class="white-text">كمبيوتر <i class="fa fa-tag" aria-hidden="true"></i></span>
-                <span class="white-text">منذ 5 ساعات</span>
+                <span class="white-text">{{post.category}} <i class="fa fa-tag" aria-hidden="true"></i></span>
+                <span class="white-text">{{post.created | naturaltime}}</span>
             </div>
         </div>
     </div>
