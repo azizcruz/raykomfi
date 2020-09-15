@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Post
+from .models import User, Post, Comment, Message, Reply
 from django_countries.fields import CountryField
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
@@ -155,3 +155,20 @@ class CustomChangePasswordForm(PasswordChangeForm):
             if fieldname == 'new_password2':
                 self.fields[fieldname].widget.attrs['placeholder'] = 'تأكيد كلمة الجديدة'
                 self.fields[fieldname].label = ''
+
+
+class CommentForm(forms.ModelForm):
+
+    class Meta:
+        model = Comment
+        fields = ('content',)
+
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['content']:
+
+            if fieldname == 'content':
+                self.fields[fieldname].widget.attrs['placeholder'] = 'اكتب تعليق'
+                self.fields[fieldname].label = ''
+                self.fields[fieldname].required = True

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load thumbnail %}
 {% load humanize %}
+{% load materializecss %}
 
 {% block content %}
 
@@ -9,7 +10,7 @@
         others
     </div>
     <div class="col s12 m9">
-        <div class="card hoverable">
+        <div class="card">
             <div class="card-content home-cards">
                 <span class="card-title card-user-section"><i class="fa fa-user" aria-hidden="true"></i>
                     {{post.creator}}</span>
@@ -19,7 +20,7 @@
                 {% endif %}
                 {% if post.image %}
                 <div class="post-image-section center">
-                    {% thumbnail post.image.url "400x600" crop="center" as im %}
+                    {% thumbnail post.image "200x200" crop="center" as im %}
                     <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
                         class="responsive-img materialboxed" />
                     {% endthumbnail %}
@@ -43,6 +44,7 @@
 <div class="row">
     <div class="col s12">
         <div class="comment-box">
+            {% for comment in post.comments.all %}
             <div class="like-dislike-side d-flex split-items blue-text darken-1">
                 <div>
                     <span>12</span> <a href="#" class="fa fa-thumbs-up like" aria-hidden="true"></a>
@@ -53,99 +55,25 @@
             </div>
 
             <div class="comment-side">
-                <small>منذ 5 دقائق</small>
+
+                <small></small>{{comment.created | naturaltime}}</small>
                 <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
-                    علي فيصل</div>
+                    {{comment.user.username}}</div>
                 <hr>
-                <div class="comment">نعم كان عندي واحد ويشتغل تمام</div>
+                <div class="comment">{{ comment.content }}</div>
             </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col s12">
-        <div class="comment-box">
-            <div class="like-dislike-side d-flex split-items blue-text darken-1">
-                <div>
-                    <span>12</span> <a href="#" class="fa fa-thumbs-up like" aria-hidden="true"></a>
-                </div>
-                <div>
-                    <span>9</span> <a href="#" class="fa fa-thumbs-down dislike" aria-hidden="true"></a>
-                </div>
-            </div>
-
-            <div class="comment-side">
-                <small>منذ 5 دقائق</small>
-                <div class="name">علي فيصل</div>
-                <hr>
-                <div class="comment">لللشس للشيتستا تيببسب يبتبتسبي بيايسالي لايايليلايس ياسييشي س يايسي يي يشيبسبس نعم
-                    كان عندي واحد ويشتغل تماملللشس للشيتستا تيببسب يبتبتسبي بيايسالي لايايليلايس ياسييشي س يايسي يي
-                    يشيبسبس نعم
-                    كان عندي واحد ويشتغل تماملللشس للشيتستا تيببسب يبتبتسبي بيايسالي لايايليلايس ياسييشي س يايسي يي
-                    يشيبسبس نعم
-                    كان عندي واحد ويشتغل تماملللشس للشيتستا تيببسب يبتبتسبي بيايسالي لايايليلايس ياسييشي س يايسي يي
-                    يشيبسبس نعم
-                    كان عندي واحد ويشتغل تماملللشس للشيتستا تيببسب يبتبتسبي بيايسالي لايايليلايس ياسييشي س يايسي يي
-                    يشيبسبس نعم
-                    كان عندي واحد ويشتغل تمام
-                    م
-                    كان عندي واحد ويشتغل تماملللشس للشيتستا تيببسب يبتبتسبي بيايسالي لايايليلايس ياسييشي س يايسي يي
-                    يشيبسبس نعم
-                    كان عندي واحد ويشتغل تماملللشس للشيتستا تيببسب يبتبتسبي بيايسالي لايايليلايس ياسييشي س يايسي يي
-                    يشيبسبس نعم
-                    كان عندي واحد ويشتغل تماملللشس للشيتستا تيببسب يبتبتسبي بيايسالي لايايليلايس ياسييشي س يايسي يي
-                    يشيبسبس نعم
-                    كان عندي واحد ويشتغل تماملللشس للشيتستا تيببسب يبتبتسبي بيايسالي لايايليلايس ياسييشي س يايسي يي
-                    يشيبسبس نعم
-                    كان عندي واحد ويشتغل تمام</div>
-                <div class="replies">
-                    <div class="card-panel">
-                        <small>منذ 5 دقائق </small>
-                        <div class="name">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                            عزيز حامد
-                        </div>
-                        <hr>
-                        <div class="comment">اتفق معك من جهة</div>
-                    </div>
-                    <div class="card-panel">
-                        <small>منذ 5 دقائق</small>
-                        <div class="name">
-                            عزيز حامد
-                        </div>
-                        <hr>
-                        <div class="comment">اتفق معك من جهة</div>
-                    </div>
-                    <div class="card-panel">
-                        <small>منذ 5 دقائق</small>
-                        <div class="name">
-                            عزيز حامد
-                        </div>
-                        <hr>
-                        <div class="comment">اتفق معك من جهة</div>
-                    </div>
-                </div>
-                <div class="reply-box">
-                    <form action="">
-                        <div class="input-field col s12">
-                            <textarea id="reply" class="materialize-textarea" name="reply" class="validate"></textarea>
-                        </div>
-                        <button type="submit" class="btn blue darken-1">رد</button>
-                    </form>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </div>
 <div class="row">
     <div class="reply-box">
-        <form action="">
-            <div class="input-field col s12">
-                <textarea id="comment" class="materialize-textarea" name="comment" placeholder="...تعليق"
-                    class="validate"></textarea>
+        <form action="{% url 'raykomfi:post-comment' post_id=post.id %}" method='post'>
+            {% csrf_token %}
+            {{ comment_form|materializecss }}
+            <div class="col s12">
+                <button type='submit' class='btn blue darken-1'> اضافة تعليق</button>
             </div>
-            <button type="submit" class="btn blue darken-1">اضافة تعليق</button>
         </form>
     </div>
 </div>

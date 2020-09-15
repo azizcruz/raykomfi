@@ -6,13 +6,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 from sorl.thumbnail import ImageField
-import cloudinary
-
-cloudinary.config(
-    cloud_name='raykomfi',
-    api_key='366983134385685',
-    api_secret='A6e7RDJrBrA1bTQPoHsPFjGjSyw'
-)
+from cloudinary.models import CloudinaryField
 
 
 def slugify(str):
@@ -63,7 +57,8 @@ class Post(models.Model):
         max_length=200, verbose_name='الموضوع', db_index=True)
     slug = models.CharField(
         max_length=200, db_index=True, null=True, blank=True)
-    image = cloudinary.models.CloudinaryField('image')
+    image = ImageField(
+        upload_to='post_images', verbose_name='صورة', default=None, null=True, blank=True)
     content = models.TextField(verbose_name='نبذة عن الموضوع', max_length=144)
     isActive = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -79,7 +74,7 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('raykomfi:post_detail', args=[self.id, self.slug])
+        return reverse('raykomfi:post-view', args=[self.id, self.slug])
 
     def get_image_url(self):
         return self.image.url
@@ -98,15 +93,16 @@ class Comment(models.Model):
         Post, related_name='comments', verbose_name='المنشور', on_delete=models.CASCADE)
     content = models.TextField(verbose_name='التعليق')
     isActive = models.BooleanField(default=True, verbose_name='مفعل؟')
-    votes = models.ManyToManyField(
-        User, related_name='likes', verbose_name='المتفقين مع التعليق')
+    votes = models.IntegerField(default=0)
+    voted_users = models.ManyToManyField(
+        User, related_name='post_voted', verbose_name='الاعضاء المصوتين')
     created = models.DateTimeField(
         auto_now_add=True, verbose_name='وقت اضافة التعليق')
     updated = models.DateTimeField(
         auto_now=True, verbose_name='وقت تحديث التعليق')
 
     class Meta:
-        ordering = ('-created', )
+        ordering = ('created', )
         verbose_name = "تعليق"
         verbose_name_plural = "تعليقات"
 

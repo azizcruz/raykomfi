@@ -24,7 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener('DOMContentLoaded', function () {
     var elems = document.querySelectorAll('.materialboxed');
-    var options = {};
+    var options = {
+        inDuration: 0,
+        outDuration: 0
+    };
     var instances = M.Materialbox.init(elems, options);
 });
 

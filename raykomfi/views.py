@@ -1,14 +1,14 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
-from .forms import SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, CustomPasswordResetForm
+from .forms import SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, CustomPasswordResetForm, CommentForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
-from .models import User, Post
+from .models import User, Post, Comment, Reply, Message
 from django.core.mail import EmailMessage
 from django.contrib import messages
 from django.db.utils import IntegrityError
@@ -109,7 +109,8 @@ def sign_up_view(request):
 @ login_required
 def post_view(request, id, slug):
     post = Post.objects.get(Q(id__exact=id) & Q(slug__exact=slug))
-    return render(request, 'sections/post_view.html', context={'post': post})
+    comment_form = CommentForm()
+    return render(request, 'sections/post_view.html', context={'post': post, 'comment_form': comment_form})
 
 
 @ login_required
@@ -139,7 +140,8 @@ def create_post(request):
             post = form.save(commit=False)
             post.creator = request.user
             post.save()
-            return render(request, 'sections/post_view.html', context={'post': post})
+            comment_form = CommentForm()
+            return render(request, 'sections/post_view.html', context={'post': post, 'comment_form': comment_form})
         else:
             return render(request, 'sections/create_post.html', context={'form': form})
     else:
@@ -180,6 +182,25 @@ def forgot_password_view(request):
     else:
         form = CustomPasswordResetForm(use_required_attribute=False)
         return render(request, 'user/forgot_password.html', context={'form': form})
+
+
+def add_comment(request, post_id):
+    comment_form = CommentForm(request.POST or None)
+    post = Post.objects.get(id__exact=post_id)
+    if comment_form.is_valid():
+        comment = Comment.objects.create(
+            content=comment_form.cleaned_data['content'], user=request.user, post=post)
+        messages.success(
+            request, 'تم اضافة تعليقك بنجاح', extra_tags='green white-text')
+        return HttpResponseRedirect(post.get_absolute_url())
+    else:
+        return render(request, 'sections/post_view.html', {'post': post, 'comment_form': comment_form})
+
+    post = Post.objects.get(id__exact=post_id)
+    comment = Comment.objects.create(
+        user=request.user, content=data['content'], )
+    post.comments.add()
+    return redirect('')
 
 
 def activate(request, uidb64, token):

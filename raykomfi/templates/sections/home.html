@@ -63,7 +63,7 @@
                         </div>
                         {% if post.image %}
                         <div class="post-image-section center">
-                            {% thumbnail post.image.url "250x250" crop="center" as im %}
+                            {% thumbnail post.image "250x250" crop="center" as im %}
                             <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
                                 class="responsive-img" />
                             {% endthumbnail %}
