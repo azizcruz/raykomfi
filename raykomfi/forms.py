@@ -169,6 +169,24 @@ class CommentForm(forms.ModelForm):
         for fieldname in ['content']:
 
             if fieldname == 'content':
-                self.fields[fieldname].widget.attrs['placeholder'] = 'اكتب تعليق'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round'
+                self.fields[fieldname].label = ''
+                self.fields[fieldname].required = True
+
+
+class ReplyForm(forms.ModelForm):
+
+    class Meta:
+        model = Reply
+        fields = ('content',)
+
+    def __init__(self, *args, **kwargs):
+        super(ReplyForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['content']:
+
+            if fieldname == 'content':
+                self.fields[fieldname].widget.attrs['rows'] = 2
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round'
                 self.fields[fieldname].label = ''
                 self.fields[fieldname].required = True

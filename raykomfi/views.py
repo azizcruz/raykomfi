@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
-from .forms import SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, CustomPasswordResetForm, CommentForm
+from .forms import SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, CustomPasswordResetForm, CommentForm, ReplyForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -108,9 +108,11 @@ def sign_up_view(request):
 
 @ login_required
 def post_view(request, id, slug):
-    post = Post.objects.get(Q(id__exact=id) & Q(slug__exact=slug))
+    post = Post.objects.prefetch_related('comments').prefetch_related('comments__replies').get(Q(id__exact=id) & Q(
+        slug__exact=slug))
     comment_form = CommentForm()
-    return render(request, 'sections/post_view.html', context={'post': post, 'comment_form': comment_form})
+    reply_form = ReplyForm()
+    return render(request, 'sections/post_view.html', context={'post': post, 'comment_form': comment_form, 'reply_form': reply_form})
 
 
 @ login_required
@@ -141,7 +143,8 @@ def create_post(request):
             post.creator = request.user
             post.save()
             comment_form = CommentForm()
-            return render(request, 'sections/post_view.html', context={'post': post, 'comment_form': comment_form})
+            reply_form = ReplyForm()
+            return render(request, 'sections/post_view.html', context={'post': post, 'comment_form': comment_form, 'reply_form': reply_form})
         else:
             return render(request, 'sections/create_post.html', context={'form': form})
     else:
@@ -184,9 +187,11 @@ def forgot_password_view(request):
         return render(request, 'user/forgot_password.html', context={'form': form})
 
 
+@login_required
 def add_comment(request, post_id):
     comment_form = CommentForm(request.POST or None)
-    post = Post.objects.get(id__exact=post_id)
+    post = Post.objects.prefetch_related(
+        'comments').prefetch_related('comments__replies').get(id__exact=post_id)
     if comment_form.is_valid():
         comment = Comment.objects.create(
             content=comment_form.cleaned_data['content'], user=request.user, post=post)
@@ -195,6 +200,29 @@ def add_comment(request, post_id):
         return HttpResponseRedirect(post.get_absolute_url())
     else:
         return render(request, 'sections/post_view.html', {'post': post, 'comment_form': comment_form})
+
+    post = Post.objects.get(id__exact=post_id)
+    comment = Comment.objects.create(
+        user=request.user, content=data['content'], )
+    post.comments.add()
+    return redirect('')
+
+
+@login_required
+def add_reply(request, post_id, comment_id):
+    reply_form = ReplyForm(request.POST or None)
+    comment_form = CommentForm(request.POST or None)
+    comment = Comment.objects.prefetch_related('replies').get(id=comment_id)
+    post = Post.objects.prefetch_related(
+        'comments').prefetch_related('comments__replies').get(id__exact=post_id)
+    if reply_form.is_valid():
+        reply = Reply.objects.create(
+            content=reply_form.cleaned_data['content'], user=request.user, comment=comment)
+        messages.success(
+            request, 'تم اضافة ردك بنجاح', extra_tags='green white-text')
+        return HttpResponseRedirect(post.get_absolute_url())
+    else:
+        return render(request, 'sections/post_view.html', {'post': post, 'comment_form': comment_form, 'reply_form': replyt_form})
 
     post = Post.objects.get(id__exact=post_id)
     comment = Comment.objects.create(

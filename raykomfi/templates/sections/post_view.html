@@ -1,11 +1,75 @@
 {% extends "base.html" %}
 {% load thumbnail %}
 {% load humanize %}
-{% load materializecss %}
 
 {% block content %}
 
-<div class="row">
+<div class="w3-row" style="max-width: 600px;">
+    <div class="w3-mobile w3-container">
+        <h2>
+            <i class="fa fa-user" aria-hidden="true"></i>
+            {{post.creator}}
+        </h2>
+    </div>
+    <div class="w3-mobile w3-container">
+        {% if post.content %}
+        <p>{{post.content}}</p>
+        {% endif %}
+    </div>
+    <div class="w3-mobile w3-container">
+        {% if post.image %}
+        {% thumbnail post.image "200x200" crop="center" as im %}
+        <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
+            alt="{{post.slug}}" />
+        {% endthumbnail %}
+        {% endif %}
+    </div>
+    <div class="w3-container">
+        <small><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.created | naturaltime}}</small>
+        <small><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</small>
+    </div>
+    <hr>
+    <div class="w3-mobile w3-container reply-buttons">
+        <h3>الاراء</h3>
+        {% for comment in post.comments.all %}
+        <div class="w3-row comment-wrapper w3-border w3-padding w3-round-large">
+            <div class="w3-col s11 m11 l11">
+                <div class="comment-side">
+
+                    <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
+                        {{comment.user.username}}</div>
+                    <small><i class="fa fa-clock-o" aria-hidden="true"></i> {{comment.created | naturaltime}}</small>
+                    <div class="comment">{{ comment.content }}</div>
+                </div>
+                <div class="comment-reply-side w3-padding w3-round-large">
+                    <form action="{% url 'raykomfi:post-reply' post_id=post.id comment_id=comment.id  %}" method='post'>
+                        {% csrf_token %}
+                        {{ reply_form }}
+                        <div class="col s12">
+                            <button type='submit' class='w3-button w3-round-large'> اضافة رد</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="w3-col s1 m1 l1 w3-center">
+                test
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="w3-mobile w3-container comment-button">
+        <h3>اضافة تعليق</h3>
+        <form action="{% url 'raykomfi:post-comment' post_id=post.id %}" method='post'>
+            {% csrf_token %}
+            {{ comment_form }}
+            <div class="col s12">
+                <button type='submit' class='w3-button w3-round-large'> اضافة تعليق</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- <div class="row">
     <div class="col s12 m3">
         others
     </div>
@@ -56,11 +120,20 @@
 
             <div class="comment-side">
 
-                <small></small>{{comment.created | naturaltime}}</small>
+                <small>{{comment.created | naturaltime}}</small>
                 <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
                     {{comment.user.username}}</div>
                 <hr>
                 <div class="comment">{{ comment.content }}</div>
+            </div>
+            <div class="comment-reply-side">
+                <form action="{% url 'raykomfi:post-reply' post_id=post.id comment_id=comment.id  %}" method='post'>
+                    {% csrf_token %}
+                    {{ reply_form }}
+                    <div class="col s12">
+                        <button type='submit' class='btn blue darken-1'> اضافة رد</button>
+                    </div>
+                </form>
             </div>
             {% endfor %}
         </div>
@@ -70,13 +143,13 @@
     <div class="reply-box">
         <form action="{% url 'raykomfi:post-comment' post_id=post.id %}" method='post'>
             {% csrf_token %}
-            {{ comment_form|materializecss }}
+            {{ comment_form }}
             <div class="col s12">
                 <button type='submit' class='btn blue darken-1'> اضافة تعليق</button>
             </div>
         </form>
     </div>
-</div>
+</div> -->
 
 
 
