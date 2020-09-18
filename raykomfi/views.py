@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
-from .forms import SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, CustomPasswordResetForm, CommentForm, ReplyForm
+from .forms import SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, CustomPasswordResetForm, CommentForm, ReplyForm, ProfileForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -33,7 +33,32 @@ def index(request):
 
 @login_required
 def profile_view(request, id):
-    return render(request, 'user/profile.html')
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, use_required_attribute=False)
+        if form.is_valid():
+            request.user.username = form.cleaned_data['username']
+            request.user.first_name = form.cleaned_data['first_name']
+            request.user.last_name = form.cleaned_data['last_name']
+            request.user.country = form.cleaned_data['country']
+            request.user.bio = form.cleaned_data['bio']
+            request.user.email = form.cleaned_data['email']
+            request.user.save()
+            messages.success(
+                request, 'تم الحفظ بنجاح', extra_tags='pale-green w3-border')
+            return render(request, 'user/profile.html', context={'form': form})
+        else:
+            return render(request, 'user/profile.html', context={'form': form})
+    else:
+        user_data = {
+            'username': request.user.username,
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name,
+            'email': request.user.email,
+            'bio': request.user.bio,
+            'country': request.user.country
+        }
+        form = ProfileForm(user_data, use_required_attribute=False)
+        return render(request, 'user/profile.html', {'form': form})
 
 
 def sign_in_view(request):
@@ -49,14 +74,14 @@ def sign_in_view(request):
                     return HttpResponseRedirect(reverse('raykomfi:raykomfi-home'))
             else:
                 messages.success(
-                    request, 'اسم المستخدم أو كلمة المرور خاطئة', extra_tags='red white-text')
+                    request, 'اسم المستخدم أو كلمة المرور خاطئة', extra_tags='pale-red w3-border')
                 return render(request, 'user/signin.html', context={'form': form})
         else:
             return render(request, 'user/signin.html', context={'form': form})
     else:
         if request.user.is_anonymous and 'next' in request.GET:
             messages.success(
-                request, 'يجب عليك تسجيل الدخول اولا', extra_tags='yellow accent-4 black-text')
+                request, 'يجب عليك تسجيل الدخول اولا', extra_tags='pale-yellow w3-border')
         form = SigninForm(use_required_attribute=False)
         return render(request, 'user/signin.html', context={'form': form})
 
@@ -64,7 +89,7 @@ def sign_in_view(request):
 def user_logout(request):
     logout(request)
     messages.success(
-        request, 'تم تسجيل الخروج', extra_tags='green white-text')
+        request, 'تم تسجيل الخروج', extra_tags='pale-green w3-border')
     return HttpResponseRedirect('/user/signin/')
 
 
@@ -94,7 +119,7 @@ def sign_up_view(request):
             msg.attach_alternative(html_email_template, "text/html")
             msg.send()
             messages.success(
-                request, 'تم انشاء الحساب, يرجى مراجعة بريدك الالكتروني, سوف تجد رسالة فيها رابط التفعيل لتفعيل حسابك', extra_tags='green white-text')
+                request, 'تم انشاء الحساب, يرجى مراجعة بريدك الالكتروني, سوف تجد رسالة فيها رابط التفعيل لتفعيل حسابك', extra_tags='pale-green w3-border')
 
             return HttpResponseRedirect('/user/signin')
 
@@ -160,7 +185,7 @@ def change_password_view(request):
             user = form.save()
             update_session_auth_hash(request, user)
             messages.success(
-                request, 'Your password was successfully updated!')
+                request, 'تم تغيير كلمة المرور بنجاح', extra_tags='pale-green w3-border')
             return redirect('raykomfi:raykomfi-home')
         else:
             return render(request, 'user/change_password.html', {
@@ -196,7 +221,7 @@ def add_comment(request, post_id):
         comment = Comment.objects.create(
             content=comment_form.cleaned_data['content'], user=request.user, post=post)
         messages.success(
-            request, 'تم اضافة تعليقك بنجاح', extra_tags='green white-text')
+            request, 'تم اضافة تعليقك بنجاح', extra_tags='pale-green w3-border')
         return HttpResponseRedirect(post.get_absolute_url())
     else:
         return render(request, 'sections/post_view.html', {'post': post, 'comment_form': comment_form})
@@ -219,7 +244,7 @@ def add_reply(request, post_id, comment_id):
         reply = Reply.objects.create(
             content=reply_form.cleaned_data['content'], user=request.user, comment=comment)
         messages.success(
-            request, 'تم اضافة ردك بنجاح', extra_tags='green white-text')
+            request, 'تم اضافة ردك بنجاح', extra_tags='pale-green w3-border')
         return HttpResponseRedirect(post.get_absolute_url())
     else:
         return render(request, 'sections/post_view.html', {'post': post, 'comment_form': comment_form, 'reply_form': replyt_form})
@@ -241,7 +266,7 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         messages.success(
-            request, 'تم تفعيل حسابك, يمكنك الان استخدام الموقع', extra_tags='green white-text')
+            request, 'تم تفعيل حسابك, يمكنك الان استخدام الموقع', extra_tags='pale-green w3-border')
         return redirect('raykomfi:user-signin')
     else:
         return render(request, 'user/activate_fail.html')

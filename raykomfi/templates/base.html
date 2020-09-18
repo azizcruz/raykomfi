@@ -29,12 +29,14 @@
                     class="fa fa-user-plus" aria-hidden="true"></i></a>
             <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-signin' %}">تسجيل دخول &nbsp;<i
                     class="fa fa-sign-in" aria-hidden="true"></i></a>
+
+            {% if user.is_authenticated %}
             <div>
                 <a class="w3-bar-item w3-button" onclick="myAccordion('demo')" href="javascript:void(0)">حسابك <i
                         class="fa fa-caret-down"></i></a>
                 <div id="demo" class="w3-hide">
-                    <a class="w3-bar-item w3-button" href="#">الصفحة الشخصية&nbsp;<i class="fa fa-user-circle"
-                            aria-hidden="true"></i></a>
+                    <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-profile' id=user.id %}">الصفحة
+                        الشخصية&nbsp;<i class="fa fa-user-circle" aria-hidden="true"></i></a>
                     <a class="w3-bar-item w3-button" href="#">الرسائل &nbsp;<i class="fa fa-envelope-o"
                             aria-hidden="true"></i></a>
                     <hr>
@@ -42,6 +44,7 @@
                             aria-hidden="true"></i></a>
                 </div>
             </div>
+            {% endif %}
     </nav>
 
     <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" id="myOverlay">
@@ -64,6 +67,15 @@
         </header>
 
         <div class="w3-container raykomfi-content">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="w3-display-container w3-panel w3-{{message.tags}} message-wrapper">
+                <span onclick="this.parentElement.style.display='none'"
+                    class="w3-button w3-display-topleft">&times;</span>
+                <p>{{message}}</p>
+            </div>
+            {% endfor %}
+            {% endif %}
             {% block content %}{% endblock %}
         </div>
 

@@ -2,63 +2,21 @@
 
 {% block content %}
 
-<div class="row">
-    <div class="col s12">
-        <div class="row">
-            <form class="col s12">
-                <div class="row">
-                    <div class="input-field col s12">
-                        <a href="{% url 'raykomfi:user-change-password' %}" class="btn blue white-text darken-1"> لتغيير
-                            كلمة
-                            المرور</a>
-                    </div>
-                    <div class="input-field col s12">
-                        <a href="#" class="btn red white-text darken-1">حذف الحساب</a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="username" type="text" name="username" class="validate" placeholder="اسم المستخدم">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12 l6">
-                        <input id="last_name" type="text" name="first_name" class="validate" placeholder="الاسم الاخير">
-                    </div>
-                    <div class="input-field col s12 l6">
-                        <input id="first_name" type="text" name="last_name" class="validate" placeholder="الاسم الاول">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="email" type="email" class="validate" name="email" placeholder="الايميل">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s5">
-                        <select name="country">
-                            <option value="" disabled selected>الدولة</option>
-                            <option value='Algeria'>الجزائر</option>
-                            <option value="Jordan">الاردن</option>
-                        </select>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn blue white-text darken-1">تعديل</button>
-            </form>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <h3>منشوراتي</h3>
-                <a href="#">
-                    <div class="card-panel white black-text">رايكم في جهاز</div>
-                </a>
-                <a href="#">
-                    <div class="card-panel white black-text">رايكم في جهاز</div>
-                </a>
-            </div>
+<div class="w3-row">
+    <div class="w3-col s12 m6 l6">
+        <div class="w3-center">
+            <i class="fa fa-user-circle-o large-font profile-icon" aria-hidden="true"></i>
+            <h1 class="w3-xxxlarge">{{user.username}}</h1>
+            <h3 class="w3-xlarge">الرمز {{ user.uuid }}</h3>
         </div>
     </div>
+    <div class="w3-col s12 m6 l6">
+        <form action="{% url 'raykomfi:user-profile' id=user.id %}" method='post'>
+            {% csrf_token %}
+            {{ form }}
+            <button class="w3-button raykomfi-button w3-round-large">تعديل</button>
+        </form>
+    </div>
 </div>
-
 
 {% endblock content %}

@@ -124,7 +124,7 @@ class Reply(models.Model):
         auto_now=True, verbose_name='وقت تحديث التعليق')
 
     class Meta:
-        ordering = ('-created', )
+        ordering = ('created', )
         verbose_name = "رد على تعليق"
         verbose_name_plural = "ردود على التعليقات"
 

@@ -12,44 +12,6 @@ from sorl.thumbnail import ImageField
 from materializecssform.templatetags import materializecss
 
 
-def custom_render(element, markup_classes):
-    element_type = element.__class__.__name__.lower()
-
-    # Get the icon set setting
-    icon_set = materializecss.config.MATERIALIZECSS_ICON_SET
-
-    if element_type == 'boundfield':
-        materializecss.add_input_classes(element)
-        template = materializecss.get_template(
-            "materialcss_override/field.html")
-        context = {'field': element,
-                   'classes': markup_classes, 'icon_set': icon_set}
-    else:
-        has_management = getattr(element, 'management_form', None)
-        if has_management:
-            for form in element.forms:
-                for field in form.visible_fields():
-                    materializecss.add_input_classes(field)
-
-            template = materializecss.get_template(
-                "materializecssform/formset.html")
-            context = {'formset': element,
-                       'classes': markup_classes, 'icon_set': icon_set}
-        else:
-            for field in element.visible_fields():
-                materializecss.add_input_classes(field)
-
-            template = materializecss.get_template(
-                "materializecssform/form.html")
-            context = {'form': element,
-                       'classes': markup_classes, 'icon_set': icon_set}
-
-    return template.render(context)
-
-
-materializecss.render = custom_render
-
-
 class SignupForm(UserCreationForm):
     username = forms.CharField(label='', widget=forms.TextInput(
         attrs={'placeholder': 'اسم المستخدم'}))
@@ -74,6 +36,86 @@ class SignupForm(UserCreationForm):
         model = User
         fields = ('username', 'password1', 'password2',
                   'email', 'first_name', 'last_name', 'country', 'bio', )
+
+    def __init__(self, *args, **kwargs):
+        super(SignupForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['username', 'first_name', 'last_name', 'country', 'bio', 'email']:
+            if fieldname == 'username':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'اسم المستخدم'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round'
+            if fieldname == 'first_name':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'الاسم الاول'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round'
+            if fieldname == 'last_name':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'الاسم الأخير'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round'
+            if fieldname == 'country':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'الدولة'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round'
+            if fieldname == 'email':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'الايميل'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round'
+            if fieldname == 'bio':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'نبذة عنك'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round'
+
+
+class ProfileForm(forms.Form):
+    username = forms.CharField(label='', widget=forms.TextInput())
+    first_name = forms.CharField(
+        label='', required=False, widget=forms.TextInput())
+    last_name = forms.CharField(
+        label='', required=False, widget=forms.TextInput())
+    country = forms.CharField(label='', required=False,
+                              widget=forms.TextInput())
+    bio = forms.CharField(label='', required=False,
+                          max_length=144, widget=forms.Textarea())
+    email = forms.CharField(label='', validators=[validate_email], widget=forms.TextInput(
+        attrs={'placeholder': 'ايميل'}), error_messages={
+        'unique': _("الايميل موجود مسبقا")
+    })
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'first_name',
+                  'last_name', 'country', 'bio', )
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['username', 'first_name', 'last_name', 'country', 'bio', 'email']:
+            if fieldname == 'username':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'اسم المستخدم'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border w3-round-large'
+                self.fields[fieldname].widget.attrs.pop("autofocus", None)
+            if fieldname == 'first_name':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'الاسم الاول'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+            if fieldname == 'last_name':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'الاسم الأخير'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+            if fieldname == 'country':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'الدولة'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+            if fieldname == 'email':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'الايميل'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+            if fieldname == 'bio':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'نبذة عنك'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
 
 
 class SigninForm(forms.Form):
@@ -169,7 +211,7 @@ class CommentForm(forms.ModelForm):
         for fieldname in ['content']:
 
             if fieldname == 'content':
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
                 self.fields[fieldname].label = ''
                 self.fields[fieldname].required = True
 
@@ -186,7 +228,7 @@ class ReplyForm(forms.ModelForm):
         for fieldname in ['content']:
 
             if fieldname == 'content':
-                self.fields[fieldname].widget.attrs['rows'] = 2
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round'
+                self.fields[fieldname].widget.attrs['rows'] = 1
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
                 self.fields[fieldname].label = ''
                 self.fields[fieldname].required = True

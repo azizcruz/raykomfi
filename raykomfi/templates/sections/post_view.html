@@ -4,155 +4,115 @@
 
 {% block content %}
 
-<div class="w3-row" style="max-width: 600px;">
-    <div class="w3-mobile w3-container">
-        <h2>
-            <i class="fa fa-user" aria-hidden="true"></i>
-            {{post.creator}}
-        </h2>
-    </div>
-    <div class="w3-mobile w3-container">
-        {% if post.content %}
-        <p>{{post.content}}</p>
-        {% endif %}
-    </div>
-    <div class="w3-mobile w3-container">
-        {% if post.image %}
-        {% thumbnail post.image "200x200" crop="center" as im %}
-        <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
-            alt="{{post.slug}}" />
-        {% endthumbnail %}
-        {% endif %}
-    </div>
-    <div class="w3-container">
-        <small><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.created | naturaltime}}</small>
-        <small><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</small>
-    </div>
-    <hr>
-    <div class="w3-mobile w3-container reply-buttons">
-        <h3>الاراء</h3>
-        {% for comment in post.comments.all %}
-        <div class="w3-row comment-wrapper w3-border w3-padding w3-round-large">
-            <div class="w3-col s11 m11 l11">
-                <div class="comment-side">
-
-                    <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
-                        {{comment.user.username}}</div>
-                    <small><i class="fa fa-clock-o" aria-hidden="true"></i> {{comment.created | naturaltime}}</small>
-                    <div class="comment">{{ comment.content }}</div>
+<div class="w3-row">
+    <div class="w3-col s12 m4 l4">
+        <h4>{{post.category}}</h4>
+        <div class="related-posts w3-border w3-padding-16">
+            <div class="w3-row">
+                <div class="w3-mobile">
+                    <a href="#"><span class="raykomfi-tag w3-round-small">علي احمد</span> &nbsp; <span
+                            class="raykomfi-color">رايكم في هذا الشيء
+                            الجميل</span></a>
                 </div>
-                <div class="comment-reply-side w3-padding w3-round-large">
-                    <form action="{% url 'raykomfi:post-reply' post_id=post.id comment_id=comment.id  %}" method='post'>
-                        {% csrf_token %}
-                        {{ reply_form }}
-                        <div class="col s12">
-                            <button type='submit' class='w3-button w3-round-large'> اضافة رد</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="w3-col s1 m1 l1 w3-center">
-                test
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    <div class="w3-mobile w3-container comment-button">
-        <h3>اضافة تعليق</h3>
-        <form action="{% url 'raykomfi:post-comment' post_id=post.id %}" method='post'>
-            {% csrf_token %}
-            {{ comment_form }}
-            <div class="col s12">
-                <button type='submit' class='w3-button w3-round-large'> اضافة تعليق</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- <div class="row">
-    <div class="col s12 m3">
-        others
-    </div>
-    <div class="col s12 m9">
-        <div class="card">
-            <div class="card-content home-cards">
-                <span class="card-title card-user-section"><i class="fa fa-user" aria-hidden="true"></i>
-                    {{post.creator}}</span>
-                <h4 class="h4-for-post-view">{{ post.title }}</h4>
-                {% if post.content %}
-                <p class="p-for-post-view">{{post.content}}</p>
-                {% endif %}
-                {% if post.image %}
-                <div class="post-image-section center">
-                    {% thumbnail post.image "200x200" crop="center" as im %}
-                    <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
-                        class="responsive-img materialboxed" />
-                    {% endthumbnail %}
-                </div>
-                {% endif %}
-            </div>
-            <div class="card-action d-flex split-items blue darken-1">
-                <span class="white-text">{{post.category}} <i class="fa fa-tag" aria-hidden="true"></i></span>
-                <span class="white-text">{{post.created | naturaltime}}</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col s12">
-        <h3>الاراء</h3>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col s12">
-        <div class="comment-box">
-            {% for comment in post.comments.all %}
-            <div class="like-dislike-side d-flex split-items blue-text darken-1">
-                <div>
-                    <span>12</span> <a href="#" class="fa fa-thumbs-up like" aria-hidden="true"></a>
-                </div>
-                <div>
-                    <span>9</span> <a href="#" class="fa fa-thumbs-down dislike" aria-hidden="true"></a>
-                </div>
-            </div>
-
-            <div class="comment-side">
-
-                <small>{{comment.created | naturaltime}}</small>
-                <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
-                    {{comment.user.username}}</div>
                 <hr>
-                <div class="comment">{{ comment.content }}</div>
             </div>
-            <div class="comment-reply-side">
-                <form action="{% url 'raykomfi:post-reply' post_id=post.id comment_id=comment.id  %}" method='post'>
+        </div>
+    </div>
+    <div class="w3-col s12 m8 l8">
+        <div class="w3-row">
+            <div class="w3-mobile w3-container">
+                <h2>
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    {{post.creator}}
+                </h2>
+            </div>
+            <div class="w3-mobile w3-container">
+                {% if post.content %}
+                <p>{{post.content}}</p>
+                {% endif %}
+            </div>
+            <div class="w3-mobile w3-container">
+                {% if post.image %}
+                {% thumbnail post.image "200x200" crop="center" as im %}
+                <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
+                    alt="{{post.slug}}" />
+                {% endthumbnail %}
+                {% endif %}
+            </div>
+            <div class="w3-container">
+                <div><small><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.created | naturaltime}}</small>
+                </div>
+                <div><small><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</small></div>
+            </div>
+            <hr>
+            <div class="w3-mobile w3-container reply-buttons">
+                <h3>الاراء</h3>
+                {% if post.comments.all|length > 0 %}
+                {% for comment in post.comments.all %}
+                <div class="w3-row comment-wrapper w3-border w3-padding w3-round-large">
+                    <div class="w3-col s10 m11 l11">
+                        <div class="comment-side">
+
+                            <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
+                                {{comment.user.username}}</div>
+                            <small><i class="fa fa-clock-o" aria-hidden="true"></i>
+                                {{comment.created | naturaltime}}</small>
+                            <div class="comment">{{ comment.content }}</div>
+                        </div>
+                        <hr>
+                        <div class="comment-reply-side w3-padding w3-round-large">
+                            {% for reply in comment.replies.all %}
+                            <div class="w3-panel">
+                                <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
+                                    {{reply.user.username}}
+                                </div>
+                                <small><i class="fa fa-clock-o" aria-hidden="true"></i>
+                                    {{reply.created | naturaltime}}</small>
+                                <div class="comment">{{ reply.content }}</div>
+                            </div>
+                            <hr>
+                            {% endfor %}
+                            <form action="{% url 'raykomfi:post-reply' post_id=post.id comment_id=comment.id  %}"
+                                method='post'>
+                                {% csrf_token %}
+                                {{ reply_form }}
+                                <div class="col s12">
+                                    <button type='submit' class='w3-button w3-round-large'> اضافة رد</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="w3-col s2 m1 l1 w3-center vote-side">
+                        <div>
+                            <form action="" method="post">
+                                <input type="hidden" name="vote" id="" value="like">
+                                <span onclick="alert(0)"><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
+                            </form>
+                        </div>
+                        <div>7</div>
+                        <form action="" method="post">
+                            <input type="hidden" name="vote" id="" value="like">
+                            <span onclick="alert(0)"><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>لا يوجد رأي حتى الان, كن أول شخص يعطي رأيه</p>
+                {% endif %}
+            </div>
+            <div class="w3-mobile w3-container comment-button">
+                <h3>اضافة تعليق</h3>
+                <form action="{% url 'raykomfi:post-comment' post_id=post.id %}" method='post'>
                     {% csrf_token %}
-                    {{ reply_form }}
+                    {{ comment_form }}
                     <div class="col s12">
-                        <button type='submit' class='btn blue darken-1'> اضافة رد</button>
+                        <button type='submit' class='w3-button w3-round-large'> اضافة تعليق</button>
                     </div>
                 </form>
             </div>
-            {% endfor %}
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="reply-box">
-        <form action="{% url 'raykomfi:post-comment' post_id=post.id %}" method='post'>
-            {% csrf_token %}
-            {{ comment_form }}
-            <div class="col s12">
-                <button type='submit' class='btn blue darken-1'> اضافة تعليق</button>
-            </div>
-        </form>
-    </div>
-</div> -->
-
-
-
-
 
 {% endblock content %}
