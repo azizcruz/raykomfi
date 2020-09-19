@@ -51,6 +51,15 @@
                     الأحدث</button>
             </div>
         </div>
+        <div class="create-new-post">
+
+        </div>
+        <a href="{% url 'raykomfi:post-new' %}" title="اضافة منشور جديد">
+            <div class="new-post-side">
+                <button class="w3-button w3-center"><i class="fa fa-plus" aria-hidden="true"></i>
+                </button>
+            </div>
+        </a>
         {% for post in posts %}
         <a href="{{post.get_absolute_url}}">
             <div class="w3-padding w3-border ray-box w3-round-large">
@@ -84,90 +93,5 @@
     </div>
     <div class="w3-col l1 w3-hide-small w3-hide-medium">&nbsp</div>
 </div>
-
-<!-- <div class="row">
-    <div class="hide-on-small-only col m12 l4">
-        <div class="">
-            <section class="latest-opinions-wrapper z-depth-3  white">
-                <h4 class="center rm-mr mb-10">اخر الآراء</h4>
-                <a href="#">
-                    <div class="opinion hoverable">
-                        <h6 class="blue-text darken-1"><i class="fa fa-user" aria-hidden="true"></i>
-                            فهد حامد</h6>
-                        <p>حسب راي انه جيد</p>
-                        <span class="reply-to"> <span class="red lighten-1 white-text ml-5 p-2"><i class="fa fa-reply"
-                                    aria-hidden="true"></i>
-                                رد على </span> رايكم في
-                            جهاز
-                            هواواي</span>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="opinion hoverable">
-                        <h6 class="blue-text darken-1">سمير</h6>
-                        <p>ممتاز كما توقعت يمكنك ارساله لي في اقرب وقت</p>
-                        <span class="reply-to"> <span class="red lighten-1 white-text ml-5 p-2">رد على </span> رايكم في
-                            تصميم اجهزة سامسونج</span>
-                    </div>
-                </a>
-            </section>
-        </div>
-    </div>
-    <div class="col s12 l8">
-        <a href="#">
-            <div class="row">
-                <div class="col s12">
-                    <div class="d-flex">
-                        <a href="/post/new" class="btn-floating btn-large waves-effect waves-light blue darken-1 white-text
-                            new-post-icon hoverable" title="استفسر عن شيء"><i class="material-icons">add</i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        {% if posts %}
-        {% for post in posts %}
-        <a href="/post/details/{{post.id}}/{{post.slug}}">
-            <div class="row">
-                <div class="col s12">
-                    <div class="card hoverable z-depth-5">
-                        <div class="card-content home-cards">
-                            <span class="card-title black-text">
-                                <span class="card-user-section">
-                                    <i class="fa fa-user" aria-hidden="true"></i>
-                                    {{post.creator}}
-                                </span>
-                            </span>
-                            <h4>{{post.title |truncatechars:100}}</h4>
-                        </div>
-                        {% if post.image %}
-                        <div class="post-image-section center">
-                            {% thumbnail post.image "250x250" crop="center" as im %}
-                            <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
-                                class="responsive-img" />
-                            {% endthumbnail %}
-                        </div>
-                        {% endif %}
-                        {% if user.id == post.creator.id %}
-                        <a href="{% url 'raykomfi:post-edit' id=post.id slug=post.slug %}"
-                            class="btn blue darken-1 edit-post-btn">تعديل</a>
-                        {% endif %}
-                        <div class="card-action d-flex split-items blue darken-1">
-                            <span class="white-text">15<i class="fa fa-comments-o" aria-hidden="true"></i></span>
-                            <span class="white-text">{{post.category}} <i class="fa fa-tag"
-                                    aria-hidden="true"></i></span>
-                            <span class="white-text">{{post.created | naturaltime}}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        {% endfor %}
-        {% else %}
-        <div class="center">لا يوجد منشورات </div>
-        {% endif %}
-    </div>
-</div> -->
 
 {% endblock content %}

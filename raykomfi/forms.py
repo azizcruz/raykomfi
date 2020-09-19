@@ -13,24 +13,18 @@ from materializecssform.templatetags import materializecss
 
 
 class SignupForm(UserCreationForm):
-    username = forms.CharField(label='', widget=forms.TextInput(
-        attrs={'placeholder': 'اسم المستخدم'}))
-    first_name = forms.CharField(label='', required=False, widget=forms.TextInput(
-        attrs={'placeholder': 'الاسم الاول'}))
-    last_name = forms.CharField(label='', required=False, widget=forms.TextInput(
-        attrs={'placeholder': 'الاسم الاخير'}))
-    country = forms.CharField(label='', required=False, widget=forms.TextInput(
-        attrs={'placeholder': 'الدولة'}))
-    bio = forms.CharField(label='', required=False, max_length=144, help_text='مسموح فقط 144 حرف', widget=forms.Textarea(
-        attrs={'placeholder': 'نبذة عنك'}))
-    email = forms.CharField(label='', validators=[validate_email], widget=forms.TextInput(
-        attrs={'placeholder': 'ايميل'}), error_messages={
+    username = forms.CharField(widget=forms.TextInput())
+    first_name = forms.CharField(required=False, widget=forms.TextInput())
+    last_name = forms.CharField(required=False, widget=forms.TextInput())
+    country = forms.CharField(required=False,
+                              widget=forms.TextInput())
+    bio = forms.CharField(required=False, max_length=144,
+                          widget=forms.Textarea())
+    email = forms.CharField(label='', validators=[validate_email], widget=forms.TextInput(), error_messages={
         'unique': _("الايميل موجود مسبقا")
     })
-    password1 = forms.CharField(label='', widget=forms.PasswordInput(
-        {'placeholder': 'كلمة المرور'}))
-    password2 = forms.CharField(label='', widget=forms.PasswordInput(
-        {'placeholder': 'تأكيد كلمة المرور'}))
+    password1 = forms.CharField(label='', widget=forms.PasswordInput())
+    password2 = forms.CharField(label='', widget=forms.PasswordInput())
 
     class Meta:
         model = User
@@ -40,34 +34,43 @@ class SignupForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(SignupForm, self).__init__(*args, **kwargs)
 
-        for fieldname in ['username', 'first_name', 'last_name', 'country', 'bio', 'email']:
+        for fieldname in ['username', 'first_name', 'last_name', 'country', 'bio', 'email', 'password1', 'password2']:
             if fieldname == 'username':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'اسم المستخدم'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs.pop("autofocus", None)
             if fieldname == 'first_name':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'الاسم الاول'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
             if fieldname == 'last_name':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'الاسم الأخير'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
             if fieldname == 'country':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'الدولة'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
             if fieldname == 'email':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'الايميل'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
             if fieldname == 'bio':
-                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].widget.attrs['placeholder'] = 'مسموح فقط 144 حرف'
                 self.fields[fieldname].label = 'نبذة عنك'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+            if fieldname == 'password1':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'كلمة المرور'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+            if fieldname == 'password2':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'تأكيد كلمة المرور'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
 
 
-class ProfileForm(forms.Form):
+class ProfileForm(forms.ModelForm):
     username = forms.CharField(label='', widget=forms.TextInput())
     first_name = forms.CharField(
         label='', required=False, widget=forms.TextInput())
@@ -113,20 +116,31 @@ class ProfileForm(forms.Form):
                 self.fields[fieldname].label = 'الايميل'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
             if fieldname == 'bio':
-                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].widget.attrs['placeholder'] = 'مسموح فقط 144 حرف'
                 self.fields[fieldname].label = 'نبذة عنك'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
 
 
 class SigninForm(forms.Form):
-    username = forms.CharField(label='', widget=forms.TextInput(
-        attrs={'placeholder': 'اسم المستخدم'}))
-    password = forms.CharField(label='', widget=forms.PasswordInput(
-        {'placeholder': 'كلمة المرور'}))
+    username = forms.CharField(widget=forms.TextInput())
+    password = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
         model = User
         fields = ('username', 'password',)
+
+    def __init__(self, *args, **kwargs):
+        super(SigninForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['username', 'password']:
+            if fieldname == 'username':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'اسم المستخدم'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+            if fieldname == 'password':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'كلمة المرور'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
 
 
 class CustomPasswordResetForm(PasswordResetForm):
@@ -134,10 +148,10 @@ class CustomPasswordResetForm(PasswordResetForm):
         super(CustomPasswordResetForm, self).__init__(*args, **kwargs)
 
         for fieldname in ['email']:
-
             if fieldname == 'email':
-                self.fields[fieldname].widget.attrs['placeholder'] = 'بريد الكتروني'
-                self.fields[fieldname].label = ''
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].label = 'بريد الكتروني'
 
 
 class NewPostForm(forms.ModelForm):
@@ -152,31 +166,33 @@ class NewPostForm(forms.ModelForm):
         for fieldname in ['category', 'title', 'content', 'image']:
 
             if fieldname == 'category':
-                self.fields[fieldname].widget.attrs['placeholder'] = 'تصنيف الموضوع'
-                self.fields[fieldname].label = ''
-                self.fields[fieldname].empty_label = 'تصنيف الموضوع'
+                self.fields[fieldname].label = 'تصنيف الموضوع'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-select w3-border  w3-round-large'
             if fieldname == 'title':
-                self.fields[fieldname].widget.attrs['placeholder'] = 'عنوان الموضوع'
-                self.fields[fieldname].label = ''
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].label = 'عنوان الموضوع'
             if fieldname == 'content':
                 self.fields[fieldname].widget.attrs['placeholder'] = 'نبذة عن الموضوع'
-                self.fields[fieldname].label = ''
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].label = 'نبذة عن الموضوع'
             if fieldname == 'image':
-                self.fields[fieldname].widget.attrs['placeholder'] = 'صورة'
+                self.fields[fieldname].label = 'صورة'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
 
     def clean_image(self):
         image = self.cleaned_data.get('image')
         ALLOWED_EXT = ['jpg', 'png', 'jpeg']
-        filesize = image.size
-        extension = image.name.split('.')[1].lower()
+        if image:
+            filesize = image.size
+            extension = image.name.split('.')[1].lower()
 
-        if filesize > 10485760:  # 10MB
-            raise forms.ValidationError(
-                "حجم الصورة يجب ان يكون اصغر من 10 ميغابايت")
+            if filesize > 10485760:  # 10MB
+                raise forms.ValidationError(
+                    "حجم الصورة يجب ان يكون اصغر من 10 ميغابايت")
 
-        if extension not in ALLOWED_EXT:
-            raise forms.ValidationError(
-                "ملف الصورة تالف أو نوع الملف ليس صورة")
+            if extension not in ALLOWED_EXT:
+                raise forms.ValidationError(
+                    "ملف الصورة تالف أو نوع الملف ليس صورة")
 
         return image
 
@@ -189,14 +205,17 @@ class CustomChangePasswordForm(PasswordChangeForm):
         for fieldname in ['old_password', 'new_password1', 'new_password2']:
 
             if fieldname == 'old_password':
-                self.fields[fieldname].widget.attrs['placeholder'] = 'كلمة المرور الحالية'
-                self.fields[fieldname].label = ''
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].label = 'كلمة المرور الحالية'
             if fieldname == 'new_password1':
-                self.fields[fieldname].widget.attrs['placeholder'] = 'كلمة المرور الجديدة'
-                self.fields[fieldname].label = ''
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].label = 'كلمة المرور الجديدة'
             if fieldname == 'new_password2':
-                self.fields[fieldname].widget.attrs['placeholder'] = 'تأكيد كلمة الجديدة'
-                self.fields[fieldname].label = ''
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].label = 'تأكيد كلمة الجديدة'
 
 
 class CommentForm(forms.ModelForm):

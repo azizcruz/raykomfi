@@ -1,17 +1,17 @@
 {% extends "base.html" %}
-{% load materializecss %}
 
 {% block content %}
 
 <div class="row">
-    <h3 class="center">موضوع جديد</h3>
-    <form action="{% url 'raykomfi:post-new' %}" enctype="multipart/form-data" method='post'>
-        {% csrf_token %}
-        {{ form|materializecss }}
-        <div class="col s12">
-            <button type='submit' class='btn blue darken-1'>تأكيد</button>
-        </div>
-    </form>
+    <div class="w3-col s12 m6 l6">&nbsp;</div>
+    <div class="w3-col s12 m6 l6">
+        <h3 class="w3-center">موضوع جديد</h3>
+        <form action="{% url 'raykomfi:post-new' %}" enctype="multipart/form-data" method='post'>
+            {% csrf_token %}
+            {{ form }}
+            <button class="w3-button raykomfi-button w3-round-large">تأكيد</button>
+        </form>
+    </div>
 </div>
 
 

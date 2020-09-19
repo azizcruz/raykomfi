@@ -1,18 +1,20 @@
 {% extends "base.html" %}
-{% load materializecss %}
 
 {% block content %}
 
 <div class="row">
-    <h3 class="center">تسجيل الدخول</h3>
-    <form action="{% url 'raykomfi:user-signin' %}" method='post'>
-        {% csrf_token %}
-        {{ form|materializecss }}
-        <div class="col s12">
-            <p><a href="{% url 'raykomfi:user-forgot-password' %}" class="blue-text darken-1">نسيت كلمة المرور؟</a></p>
-            <button type='submit' class='btn blue darken-1'>تسجيل دخول</button>
-        </div>
-    </form>
+    <div class="w3-col s12 m6 l6">&nbsp;</div>
+    <div class="w3-col s12 m6 l6">
+        <h3 class="w3-center ">تسجيل الدخول</h3>
+        <form action="{% url 'raykomfi:user-signin' %}" method='post'>
+            {% csrf_token %}
+            {{ form }}
+            <div class="col s12">
+                <p><a href="{% url 'raykomfi:user-forgot-password' %}" class="w3-text-blue">نسيت كلمة المرور؟</a></p>
+                <button class="w3-button raykomfi-button w3-round-large">تسجيل دخول</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 

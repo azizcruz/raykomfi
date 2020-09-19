@@ -34,7 +34,8 @@ def index(request):
 @login_required
 def profile_view(request, id):
     if request.method == 'POST':
-        form = ProfileForm(request.POST, use_required_attribute=False)
+        form = ProfileForm(request.POST or None,
+                           instance=request.user, use_required_attribute=False)
         if form.is_valid():
             request.user.username = form.cleaned_data['username']
             request.user.first_name = form.cleaned_data['first_name']
@@ -49,15 +50,7 @@ def profile_view(request, id):
         else:
             return render(request, 'user/profile.html', context={'form': form})
     else:
-        user_data = {
-            'username': request.user.username,
-            'first_name': request.user.first_name,
-            'last_name': request.user.last_name,
-            'email': request.user.email,
-            'bio': request.user.bio,
-            'country': request.user.country
-        }
-        form = ProfileForm(user_data, use_required_attribute=False)
+        form = ProfileForm(instance=request.user, use_required_attribute=False)
         return render(request, 'user/profile.html', {'form': form})
 
 

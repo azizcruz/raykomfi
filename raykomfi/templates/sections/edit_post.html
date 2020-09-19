@@ -1,22 +1,17 @@
 {% extends "base.html" %}
-{% load materializecss %}
-
 {% block content %}
 
-<div class="row">
-    <form class="col s12" action="{% url 'raykomfi:post-edit' id=post.id slug=post.slug %}"
-        enctype="multipart/form-data" method="POST">
-        <h1 class="center">تعديل موضوع</h1>
-        {% csrf_token %}
-        {% for field in form %}
-        {% if field.name != 'image' %}
-        {{ field|materializecss }}
-        {% else %}
-        {{field|materializecss}}
-        {% endif %}
-        {% endfor %}
-        <button type="submit" class="btn btn blue white-text darken-1">تعديل</button>
-    </form>
+<div class="w3-row">
+    <div class="w3-col s12 m6 l6">&nbsp;</div>
+    <div class="w3-col s12 m6 l6">
+        <form action="{% url 'raykomfi:post-edit' id=post.id slug=post.slug %}" enctype="multipart/form-data"
+            method="POST">
+            <h1 class="w3-center">تعديل موضوع</h1>
+            {% csrf_token %}
+            {{form}}
+            <button class="w3-button raykomfi-button w3-round-large">تعديل</button>
+        </form>
+    </div>
 </div>
 
 

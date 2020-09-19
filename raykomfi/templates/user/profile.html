@@ -8,6 +8,12 @@
             <i class="fa fa-user-circle-o large-font profile-icon" aria-hidden="true"></i>
             <h1 class="w3-xxxlarge">{{user.username}}</h1>
             <h3 class="w3-xlarge">الرمز {{ user.uuid }}</h3>
+            <a href="{% url 'raykomfi:user-change-password' %}" class="w3-button raykomfi-button"> تغيير
+                كلمة
+                المرور</a>
+            <a href="{% url 'raykomfi:user-change-password' %}"
+                class="w3-button raykomfi-button raykomfi-button-no-hover w3-red">
+                حذف الحساب</a>
         </div>
     </div>
     <div class="w3-col s12 m6 l6">

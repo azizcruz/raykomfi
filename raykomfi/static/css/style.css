@@ -118,8 +118,51 @@ a {
   color: #FFF !important;
 }
 
+.raykomfi-button-no-hover.w3-red:hover {
+  background-color: #f44336 !important;
+  color: #FFF !important;
+
+}
+
 .large-font {
   font-size: 300px;
+}
+
+.errorlist {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 10px;
+  background-color: #ffdddd !important;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.helptext ul {
+  background-color: #ddffdd !important;
+  border: 1px solid #EEE color #000 !important;
+  border-radius: 8px;
+}
+
+.errorlist li {
+  list-style-type: none;
+  color: #000;
+  padding-right: 5px;
+}
+
+.errorlist li::after {
+  font-family: FontAwesome;
+  font-weight: 500;
+  content: "\f063";
+  padding-right: 5px;
+  font-size: 12px;
+
+}
+
+textarea:focus,
+input:focus,
+select:focus {
+  outline: none;
+  border: 2px solid #2980b9 !important;
 }
 
 /* Main Style */
@@ -145,6 +188,31 @@ a {
 .ray-order .w3-button:hover {
   color: #FFF !important;
   background-color: #2c3e50 !important;
+}
+
+.new-post-side {
+  text-align: center;
+  margin-bottom: 10px;
+  border: 3px dashed #d6efff;
+  padding: 10px;
+}
+
+.new-post-side button {
+  width: 50px;
+  height: 50px;
+  line-height: 36px;
+  border-radius: 50%;
+  background-color: #2980b9;
+  color: #fff;
+}
+
+.new-post-side:hover button {
+  background-color: #1e618e !important;
+  color: #FFF !important;
+}
+
+.new-post-side:hover {
+  background-color: #d6efff !important;
 }
 
 /* Home Style */
