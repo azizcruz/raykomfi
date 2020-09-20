@@ -12,7 +12,7 @@ from .models import User, Post, Comment, Reply, Message
 from django.core.mail import EmailMessage
 from django.contrib import messages
 from django.db.utils import IntegrityError
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse
 from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render, redirect
@@ -75,6 +75,10 @@ def sign_in_view(request):
         if request.user.is_anonymous and 'next' in request.GET:
             messages.success(
                 request, 'يجب عليك تسجيل الدخول اولا', extra_tags='pale-yellow w3-border')
+        if request.user.is_authenticated:
+            messages.success(
+                request, 'أنت مسجل الدخول بالفعل', extra_tags='pale-green w3-border')
+            return redirect('/')
         form = SigninForm(use_required_attribute=False)
         return render(request, 'user/signin.html', context={'form': form})
 
@@ -258,8 +262,11 @@ def activate(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
+        logout(request)
         messages.success(
             request, 'تم تفعيل حسابك, يمكنك الان استخدام الموقع', extra_tags='pale-green w3-border')
         return redirect('raykomfi:user-signin')
     else:
         return render(request, 'user/activate_fail.html')
+
+# def post_vote():

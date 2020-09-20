@@ -3,11 +3,14 @@
 {% block content %}
 
 <div class="row">
-    <ul class="collection custom-collection">
-        <li class="collection-item red white-text">رابط التفعيل منتهي الصلاحية, اضغط لطلب رابط تفعيل جديد</li>
-    </ul>
-    <div class="center">
-        <a href="{% url 'raykomfi:user-signin' %}" class="btn blue darken-1">طلب</a>
+    <div class="w3-col s12 m6 l6">&nbsp;</div>
+    <div class="w3-col s12 m6 l6">
+        <p class="w3-center">رابط التفعيل منتهي الصلاحية, اضغط لطلب رابط تفعيل جديد</p>
+        <form action="{% url 'raykomfi:user-change-password' %}" method='post'>
+            {% csrf_token %}
+            <input type="email" name="email" class="w3-input w3-border w3-round-large" value="{{user.email}}" disabled>
+            <button class="w3-button raykomfi-button w3-round-center">طلب مرة أخرى </button>
+        </form>
     </div>
 </div>
 

@@ -22,6 +22,8 @@ class User(AbstractUser):
     bio = models.TextField(blank=True, verbose_name='نبذة عن',)
     country = models.CharField(max_length=255, verbose_name='الدولة',)
     isBlocked = models.BooleanField(default=False, verbose_name='محظور؟',)
+    email_active = models.BooleanField(
+        default=False, verbose_name='ايميل مفعل')
     email = models.EmailField(unique=True, verbose_name='ايميل',)
 
 

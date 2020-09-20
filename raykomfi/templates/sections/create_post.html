@@ -4,6 +4,7 @@
 
 <div class="row">
     <div class="w3-col s12 m6 l6">&nbsp;</div>
+    {% if user.email_active %}
     <div class="w3-col s12 m6 l6">
         <h3 class="w3-center">موضوع جديد</h3>
         <form action="{% url 'raykomfi:post-new' %}" enctype="multipart/form-data" method='post'>
@@ -12,7 +13,13 @@
             <button class="w3-button raykomfi-button w3-round-large">تأكيد</button>
         </form>
     </div>
+
+    {% else %}
+    <div class="w3-display-container w3-panel w3-pale-yellow w3-border w3-border message-wrapper">
+        <p class="">يرجى تفعيل الايميل أولا</p>
+    </div>
 </div>
+{% endif %}
 
 
 {% endblock content %}
