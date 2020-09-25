@@ -34,8 +34,18 @@
             <div class="w3-mobile w3-container">
                 {% if post.image %}
                 {% thumbnail post.image "200x200" crop="center" as im %}
-                <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
-                    alt="{{post.slug}}" />
+                <!-- Trigger the Modal -->
+                <img id="myImg" src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}">
+
+                <!-- The Modal -->
+                <div id="myModal" class="modal">
+
+                    <!-- Modal Content (The Image) -->
+                    <img class="modal-content" id="modalImage">
+
+                    <!-- Modal Caption (Image Text) -->
+                    <div id="caption"></div>
+                </div>
                 {% endthumbnail %}
                 {% endif %}
             </div>
@@ -72,6 +82,7 @@
                             </div>
                             <hr>
                             {% endfor %}
+                            {% if user.email_active %}
                             <form action="{% url 'raykomfi:post-reply' post_id=post.id comment_id=comment.id  %}"
                                 method='post'>
                                 {% csrf_token %}
@@ -80,20 +91,25 @@
                                     <button type='submit' class='w3-button w3-round-large'> اضافة رد</button>
                                 </div>
                             </form>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="w3-col s2 m1 l1 w3-center vote-side">
                         <div>
                             <form action="" method="post">
                                 <input type="hidden" name="vote" id="" value="like">
-                                <span onclick="alert(0)"><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
+                                <span onclick="alert(0)"><i class="fa fa-thumbs-up w3-large"
+                                        aria-hidden="true"></i></span>
                             </form>
                         </div>
                         <div>{{comment.votes}}</div>
-                        <form action="" method="post">
-                            <input type="hidden" name="vote" id="" value="like">
-                            <span onclick="alert(0)"><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
-                        </form>
+                        <div>
+                            <form action="" method="post">
+                                <input type="hidden" name="vote" id="" value="dislike">
+                                <span onclick="alert(0)"><i class="fa fa-thumbs-down w3-large"
+                                        aria-hidden="true"></i></span>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
@@ -103,6 +119,7 @@
             </div>
             <div class="w3-mobile w3-container comment-button">
                 <h3>اضافة تعليق</h3>
+                {% if user.email_active %}
                 <form action="{% url 'raykomfi:post-comment' post_id=post.id %}" method='post'>
                     {% csrf_token %}
                     {{ comment_form }}
@@ -110,6 +127,11 @@
                         <button type='submit' class='w3-button w3-round-large'> اضافة تعليق</button>
                     </div>
                 </form>
+                {% else %}
+                <div class="w3-display-container w3-panel w3-border message-wrapper w3-pale-yellow">
+                    <p class="w3-center">فعل حسابك للمشاركة في التعليقات</p>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>

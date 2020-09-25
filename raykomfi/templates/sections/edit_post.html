@@ -3,7 +3,6 @@
 
 <div class="w3-row">
     <div class="w3-col s12 m6 l6">&nbsp;</div>
-    {% if user.email_active %}
     <div class="w3-col s12 m6 l6">
         <form action="{% url 'raykomfi:post-edit' id=post.id slug=post.slug %}" enctype="multipart/form-data"
             method="POST">
@@ -13,13 +12,7 @@
             <button class="w3-button raykomfi-button w3-round-large">تعديل</button>
         </form>
     </div>
-    {% else %}
-    <div class="w3-display-container w3-panel w3-panel w3-border message-wrapper">
-        <span onclick="this.parentElement.style.display='none'" class="w3-button w3-display-topleft">&times;</span>
-        <p class="w3-center">يرجى تفعيل الايميل أولا</p>
-    </div>
 </div>
-{% endif %}
 </div>
 
 

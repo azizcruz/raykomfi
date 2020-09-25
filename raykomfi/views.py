@@ -50,8 +50,13 @@ def profile_view(request, id):
         else:
             return render(request, 'user/profile.html', context={'form': form})
     else:
-        form = ProfileForm(instance=request.user, use_required_attribute=False)
-        return render(request, 'user/profile.html', {'form': form})
+        if request.user.id != id:
+            profile = get_object_or_404(User, id=id)
+            return render(request, 'user/profile.html', {'profile': profile})
+        else:
+            form = ProfileForm(instance=request.user,
+                               use_required_attribute=False)
+            return render(request, 'user/profile.html', {'form': form})
 
 
 def sign_in_view(request):
@@ -96,7 +101,6 @@ def sign_up_view(request):
 
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_active = False
             user.save()
             current_site = get_current_site(request)
             mail_subject = 'تفعيل حسابك على رايكم في'
@@ -209,6 +213,18 @@ def forgot_password_view(request):
         return render(request, 'user/forgot_password.html', context={'form': form})
 
 
+def messages_view(request, user_id):
+    if request.method == 'POST':
+        form = ''
+        if form.is_valid():
+            pass
+        else:
+            return render(request, 'sections/messages.html', context={'form': form})
+    else:
+        user_messages = Message.objects.filter(receiver__exact=user_id)
+        return render(request, 'sections/messages.html', {'user_messages': user_messages})
+
+
 @login_required
 def add_comment(request, post_id):
     comment_form = CommentForm(request.POST or None)
@@ -260,7 +276,7 @@ def activate(request, uidb64, token):
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
     if user is not None and default_token_generator.check_token(user, token):
-        user.is_active = True
+        user.email_active = True
         user.save()
         logout(request)
         messages.success(

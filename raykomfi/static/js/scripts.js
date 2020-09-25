@@ -36,3 +36,31 @@ function myAccordion(id) {
             x.previousElementSibling.className.replace(" raykomfi-theme", "");
     }
 }
+
+var modal = document.getElementById("myModal");
+
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+var img = document.getElementById("myImg");
+var modalImg = document.getElementById("modalImage");
+var captionText = document.getElementById("caption");
+img.onclick = function () {
+    modal.style.display = "block";
+    modalImg.src = this.src;
+    captionText.innerHTML = this.alt;
+}
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on anywhere except the image, close the modal
+$(document).on('click', function (event) {
+    if (!$(event.target).closest('#myImg').length) {
+        // ... clicked on the 'body', but not inside of #menutop
+        modal.style.display = "none";
+    }
+});
+
+// When you click everywhere the image module close except when you click on the image
+$('#modalImage').on('click', function (event) {
+    event.stopPropagation();
+});

@@ -17,7 +17,7 @@
 
 <body>
 
-    <nav class="w3-sidebar w3-bar-block w3-collapse w3-animate-right w3-card" id="mySidebar">
+    <nav class="w3-sidebar w3-bar-block w3-collapse w3-card" id="mySidebar">
         <a class="w3-bar-item w3-large" href="#">
             <a class="w3-bar-item w3-button w3-hide-large w3-large" href="javascript:void(0)" onclick="w3_close()">اغلاق
                 <i class="fa fa-remove"></i></a>
@@ -34,8 +34,8 @@
                 <div id="demo" class="w3-hide">
                     <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-profile' id=user.id %}">الصفحة
                         الشخصية&nbsp;<i class="fa fa-user-circle" aria-hidden="true"></i></a>
-                    <a class="w3-bar-item w3-button" href="#">الرسائل &nbsp;<i class="fa fa-envelope-o"
-                            aria-hidden="true"></i></a>
+                    <a class="w3-bar-item w3-button" href="{% url 'raykomfi:messages' user_id=user.id %}">الرسائل
+                        &nbsp;<i class="fa fa-envelope-o" aria-hidden="true"></i></a>
                     <hr>
                     <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-signout' %}">تسجيل خروج &nbsp;<i
                             class="fa fa-sign-out" aria-hidden="true"></i></a>
@@ -87,7 +87,7 @@
 
     </div>
 
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
 </body>
 

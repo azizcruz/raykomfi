@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="w3-row-padding">
+    {% if user.email_active %}
+    <div class="w3-col s12 m2 l2 w3-hide-medium w3-hide-small">
+        &nbsp;
+    </div>
+    <div class="w3-col s12 m12 l4">
+        <div class="w3-border w3-padding message-view">
+            <h3 class="w3-center">عرض الرسالة</h3>
+        </div>
+    </div>
+    <div class="w3-col s12 m12 l6">
+        <!-- <h3 class="w3-center">الرسائل</h3> -->
+        <!-- <p>رسالة جديدة</p> -->
+        <!-- <form action="" enctype="multipart/form-data" method='post'>
+            {% csrf_token %}
+            {{ form }}
+            <button class="w3-button raykomfi-button w3-round-large">تأكيد</button>
+        </form> -->
+        <h3>الرسائل الواردة</h3>
+        <div class="incoming-messages-wrapper">
+            {% if user_messages %}
+            {% for message in user_messages %}
+            <form action="url 'raykomfi:messages' user_id=user.id" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="message_id">
+                <button type="submit"
+                    class="w3-card w3-padding message-button w3-round-large {{ message.is_read|yesno:'opened, ' }}">
+                    {% if message.is_read %}
+                    <i class="fa fa-envelope-open w3-left" aria-hidden="true"></i>
+                    {% else %}
+                    <i class="fa fa-envelope w3-left" aria-hidden="true"></i>
+                    {% endif %}
+                    <div class="w3-right w3-xlarge">{{ message.title }}</div>
+                    <div class="clear-fix"></div>
+                </button>
+            </form>
+            {% endfor %}
+            {%  else %}
+            <p class="w3-center">لا يوجد لديك أي رسائل واردة</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {% else %}
+    <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
+        <p class="w3-center">فعل حسابك لفتح الرسائل</p>
+    </div>
+</div>
+{% endif %}
+
+
+{% endblock content %}

@@ -54,40 +54,49 @@
         <div class="create-new-post">
 
         </div>
+        {% if user.email_active %}
         <a href="{% url 'raykomfi:post-new' %}" title="اضافة منشور جديد">
             <div class="new-post-side">
                 <button class="w3-button w3-center"><i class="fa fa-plus" aria-hidden="true"></i>
                 </button>
             </div>
         </a>
+        {% else %}
+        <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
+            <p class="w3-center">فعل حسابك للإستفسار الناس عن ما تريد الشراء</p>
+        </div>
+        {% endif %}
         {% for post in posts %}
-        <a href="{{post.get_absolute_url}}">
-            <div class="w3-padding w3-border ray-box w3-round-large">
-                <div>
-                    <span><i class="fa fa-user" aria-hidden="true"></i> {{post.creator}}</span>
-                    <h4>{{post.title |truncatechars:100}}</h4>
-                    {% if post.image %}
-                    <div class="ray-image-section">
-                        {% thumbnail post.image "100x100" crop="center" as im %}
-                        <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
-                            alt="{{post.slug}}" />
-                        {% endthumbnail %}
+        <div class="w3-padding w3-border ray-box w3-round-large">
+            <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
+                <span class="poster-name">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    {{post.creator}}
+                </span>
+            </a>
+            <a href="{{post.get_absolute_url}}">
+                <h4>{{post.title |truncatechars:100}}</h4>
+                {% if post.image %}
+                <div class="ray-image-section">
+                    {% thumbnail post.image "100x100" crop="center" as im %}
+                    <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
+                        alt="{{post.slug}}" />
+                    {% endthumbnail %}
+                </div>
+                {% endif %}
+                <div class="w3-row">
+                    <div class="w3-third ray-box-footer-icon">
+                        <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.created | naturaltime}}</span>
                     </div>
-                    {% endif %}
-                    <div class="w3-row">
-                        <div class="w3-third ray-box-footer-icon">
-                            <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.created | naturaltime}}</span>
-                        </div>
-                        <div class="w3-third ray-box-footer-icon">
-                            <span><i class="fa fa-comments" aria-hidden="true"></i> {{post.comments.count}}</span>
-                        </div>
-                        <div class="w3-third ray-box-footer-icon">
-                            <span><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</span>
-                        </div>
+                    <div class="w3-third ray-box-footer-icon">
+                        <span><i class="fa fa-comments" aria-hidden="true"></i> {{post.comments.count}}</span>
+                    </div>
+                    <div class="w3-third ray-box-footer-icon">
+                        <span><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</span>
                     </div>
                 </div>
-            </div>
-        </a>
+            </a>
+        </div>
         <hr>
         {% endfor %}
     </div>
