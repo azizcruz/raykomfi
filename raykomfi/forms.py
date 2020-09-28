@@ -251,3 +251,23 @@ class ReplyForm(forms.ModelForm):
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
                 self.fields[fieldname].label = ''
                 self.fields[fieldname].required = True
+
+class MessageForm(forms.ModelForm):
+
+    class Meta:
+        model = Message
+        fields = ('title', 'content')
+
+    def __init__(self, *args, **kwargs):
+        super(MessageForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['title','content']:
+            if fieldname == 'title':
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].required = True
+            if fieldname == 'content':
+                self.fields[fieldname].widget.attrs['rows'] = 3
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].required = True

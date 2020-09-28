@@ -68,12 +68,19 @@
         {% endif %}
         {% for post in posts %}
         <div class="w3-padding w3-border ray-box w3-round-large">
+            {% if post.creator %}
             <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
                 <span class="poster-name">
                     <i class="fa fa-user" aria-hidden="true"></i>
                     {{post.creator}}
                 </span>
             </a>
+            {% else %}
+            <span class="poster-name">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    عضو لم يعد مسجل
+                </span>
+            {% endif %}
             <a href="{{post.get_absolute_url}}">
                 <h4>{{post.title |truncatechars:100}}</h4>
                 {% if post.image %}

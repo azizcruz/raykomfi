@@ -35,7 +35,11 @@
                     <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-profile' id=user.id %}">الصفحة
                         الشخصية&nbsp;<i class="fa fa-user-circle" aria-hidden="true"></i></a>
                     <a class="w3-bar-item w3-button" href="{% url 'raykomfi:messages' user_id=user.id %}">الرسائل
-                        &nbsp;<i class="fa fa-envelope-o" aria-hidden="true"></i></a>
+                    {% if not_opened_messages.count > 0 %}
+                    <i class="fa fa-circle fa-align-center notification-dot" aria-hidden="true"></i>
+                    {% endif %}    
+                    &nbsp;<i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        </a>
                     <hr>
                     <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-signout' %}">تسجيل خروج &nbsp;<i
                             class="fa fa-sign-out" aria-hidden="true"></i></a>

@@ -21,10 +21,19 @@
     <div class="w3-col s12 m8 l8">
         <div class="w3-row">
             <div class="w3-mobile w3-container">
+            {% if post.creator %}
+            <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}" class="writer-name">
                 <h2>
                     <i class="fa fa-user" aria-hidden="true"></i>
                     {{post.creator}}
                 </h2>
+                </a>
+                {% else %}
+                <h2>
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    عضو لم يعد مسجل
+                </h2>
+            {% endif %}
             </div>
             <div class="w3-mobile w3-container">
                 {% if post.content %}
@@ -62,9 +71,19 @@
                 <div class="w3-row comment-wrapper w3-border w3-padding w3-round-large">
                     <div class="w3-col s10 m11 l11">
                         <div class="comment-side">
-
-                            <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
-                                {{comment.user.username}}</div>
+                            {% if comment.user %}
+                            <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}" class="writer-name">
+                                <div class="name">
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                    {{comment.user.username}}
+                                </div>
+                                </a>
+                                {% else %}
+                                <div class="name">
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                    عضو لم يعد مسجل
+                                </div>
+                            {% endif %}
                             <small><i class="fa fa-clock-o" aria-hidden="true"></i>
                                 {{comment.created | naturaltime}}</small>
                             <div class="comment">{{ comment.content }}</div>
@@ -73,9 +92,17 @@
                         <div class="comment-reply-side w3-padding w3-round-large">
                             {% for reply in comment.replies.all %}
                             <div class="w3-panel">
+                            {% if reply.user %}
+                            <a href="{% url 'raykomfi:user-profile' id=reply.user.id %}" class="writer-name">
                                 <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
                                     {{reply.user.username}}
                                 </div>
+                                {% else %}
+                                 <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
+                                    عضو لم يعد مسجل
+                                </div>
+                                </a>
+                            {% endif %}
                                 <small><i class="fa fa-clock-o" aria-hidden="true"></i>
                                     {{reply.created | naturaltime}}</small>
                                 <div class="comment">{{ reply.content }}</div>

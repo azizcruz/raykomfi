@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
-from .forms import SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, CustomPasswordResetForm, CommentForm, ReplyForm, ProfileForm
+from .forms import SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, CustomPasswordResetForm, CommentForm, ReplyForm, ProfileForm, MessageForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -201,28 +201,38 @@ def change_password_view(request):
 
 
 def forgot_password_view(request):
-    if request.method == 'POST':
-        form = CustomPasswordResetForm(
-            request.POST, use_required_attribute=False)
-        if form.is_valid():
-            pass
-        else:
-            return render(request, 'user/forgot_password.html', context={'form': form})
-    else:
-        form = CustomPasswordResetForm(use_required_attribute=False)
-        return render(request, 'user/forgot_password.html', context={'form': form})
+    form = CustomPasswordResetForm(use_required_attribute=False)
+    return render(request, 'user/forgot_password.html', context={'form': form})
 
 
-def messages_view(request, user_id):
+def messages_view(request, user_id, message_id=0):
     if request.method == 'POST':
-        form = ''
-        if form.is_valid():
-            pass
-        else:
-            return render(request, 'sections/messages.html', context={'form': form})
+        message = get_object_or_404(Message, id=message_id)
+        message.is_read = True
+        message.save()
+        user_messages = Message.objects.filter(receiver__exact=user_id)
+        return render(request, 'sections/messages.html', {'user_messages': user_messages, 'fetched_message': message})
     else:
         user_messages = Message.objects.filter(receiver__exact=user_id)
         return render(request, 'sections/messages.html', {'user_messages': user_messages})
+        
+
+def new_message_view(request, code):
+    receiver = get_object_or_404(User, uuid=code)
+    if request.method == 'POST':
+        form = MessageForm(
+            request.POST, use_required_attribute=False)
+        if form.is_valid():
+            message = Message.objects.create(user=request.user, receiver=receiver, title=form.cleaned_data['title'], content=form.cleaned_data['content'])
+            messages.success(
+            request, f'تم إرسال الرسالة الى {receiver.username} بنجاح', extra_tags='pale-green w3-border')
+            return render(request, 'sections/home.html')
+        else:
+            return render(request, 'sections/new_message.html', context={'form': form, 'receiver': receiver})
+    else:
+        form = MessageForm(use_required_attribute=False)
+        return render(request, 'sections/new_message.html', context={'form': form, 'receiver': receiver})
+    
 
 
 @login_required

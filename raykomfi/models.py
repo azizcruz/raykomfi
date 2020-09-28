@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django import forms
 from sorl.thumbnail import ImageField
 from cloudinary.models import CloudinaryField
+from uuid import uuid4
 
 
 def slugify(str):
@@ -21,10 +22,11 @@ def slugify(str):
 class User(AbstractUser):
     bio = models.TextField(blank=True, verbose_name='نبذة عن',)
     country = models.CharField(max_length=255, verbose_name='الدولة',)
-    isBlocked = models.BooleanField(default=False, verbose_name='محظور؟',)
+    isBlocked = models.BooleanField(default=False, verbose_name='محظور؟')
+    uuid = models.UUIDField(default=uuid4, editable=False, verbose_name='رمز العضو', null=True)
     email_active = models.BooleanField(
         default=False, verbose_name='ايميل مفعل')
-    email = models.EmailField(unique=True, verbose_name='ايميل',)
+    email = models.EmailField(unique=True, verbose_name='بريد الإلكتروني',)
 
 
 class Category(models.Model):
@@ -52,9 +54,9 @@ class Category(models.Model):
 
 class Post(models.Model):
     creator = models.ForeignKey(
-        User, related_name='posts', verbose_name='صورة', on_delete=models.CASCADE, default=None,  null=True)
+        User, related_name='posts', verbose_name='الكاتب',  on_delete=models.SET_DEFAULT, default=None, null=True)
     category = models.ForeignKey(
-        Category, related_name='posts', verbose_name='التصنيف', null=True, on_delete=models.SET_NULL)
+        Category, verbose_name='التصنيف', null=True, on_delete=models.SET_DEFAULT, default=None)
     title = models.CharField(
         max_length=200, verbose_name='الموضوع', db_index=True)
     slug = models.CharField(
@@ -90,7 +92,7 @@ class Post(models.Model):
 class Comment(models.Model):
 
     user = models.ForeignKey(
-        User, related_name='comments', verbose_name='صاحب النعليق', on_delete=models.SET('مجهول'))
+        User, related_name='my_comments', verbose_name='صاحب النعليق', on_delete=models.SET_DEFAULT, default=None, null=True)
     post = models.ForeignKey(
         Post, related_name='comments', verbose_name='المنشور', on_delete=models.CASCADE)
     content = models.TextField(verbose_name='التعليق')
@@ -115,7 +117,7 @@ class Comment(models.Model):
 class Reply(models.Model):
 
     user = models.ForeignKey(
-        User, related_name='replies', verbose_name='صاحب الرد', on_delete=models.SET('مجهول'))
+        User, related_name='my_replies', verbose_name='صاحب النعليق', on_delete=models.SET_DEFAULT, default=None, null=True)
     comment = models.ForeignKey(
         Comment, related_name='replies', verbose_name='التعليق', on_delete=models.CASCADE)
     content = models.TextField()
@@ -136,11 +138,11 @@ class Reply(models.Model):
 
 class Message(models.Model):
 
-    sender = models.ForeignKey(
-        User, related_name='sent_messages', verbose_name='المرسل', on_delete=models.SET('مجهول'))
+    user = models.ForeignKey(
+        User, related_name='sent_messages', verbose_name='صاحب النعليق', on_delete=models.SET_DEFAULT, default=None, null=True)
     receiver = models.ForeignKey(
         User, related_name='my_messages', verbose_name='المستقبل', on_delete=models.CASCADE)
-    title = models.CharField(max_length=120, verbose_name='عنوان الرسالة')
+    title = models.CharField(max_length=120, verbose_name='عنوان الرسالة', null=True, default=None)
     content = models.TextField(verbose_name='محتوى الرسالة')
     is_read = models.BooleanField(default=False)
     created = models.DateTimeField(

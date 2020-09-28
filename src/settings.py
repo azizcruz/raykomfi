@@ -73,10 +73,15 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'raykomfi.context_processors.not_opened_messages',
             ],
         },
     },
 ]
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'raykomfi.context_processors.not_opened_messages',
+)
 
 WSGI_APPLICATION = 'src.wsgi.application'
 

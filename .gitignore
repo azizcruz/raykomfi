@@ -3,3 +3,4 @@ db.ssqlite3
 __pycache__
 env
 .vscode
+media

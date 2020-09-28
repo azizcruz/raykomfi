@@ -32,4 +32,6 @@ urlpatterns = [
 
     # Messages routes
     path('user/messages/<int:user_id>', views.messages_view, name='messages'),
+    path('user/messages/<int:user_id>/<int:message_id>', views.messages_view, name='get-message'),
+    path('user/messages/new/<uuid:code>', views.new_message_view, name='new-message'),
 ]
