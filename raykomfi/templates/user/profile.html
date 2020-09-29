@@ -29,7 +29,7 @@
         <div class="w3-center">
             <i class="fa fa-user-circle-o large-font profile-icon" aria-hidden="true"></i>
             <h1 class="w3-xxxlarge">{{profile.username}}</h1>
-            <h3 class="w3-xlarge">رمز العضو {{ profile.uuid }}</h3>
+            <h3 class="w3-xlarge">رمز العضو <br> {{ profile.uuid }}</h3>
         </div>
     </div>
     <div class="w3-col s12 m6 l6 profile-view-data">
@@ -44,13 +44,15 @@
             إرسال رسالة
         </a>
         <hr>
-        <h3>منشورات {{profile.username}}</h3>
+        <h3>إستفسارات {{profile.username}}</h3>
         <div class="user-posts-wrapper">
-            <a href="#">
+            {% for post in profile.posts.all %}
+            <a href="{{ post.get_absolute_url }}">
                 <div class="w3-card w3-padding">
-                    رايكم في
+                    {{post.title}}
                 </div>
             </a>
+            {% endfor %}
         </div>
     </div>
     {% endif %}

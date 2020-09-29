@@ -11,26 +11,17 @@
     <div class="w3-col s12 m4 l4">
         <div class="w3-padding w3-border w3-white w3-round-large">
             <h4 class="w3-center">اخر الأراء</h4>
-            <hr>
+            {% for comment in latest_comments %}
             <div class="w3-row latest-opinion">
-                <span><i class="fa fa-user" aria-hidden="true"></i> حامد علي</span>
-                <p>كان ذلك جميلا</p>
+                <a href="{% url 'raykomfi:user-profile' id=comment.user.id %}"><span><i class="fa fa-user" aria-hidden="true"></i> {{comment.user}}</span></a>
+                <p>{{ comment.content }}</p>
                 <div class="w3-tiny">
                     <span class="w3-tag w3-round-small w3-red w3-center"><i class="fa fa-reply"
                             aria-hidden="true"></i>رد على</span>
-                    <a href="#" class="w3-small">رايكم في جوال ايفون</a>
+                    <a href="{{ comment.post.get_absolute_url }}" class="w3-small">{{ comment.post.title }}</a>
                 </div>
             </div>
-            <hr>
-            <div class="w3-row latest-opinion">
-                <span><i class="fa fa-user" aria-hidden="true"></i> حامد علي</span>
-                <p>كان ذلك جميلا</p>
-                <div class="w3-tiny">
-                    <span class="w3-tag w3-round-small w3-red w3-center"><i class="fa fa-reply"
-                            aria-hidden="true"></i>رد على</span>
-                    <a href="#" class="w3-small">رايكم في جوال ايفون</a>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
     <div class="w3-col s12 m8 l6">

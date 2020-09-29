@@ -6,7 +6,7 @@
     <div class="w3-col s12 m6 l6">
         <form action="{% url 'raykomfi:post-edit' id=post.id slug=post.slug %}" enctype="multipart/form-data"
             method="POST">
-            <h1 class="w3-center">تعديل موضوع</h1>
+            <h1 class="w3-center">تعديل إستفسار</h1>
             {% csrf_token %}
             {{form}}
             <button class="w3-button raykomfi-button w3-round-large">تعديل</button>

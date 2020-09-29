@@ -29,11 +29,13 @@
             {% if user.is_authenticated %}
             <hr>
             <div>
-                <a class="w3-bar-item w3-button" onclick="myAccordion('demo')" href="javascript:void(0)">حسابك <i
+                <a class="w3-bar-item w3-button" onclick="myAccordion('demo')" href="javascript:void(0)">حسابي<i
                         class="fa fa-caret-down"></i></a>
                 <div id="demo" class="w3-hide">
                     <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-profile' id=user.id %}">الصفحة
                         الشخصية&nbsp;<i class="fa fa-user-circle" aria-hidden="true"></i></a>
+                    <a class="w3-bar-item w3-button" href="{% url 'raykomfi:posts-get' user_id=user.id %}">إستفساراتي&nbsp;<i class="fa fa-question-circle" aria-hidden="true"></i>
+                    </a>
                     <a class="w3-bar-item w3-button" href="{% url 'raykomfi:messages' user_id=user.id %}">الرسائل
                     {% if not_opened_messages.count > 0 %}
                     <i class="fa fa-circle fa-align-center notification-dot" aria-hidden="true"></i>

@@ -104,6 +104,11 @@ footer {
   transition: background-color 0.2s ease-in-out;
 }
 
+.latest-opinion p {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 .latest-opinion:hover {
   background-color: #f6f6f6;
 }
@@ -292,6 +297,8 @@ select:focus {
   border-radius: 5px;
   cursor: pointer;
   transition: 0.3s;
+  max-width: 20%;
+  height: auto;
 }
 
 #myImg:hover {
@@ -380,6 +387,9 @@ select:focus {
 
 /* 100% Image Width on Smaller Screens */
 @media only screen and (max-width: 700px) {
+  .large-font {
+    font-size: 150px;
+  }
   .modal-content {
     width: 100%;
   }

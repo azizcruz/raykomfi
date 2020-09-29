@@ -28,7 +28,8 @@ from pdb import set_trace
 
 def index(request):
     posts = Post.objects.all()
-    return render(request, 'sections/home.html', context={'posts': posts})
+    latest_comments = Comment.objects.all().order_by('-created')
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments})
 
 
 @login_required
@@ -51,7 +52,7 @@ def profile_view(request, id):
             return render(request, 'user/profile.html', context={'form': form})
     else:
         if request.user.id != id:
-            profile = get_object_or_404(User, id=id)
+            profile = User.objects.prefetch_related('posts').get(id=id)
             return render(request, 'user/profile.html', {'profile': profile})
         else:
             form = ProfileForm(instance=request.user,
@@ -142,6 +143,12 @@ def post_view(request, id, slug):
 
 
 @ login_required
+def my_posts_view(request, user_id):
+    posts = Post.objects.prefetch_related('comments').prefetch_related('comments__replies').filter(creator__id=user_id)
+    return render(request, 'sections/user_posts.html', context={'posts': posts})
+
+
+@ login_required
 def post_edit(request, id, slug):
     instance = get_object_or_404(Post, id=id, slug=slug)
     if request.method == 'POST':
@@ -204,7 +211,7 @@ def forgot_password_view(request):
     form = CustomPasswordResetForm(use_required_attribute=False)
     return render(request, 'user/forgot_password.html', context={'form': form})
 
-
+@ login_required
 def messages_view(request, user_id, message_id=0):
     if request.method == 'POST':
         message = get_object_or_404(Message, id=message_id)
@@ -216,7 +223,7 @@ def messages_view(request, user_id, message_id=0):
         user_messages = Message.objects.filter(receiver__exact=user_id)
         return render(request, 'sections/messages.html', {'user_messages': user_messages})
         
-
+@ login_required
 def new_message_view(request, code):
     receiver = get_object_or_404(User, uuid=code)
     if request.method == 'POST':

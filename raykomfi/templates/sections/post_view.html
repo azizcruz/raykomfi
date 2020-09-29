@@ -36,15 +36,16 @@
             {% endif %}
             </div>
             <div class="w3-mobile w3-container">
+                <h3>{{post.title}}</h3>
                 {% if post.content %}
                 <p>{{post.content}}</p>
                 {% endif %}
             </div>
             <div class="w3-mobile w3-container">
                 {% if post.image %}
-                {% thumbnail post.image "200x200" crop="center" as im %}
+                
                 <!-- Trigger the Modal -->
-                <img id="myImg" src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}">
+                <img id="myImg" src="{{ post.image.url }}" alt="{{post.title}}">
 
                 <!-- The Modal -->
                 <div id="myModal" class="modal">
@@ -55,7 +56,7 @@
                     <!-- Modal Caption (Image Text) -->
                     <div id="caption"></div>
                 </div>
-                {% endthumbnail %}
+               
                 {% endif %}
             </div>
             <div class="w3-container">
@@ -77,7 +78,7 @@
                                     <i class="fa fa-user" aria-hidden="true"></i>
                                     {{comment.user.username}}
                                 </div>
-                                </a>
+                            </a>
                                 {% else %}
                                 <div class="name">
                                     <i class="fa fa-user" aria-hidden="true"></i>
@@ -97,11 +98,11 @@
                                 <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
                                     {{reply.user.username}}
                                 </div>
+                            </a>
                                 {% else %}
                                  <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
                                     عضو لم يعد مسجل
                                 </div>
-                                </a>
                             {% endif %}
                                 <small><i class="fa fa-clock-o" aria-hidden="true"></i>
                                     {{reply.created | naturaltime}}</small>
