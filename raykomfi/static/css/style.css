@@ -278,17 +278,15 @@ select:focus {
 
 .vote-side span {
   cursor: pointer;
-  transition: transform 0.3s cubic-bezier(0.55, 0, 0.55, 0.2),
-    color 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
   text-rendering: geometricPrecision;
   position: relative;
   transform-origin: 50% 30%;
   display: block;
   color: #2980b9;
+  transition: color .3s ease-in-out;
 }
 
 .vote-side span:hover {
-  transform: scale(1.3);
   color: #2c3e50;
 }
 

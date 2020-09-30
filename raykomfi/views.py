@@ -21,7 +21,7 @@ from django.template.loader import get_template
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.functional import SimpleLazyObject
 from django.db.models import Q
-
+from random import sample
 
 from pdb import set_trace
 
@@ -135,11 +135,15 @@ def sign_up_view(request):
 
 @ login_required
 def post_view(request, id, slug):
-    post = Post.objects.prefetch_related('comments').prefetch_related('comments__replies').get(Q(id__exact=id) & Q(
+    post = Post.objects.prefetch_related('comments').prefetch_related('comments__replies').prefetch_related('comments__voted_like').prefetch_related('comments__voted_dislike').get(Q(id__exact=id) & Q(
         slug__exact=slug))
+    rand_ids = Post.objects.filter(category=post.category).values_list('id', flat=True)
+    rand_ids = list(rand_ids)
+    rand_ids = sample(rand_ids, 5)
+    related_posts = Post.objects.filter(id__in=rand_ids)
     comment_form = CommentForm()
     reply_form = ReplyForm()
-    return render(request, 'sections/post_view.html', context={'post': post, 'comment_form': comment_form, 'reply_form': reply_form})
+    return render(request, 'sections/post_view.html', context={'post': post, 'comment_form': comment_form, 'reply_form': reply_form, 'related_posts': related_posts})
 
 
 @ login_required
@@ -256,12 +260,29 @@ def add_comment(request, post_id):
     else:
         return render(request, 'sections/post_view.html', {'post': post, 'comment_form': comment_form})
 
-    post = Post.objects.get(id__exact=post_id)
-    comment = Comment.objects.create(
-        user=request.user, content=data['content'], )
-    post.comments.add()
-    return redirect('')
+def comment_vote(request, comment_id):
+    comment = Comment.objects.prefetch_related('voted_like').prefetch_related('voted_dislike').prefetch_related('post').get(id=comment_id)
+    vote_type = request.POST.get('vote')
+    comment_location = request.POST.get('comment-location')
 
+    if vote_type == 'like':
+        if request.user not in comment.voted_like.all() and request.user in comment.voted_dislike.all():
+            comment.voted_dislike.remove(request.user)
+            comment.voted_like.add(request.user)
+        else:
+            comment.voted_like.add(request.user)
+    
+    if vote_type == 'dislike':
+        if request.user not in comment.voted_dislike.all() and request.user in comment.voted_like.all():
+            comment.voted_dislike.add(request.user)
+            comment.voted_like.remove(request.user)
+        else:
+            comment.voted_dislike.add(request.user)
+
+    comment.votes = comment.voted_like.all().count() - comment.voted_dislike.all().count()
+    comment.save()
+
+    return redirect(comment.post.get_absolute_url() + f'#location-{comment_location}')
 
 @login_required
 def add_reply(request, post_id, comment_id):
@@ -301,5 +322,3 @@ def activate(request, uidb64, token):
         return redirect('raykomfi:user-signin')
     else:
         return render(request, 'user/activate_fail.html')
-
-# def post_vote():

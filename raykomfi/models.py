@@ -98,8 +98,10 @@ class Comment(models.Model):
     content = models.TextField(verbose_name='التعليق')
     isActive = models.BooleanField(default=True, verbose_name='مفعل؟')
     votes = models.IntegerField(default=0)
-    voted_users = models.ManyToManyField(
-        User, related_name='post_voted', verbose_name='الاعضاء المصوتين')
+    voted_like = models.ManyToManyField(
+        User, related_name='comment_likes', verbose_name='الاعضاء المتفقين')
+    voted_dislike = models.ManyToManyField(
+        User, related_name='comment_dislikes', verbose_name='الاعضاء الغير متفقين')
     created = models.DateTimeField(
         auto_now_add=True, verbose_name='وقت اضافة التعليق')
     updated = models.DateTimeField(

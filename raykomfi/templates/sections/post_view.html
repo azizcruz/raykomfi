@@ -6,15 +6,17 @@
 
 <div class="w3-row">
     <div class="w3-col s12 m4 l4">
-        <h4>{{post.category}}</h4>
+        <h4>إستفسارات مشابهة</h4>
         <div class="related-posts w3-border w3-padding-16">
             <div class="w3-row">
                 <div class="w3-mobile">
-                    <a href="#"><span class="raykomfi-tag w3-round-small">علي احمد</span> &nbsp; <span
-                            class="raykomfi-color">رايكم في هذا الشيء
-                            الجميل</span></a>
+                    {% for related_post in related_posts %}
+                    <div class="w3-margin">
+                        <a href="{{ related_post.get_absolute_url }}"><span class="raykomfi-tag w3-round-small">{{related_post.creator}}</span> &nbsp; <span
+                            class="raykomfi-color">{{related_post.title}}</span></a>
+                    </div>
+                    {% endfor %}
                 </div>
-                <hr>
             </div>
         </div>
     </div>
@@ -64,8 +66,8 @@
                 </div>
                 <div><small><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</small></div>
             </div>
-            <hr>
             <div class="w3-mobile w3-container reply-buttons">
+                <hr>
                 <h3>الاراء</h3>
                 {% if post.comments.all|length > 0 %}
                 {% for comment in post.comments.all %}
@@ -124,18 +126,22 @@
                     </div>
                     <div class="w3-col s2 m1 l1 w3-center vote-side">
                         <div>
-                            <form action="" method="post">
-                                <input type="hidden" name="vote" id="" value="like">
-                                <span onclick="alert(0)"><i class="fa fa-thumbs-up w3-large"
-                                        aria-hidden="true"></i></span>
+                            <form action="{% url 'raykomfi:post-comment-vote' comment_id=comment.id %}" method="post" id="location-{{comment.id}}-like">
+                                {% csrf_token %}
+                                <input type="hidden" name="comment-location" value="{{comment.id}}-like">
+                                <input type="hidden" name="vote" value="like">
+                                <button type="submit" onclick="return 0" {% if user in comment.voted_like.all %} disabled {% endif %}><i class="fa fa-thumbs-up w3-large"
+                                        aria-hidden="true"></i></button>
                             </form>
                         </div>
                         <div>{{comment.votes}}</div>
                         <div>
-                            <form action="" method="post">
+                            <form action="{% url 'raykomfi:post-comment-vote' comment_id=comment.id %}" method="post" id="location-{{comment.id}}-dislike">
+                                {% csrf_token %}
+                                <input type="hidden" name="comment-location" value="{{comment.id}}-dislike">
                                 <input type="hidden" name="vote" id="" value="dislike">
-                                <span onclick="alert(0)"><i class="fa fa-thumbs-down w3-large"
-                                        aria-hidden="true"></i></span>
+                                <button type="submit" onclick="return 0" {% if user in comment.voted_dislike.all %} disabled {% endif %}><i class="fa fa-thumbs-down w3-large"
+                                        aria-hidden="true"></i></button>
                             </form>
                         </div>
                     </div>
