@@ -12,7 +12,7 @@
             <a href="{% url 'raykomfi:user-change-password' %}" class="w3-button raykomfi-button w3-round-large"> تغيير
                 كلمة
                 المرور</a>
-            <a href="{% url 'raykomfi:user-change-password' %}"
+            <a href="{% url 'raykomfi:user-delete' id=user.id %}?question=true"
                 class="w3-button raykomfi-button raykomfi-button-no-hover w3-red w3-round-large">
                 حذف الحساب</a>
         </div>

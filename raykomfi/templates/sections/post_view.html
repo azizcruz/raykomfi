@@ -12,8 +12,17 @@
                 <div class="w3-mobile">
                     {% for related_post in related_posts %}
                     <div class="w3-margin">
-                        <a href="{{ related_post.get_absolute_url }}"><span class="raykomfi-tag w3-round-small">{{related_post.creator}}</span> &nbsp; <span
-                            class="raykomfi-color">{{related_post.title}}</span></a>
+                        <a href="{{ related_post.get_absolute_url }}">
+
+                            {% if related_post.creator and related_post.creator.is_active != False %}
+                            <span class="raykomfi-tag w3-round-small w3-right">
+                                {{related_post.creator}}
+                            </span>
+                            {% else %}
+                            <span class="raykomfi-tag w3-round-small w3-right">عضو لم يعد مسجل</span>
+                            {% endif %}
+
+                            &nbsp; <span class="raykomfi-color">{{related_post.title}}</span></a>
                     </div>
                     {% endfor %}
                 </div>
@@ -23,19 +32,19 @@
     <div class="w3-col s12 m8 l8">
         <div class="w3-row">
             <div class="w3-mobile w3-container">
-            {% if post.creator %}
-            <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}" class="writer-name">
-                <h2>
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                    {{post.creator}}
-                </h2>
+                {% if post.creator and post.creator.is_active != False %}
+                <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}" class="writer-name">
+                    <h2>
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        {{post.creator}}
+                    </h2>
                 </a>
                 {% else %}
                 <h2>
                     <i class="fa fa-user" aria-hidden="true"></i>
                     عضو لم يعد مسجل
                 </h2>
-            {% endif %}
+                {% endif %}
             </div>
             <div class="w3-mobile w3-container">
                 <h3>{{post.title}}</h3>
@@ -45,7 +54,7 @@
             </div>
             <div class="w3-mobile w3-container">
                 {% if post.image %}
-                
+
                 <!-- Trigger the Modal -->
                 <img id="myImg" src="{{ post.image.url }}" alt="{{post.title}}">
 
@@ -58,7 +67,7 @@
                     <!-- Modal Caption (Image Text) -->
                     <div id="caption"></div>
                 </div>
-               
+
                 {% endif %}
             </div>
             <div class="w3-container">
@@ -74,38 +83,39 @@
                 <div class="w3-row comment-wrapper w3-border w3-padding w3-round-large">
                     <div class="w3-col s10 m11 l11">
                         <div class="comment-side">
-                            {% if comment.user %}
+                            {% if comment.user and reply.user.is_active != False %}
                             <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}" class="writer-name">
                                 <div class="name">
                                     <i class="fa fa-user" aria-hidden="true"></i>
                                     {{comment.user.username}}
                                 </div>
                             </a>
-                                {% else %}
-                                <div class="name">
-                                    <i class="fa fa-user" aria-hidden="true"></i>
-                                    عضو لم يعد مسجل
-                                </div>
+                            {% else %}
+                            <div class="name">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                                عضو لم يعد مسجل
+                            </div>
                             {% endif %}
                             <small><i class="fa fa-clock-o" aria-hidden="true"></i>
                                 {{comment.created | naturaltime}}</small>
                             <div class="comment">{{ comment.content }}</div>
                         </div>
                         <hr>
+                        {% if comment.replies.all|length > 0 %}
                         <div class="comment-reply-side w3-padding w3-round-large">
                             {% for reply in comment.replies.all %}
-                            <div class="w3-panel">
-                            {% if reply.user %}
-                            <a href="{% url 'raykomfi:user-profile' id=reply.user.id %}" class="writer-name">
-                                <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
-                                    {{reply.user.username}}
-                                </div>
-                            </a>
+                            <div class="w3-panel" id="to-{{reply.id}}">
+                                {% if reply.user and reply.user.is_active != False %}
+                                <a href="{% url 'raykomfi:user-profile' id=reply.user.id %}" class="writer-name">
+                                    <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
+                                        {{reply.user.username}}
+                                    </div>
+                                </a>
                                 {% else %}
-                                 <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
+                                <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
                                     عضو لم يعد مسجل
                                 </div>
-                            {% endif %}
+                                {% endif %}
                                 <small><i class="fa fa-clock-o" aria-hidden="true"></i>
                                     {{reply.created | naturaltime}}</small>
                                 <div class="comment">{{ reply.content }}</div>
@@ -123,24 +133,27 @@
                             </form>
                             {% endif %}
                         </div>
+                        {% endif %}
                     </div>
                     <div class="w3-col s2 m1 l1 w3-center vote-side">
                         <div>
-                            <form action="{% url 'raykomfi:post-comment-vote' comment_id=comment.id %}" method="post" id="location-{{comment.id}}-like">
+                            <form action="{% url 'raykomfi:post-comment-vote' comment_id=comment.id %}" method="post">
                                 {% csrf_token %}
-                                <input type="hidden" name="comment-location" value="{{comment.id}}-like">
                                 <input type="hidden" name="vote" value="like">
-                                <button type="submit" onclick="return 0" {% if user in comment.voted_like.all %} disabled {% endif %}><i class="fa fa-thumbs-up w3-large"
+                                <button type="submit" onclick="return 0" {% if user in comment.voted_like.all %}
+                                    disabled {% endif %}><i class="fa fa-thumbs-up w3-large"
                                         aria-hidden="true"></i></button>
                             </form>
                         </div>
                         <div>{{comment.votes}}</div>
                         <div>
-                            <form action="{% url 'raykomfi:post-comment-vote' comment_id=comment.id %}" method="post" id="location-{{comment.id}}-dislike">
+                            <form action="{% url 'raykomfi:post-comment-vote' comment_id=comment.id %}" method="post"
+                                id="location-{{comment.id}}-dislike">
                                 {% csrf_token %}
                                 <input type="hidden" name="comment-location" value="{{comment.id}}-dislike">
                                 <input type="hidden" name="vote" id="" value="dislike">
-                                <button type="submit" onclick="return 0" {% if user in comment.voted_dislike.all %} disabled {% endif %}><i class="fa fa-thumbs-down w3-large"
+                                <button type="submit" onclick="return 0" {% if user in comment.voted_dislike.all %}
+                                    disabled {% endif %}><i class="fa fa-thumbs-down w3-large"
                                         aria-hidden="true"></i></button>
                             </form>
                         </div>
@@ -153,6 +166,16 @@
             </div>
             <div class="w3-mobile w3-container comment-button">
                 <h3>اضافة تعليق</h3>
+
+                {% if not user.is_authenticated %}
+                <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
+                    <p class="w3-center"><a href="{% url 'raykomfi:user-register' %}" class="w3-text-blue">سجل حساب
+                            جديد</a> أو <a href="{% url 'raykomfi:user-signin' %}" class="w3-text-blue">سجل الدخول</a>
+                        للمشاركة في التعليقات</p>
+                </div>
+
+                {% else %}
+
                 {% if user.email_active %}
                 <form action="{% url 'raykomfi:post-comment' post_id=post.id %}" method='post'>
                     {% csrf_token %}
@@ -165,6 +188,8 @@
                 <div class="w3-display-container w3-panel w3-border message-wrapper w3-pale-yellow">
                     <p class="w3-center">فعل حسابك للمشاركة في التعليقات</p>
                 </div>
+
+                {% endif %}
                 {% endif %}
             </div>
         </div>

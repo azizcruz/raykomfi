@@ -58,6 +58,7 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'raykomfi.custom_middlewares.AutoLogout', 
 ]
 
 ROOT_URLCONF = 'src.urls'
@@ -168,3 +169,9 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'azizcruz11111@gmail.com'
 EMAIL_HOST_PASSWORD = 'abdelaziz77??'
 DEFAULT_FROM_EMAIL = 'azizcruz11111@gmail.com'
+
+#Handle session is not Json Serializable
+# SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
+# Auto logout delay in minutes
+AUTO_LOGOUT_DELAY = 1 #equivalent to 5 minutes

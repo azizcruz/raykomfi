@@ -450,3 +450,29 @@ select:focus {
 }
 
 /* Messages Style */
+
+
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px) {
+  .large-font {
+    font-size: 150px;
+  }
+  .modal-content {
+    width: 100%;
+  }
+}
+
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (min-width: 320px) and (max-width: 420px) {
+  #myIntro {
+    font-size: 12px;
+  }
+}
+
+@media only screen and (min-width: 425px) and (max-width: 430px) {
+  #myIntro {
+    font-size: 16px;
+  }
+}

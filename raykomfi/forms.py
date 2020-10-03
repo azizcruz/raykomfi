@@ -9,8 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
 from django import forms
 from sorl.thumbnail import ImageField
-from materializecssform.templatetags import materializecss
-
+from django.contrib.auth import password_validation
 
 class SignupForm(UserCreationForm):
     username = forms.CharField(widget=forms.TextInput())
@@ -271,3 +270,34 @@ class MessageForm(forms.ModelForm):
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].required = True
+
+class RestorePasswordForm(forms.Form):
+    password1 = forms.CharField(widget=forms.PasswordInput(), validators=[password_validation.validate_password])
+    password2 = forms.CharField(widget=forms.PasswordInput(), validators=[password_validation.validate_password])
+
+    def __init__(self, *args, **kwargs):
+        super(RestorePasswordForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['password1','password2']:
+            if fieldname == 'password1':
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].required = True
+                self.fields[fieldname].label = 'كلمة المرور الجديدة'
+            if fieldname == 'password2':
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].required = True
+                self.fields[fieldname].label = 'تأكيد كلمة المرور'
+                
+    def clean(self):
+        cleaned_data = super(RestorePasswordForm, self).clean()
+        new_password = cleaned_data.get("password1")
+        confirm_password = cleaned_data.get("password2")
+
+        if new_password != confirm_password:
+                raise forms.ValidationError(
+                "تأكيد كلمة المرور غير متطابقة مع كلمة المرور الجديدة"
+                )
+
+        return cleaned_data

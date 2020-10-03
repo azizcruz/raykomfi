@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django import forms
 from sorl.thumbnail import ImageField
 from cloudinary.models import CloudinaryField
-from uuid import uuid4
+from uuid import uuid4, uuid1
 
 
 def slugify(str):
@@ -24,8 +24,11 @@ class User(AbstractUser):
     country = models.CharField(max_length=255, verbose_name='الدولة',)
     isBlocked = models.BooleanField(default=False, verbose_name='محظور؟')
     uuid = models.UUIDField(default=uuid4, editable=False, verbose_name='رمز العضو', null=True)
+    secret_code = models.UUIDField(default=uuid1, editable=False, verbose_name='رمز العمليات', null=True)
     email_active = models.BooleanField(
         default=False, verbose_name='ايميل مفعل')
+    stay_logged_in = models.BooleanField(
+        default=False, verbose_name='البقاء متصلا')
     email = models.EmailField(unique=True, verbose_name='بريد الإلكتروني',)
 
 
@@ -141,7 +144,7 @@ class Reply(models.Model):
 class Message(models.Model):
 
     user = models.ForeignKey(
-        User, related_name='sent_messages', verbose_name='صاحب النعليق', on_delete=models.SET_DEFAULT, default=None, null=True)
+        User, related_name='sent_messages', verbose_name='صاحب النعليق', on_delete=models.CASCADE)
     receiver = models.ForeignKey(
         User, related_name='my_messages', verbose_name='المستقبل', on_delete=models.CASCADE)
     title = models.CharField(max_length=120, verbose_name='عنوان الرسالة', null=True, default=None)

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+    <div class="w3-col s12 m6 l6">&nbsp;</div>
+    <div class="w3-col s12 m6 l6">
+        <p class="w3-center">طلب رابط تفعيل جديد</p>
+        <form action="{% url 'raykomfi:user-send-link' %}" method='post'>
+            {% csrf_token %}
+            <input type="email" name="email" class="w3-input w3-border w3-round-large" value="{{user.email}}">
+            <button class="w3-button raykomfi-button w3-round-center w3-round-large" type="submit">طلب</button>
+        </form>
+    </div>
+</div>
+
+
+{% endblock content %}

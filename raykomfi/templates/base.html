@@ -19,8 +19,6 @@
 
     <nav class="w3-sidebar w3-bar-block w3-collapse w3-card" id="mySidebar">
         <a class="w3-bar-item w3-large" href="#">
-            <a class="w3-bar-item w3-button w3-hide-large w3-large" href="javascript:void(0)" onclick="w3_close()">اغلاق
-                <i class="fa fa-remove"></i></a>
             {% if user.is_authenticated %}
             <h3 class="w3-center">مرحبا {{user.username}}</h3>
             {% endif %}

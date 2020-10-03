@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
-from .forms import SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, CustomPasswordResetForm, CommentForm, ReplyForm, ProfileForm, MessageForm
+from .forms import SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, CustomPasswordResetForm, CommentForm, ReplyForm, ProfileForm, MessageForm, RestorePasswordForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -22,7 +22,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.functional import SimpleLazyObject
 from django.db.models import Q
 from random import sample
-
+from django.urls import NoReverseMatch
 from pdb import set_trace
 
 
@@ -132,8 +132,19 @@ def sign_up_view(request):
         form = SignupForm(use_required_attribute=False)
         return render(request, 'user/register.html', context={'form': form})
 
+@login_required
+def delete_user(request, id):
+    user = User.objects.get(id=id)
+    question = request.GET['question']
+    if question != 'true':
+        user.is_active = False
+        user.save()
+        messages.success(
+                request, 'تم حذف حسابك, لكن إستفساراتك, تعليقاتك و ردودك ستبقى لكن بدون إسمك الشخصي, في حال قررت إسترجاع حسابك يرجى التواصل مع الدعم support@raykomfi.com', extra_tags='pale-green w3-border')
+        return redirect('raykomfi:user-signin')
+    else:
+        return render(request, 'sections/are_you_sure.html')
 
-@ login_required
 def post_view(request, id, slug):
     post = Post.objects.prefetch_related('comments').prefetch_related('comments__replies').prefetch_related('comments__voted_like').prefetch_related('comments__voted_dislike').get(Q(id__exact=id) & Q(
         slug__exact=slug))
@@ -210,10 +221,60 @@ def change_password_view(request):
             'form': form
         })
 
-
+def restore_password_view(request):
+    if request.method == 'POST':
+        try:
+            user = User.objects.get(id=request.POST['id'], email=request.POST['email'], secret_code=request.POST['secret_code'])
+        except:
+            return redirect('raykomfi:user-signin')
+        if user:
+            form = RestorePasswordForm(
+                request.POST, use_required_attribute=False)
+            if form.is_valid() and user:
+                password = form.cleaned_data['password2']
+                user.set_password(password)
+                user.save()
+                messages.success(
+                    request, 'تم إعادة تعيين كلمة المرور بنجاح', extra_tags='pale-green w3-border')
+                return redirect('raykomfi:user-signin')
+            else:
+                return render(request, 'user/restore_password.html', {
+                    'form': form,
+                    'user': user
+                })
+        else:
+            return redirect('raykomfi:user-signin')
 def forgot_password_view(request):
-    form = CustomPasswordResetForm(use_required_attribute=False)
-    return render(request, 'user/forgot_password.html', context={'form': form})
+    if request.method == 'POST':
+        form = CustomPasswordResetForm(request.POST ,use_required_attribute=False)
+        if form.is_valid():
+            user = get_object_or_404(User, email=form.cleaned_data['email'])
+            current_site = get_current_site(request)
+            mail_subject = 'رابط تغيير كلمة المرور'
+            to_email = form.cleaned_data.get('email')
+            from_email = 'no-reply@raykomfi.com'
+            # Send data to email template and get email template.
+            html_email_template = get_template("user/restore_password_email_view.html").render(
+                {
+                    'site': SimpleLazyObject(lambda: get_current_site(request)),
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': default_token_generator.make_token(user),
+                    'id': user.id
+                }
+            )
+            msg = EmailMultiAlternatives(
+                f"{mail_subject}", "nothing", from_email, [to_email])
+            msg.attach_alternative(html_email_template, "text/html")
+            msg.send()
+            messages.success(
+                request, 'تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني', extra_tags='pale-green w3-border')
+
+            return HttpResponseRedirect('/user/signin')
+        else:
+            return render(request, 'user/forgot_password.html', context={'form': form})
+    else:
+        form = CustomPasswordResetForm(use_required_attribute=False)
+        return render(request, 'user/forgot_password.html', context={'form': form})
 
 @ login_required
 def messages_view(request, user_id, message_id=0):
@@ -282,7 +343,7 @@ def comment_vote(request, comment_id):
     comment.votes = comment.voted_like.all().count() - comment.voted_dislike.all().count()
     comment.save()
 
-    return redirect(comment.post.get_absolute_url() + f'#location-{comment_location}')
+    return redirect(comment.post.get_absolute_url())
 
 @login_required
 def add_reply(request, post_id, comment_id):
@@ -294,18 +355,9 @@ def add_reply(request, post_id, comment_id):
     if reply_form.is_valid():
         reply = Reply.objects.create(
             content=reply_form.cleaned_data['content'], user=request.user, comment=comment)
-        messages.success(
-            request, 'تم اضافة ردك بنجاح', extra_tags='pale-green w3-border')
-        return HttpResponseRedirect(post.get_absolute_url())
+        return HttpResponseRedirect(post.get_absolute_url() + f'#to-{reply.id}')
     else:
-        return render(request, 'sections/post_view.html', {'post': post, 'comment_form': comment_form, 'reply_form': replyt_form})
-
-    post = Post.objects.get(id__exact=post_id)
-    comment = Comment.objects.create(
-        user=request.user, content=data['content'], )
-    post.comments.add()
-    return redirect('')
-
+        return render(request, 'sections/post_view.html', {'post': post, 'comment_form': comment_form, 'reply_form': reply_form})
 
 def activate(request, uidb64, token):
     try:
@@ -314,6 +366,10 @@ def activate(request, uidb64, token):
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
     if user is not None and default_token_generator.check_token(user, token):
+        if user.email_active == True:
+            messages.success(
+            request, 'حسابك مفعل من قبل', extra_tags='pale-green w3-border')
+        return redirect('raykomfi:user-signin')
         user.email_active = True
         user.save()
         logout(request)
@@ -322,3 +378,48 @@ def activate(request, uidb64, token):
         return redirect('raykomfi:user-signin')
     else:
         return render(request, 'user/activate_fail.html')
+
+def restore_password(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and default_token_generator.check_token(user, token):
+        form = RestorePasswordForm(use_required_attribute=False)
+        return render(request, 'user/restore_password.html', {'form': form, 'user': user})
+    else:
+        return render(request, 'user/activate_fail.html', {'user': user})
+
+def send_link(request):
+    if request.method == 'POST':
+        current_site = get_current_site(request)
+        email = request.POST.get('email')
+        if '@' not in email:
+            messages.success(
+                request, 'أدخل بريد إلكتروني صحيح, أعد المحاولة مرة أخرى', extra_tags='pale-red w3-border')
+            return redirect('raykomfi:sign-in')
+        to_email = email
+        user = get_object_or_404(User, email=to_email)
+        mail_subject = 'تفعيل حسابك على رايكم في'
+        from_email = 'no-reply@raykomfi.com'
+        # Send data to email template and get email template.
+        html_email_template = get_template("user/acc_activate_email.html").render(
+            {
+                'site': SimpleLazyObject(lambda: get_current_site(request)),
+                'user': user,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            }
+        )
+        msg = EmailMultiAlternatives(
+            f"{mail_subject}", "nothing", from_email, [to_email])
+        msg.attach_alternative(html_email_template, "text/html")
+        msg.send()
+        messages.success(
+            request, 'تم إرسال رابط التفعيل الى بريدك الإلكتروني', extra_tags='pale-green w3-border')
+
+        return HttpResponseRedirect('/user/signin')
+
+    else:
+        return render(request, 'user/activate_account.html')
