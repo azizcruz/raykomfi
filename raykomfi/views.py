@@ -23,6 +23,8 @@ from django.utils.functional import SimpleLazyObject
 from django.db.models import Q
 from random import sample
 from django.urls import NoReverseMatch
+
+
 from pdb import set_trace
 
 
@@ -66,9 +68,16 @@ def sign_in_view(request):
         if form.is_valid():
             username = request.POST.get('username')
             password = request.POST.get('password')
+            stay_logged_in = request.POST.get('stay_logged_in', 'off')
             user = authenticate(username=username, password=password)
             if user:
                 if user.is_active:
+                    if stay_logged_in == 'on':
+                        user.stay_logged_in = True
+                        user.save()
+                    else:
+                        user.stay_logged_in = False
+                        user.save()
                     login(request, user)
                     return HttpResponseRedirect(reverse('raykomfi:raykomfi-home'))
             else:
@@ -298,7 +307,7 @@ def new_message_view(request, code):
             message = Message.objects.create(user=request.user, receiver=receiver, title=form.cleaned_data['title'], content=form.cleaned_data['content'])
             messages.success(
             request, f'تم إرسال الرسالة الى {receiver.username} بنجاح', extra_tags='pale-green w3-border')
-            return render(request, 'sections/home.html')
+            return redirect(receiver.get_absolute_url())
         else:
             return render(request, 'sections/new_message.html', context={'form': form, 'receiver': receiver})
     else:
@@ -321,6 +330,7 @@ def add_comment(request, post_id):
     else:
         return render(request, 'sections/post_view.html', {'post': post, 'comment_form': comment_form})
 
+@login_required
 def comment_vote(request, comment_id):
     comment = Comment.objects.prefetch_related('voted_like').prefetch_related('voted_dislike').prefetch_related('post').get(id=comment_id)
     vote_type = request.POST.get('vote')

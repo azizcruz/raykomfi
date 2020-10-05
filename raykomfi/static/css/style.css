@@ -23,6 +23,16 @@ small {
   font-size: 13px;
 }
 
+.raykomfi-margin-small {
+  margin: 5px;
+}
+
+.connected-users {
+  position: absolute;
+  right: 36%;
+  bottom: 3%;
+}
+
 div {
   font-size: 18px;
 }

@@ -9,6 +9,9 @@ from sorl.thumbnail import ImageField
 from cloudinary.models import CloudinaryField
 from uuid import uuid4, uuid1
 
+from django.core.cache import cache 
+import datetime
+from django.conf import settings
 
 def slugify(str):
     str = str.replace(" ", "-")
@@ -31,6 +34,9 @@ class User(AbstractUser):
         default=False, verbose_name='البقاء متصلا')
     email = models.EmailField(unique=True, verbose_name='بريد الإلكتروني',)
 
+
+    def get_absolute_url(self):
+        return reverse('raykomfi:user-profile', args=[self.id])
 
 class Category(models.Model):
 

@@ -123,6 +123,7 @@ class ProfileForm(forms.ModelForm):
 class SigninForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput())
     password = forms.CharField(widget=forms.PasswordInput())
+    stay_logged_in = forms.CharField(widget=forms.CheckboxInput())
 
     class Meta:
         model = User
@@ -131,7 +132,7 @@ class SigninForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(SigninForm, self).__init__(*args, **kwargs)
 
-        for fieldname in ['username', 'password']:
+        for fieldname in ['username', 'password', 'stay_logged_in']:
             if fieldname == 'username':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'اسم المستخدم'
@@ -140,6 +141,10 @@ class SigninForm(forms.Form):
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'كلمة المرور'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+            if fieldname == 'stay_logged_in':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'البقاء متصلا'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-check raykomfi-margin-small w3-border'
 
 
 class CustomPasswordResetForm(PasswordResetForm):

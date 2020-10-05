@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-
 <div class="w3-row">
     {% if user.id == request.resolver_match.kwargs.id %}
     <div class="w3-col s12 m6 l6">
@@ -57,5 +56,4 @@
     </div>
     {% endif %}
 </div>
-
 {% endblock content %}

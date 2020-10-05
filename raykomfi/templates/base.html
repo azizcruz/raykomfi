@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <meta name="robots" content="noindex">
 <html dir="rtl">
@@ -44,6 +45,7 @@
                     <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-signout' %}">تسجيل خروج &nbsp;<i
                             class="fa fa-sign-out" aria-hidden="true"></i></a>
                 </div>
+                <div class="w3-center connected-users">{{request.online_now_ids|length}} متصلين حاليا </div>
             </div>
             {% else %}
             <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-register' %}">حساب جديد &nbsp;<i

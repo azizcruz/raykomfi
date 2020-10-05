@@ -28,7 +28,7 @@ SECRET_KEY = 'y#micn0*%3d33ew1l=!5^#*5@9q$mr38*48pkv%@i@gc-p&&fs'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.101']
 
 
 # Application definition
@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'raykomfi',
     'django_countries',
-    'sorl.thumbnail'
+    'sorl.thumbnail', 
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -59,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'raykomfi.custom_middlewares.AutoLogout', 
+    'raykomfi.custom_middlewares.OnlineNowMiddleware', 
 ]
 
 ROOT_URLCONF = 'src.urls'
@@ -174,4 +176,20 @@ DEFAULT_FROM_EMAIL = 'azizcruz11111@gmail.com'
 # SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 # Auto logout delay in minutes
-AUTO_LOGOUT_DELAY = 1 #equivalent to 5 minutes
+AUTO_LOGOUT_DELAY = 5 #equivalent to 5 minutes
+
+CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'LOCATION': 'localhost:8000',              
+        }
+    }
+
+# Rest framework
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
