@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class="w3-row-padding">
+<div class="w3-row-padding raykomfi-main-padding w3-round-large raykomfi-max-width">
   {% if user.email_active %}
   <div class="w3-col s12 m6 l6">
     &nbsp;
@@ -16,7 +16,7 @@
       {% if posts %} 
       
       {% for post in posts %}
-        <div class="w3-padding w3-border ray-box w3-round-large">
+        <div class="w3-padding w3-border ray-box w3-round-large raykomfi-main-box-margin">
             {% if post.creator %}
             <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
                 <span class="poster-name">
@@ -57,7 +57,6 @@
                 </div>
             </a>
         </div>
-        <hr>
         {% endfor %}
       
       {% else %}

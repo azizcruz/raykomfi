@@ -1,40 +1,46 @@
 // Open and close the sidebar on medium and small screens
 function w3_open() {
-    document.getElementById("mySidebar").style.display = "block";
-    document.getElementById("myOverlay").style.display = "block";
+  document.getElementById("mySidebar").style.display = "block";
+  document.getElementById("myOverlay").style.display = "block";
 }
 
 function w3_close() {
-    document.getElementById("mySidebar").style.display = "none";
-    document.getElementById("myOverlay").style.display = "none";
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("myOverlay").style.display = "none";
 }
 
 // Change style of top container on scroll
 window.onscroll = function () {
-    myFunction()
+  myFunction();
 };
 
 function myFunction() {
-    if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
-        document.getElementById("myTop").classList.add("w3-card-4", "w3-animate-opacity");
-        document.getElementById("myIntro").classList.add("w3-show-inline-block");
-    } else {
-        document.getElementById("myIntro").classList.remove("w3-show-inline-block");
-        document.getElementById("myTop").classList.remove("w3-card-4", "w3-animate-opacity");
-    }
+  if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+    document
+      .getElementById("myTop")
+      .classList.add("w3-card-4", "w3-animate-opacity");
+    document.getElementById("myIntro").classList.add("w3-show-inline-block");
+  } else {
+    document.getElementById("myIntro").classList.remove("w3-show-inline-block");
+    document
+      .getElementById("myTop")
+      .classList.remove("w3-card-4", "w3-animate-opacity");
+  }
 }
 
 // Accordions
 function myAccordion(id) {
-    var x = document.getElementById(id);
-    if (x.className.indexOf("w3-show") == -1) {
-        x.className += " w3-show";
-        x.previousElementSibling.className += " raykomfi-theme";
-    } else {
-        x.className = x.className.replace("w3-show", "");
-        x.previousElementSibling.className =
-            x.previousElementSibling.className.replace(" raykomfi-theme", "");
-    }
+  var x = document.getElementById(id);
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    x.previousElementSibling.className += " raykomfi-theme";
+  } else {
+    x.className = x.className.replace("w3-show", "");
+    x.previousElementSibling.className = x.previousElementSibling.className.replace(
+      " raykomfi-theme",
+      ""
+    );
+  }
 }
 
 var modal = document.getElementById("myModal");
@@ -43,34 +49,49 @@ var modal = document.getElementById("myModal");
 var img = document.getElementById("myImg") || false;
 var modalImg = document.getElementById("modalImage");
 var captionText = document.getElementById("caption");
-if(img) {
-    img.onclick = function () {
-        modal.style.display = "block";
-        modalImg.src = this.src;
-        captionText.innerHTML = this.alt;
-    }    
+if (img) {
+  img.onclick = function () {
+    modal.style.display = "block";
+    modalImg.src = this.src;
+    captionText.innerHTML = this.alt;
+  };
 }
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks on anywhere except the image, close the modal
-if(img) {
-    $(document).on('click', function (event) {
-        if (!$(event.target).closest('#myImg').length) {
-            // ... clicked on the 'body', but not inside of #menutop
-            modal.style.display = "none";
-        }
-    });    
+if (img) {
+  $(document).on("click", function (event) {
+    if (!$(event.target).closest("#myImg").length) {
+      // ... clicked on the 'body', but not inside of #menutop
+      modal.style.display = "none";
+    }
+  });
 }
 // When you click everywhere the image module close except when you click on the image
-$('#modalImage').on('click', function (event) {
-    event.stopPropagation();
+$("#modalImage").on("click", function (event) {
+  event.stopPropagation();
 });
 
 // Smooth scroll to hash
-$(function(){
-    $('html, body').animate({
-        scrollTop: $(window.location.hash).offset().top
-    }, 1000);
-    return false;
+$(function () {
+  $("html, body").animate(
+    {
+      scrollTop: $(window.location.hash).offset().top,
+    },
+    1000
+  );
+  return false;
 });
+
+// Infinite scroll
+var infinite = new Waypoint.Infinite({
+  element: $(".infinite-container")[0],
+  onBeforePageLoad: function () {
+    $(".sk-folding-cube").show();
+  },
+  onAfterPageLoad: function ($items) {
+    $(".sk-folding-cube").hide();
+  }
+});
+

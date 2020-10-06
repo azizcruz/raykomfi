@@ -19,6 +19,7 @@
 <body>
 
     <nav class="w3-sidebar w3-bar-block w3-collapse w3-card" id="mySidebar">
+        <a href="/"><img src="{% static 'img/raykomfi.png' %}" class="logo"></a>
         <a class="w3-bar-item w3-large" href="#">
             {% if user.is_authenticated %}
             <h3 class="w3-center">مرحبا {{user.username}}</h3>
@@ -33,14 +34,16 @@
                 <div id="demo" class="w3-hide">
                     <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-profile' id=user.id %}">الصفحة
                         الشخصية&nbsp;<i class="fa fa-user-circle" aria-hidden="true"></i></a>
-                    <a class="w3-bar-item w3-button" href="{% url 'raykomfi:posts-get' user_id=user.id %}">إستفساراتي&nbsp;<i class="fa fa-question-circle" aria-hidden="true"></i>
+                    <a class="w3-bar-item w3-button"
+                        href="{% url 'raykomfi:posts-get' user_id=user.id %}">إستفساراتي&nbsp;<i
+                            class="fa fa-question-circle" aria-hidden="true"></i>
                     </a>
                     <a class="w3-bar-item w3-button" href="{% url 'raykomfi:messages' user_id=user.id %}">الرسائل
-                    {% if not_opened_messages.count > 0 %}
-                    <i class="fa fa-circle fa-align-center notification-dot" aria-hidden="true"></i>
-                    {% endif %}    
-                    &nbsp;<i class="fa fa-envelope-o" aria-hidden="true"></i>
-                        </a>
+                        {% if not_opened_messages.count > 0 %}
+                        <i class="fa fa-circle fa-align-center notification-dot" aria-hidden="true"></i>
+                        {% endif %}
+                        &nbsp;<i class="fa fa-envelope-o" aria-hidden="true"></i>
+                    </a>
                     <hr>
                     <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-signout' %}">تسجيل خروج &nbsp;<i
                             class="fa fa-sign-out" aria-hidden="true"></i></a>
@@ -94,6 +97,8 @@
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/infinite.min.js' %}"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
 </body>
 

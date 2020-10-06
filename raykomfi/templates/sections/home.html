@@ -9,18 +9,19 @@
 <div class="w3-row-padding">
     <div class="w3-col l1 w3-hide-small w3-hide-medium">&nbsp</div>
     <div class="w3-col s12 m4 l4">
-        <div class="w3-padding w3-border w3-white w3-round-large">
+        <div class="w3-padding w3-white w3-round-large">
             <h4 class="w3-center">اخر الأراء</h4>
             {% for comment in latest_comments %}
             <div class="w3-row latest-opinion">
-                {% if post.creator %}
-                    <a href="{% url 'raykomfi:user-profile' id=comment.user.id %}"><span><i class="fa fa-user" aria-hidden="true"></i> {{comment.user}}</span></a>
+                {% if comment.user and comment.user.is_active != False %}
+                <a href="{% url 'raykomfi:user-profile' id=comment.user.id %}"><span><i class="fa fa-user"
+                            aria-hidden="true"></i> {{comment.user}}</span></a>
                 {% else %}
                 <span><i class="fa fa-user" aria-hidden="true"></i> عضو لم يعد موجود</span>
                 {% endif %}
                 <p>{{ comment.content }}</p>
-                <div class="w3-tiny">
-                    <span class="w3-tag w3-round-large w3-red w3-center"><i class="fa fa-reply"
+                <div class="">
+                    <span class="w3-tag w3-round-large w3-red w3-center w3-small"><i class="fa fa-reply"
                             aria-hidden="true"></i>رد على</span>
                     <a href="{{ comment.post.get_absolute_url }}" class="">{{ comment.post.title }}</a>
                 </div>
@@ -28,11 +29,12 @@
             {% endfor %}
         </div>
     </div>
-    <div class="w3-col s12 m8 l6">
+    <div class="w3-col s12 m8 l6 ray w3-round-large">
         <div class="w3-row ray-order">
             <div class="w3-half">
                 <div class="w3-dropdown-hover w3-round-large">
-                    <button class="w3-button w3-white w3-round-large"><i class="fa fa-tags" aria-hidden="true"></i>
+                    <button class="w3-button w3-round-large raykomfi-main-background-color"><i class="fa fa-tags"
+                            aria-hidden="true"></i>
                         حسب التصنيف</button>
                     <div class="w3-dropdown-content w3-bar-block w3-border">
                         <a href="#" class="w3-bar-item w3-button">كمبيوتر</a>
@@ -42,7 +44,8 @@
                 </div>
             </div>
             <div class="w3-half">
-                <button class="w3-button w3-round-large"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>
+                <button class="w3-button w3-round-large raykomfi-main-background-color"><i
+                        class="fa fa-sort-amount-desc" aria-hidden="true"></i>
                     الأحدث</button>
             </div>
         </div>
@@ -51,7 +54,9 @@
         </div>
         {% if not user.is_authenticated %}
         <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
-            <p class="w3-center"><a href="{% url 'raykomfi:user-register' %}" class="w3-text-blue">سجل حساب جديد</a> أو <a href="{% url 'raykomfi:user-signin' %}" class="w3-text-blue">سجل الدخول</a> لإستفسار الناس عن ما تريد الشراء</p>
+            <p class="w3-center"><a href="{% url 'raykomfi:user-register' %}" class="w3-text-blue">سجل حساب جديد</a> أو
+                <a href="{% url 'raykomfi:user-signin' %}" class="w3-text-blue">سجل الدخول</a> لإستفسار الناس عن ما تريد
+                الشراء</p>
         </div>
         {% else %}
         {% if user.email_active %}
@@ -67,46 +72,58 @@
         </div>
         {% endif %}
         {% endif %}
-        {% for post in posts %}
-        <div class="w3-padding w3-border ray-box w3-round-large">
-            {% if post.creator and post.creator.is_active != False %}
-            <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
+
+        <div class="infinite-container">
+            {% for post in posts %}
+            <div class="w3-padding ray-box w3-round-large infinite-item">
+                {% if post.creator and post.creator.is_active != False %}
+                <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
+                    <span class="poster-name">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        {{post.creator}}
+                    </span>
+                </a>
+                {% else %}
                 <span class="poster-name">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                    {{post.creator}}
-                </span>
-            </a>
-            {% else %}
-            <span class="poster-name">
                     <i class="fa fa-user" aria-hidden="true"></i>
                     عضو لم يعد موجود
                 </span>
-            {% endif %}
-            <a href="{{post.get_absolute_url}}">
-                <h4>{{post.title |truncatechars:100}}</h4>
-                {% if post.image %}
-                <div class="ray-image-section">
-                    {% thumbnail post.image "100x100" crop="center" as im %}
-                    <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
-                        alt="{{post.slug}}" />
-                    {% endthumbnail %}
-                </div>
                 {% endif %}
-                <div class="w3-row">
-                    <div class="w3-third ray-box-footer-icon">
-                        <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.created | naturaltime}}</span>
+                <a href="{{post.get_absolute_url}}">
+                    <h2>{{post.title |truncatechars:100}}</h2>
+                    {% if post.image %}
+                    <div class="ray-image-section">
+                        {% thumbnail post.image "100x100" crop="center" as im %}
+                        <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
+                            alt="{{post.slug}}" />
+                        {% endthumbnail %}
                     </div>
-                    <div class="w3-third ray-box-footer-icon">
-                        <span><i class="fa fa-comments" aria-hidden="true"></i> {{post.comments.count}}</span>
+                    {% endif %}
+                    <div class="w3-row">
+                        <div class="w3-third ray-box-footer-icon">
+                            <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.created | naturaltime}}</span>
+                        </div>
+                        <div class="w3-third ray-box-footer-icon">
+                            <span><i class="fa fa-comments" aria-hidden="true"></i> {{post.comments.count}}</span>
+                        </div>
+                        <div class="w3-third ray-box-footer-icon">
+                            <span><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</span>
+                        </div>
                     </div>
-                    <div class="w3-third ray-box-footer-icon">
-                        <span><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</span>
-                    </div>
-                </div>
-            </a>
+                </a>
+            </div>
+            {% endfor %}
+            {% if posts.has_next %}
+            <a class="infinite-more-link" href="?page={{ posts.next_page_number }}">More</a>
+            {% endif %}
+
+            <div class="sk-folding-cube">
+                <div class="sk-cube1 sk-cube"></div>
+                <div class="sk-cube2 sk-cube"></div>
+                <div class="sk-cube4 sk-cube"></div>
+                <div class="sk-cube3 sk-cube"></div>
+              </div>
         </div>
-        <hr>
-        {% endfor %}
     </div>
     <div class="w3-col l1 w3-hide-small w3-hide-medium">&nbsp</div>
 </div>
