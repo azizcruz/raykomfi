@@ -14,6 +14,10 @@ window.onscroll = function () {
   myFunction();
 };
 
+// A CSRF token is required when making post requests in Django
+// To be used for making AJAX requests in script.js
+window.CSRF_TOKEN = document.getElementById("csrf_token").innerHTML;
+
 function myFunction() {
   if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
     document
@@ -84,14 +88,19 @@ $(function () {
   return false;
 });
 
-// Infinite scroll
-var infinite = new Waypoint.Infinite({
-  element: $(".infinite-container")[0],
-  onBeforePageLoad: function () {
-    $(".sk-folding-cube").show();
-  },
-  onAfterPageLoad: function ($items) {
-    $(".sk-folding-cube").hide();
-  }
+// Page loading
+$("html").addClass("hide-overflow");
+$(window).on("load", function () {
+  $("html").removeClass("hide-overflow");
+  $("#overlay").fadeOut(500);
 });
 
+// Loading show
+var $loading = $("#sk-chase").hide();
+$(document)
+  .ajaxStart(function () {
+    $loading.show();
+  })
+  .ajaxStop(function () {
+    $loading.hide();
+  });

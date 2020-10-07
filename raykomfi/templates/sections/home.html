@@ -7,8 +7,8 @@
 
 
 <div class="w3-row-padding">
-    <div class="w3-col l1 w3-hide-small w3-hide-medium">&nbsp</div>
-    <div class="w3-col s12 m4 l4">
+    <div class="w3-col l1 w3-hide-small">&nbsp</div>
+    <div class="w3-col s12 m4 l4 w3-hide-small">
         <div class="w3-padding w3-white w3-round-large">
             <h4 class="w3-center">اخر الأراء</h4>
             {% for comment in latest_comments %}
@@ -73,9 +73,9 @@
         {% endif %}
         {% endif %}
 
-        <div class="infinite-container">
+        <div id="raykomfi-posts">
             {% for post in posts %}
-            <div class="w3-padding ray-box w3-round-large infinite-item">
+            <div class="w3-padding ray-box w3-round-large">
                 {% if post.creator and post.creator.is_active != False %}
                 <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
                     <span class="poster-name">
@@ -90,7 +90,7 @@
                 </span>
                 {% endif %}
                 <a href="{{post.get_absolute_url}}">
-                    <h2>{{post.title |truncatechars:100}}</h2>
+                    <h3>{{post.title |truncatechars:100}}</h3>
                     {% if post.image %}
                     <div class="ray-image-section">
                         {% thumbnail post.image "100x100" crop="center" as im %}
@@ -113,16 +113,38 @@
                 </a>
             </div>
             {% endfor %}
-            {% if posts.has_next %}
-            <a class="infinite-more-link" href="?page={{ posts.next_page_number }}">More</a>
-            {% endif %}
-
-            <div class="sk-folding-cube">
-                <div class="sk-cube1 sk-cube"></div>
-                <div class="sk-cube2 sk-cube"></div>
-                <div class="sk-cube4 sk-cube"></div>
-                <div class="sk-cube3 sk-cube"></div>
-              </div>
+        </div>
+        <div class="sk-chase" id="sk-chase">
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+        </div>
+        <div class="lazy-load-linkwrapper w3-center">
+            <a id="lazyLoadLink" class="w3-border w3-padding" href="javascript:void(0);" data-page="2">عرض المزيد</a>
+        </div>
+    </div>
+    <div class="w3-col s12 m4 l4 w3-hide-medium w3-hide-large">
+        <div class="w3-padding w3-white w3-round-large">
+            <h4 class="w3-center">اخر الأراء</h4>
+            {% for comment in latest_comments %}
+            <div class="w3-row latest-opinion">
+                {% if comment.user and comment.user.is_active != False %}
+                <a href="{% url 'raykomfi:user-profile' id=comment.user.id %}"><span><i class="fa fa-user"
+                            aria-hidden="true"></i> {{comment.user}}</span></a>
+                {% else %}
+                <span><i class="fa fa-user" aria-hidden="true"></i> عضو لم يعد موجود</span>
+                {% endif %}
+                <p>{{ comment.content }}</p>
+                <div class="">
+                    <span class="w3-tag w3-round-large w3-red w3-center w3-small"><i class="fa fa-reply"
+                            aria-hidden="true"></i>رد على</span>
+                    <a href="{{ comment.post.get_absolute_url }}" class="">{{ comment.post.title }}</a>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
     <div class="w3-col l1 w3-hide-small w3-hide-medium">&nbsp</div>

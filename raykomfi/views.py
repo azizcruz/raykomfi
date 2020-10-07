@@ -30,16 +30,8 @@ from pdb import set_trace
 
 
 def index(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all()[:10]
     latest_comments = Comment.objects.all().order_by('-created')
-    page = request.GET.get('page', 1)
-    paginator = Paginator(posts, 20)
-    try:
-        posts = paginator.page(page)
-    except PageNotAnInteger:
-        posts = paginator.page(1)
-    except EmptyPage:
-        posts = paginator.page(paginator.num_pages)
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments})
 
 

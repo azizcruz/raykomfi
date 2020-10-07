@@ -9,18 +9,33 @@
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-flat.css">
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-teal.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-<link rel="stylesheet" type="text/css" href="https://www.fontstatic.com/f=tanseek" />
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="{% static 'css/style.css'  %}">
 <style>
 
 </style>
 
-<body>
-
+<body class="scrollbar-outer">
+    <div id="overlay" class="w3-display-container">
+        <div class="w3-display-middle">
+            <div class="sk-cube-grid">
+                <div class="sk-cube sk-cube1"></div>
+                <div class="sk-cube sk-cube2"></div>
+                <div class="sk-cube sk-cube3"></div>
+                <div class="sk-cube sk-cube4"></div>
+                <div class="sk-cube sk-cube5"></div>
+                <div class="sk-cube sk-cube6"></div>
+                <div class="sk-cube sk-cube7"></div>
+                <div class="sk-cube sk-cube8"></div>
+                <div class="sk-cube sk-cube9"></div>
+            </div>
+        </div>
+    </div>
     <nav class="w3-sidebar w3-bar-block w3-collapse w3-card" id="mySidebar">
         <a href="/"><img src="{% static 'img/raykomfi.png' %}" class="logo"></a>
         <a class="w3-bar-item w3-large" href="#">
+            <input type="hidden" name="" id="csrf_token" value="{{ csrf_token }}">
             {% if user.is_authenticated %}
             <h3 class="w3-center">مرحبا {{user.username}}</h3>
             {% endif %}
@@ -77,7 +92,7 @@
             </div>
         </header>
 
-        <div class="w3-container raykomfi-content">
+        <div class="raykomfi-content" id="my-scrollbar">
             {% if messages %}
             {% for message in messages %}
             <div class="w3-display-container w3-panel w3-{{message.tags}} message-wrapper">
@@ -95,10 +110,11 @@
         </footer> -->
 
     </div>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-    <script src="{% static 'js/infinite.min.js' %}"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="{% static 'js/loadmore.js' %}"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
 </body>
 

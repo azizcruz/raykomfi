@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="w3-row raykomfi-main-padding w3-round-large raykomfi-max-width">
-    <div class="w3-col s12 m4 l4">
+    <div class="w3-col s12 m4 l4 w3-hide-small">
         <h4>إستفسارات مشابهة</h4>
         <div class="related-posts w3-border w3-padding-16 w3-white">
             <div class="w3-row">
@@ -194,6 +194,29 @@
             </div>
         </div>
     </div>
-</div>
+    <div class="w3-col s12 m4 l4 w3-hide-medium w3-hide-large">
+        <h4>إستفسارات مشابهة</h4>
+        <div class="related-posts w3-border w3-padding-16 w3-white">
+            <div class="w3-row">
+                <div class="w3-mobile">
+                    {% for related_post in related_posts %}
+                    <div class="w3-margin">
+                        <a href="{{ related_post.get_absolute_url }}">
 
-{% endblock content %}
+                            {% if related_post.creator and related_post.creator.is_active != False %}
+                            <span class="w3-round-small w3-right">
+                                {{related_post.creator}}
+                            </span>
+                            {% else %}
+                            <span class="w3-round-small w3-right">عضو لم يعد مسجل</span>
+                            {% endif %}
+
+                            &nbsp; <span class="raykomfi-color">{{related_post.title}}</span></a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock content %}
