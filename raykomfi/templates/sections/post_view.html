@@ -78,91 +78,94 @@
             <div class="w3-mobile w3-container reply-buttons">
                 <hr>
                 <h3>الاراء</h3>
-                {% if post.comments.all|length > 0 %}
-                {% for comment in post.comments.all %}
-                <div class="w3-row comment-wrapper w3-border w3-padding w3-round-large">
-                    <div class="w3-col s10 m11 l11">
-                        <div class="comment-side">
-                            {% if comment.user and reply.user.is_active != False %}
-                            <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}" class="writer-name">
-                                <div class="name">
-                                    <i class="fa fa-user" aria-hidden="true"></i>
-                                    {{comment.user.username}}
-                                </div>
-                            </a>
-                            {% else %}
-                            <div class="name">
-                                <i class="fa fa-user" aria-hidden="true"></i>
-                                عضو لم يعد مسجل
-                            </div>
-                            {% endif %}
-                            <small><i class="fa fa-clock-o" aria-hidden="true"></i>
-                                {{comment.created | naturaltime}}</small>
-                            <div class="comment">{{ comment.content }}</div>
-                        </div>
-                        <hr>
-                        {% if comment.replies.all|length > 0 %}
-                        <div class="comment-reply-side w3-padding w3-round-large">
-                            {% for reply in comment.replies.all %}
-                            <div class="w3-panel" id="to-{{reply.id}}">
-                                {% if reply.user and reply.user.is_active != False %}
-                                <a href="{% url 'raykomfi:user-profile' id=reply.user.id %}" class="writer-name">
-                                    <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
-                                        {{reply.user.username}}
+                <div id="posts-wrapper">
+                    {% if post.comments.all|length > 0 %}
+                    {% for comment in post.comments.all %}
+                    <div class="w3-row comment-wrapper w3-border w3-padding w3-round-large">
+                        <div class="w3-col s10 m11 l11">
+                            <div class="comment-side">
+                                {% if comment.user and reply.user.is_active != False %}
+                                <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}" class="writer-name">
+                                    <div class="name">
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                        {{comment.user.username}}
                                     </div>
                                 </a>
                                 {% else %}
-                                <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
+                                <div class="name">
+                                    <i class="fa fa-user" aria-hidden="true"></i>
                                     عضو لم يعد مسجل
                                 </div>
                                 {% endif %}
                                 <small><i class="fa fa-clock-o" aria-hidden="true"></i>
-                                    {{reply.created | naturaltime}}</small>
-                                <div class="comment">{{ reply.content }}</div>
+                                    {{comment.created | naturaltime}}</small>
+                                <div class="comment">{{ comment.content }}</div>
                             </div>
                             <hr>
-                            {% endfor %}
-                            {% if user.email_active %}
-                            <form action="{% url 'raykomfi:post-reply' post_id=post.id comment_id=comment.id  %}"
-                                method='post'>
-                                {% csrf_token %}
-                                {{ reply_form }}
-                                <div class="col s12">
-                                    <button type='submit' class='w3-button w3-round-large'> اضافة رد</button>
+                            {% if comment.replies.all|length > 0 %}
+                            <div class="comment-reply-side w3-padding w3-round-large">
+                                {% for reply in comment.replies.all %}
+                                <div class="w3-panel" id="to-{{reply.id}}">
+                                    {% if reply.user and reply.user.is_active != False %}
+                                    <a href="{% url 'raykomfi:user-profile' id=reply.user.id %}" class="writer-name">
+                                        <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
+                                            {{reply.user.username}}
+                                        </div>
+                                    </a>
+                                    {% else %}
+                                    <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
+                                        عضو لم يعد مسجل
+                                    </div>
+                                    {% endif %}
+                                    <small><i class="fa fa-clock-o" aria-hidden="true"></i>
+                                        {{reply.created | naturaltime}}</small>
+                                    <div class="comment">{{ reply.content }}</div>
                                 </div>
-                            </form>
+                                <hr>
+                                {% endfor %}
+                                {% if user.email_active %}
+                                <form action="{% url 'raykomfi:post-reply' post_id=post.id comment_id=comment.id  %}"
+                                    method='post'>
+                                    {% csrf_token %}
+                                    {{ reply_form }}
+                                    <div class="col s12">
+                                        <button type='submit' class='w3-button w3-round-large'> اضافة رد</button>
+                                    </div>
+                                </form>
+                                {% endif %}
+                            </div>
                             {% endif %}
                         </div>
-                        {% endif %}
-                    </div>
-                    <div class="w3-col s2 m1 l1 w3-center vote-side">
-                        <div>
-                            <form action="{% url 'raykomfi:post-comment-vote' comment_id=comment.id %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="vote" value="like">
-                                <button type="submit" onclick="return 0" {% if user in comment.voted_like.all %}
-                                    disabled {% endif %}><i class="fa fa-thumbs-up w3-large"
-                                        aria-hidden="true"></i></button>
-                            </form>
+                        <div class="w3-col s2 m1 l1 w3-center vote-side">
+                            <div>
+                                <form action="{% url 'raykomfi:post-comment-vote' comment_id=comment.id %}"
+                                    method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="vote" value="like">
+                                    <button type="submit" onclick="return 0" {% if user in comment.voted_like.all %}
+                                        disabled {% endif %}><i class="fa fa-thumbs-up w3-large"
+                                            aria-hidden="true"></i></button>
+                                </form>
+                            </div>
+                            <div>{{comment.votes}}</div>
+                            <div>
+                                <form action="{% url 'raykomfi:post-comment-vote' comment_id=comment.id %}"
+                                    method="post" id="location-{{comment.id}}-dislike">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="comment-location" value="{{comment.id}}-dislike">
+                                    <input type="hidden" name="vote" value="dislike">
+                                    <button type="submit" onclick="return 0" {% if user in comment.voted_dislike.all %}
+                                        disabled {% endif %}><i class="fa fa-thumbs-down w3-large"
+                                            aria-hidden="true"></i></button>
+                                </form>
+                            </div>
                         </div>
-                        <div>{{comment.votes}}</div>
-                        <div>
-                            <form action="{% url 'raykomfi:post-comment-vote' comment_id=comment.id %}" method="post"
-                                id="location-{{comment.id}}-dislike">
-                                {% csrf_token %}
-                                <input type="hidden" name="comment-location" value="{{comment.id}}-dislike">
-                                <input type="hidden" name="vote" id="" value="dislike">
-                                <button type="submit" onclick="return 0" {% if user in comment.voted_dislike.all %}
-                                    disabled {% endif %}><i class="fa fa-thumbs-down w3-large"
-                                        aria-hidden="true"></i></button>
-                            </form>
-                        </div>
                     </div>
+                    {% endfor %}
+                    {% else %}
+                    <p>لا يوجد رأي حتى الان, كن أول شخص يعطي رأيه</p>
+                    {% endif %}
                 </div>
-                {% endfor %}
-                {% else %}
-                <p>لا يوجد رأي حتى الان, كن أول شخص يعطي رأيه</p>
-                {% endif %}
             </div>
             <div class="w3-mobile w3-container comment-button">
                 <h3>اضافة تعليق</h3>
@@ -177,13 +180,17 @@
                 {% else %}
 
                 {% if user.email_active %}
-                <form action="{% url 'raykomfi:post-comment' post_id=post.id %}" method='post'>
-                    {% csrf_token %}
-                    {{ comment_form }}
-                    <div class="col s12">
-                        <button type='submit' class='w3-button w3-round-large'> اضافة تعليق</button>
-                    </div>
-                </form>
+                <div id="comment">
+                    <form v-on:submit.prevent="submitForm">
+                        <input type="hidden" id="post_id" value={{post.id}}>
+                        <textarea cols="40" rows="10" class="w3-input w3-border  w3-round-large" id="id_content"
+                            v-model="comment_content"></textarea>
+                        <div class="col s12">
+                            <button class='w3-button w3-round-large'>
+                                اضافة تعليق</button>
+                        </div>
+                    </form>
+                </div>
                 {% else %}
                 <div class="w3-display-container w3-panel w3-border message-wrapper w3-pale-yellow">
                     <p class="w3-center">فعل حسابك للمشاركة في التعليقات</p>
