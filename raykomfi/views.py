@@ -24,6 +24,7 @@ from django.db.models import Q
 from random import sample
 from django.urls import NoReverseMatch
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import OuterRef, Subquery, Prefetch
 
 
 from pdb import set_trace
@@ -31,7 +32,7 @@ from pdb import set_trace
 
 def index(request):
     posts = Post.objects.all()[:10]
-    latest_comments = Comment.objects.all().order_by('-created')
+    latest_comments = Comment.objects.all().order_by('-created')[:7]
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments})
 
 
@@ -156,7 +157,8 @@ def delete_user(request, id):
         return render(request, 'sections/are_you_sure.html')
 
 def post_view(request, id, slug):
-    post = Post.objects.prefetch_related('comments').prefetch_related('comments__replies').prefetch_related('comments__voted_like').prefetch_related('comments__voted_dislike').get(Q(id__exact=id) & Q(
+    subquery = Subquery(Comment.objects.filter(post__id=OuterRef('post__id')).values_list('id', flat=True)[:5])
+    post = Post.objects.prefetch_related(Prefetch('comments', queryset=Comment.objects.filter(id__in=subquery))).prefetch_related('comments__replies').get(Q(id__exact=id) & Q(
         slug__exact=slug))
     rand_ids = Post.objects.filter(category=post.category).values_list('id', flat=True)
     rand_ids = list(rand_ids)

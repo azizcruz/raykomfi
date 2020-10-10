@@ -48,6 +48,39 @@ class LazyPostsView(APIView):
         }
         return JsonResponse(output_data)
 
+class LazyCommentsView(APIView):
+    '''
+    Lazy load more posts
+    '''
+
+    queryset = Comment.objects.prefetch_related('comments__replies').all()
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, format=None):
+        page = request.POST.get('page')
+        serializer = serializers.LazyCommentsSerializer(data=request.data)
+        if serializer.is_valid():
+            comments = Comment.objects.prefetch_related('replies').filter(post__id=serializer.data['post_id'])
+            results_per_page = 5
+            paginator = Paginator(comments, results_per_page)
+            try:
+                comments = paginator.page(page)
+            except PageNotAnInteger:
+                comments = paginator.page(2)
+            except EmptyPage:
+                comments = paginator.page(paginator.num_pages)
+            comments_html = loader.render_to_string(
+                'comments.html',
+                {'comments': comments, 'user': request.user}
+            )
+            output_data = {
+                'comments_html': comments_html,
+                'has_next': comments.has_next()
+            }
+            return JsonResponse(output_data)
+        else:
+            return Response({'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
 class BestUsers(APIView):
     '''
     List Top Users

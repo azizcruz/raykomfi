@@ -1,0 +1,86 @@
+{% load thumbnail %}
+{% load humanize %}
+
+<p class="raykomfi-main-color w3-white-text w3-center"><i class="fa fa-chevron-down" aria-hidden="true"></i>
+    آخر تحديث بدأ من هنا <i class="fa fa-chevron-down" aria-hidden="true"></i>
+</p>
+{% for comment in comments %}
+<div class="w3-row comment-wrapper w3-border w3-padding w3-round-large">
+    <div class="w3-col s10 m11 l11">
+        <div class="comment-side">
+            {% if comment.user and reply.user.is_active != False %}
+            <a href="{% url 'raykomfi:user-profile' id=comment.post.creator.id %}" class="writer-name">
+                <div class="name">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    {{comment.user.username}}
+                </div>
+            </a>
+            {% else %}
+            <div class="name">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                عضو لم يعد مسجل
+            </div>
+            {% endif %}
+            <small><i class="fa fa-clock-o" aria-hidden="true"></i>
+                {{comment.created | naturaltime}}</small>
+            <div class="comment">{{ comment.content }}</div>
+        </div>
+        <hr>
+        {% if comment.replies.all|length > 0 %}
+        <div class="comment-reply-side w3-padding w3-round-large">
+            {% for reply in comment.replies.all %}
+            <div class="w3-panel" id="to-{{reply.id}}">
+                {% if reply.user and reply.user.is_active != False %}
+                <a href="{% url 'raykomfi:user-profile' id=reply.user.id %}" class="writer-name">
+                    <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
+                        {{reply.user.username}}
+                    </div>
+                </a>
+                {% else %}
+                <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
+                    عضو لم يعد مسجل
+                </div>
+                {% endif %}
+                <small><i class="fa fa-clock-o" aria-hidden="true"></i>
+                    {{reply.created | naturaltime}}</small>
+                <div class="comment">{{ reply.content }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if user.email_active %}
+        <div class="reply">
+            <form class="replyForm" data-comment-id="{{comment.id}}" data-post-id="{{post.id}}">
+                <textarea name="reply_content" cols="40" rows="1"
+                    class="w3-input w3-border  w3-round-large reply-textarea"
+                    id="id_reply_content-{{comment.id}}"></textarea>
+                <div class="col s12">
+                    <button class='w3-button w3-round-large' type="submit"> اضافة رد</button>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+    <div class="w3-col s2 m1 l1 w3-center vote-side">
+        <div>
+            <form action="{% url 'raykomfi:post-comment-vote' comment_id=comment.id %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="vote" value="like">
+                <button type="submit" onclick="return 0" {% if user in comment.voted_like.all %} disabled {% endif %}><i
+                        class="fa fa-thumbs-up w3-large" aria-hidden="true"></i></button>
+            </form>
+        </div>
+        <div>{{comment.votes}}</div>
+        <div>
+            <form action="{% url 'raykomfi:post-comment-vote' comment_id=comment.id %}" method="post"
+                id="location-{{comment.id}}-dislike">
+                {% csrf_token %}
+                <input type="hidden" name="comment-location" value="{{comment.id}}-dislike">
+                <input type="hidden" name="vote" value="dislike">
+                <button type="submit" onclick="return 0" {% if user in comment.voted_dislike.all %} disabled
+                    {% endif %}><i class="fa fa-thumbs-down w3-large" aria-hidden="true"></i></button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}

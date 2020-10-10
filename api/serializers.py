@@ -7,6 +7,15 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username']
 
+class LazyCommentsSerializer(serializers.ModelSerializer):
+    page = serializers.CharField()
+    csrfmiddlewaretoken = serializers.CharField()
+    post_id = serializers.CharField()
+    class Meta:
+        model = Comment
+        fields = ['post_id', 'page', 'csrfmiddlewaretoken']
+        read_only_fields = ['post_id', 'page', 'csrfmiddlewaretoken']
+
 class CommentSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     class Meta:
