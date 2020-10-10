@@ -92,7 +92,7 @@
             </div>
         </header>
 
-        <div class="raykomfi-content" id="my-scrollbar">
+        <div class="raykomfi-content">
             {% if messages %}
             {% for message in messages %}
             <div class="w3-display-container w3-panel w3-{{message.tags}} message-wrapper">
@@ -119,6 +119,7 @@
     <script src="{% static 'js/loadmore.js' %}"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
     <script src="{% static 'js/vueControllers.js' %}"></script>
+    <script src="{% static 'js/controllers.js' %}"></script>
 </body>
 
 </html>

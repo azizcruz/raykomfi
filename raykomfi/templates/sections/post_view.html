@@ -121,18 +121,19 @@
                                         {{reply.created | naturaltime}}</small>
                                     <div class="comment">{{ reply.content }}</div>
                                 </div>
-                                <hr>
                                 {% endfor %}
-                                {% if user.email_active %}
-                                <form action="{% url 'raykomfi:post-reply' post_id=post.id comment_id=comment.id  %}"
-                                    method='post'>
-                                    {% csrf_token %}
-                                    {{ reply_form }}
+                            </div>
+                            {% endif %}
+                            {% if user.email_active %}
+                            <div class="reply">
+                                <form class="replyForm" data-comment-id="{{comment.id}}" data-post-id="{{post.id}}">
+                                    <textarea name="reply_content" cols="40" rows="1"
+                                        class="w3-input w3-border  w3-round-large reply-textarea"
+                                        id="id_reply_content-{{comment.id}}"></textarea>
                                     <div class="col s12">
-                                        <button type='submit' class='w3-button w3-round-large'> اضافة رد</button>
+                                        <button class='w3-button w3-round-large' type="submit"> اضافة رد</button>
                                     </div>
                                 </form>
-                                {% endif %}
                             </div>
                             {% endif %}
                         </div>
@@ -181,9 +182,9 @@
 
                 {% if user.email_active %}
                 <div id="comment">
-                    <form v-on:submit.prevent="submitForm">
+                    <form v-on:submit.prevent="addComment">
                         <input type="hidden" id="post_id" value={{post.id}}>
-                        <textarea cols="40" rows="10" class="w3-input w3-border  w3-round-large" id="id_content"
+                        <textarea cols="40" rows="10" class="w3-input w3-border  w3-round-large"
                             v-model="comment_content"></textarea>
                         <div class="col s12">
                             <button class='w3-button w3-round-large'>

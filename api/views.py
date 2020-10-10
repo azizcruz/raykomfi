@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from raykomfi.models import Comment, User, Post
+from raykomfi.models import Comment, User, Post, Reply
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -70,20 +70,53 @@ class CommentsView(APIView):
     def post(self, request):
         serializer = serializers.CommentAddSerializer(data=request.data)
         if serializer.is_valid():
-            post = Post.objects.prefetch_related(
+            try:
+                post = Post.objects.prefetch_related(
+                    'comments').prefetch_related('comments__replies').get(id__exact=serializer.data['post_id'])
+                comment = Comment.objects.create(
+                content=serializer.data['content'], user=request.user, post=post)
+                comment = Comment.objects.get(id=comment.id)
+                referesh_post_view_html = loader.render_to_string(
+                'referesh_post_view.html',
+                {'post': comment.post, 'user': request.user})
+
+                output_data = {
+                    'view': referesh_post_view_html,
+                    'message': 'success'
+                }
+
+                return JsonResponse(output_data)
+            except (Comment.DoesNotExist, Post.DoesNotExist):
+                return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+class RepliesView(APIView):
+    '''
+    Add Reply
+    '''
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        serializer = serializers.ReplyAddSerializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                post = Post.objects.prefetch_related(
                 'comments').prefetch_related('comments__replies').get(id__exact=serializer.data['post_id'])
-            comment = Comment.objects.create(
-            content=serializer.data['content'], user=request.user, post=post)
-            comment = Comment.objects.get(id=comment.id)
-            referesh_post_view_html = loader.render_to_string(
-            'referesh_post_view.html',
-            {'post': comment.post, 'user': request.user})
+                comment = Comment.objects.get(id=serializer.data['comment_id'])
+                reply = Reply.objects.create(content=serializer.data['content'], comment=comment, user=request.user)
+                comment.replies.add(reply)
+                comment.save()
+                post = Post.objects.prefetch_related(
+                'comments').prefetch_related('comments__replies').get(id__exact=serializer.data['post_id'])
+                referesh_post_view_html = loader.render_to_string('referesh_post_view.html', {'post': post, 'user': request.user})
+                output_data = {
+                    'view': referesh_post_view_html,
+                    'message': 'success'
+                }
 
-            output_data = {
-                'view': referesh_post_view_html,
-                'message': 'success'
-            }
-
-            return JsonResponse(output_data)
+                return JsonResponse(output_data)
+            except (Comment.DoesNotExist, Post.DoesNotExist):
+                return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
