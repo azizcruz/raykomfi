@@ -72,7 +72,7 @@ class Post(models.Model):
         max_length=200, db_index=True, null=True, blank=True)
     image = ImageField(
         upload_to='post_images', verbose_name='صورة', default=None, null=True, blank=True)
-    content = models.TextField(verbose_name='نبذة عن الموضوع', max_length=144)
+    content = models.TextField(verbose_name='نبذة عن الموضوع', max_length=144, blank=True)
     isActive = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -153,7 +153,7 @@ class Message(models.Model):
         User, related_name='sent_messages', verbose_name='صاحب النعليق', on_delete=models.CASCADE)
     receiver = models.ForeignKey(
         User, related_name='my_messages', verbose_name='المستقبل', on_delete=models.CASCADE)
-    title = models.CharField(max_length=120, verbose_name='عنوان الرسالة', null=True, default=None)
+    title = models.CharField(max_length=300, verbose_name='عنوان الرسالة', null=True, default=None)
     content = models.TextField(verbose_name='محتوى الرسالة')
     is_read = models.BooleanField(default=False)
     created = models.DateTimeField(

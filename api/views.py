@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from raykomfi.models import Comment, User, Post, Reply
+from raykomfi.models import Comment, User, Post, Reply, Message
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -150,6 +150,33 @@ class RepliesView(APIView):
 
                 return JsonResponse(output_data)
             except (Comment.DoesNotExist, Post.DoesNotExist):
+                return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+class GetMessageView(APIView):
+    '''
+    Get Message
+    '''
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        serializer = serializers.GetMessageSerializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                fetched_message = Message.objects.prefetch_related(
+                'receiver').get(id__exact=serializer.data['message_id'])
+                fetched_message.is_read = True
+                fetched_message.save()
+                messages = Message.objects.filter(receiver__exact=request.user.id)
+                referesh_message_view_html = loader.render_to_string('messages.html', {'fetched_message': fetched_message, 'user': request.user, 'user_messages': messages})
+                output_data = {
+                    'view': referesh_message_view_html,
+                    'message': 'success'
+                }
+
+                return JsonResponse(output_data)
+            except Message.DoesNotExist:
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)

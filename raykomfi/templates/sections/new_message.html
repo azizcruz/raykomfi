@@ -2,8 +2,18 @@
 
 {% block content %}
 
-<div class="row raykomfi-main-padding w3-round-large raykomfi-max-width">
-    <div class="w3-col s12 m6 l6">&nbsp;</div>
+<div class="w3-row-padding raykomfi-main-padding w3-round-large raykomfi-max-width">
+    <div class="w3-col s12 m6 l6 w3-white w3-padding message-view-preview">
+        <h3 class="w3-center">مراجعة الرسالة</h3>
+        <div class="message-sender">
+            <span>المرسل</span>
+            <span id="message-sender-field">{{ request.user.username }}</a></span>
+        </div>
+        <hr />
+        <div class="message-content">
+            <span id="message-preview"></span>
+        </div>
+    </div>
     <div class="w3-col s12 m6 l6">
         <h3 class="w3-center">إرسال رسالة الى {{ receiver.username }}</h3>
         <form action="{% url 'raykomfi:new-message' code=receiver.uuid %}" method='post'>

@@ -1,22 +1,19 @@
 {% extends "base.html" %} {% block content %}
 
-<div class="w3-row-padding raykomfi-main-padding w3-round-large raykomfi-max-width">
+<div class="w3-row-padding raykomfi-main-padding w3-round-large raykomfi-max-width w3-white" id="messages-view">
   {% if user.email_active %}
   <div class="w3-col s12 m12 l6">
-    <div class="w3-border w3-padding message-view">
+    <div class="w3-padding message-view">
       <h3 class="w3-center">عرض رسالة</h3>
       {% if fetched_message %}
 
       <div class="message-sender">
         <span>المرسل</span>
-        <span>
-          <a href="{% url 'raykomfi:user-profile' id=fetched_message.user.id %}"
-            >{{ fetched_message.user }}</a
-          ></span
-        >
+        <span id="message-sender-field">
+          <a href="{% url 'raykomfi:user-profile' id=fetched_message.user.id %}">{{ fetched_message.user }}</a></span>
       </div>
       <hr />
-      <div class="message-content">
+      <div class="message-content" id="message-content-field">
         <span>{{ fetched_message.content }}</span>
       </div>
       {% else %} لم تعرض أي رسالة {% endif %}
@@ -25,17 +22,11 @@
   <div class="w3-col s12 m12 l6">
     <h3>الرسائل الواردة</h3>
     <div class="incoming-messages-wrapper">
-      {% if user_messages %} {% for message in user_messages %}
-      <form
-        action="{% url 'raykomfi:get-message' user_id=user.id message_id=message.id %}"
-        method="post"
-      >
-        {% csrf_token %}
-        <input type="hidden" name="message_id" />
-        <button
-          type="submit"
-          class="w3-card w3-padding message-button w3-round-large {{ message.is_read|yesno:'opened, ' }}"
-        >
+      {% if user_messages %}
+      {% for message in user_messages %}
+      <form class="getMessageForm" data-message-id="{{ message.id }}">
+        <button type="submit"
+          class="w3-card w3-padding message-button w3-round-large {{ message.is_read|yesno:'opened, ' }}">
           {% if message.is_read %}
           <i class="fa fa-envelope-open w3-left" aria-hidden="true"></i>
           {% else %}
@@ -45,16 +36,15 @@
           <div class="clear-fix"></div>
         </button>
       </form>
-      {% endfor %} {% else %}
+      {% endfor %}
+      {% else %}
       <p class="w3-center">لا يوجد لديك أي رسائل واردة</p>
       {% endif %}
     </div>
   </div>
 
   {% else %}
-  <div
-    class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper"
-  >
+  <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
     <p class="w3-center">فعل حسابك لفتح الرسائل</p>
   </div>
 </div>

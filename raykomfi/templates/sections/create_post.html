@@ -7,7 +7,7 @@
     <div class="w3-col s12 m6 l6">&nbsp;</div>
     <div class="w3-col s12 m6 l6">
         <h3 class="w3-center">إستفسار جديد</h3>
-        <form action="{% url 'raykomfi:post-new' %}" enctype="multipart/form-data" method='post'>
+        <form action="{% url 'raykomfi:post-new' %}" enctype="multipart/form-data" method='post' id="create-post-form">
             {% csrf_token %}
             {{ form }}
             <button class="w3-button raykomfi-button w3-round-large">تأكيد</button>

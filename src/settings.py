@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'sorl.thumbnail', 
     'rest_framework',
     'corsheaders',
+    'parsley',
 ]
 
 MIDDLEWARE = [
@@ -62,9 +63,8 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'raykomfi.custom_middlewares.AutoLogout', 
-    'raykomfi.custom_middlewares.OnlineNowMiddleware', 
-]
+    'raykomfi.custom_middlewares.AutoLogout',
+    ]
 
 ROOT_URLCONF = 'src.urls'
 

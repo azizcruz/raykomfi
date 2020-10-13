@@ -483,6 +483,16 @@ select:focus {
 
 /* Post View Style */
 
+/* Parcely Validator Styles */
+.parsley-errors-list.filled {
+  color: #c62828;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 10px;
+}
+/* Parcely Validator Styles */
+
 /* Profile Style */
 .profile-view-data span {
   display: inline-block;
@@ -502,15 +512,23 @@ select:focus {
 
 .message-view {
   min-height: 500px;
+  max-height: 500px;
   min-width: 100%;
   max-width: 400px;
+  overflow-y: scroll;
+  border-right: 1px solid #2196f3;
+}
+
+.message-view-preview {
+  min-height: 500px;
+  max-height: 500px;
   overflow-y: scroll;
 }
 
 .message-button {
   display: block;
   width: 100%;
-  background-color: #2196f3;
+  background-color: #eee;
   margin: 10px 0;
   border: 1px solid #000;
   transition: background-color 0.2s ease-in-out;
@@ -521,15 +539,16 @@ select:focus {
 }
 
 .message-button.opened {
-  background-color: #2196f3;
+  background-color: beige;
 }
 
 .message-button.opened:hover {
-  background-color: #2196f3;
+  background-color: beige;
 }
 
 .message-view .message-sender span:nth-child(1) {
   width: 50px;
+  margin-left: 10px;
   display: inline-block;
 }
 
@@ -708,6 +727,28 @@ select:focus {
 }
 /* Spinner Style */
 
+/* Custom Scrollbar */
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #2196f3;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #186bae;
+}
+/* Custom Scrollbar */
+
 /* 100% Image Width on Smaller Screens */
 @media only screen and (max-width: 700px) {
   .large-font {
@@ -718,6 +759,12 @@ select:focus {
   }
   .raykomfi-content {
     padding: 32px 0 !important;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  .message-view {
+    border: none;
   }
 }
 

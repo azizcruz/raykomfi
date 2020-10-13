@@ -80,17 +80,6 @@ $("#modalImage").on("click", function (event) {
   event.stopPropagation();
 });
 
-// Smooth scroll to hash
-$(function () {
-  $("html, body").animate(
-    {
-      scrollTop: $(window.location.hash).offset().top,
-    },
-    1000
-  );
-  return false;
-});
-
 // Page loading
 $("html").addClass("hide-overflow");
 $(window).on("load", function () {
@@ -107,3 +96,11 @@ $(document)
   .ajaxStop(function () {
     $loading.hide();
   });
+
+// New message preview
+$("#new-message-content").on("keyup", (e) => {
+  let content = e.target.value;
+  let converter = new showdown.Converter();
+  content = converter.makeHtml(content);
+  $("#message-preview").html(content);
+});

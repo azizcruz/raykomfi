@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="w3-col s12 m6 l6">
-        <form action="{% url 'raykomfi:user-profile' id=user.id %}" method='post'>
+        <form action="{% url 'raykomfi:user-profile' id=user.id %}" id="profile-form" method='post'>
             {% csrf_token %}
             {{ form }}
             <button class="w3-button raykomfi-button w3-round-large">تعديل</button>

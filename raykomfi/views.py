@@ -91,7 +91,7 @@ def sign_in_view(request):
     else:
         if request.user.is_anonymous and 'next' in request.GET:
             messages.success(
-                request, 'يجب عليك تسجيل الدخول اولا', extra_tags='pale-yellow w3-border')
+                request, 'يجب عليك تسجيل الدخول أولا', extra_tags='pale-yellow w3-border')
         if request.user.is_authenticated:
             messages.success(
                 request, 'أنت مسجل الدخول بالفعل', extra_tags='pale-green w3-border')
@@ -211,7 +211,7 @@ def create_post(request):
         form = NewPostForm(use_required_attribute=False)
         return render(request, 'sections/create_post.html', context={'form': form})
 
-
+@login_required
 def change_password_view(request):
     if request.method == 'POST':
         form = CustomChangePasswordForm(

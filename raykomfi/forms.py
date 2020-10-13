@@ -10,7 +10,9 @@ from django.utils.safestring import mark_safe
 from django import forms
 from sorl.thumbnail import ImageField
 from django.contrib.auth import password_validation
+from parsley.decorators import parsleyfy
 
+@parsleyfy
 class SignupForm(UserCreationForm):
     username = forms.CharField(widget=forms.TextInput())
     first_name = forms.CharField(required=False, widget=forms.TextInput())
@@ -19,14 +21,36 @@ class SignupForm(UserCreationForm):
                               widget=forms.TextInput())
     bio = forms.CharField(required=False, max_length=144,
                           widget=forms.Textarea())
-    email = forms.CharField(label='', validators=[validate_email], widget=forms.TextInput(), error_messages={
-        'unique': _("الايميل موجود مسبقا")
+    email = forms.EmailField(label='', validators=[validate_email], widget=forms.TextInput(), error_messages={
+        'unique': _("البريد الإلكتروني موجود مسبقا"),
+        'invalid': _("بريد إلكتروني غير صالح"),
+
     })
     password1 = forms.CharField(label='', widget=forms.PasswordInput())
-    password2 = forms.CharField(label='', widget=forms.PasswordInput())
+    password2 = forms.CharField(label='', widget=forms.PasswordInput(), error_messages={
+        'password_mismatch': _("كلمات المرور غير متطابقة"),
+
+    })
 
     class Meta:
         model = User
+        parsley_extras = {
+            'username': {
+                'pattern': '^(?=.*[a-zA-Z0-9])\w{6,}$',
+                'pattern-message': 'إسم المستخدم يجب أن يكون على الأقل 6 أحرف و باللغة الإنجليزية',
+            },
+            'password1': {
+                'pattern': '^(?=.*[a-zA-Z])(?=\w*[0-9])\w{8,}$',
+                'pattern-message': 'كلمة المرور يجب أن تكون على الأقل 8 أحرف وأرقام و بالأحرف الاتينية',
+            },
+            'password2': {
+                'equalto': "password1",
+                'equalto-message': "كلمات المرور غير متطابقة",
+            },
+             'bio': {
+                'maxlength-message': "تعديت الحد المسموح",
+            },
+        }
         fields = ('username', 'password1', 'password2',
                   'email', 'first_name', 'last_name', 'country', 'bio', )
 
@@ -68,7 +92,7 @@ class SignupForm(UserCreationForm):
                 self.fields[fieldname].label = 'تأكيد كلمة المرور'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
 
-
+@parsleyfy
 class ProfileForm(forms.ModelForm):
     username = forms.CharField(label='', widget=forms.TextInput())
     first_name = forms.CharField(
@@ -79,13 +103,22 @@ class ProfileForm(forms.ModelForm):
                               widget=forms.TextInput())
     bio = forms.CharField(label='', required=False,
                           max_length=144, widget=forms.Textarea())
-    email = forms.CharField(label='', validators=[validate_email], widget=forms.TextInput(
-        attrs={'placeholder': 'ايميل'}), error_messages={
-        'unique': _("الايميل موجود مسبقا")
+    email = forms.EmailField(label='', validators=[validate_email], widget=forms.TextInput(), error_messages={
+        'unique': _("البريد الإلكتروني موجود مسبقا"),
+        'invalid': _("بريد إلكتروني غير صالح"),
     })
 
     class Meta:
         model = User
+        parsley_extras = {
+            'username': {
+                'pattern': '^(?=.*[a-zA-Z0-9])\w{6,}$',
+                'pattern-message': 'إسم المستخدم يجب أن يكون على الأقل 6 أحرف و باللغة الإنجليزية',
+            },
+            'bio': {
+                'maxlength-message': "تعديت الحد المسموح",
+            },
+        }
         fields = ('username', 'email', 'first_name',
                   'last_name', 'country', 'bio', )
 
@@ -119,7 +152,7 @@ class ProfileForm(forms.ModelForm):
                 self.fields[fieldname].label = 'نبذة عنك'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
 
-
+@parsleyfy
 class SigninForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput())
     password = forms.CharField(widget=forms.PasswordInput())
@@ -127,6 +160,11 @@ class SigninForm(forms.Form):
 
     class Meta:
         model = User
+        parsley_extras = {
+            'stay_logged_in': {
+                'required': 'false',
+            },
+        }
         fields = ('username', 'password',)
 
     def __init__(self, *args, **kwargs):
@@ -146,7 +184,7 @@ class SigninForm(forms.Form):
                 self.fields[fieldname].label = 'البقاء متصلا'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-check raykomfi-margin-small w3-border'
 
-
+@parsleyfy
 class CustomPasswordResetForm(PasswordResetForm):
     def __init__(self, *args, **kwargs):
         super(CustomPasswordResetForm, self).__init__(*args, **kwargs)
@@ -157,7 +195,7 @@ class CustomPasswordResetForm(PasswordResetForm):
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
                 self.fields[fieldname].label = 'بريد الكتروني'
 
-
+@parsleyfy
 class NewPostForm(forms.ModelForm):
 
     class Meta:
@@ -200,8 +238,21 @@ class NewPostForm(forms.ModelForm):
 
         return image
 
-
+@parsleyfy
 class CustomChangePasswordForm(PasswordChangeForm):
+
+    class Meta:
+
+        parsley_extras = {
+                'new_password1': {
+                    'pattern': '^(?=.*[a-zA-Z])(?=\w*[0-9])\w{8,}$',
+                    'pattern-message': 'كلمة المرور يجب أن تكون على الأقل 8 أحرف وأرقام و بالأحرف الاتينية',
+                },
+                'new_password2': {
+                    'equalto': "new_password1",
+                    'equalto-message': "كلمات المرور غير متطابقة",
+                },
+            }   
 
     def __init__(self, *args, **kwargs):
         super(CustomChangePasswordForm, self).__init__(*args, **kwargs)
@@ -234,6 +285,7 @@ class CommentForm(forms.ModelForm):
         for fieldname in ['content']:
 
             if fieldname == 'content':
+                self.fields[fieldname].widget.attrs['rows'] = 3
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
                 self.fields[fieldname].label = ''
                 self.fields[fieldname].required = True
@@ -251,7 +303,7 @@ class ReplyForm(forms.ModelForm):
         for fieldname in ['content']:
 
             if fieldname == 'content':
-                self.fields[fieldname].widget.attrs['rows'] = 1
+                self.fields[fieldname].widget.attrs['rows'] = 2
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
                 self.fields[fieldname].label = ''
                 self.fields[fieldname].required = True
@@ -271,9 +323,11 @@ class MessageForm(forms.ModelForm):
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].required = True
             if fieldname == 'content':
-                self.fields[fieldname].widget.attrs['rows'] = 3
+                self.fields[fieldname].widget.attrs['rows'] = 10
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].widget.attrs['id'] = 'new-message-content'
+                self.fields[fieldname].help_text = 'مسموح 300 حرف فقط'
                 self.fields[fieldname].required = True
 
 class RestorePasswordForm(forms.Form):

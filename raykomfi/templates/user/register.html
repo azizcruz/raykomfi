@@ -6,11 +6,11 @@
     <div class="w3-col s12 m6 l6">&nbsp;</div>
     <div class="w3-col s12 m6 l6">
         <h3 class="w3-center">حساب جديد</h3>
-        <form action="{% url 'raykomfi:user-register' %}" method='post'>
+        <form action="{% url 'raykomfi:user-register' %}" method='post' id="raykomfi-register-form">
             {% csrf_token %}
             {{ form }}
             <div class="col s12">
-                <button class="w3-button raykomfi-button w3-round-large">تسجيل</button>
+                <button class="w3-button raykomfi-button w3-round-large" name="button">تسجيل</button>
             </div>
         </form>
     </div>

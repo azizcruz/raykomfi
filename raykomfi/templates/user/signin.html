@@ -6,14 +6,14 @@
     <div class="w3-col s12 m6 l6">&nbsp;</div>
     <div class="w3-col s12 m6 l6">
         <h3 class="w3-center ">تسجيل الدخول</h3>
-        <form action="{% url 'raykomfi:user-signin' %}" method='post'>
+        <form action="{% url 'raykomfi:user-signin' %}" method='post' id="signin-form">
             {% csrf_token %}
             {{ form }}
             <div class="col s12">
                 <p><a href="{% url 'raykomfi:user-forgot-password' %}" class="w3-text-blue">نسيت كلمة المرور؟</a></p>
                 <p><a href="{% url 'raykomfi:user-send-link' %}" class="w3-text-blue">طلب رابط تفعيل الحساب</a></p>
-                <button class="w3-button raykomfi-button w3-round-large">تسجيل دخول</button>
             </div>
+            <button class="w3-button raykomfi-button w3-round-large" name="button">تسجيل دخول</button>
         </form>
     </div>
 </div>
