@@ -24,8 +24,8 @@ class AutoLogout(object):
                     del request.session['last_touch']
                 except KeyError:
                     print('Error: Keyerror in middleware for auto logout')
-                else:
-                    request.session['last_touch'] = datetime.now().isoformat()
+            else:
+                request.session['last_touch'] = datetime.now().isoformat()
         except:
             request.session['last_touch'] = datetime.now().isoformat()
 

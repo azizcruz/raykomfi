@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import User, Post, Comment, Message, Reply
 from django_countries.fields import CountryField
 from django.core.exceptions import ValidationError
-from django.core.validators import validate_email
+from django.core.validators import validate_email, MinLengthValidator, MaxLengthValidator
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
 from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
@@ -11,10 +11,14 @@ from django import forms
 from sorl.thumbnail import ImageField
 from django.contrib.auth import password_validation
 from parsley.decorators import parsleyfy
+from django.core.validators import RegexValidator
+
+username_validator = RegexValidator(r"^(?=.*[a-zA-Z0-9])\w{6,}$", "إسم المستخدم يجب أن يكون على الأقل 6 أحرف و باللغة الإنجليزية")
+
 
 @parsleyfy
 class SignupForm(UserCreationForm):
-    username = forms.CharField(widget=forms.TextInput())
+    username = forms.CharField(validators=[MinLengthValidator(6), MaxLengthValidator(30), username_validator])
     first_name = forms.CharField(required=False, widget=forms.TextInput())
     last_name = forms.CharField(required=False, widget=forms.TextInput())
     country = forms.CharField(required=False,
@@ -87,6 +91,7 @@ class SignupForm(UserCreationForm):
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'كلمة المرور'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].help_text = '<ul><li>كلمة المرور لا يمكن أن تكون مشابهة للمعلومات الشخصية الأخرى.</li><li>كلمة المرور الخاصة بك يجب أن تتضمن 8 حروف على الأقل.</li><li>كلمة المرور لا يمكن أن تكون سهلة شائعة الاستخدام.</li><li>كلمة المرور لا يمكن أن تحتوي على أرقام فقط.</li></ul>'
             if fieldname == 'password2':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'تأكيد كلمة المرور'
@@ -94,7 +99,7 @@ class SignupForm(UserCreationForm):
 
 @parsleyfy
 class ProfileForm(forms.ModelForm):
-    username = forms.CharField(label='', widget=forms.TextInput())
+    username = forms.CharField(validators=[MinLengthValidator(6), MaxLengthValidator(30), username_validator])
     first_name = forms.CharField(
         label='', required=False, widget=forms.TextInput())
     last_name = forms.CharField(
@@ -186,6 +191,10 @@ class SigninForm(forms.Form):
 
 @parsleyfy
 class CustomPasswordResetForm(PasswordResetForm):
+    email = forms.EmailField(label='', validators=[validate_email], widget=forms.TextInput(), error_messages={
+        'invalid': _("بريد إلكتروني غير صالح"),
+    })
+
     def __init__(self, *args, **kwargs):
         super(CustomPasswordResetForm, self).__init__(*args, **kwargs)
 
@@ -272,7 +281,6 @@ class CustomChangePasswordForm(PasswordChangeForm):
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
                 self.fields[fieldname].label = 'تأكيد كلمة الجديدة'
 
-
 class CommentForm(forms.ModelForm):
 
     class Meta:
@@ -308,6 +316,7 @@ class ReplyForm(forms.ModelForm):
                 self.fields[fieldname].label = ''
                 self.fields[fieldname].required = True
 
+@parsleyfy
 class MessageForm(forms.ModelForm):
 
     class Meta:
@@ -330,9 +339,22 @@ class MessageForm(forms.ModelForm):
                 self.fields[fieldname].help_text = 'مسموح 300 حرف فقط'
                 self.fields[fieldname].required = True
 
+@parsleyfy
 class RestorePasswordForm(forms.Form):
     password1 = forms.CharField(widget=forms.PasswordInput(), validators=[password_validation.validate_password])
     password2 = forms.CharField(widget=forms.PasswordInput(), validators=[password_validation.validate_password])
+
+    class Meta:
+        parsley_extras = {
+                'password1': {
+                    'pattern': '^(?=.*[a-zA-Z])(?=\w*[0-9])\w{8,}$',
+                    'pattern-message': 'كلمة المرور يجب أن تكون على الأقل 8 أحرف وأرقام و بالأحرف الاتينية',
+                },
+                'password2': {
+                    'equalto': "password1",
+                    'equalto-message': "كلمات المرور غير متطابقة",
+                },
+            }  
 
     def __init__(self, *args, **kwargs):
         super(RestorePasswordForm, self).__init__(*args, **kwargs)

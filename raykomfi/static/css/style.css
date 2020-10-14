@@ -6,6 +6,20 @@
 */
 
 /* Main Style */
+html {
+  font-size: 16px;
+}
+@media screen and (min-width: 320px) {
+  html {
+    font-size: calc(16px + 6 * ((100vw - 320px) / 680));
+  }
+}
+@media screen and (min-width: 1000px) {
+  html {
+    font-size: 22px;
+  }
+}
+
 body {
   font-family: "Almarai", sans-serif;
   color: #484848;
@@ -81,9 +95,9 @@ small,
   height: auto;
 }
 
-small {
+/* small {
   font-size: 13px;
-}
+} */
 
 .raykomfi-margin-small {
   margin: 5px;
@@ -107,9 +121,9 @@ small {
   bottom: 3%;
 }
 
-div {
+/* div {
   font-size: 18px;
-}
+} */
 
 #myIntro {
   color: #fff !important;
@@ -119,10 +133,10 @@ div {
   clear: both;
 }
 
-p,
+/* p,
 .comment {
   font-size: 20px;
-}
+} */
 
 textarea {
   resize: none;
@@ -266,7 +280,7 @@ a {
   font-weight: 500;
   content: "\f063";
   padding-right: 5px;
-  font-size: 12px;
+  /* font-size: 12px; */
 }
 
 textarea:focus,
@@ -314,9 +328,9 @@ select:focus {
   color: #fff;
 }
 
-.ray-box .poster-name {
+/* .ray-box .poster-name {
   font-size: 22px;
-}
+} */
 
 .ray-box h3 {
   color: #2196f3 !important;
@@ -776,13 +790,13 @@ select:focus {
 
 /* 100% Image Width on Smaller Screens */
 @media only screen and (min-width: 320px) and (max-width: 420px) {
-  #myIntro {
+  /* #myIntro {
     font-size: 12px;
-  }
+  } */
 }
 
 @media only screen and (min-width: 425px) and (max-width: 430px) {
-  #myIntro {
+  /* #myIntro {
     font-size: 16px;
-  }
+  } */
 }
