@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'parsley',
+    'admin_auto_filters',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

@@ -63,9 +63,9 @@ class Category(models.Model):
 
 class Post(models.Model):
     creator = models.ForeignKey(
-        User, related_name='posts', verbose_name='الكاتب',  on_delete=models.SET_DEFAULT, default=None, null=True)
+        User, related_name='posts', verbose_name='الكاتب',  on_delete=models.SET_DEFAULT, default=None, null=True, db_index=True)
     category = models.ForeignKey(
-        Category, verbose_name='التصنيف', null=True, on_delete=models.SET_DEFAULT, default=None)
+        Category, verbose_name='التصنيف', null=True, on_delete=models.SET_DEFAULT, default=None, db_index=True)
     title = models.CharField(
         max_length=200, verbose_name='الموضوع', db_index=True)
     slug = models.CharField(
@@ -101,18 +101,18 @@ class Post(models.Model):
 class Comment(models.Model):
 
     user = models.ForeignKey(
-        User, related_name='my_comments', verbose_name='صاحب النعليق', on_delete=models.SET_DEFAULT, default=None, null=True)
+        User, related_name='my_comments', verbose_name='صاحب النعليق', on_delete=models.SET_DEFAULT, default=None, null=True, db_index=True)
     post = models.ForeignKey(
         Post, related_name='comments', verbose_name='المنشور', on_delete=models.CASCADE)
-    content = models.TextField(verbose_name='التعليق')
-    isActive = models.BooleanField(default=True, verbose_name='مفعل؟')
+    content = models.TextField(verbose_name='التعليق', db_index=True)
+    isActive = models.BooleanField(default=True, verbose_name='مفعل؟', db_index=True)
     votes = models.IntegerField(default=0)
     voted_like = models.ManyToManyField(
         User, related_name='comment_likes', verbose_name='الاعضاء المتفقين')
     voted_dislike = models.ManyToManyField(
         User, related_name='comment_dislikes', verbose_name='الاعضاء الغير متفقين')
     created = models.DateTimeField(
-        auto_now_add=True, verbose_name='وقت اضافة التعليق')
+        auto_now_add=True, verbose_name='وقت اضافة التعليق', db_index=True)
     updated = models.DateTimeField(
         auto_now=True, verbose_name='وقت تحديث التعليق')
 
@@ -128,13 +128,13 @@ class Comment(models.Model):
 class Reply(models.Model):
 
     user = models.ForeignKey(
-        User, related_name='my_replies', verbose_name='صاحب النعليق', on_delete=models.SET_DEFAULT, default=None, null=True)
+        User, related_name='my_replies', verbose_name='صاحب النعليق', on_delete=models.SET_DEFAULT, default=None, null=True, db_index=True)
     comment = models.ForeignKey(
-        Comment, related_name='replies', verbose_name='التعليق', on_delete=models.CASCADE)
+        Comment, related_name='replies', verbose_name='التعليق', on_delete=models.CASCADE, db_index=True)
     content = models.TextField()
     isActive = models.BooleanField(default=True, verbose_name='مفعل؟')
     created = models.DateTimeField(
-        auto_now_add=True, verbose_name='وقت اضافة التعليق')
+        auto_now_add=True, verbose_name='وقت اضافة التعليق', db_index=True)
     updated = models.DateTimeField(
         auto_now=True, verbose_name='وقت تحديث التعليق')
 
@@ -150,14 +150,14 @@ class Reply(models.Model):
 class Message(models.Model):
 
     user = models.ForeignKey(
-        User, related_name='sent_messages', verbose_name='صاحب النعليق', on_delete=models.CASCADE)
+        User, related_name='sent_messages', verbose_name='المرسل', on_delete=models.CASCADE, db_index=True)
     receiver = models.ForeignKey(
         User, related_name='my_messages', verbose_name='المستقبل', on_delete=models.CASCADE)
     title = models.CharField(max_length=300, verbose_name='عنوان الرسالة', null=True, default=None)
     content = models.TextField(verbose_name='محتوى الرسالة')
-    is_read = models.BooleanField(default=False)
+    is_read = models.BooleanField(default=False, db_index=True)
     created = models.DateTimeField(
-        auto_now_add=True, verbose_name='وقت اضافة الرسالة')
+        auto_now_add=True, verbose_name='وقت اضافة الرسالة', db_index=True)
     updated = models.DateTimeField(
         auto_now=True, verbose_name='وقت تحديث الرسالة')
 

@@ -1,13 +1,50 @@
 from django.contrib import admin
 from .models import User, Post, Message, Reply, Comment, Category
+from admin_auto_filters.filters import AutocompleteFilter
+
+class PostFilter(AutocompleteFilter):
+    title = 'صاحب المنشور' # display title
+    field_name = 'creator' # name of the foreign key field
+
+class UserFilter(AutocompleteFilter):
+    title = 'الصاحب' # display title
+    field_name = 'user' # name of the foreign key field
+
+class MessageFilter(AutocompleteFilter):
+    title = 'المستقبل' # display title
+    field_name = 'receiver' # name of the foreign key field
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('creator', 'title')
+    list_display = ('title',)
+    search_fields = ['title']
+    list_filter = ("category", "created", "isActive", PostFilter)
+
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'email')
+    search_fields = ['email']
+    list_filter = ("email_active", "stay_logged_in", "isBlocked")
+
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('user', 'receiver', 'title')
+    search_fields = ['title', 'content']
+    list_filter = ("is_read", "created", UserFilter, MessageFilter)
+
+class ReplyAdmin(admin.ModelAdmin):
+    list_display = ('user', 'content')
+    search_fields = ['content']
+    list_filter = ("isActive", "created", UserFilter)
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'content')
+    search_fields = ['content']
+    list_filter = ("isActive", "created", UserFilter)
+
+
 
 # Register your models here.
-admin.site.register(User)
+admin.site.register(User, UserAdmin)
 admin.site.register(Post, PostAdmin)
-admin.site.register(Message)
-admin.site.register(Reply)
-admin.site.register(Comment)
+admin.site.register(Message, MessageAdmin)
+admin.site.register(Reply, ReplyAdmin)
+admin.site.register(Comment, CommentAdmin)
 admin.site.register(Category)

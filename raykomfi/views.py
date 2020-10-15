@@ -25,6 +25,7 @@ from random import sample
 from django.urls import NoReverseMatch
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import OuterRef, Subquery, Prefetch
+from .filters import PostFilter
 
 
 from pdb import set_trace
@@ -33,7 +34,8 @@ from pdb import set_trace
 def index(request):
     posts = Post.objects.all()[:10]
     latest_comments = Comment.objects.all().order_by('-created')[:7]
-    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments})
+    filter = PostFilter(request.GET, queryset=Post.objects.all())
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'filter': filter})
 
 
 @login_required

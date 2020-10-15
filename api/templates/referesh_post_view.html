@@ -3,8 +3,8 @@
 
 {% if post.comments.all|length > 0 %}
 {% for comment in post.comments.all %}
-<div class="w3-row comment-wrapper w3-border w3-padding w3-round-large" id="comment-id-{{comment.id}}">
-    <div class="w3-col s10 m11 l11">
+<div class="w3-row comment-wrapper w3-border w3-padding w3-round-large">
+    <div class="w3-col s10 m11 l11" id="comment-id-{{comment.id}}">
         <div class="comment-side">
             {% if comment.user and reply.user.is_active != False %}
             <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}" class="writer-name">
@@ -48,7 +48,7 @@
         {% endif %}
         {% if user.email_active %}
         <div class="reply">
-            <form class="replyForm" data-comment-id="{{comment.id}}" data-post-id="{{post.id}}">
+            <form class="replyForm" data-comment-id="{{comment.id}}">
                 <textarea name="reply_content" cols="40" rows="1"
                     class="w3-input w3-border  w3-round-large reply-textarea"
                     id="id_reply_content-{{comment.id}}"></textarea>
@@ -85,3 +85,4 @@
 {% else %}
 <p>لا يوجد رأي حتى الان, كن أول شخص يعطي رأيه</p>
 {% endif %}
+</div>
