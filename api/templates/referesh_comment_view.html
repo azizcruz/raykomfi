@@ -1,0 +1,57 @@
+{% load thumbnail %}
+{% load humanize %}
+
+<div class="w3-col s10 m11 l11">
+    <div class="comment-side">
+        {% if comment.user and comment.user.is_active != False %}
+        <a href="{% url 'raykomfi:user-profile' id=comment.user.id %}" class="writer-name">
+            <div class="name">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                {{comment.user.username}}
+            </div>
+        </a>
+        {% else %}
+        <div class="name">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            عضو لم يعد مسجل
+        </div>
+        {% endif %}
+        <small><i class="fa fa-clock-o" aria-hidden="true"></i>
+            {{comment.created | naturaltime}}</small>
+        <div class="comment">{{ comment.content }}</div>
+    </div>
+    <hr>
+    {% if comment.replies.all|length > 0 %}
+    <div class="comment-reply-side w3-padding w3-round-large">
+        {% for reply in comment.replies.all %}
+        <div class="w3-panel" id="to-{{reply.id}}">
+            {% if reply.user and reply.user.is_active != False %}
+            <a href="{% url 'raykomfi:user-profile' id=reply.user.id %}" class="writer-name">
+                <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
+                    {{reply.user.username}}
+                </div>
+            </a>
+            {% else %}
+            <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
+                عضو لم يعد مسجل
+            </div>
+            {% endif %}
+            <small><i class="fa fa-clock-o" aria-hidden="true"></i>
+                {{reply.created | naturaltime}}</small>
+            <div class="comment">{{ reply.content }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if user.email_active %}
+    <div class="reply">
+        <form class="replyForm" data-comment-id="{{comment.id}}">
+            <textarea name="reply_content" cols="40" rows="1" class="w3-input w3-border  w3-round-large reply-textarea"
+                id="id_reply_content-{{comment.id}}"></textarea>
+            <div class="col s12">
+                <button class='w3-button w3-round-large' type="submit"> اضافة رد</button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+</div>

@@ -3,7 +3,7 @@
 
 {% if post.comments.all|length > 0 %}
 {% for comment in post.comments.all %}
-<div class="w3-row comment-wrapper w3-border w3-padding w3-round-large">
+<div class="w3-row comment-wrapper w3-border w3-padding w3-round-large" id="comment-id-{{comment.id}}">
     <div class="w3-col s10 m11 l11">
         <div class="comment-side">
             {% if comment.user and reply.user.is_active != False %}

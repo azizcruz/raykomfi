@@ -50,7 +50,7 @@ class LazyPostsView(APIView):
 
 class LazyCommentsView(APIView):
     '''
-    Lazy load more posts
+    Lazy load more comments
     '''
 
     queryset = Comment.objects.prefetch_related('comments__replies').all()
@@ -134,17 +134,15 @@ class RepliesView(APIView):
         serializer = serializers.ReplyAddSerializer(data=request.data)
         if serializer.is_valid():
             try:
-                post = Post.objects.prefetch_related(
-                'comments').prefetch_related('comments__replies').get(id__exact=serializer.data['post_id'])
                 comment = Comment.objects.get(id=serializer.data['comment_id'])
                 reply = Reply.objects.create(content=serializer.data['content'], comment=comment, user=request.user)
                 comment.replies.add(reply)
                 comment.save()
-                post = Post.objects.prefetch_related(
-                'comments').prefetch_related('comments__replies').get(id__exact=serializer.data['post_id'])
-                referesh_post_view_html = loader.render_to_string('referesh_post_view.html', {'post': post, 'user': request.user})
+                comment = Comment.objects.prefetch_related(
+                'replies').get(id__exact=serializer.data['comment_id'])
+                referesh_comment_view_html = loader.render_to_string('referesh_comment_view.html', {'comment': comment, 'user': request.user})
                 output_data = {
-                    'view': referesh_post_view_html,
+                    'view': referesh_comment_view_html,
                     'message': 'success'
                 }
 

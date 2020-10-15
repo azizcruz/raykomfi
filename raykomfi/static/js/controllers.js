@@ -11,7 +11,7 @@ let view_html = "";
 $(document).on("submit", "form.replyForm", function (e) {
   e.preventDefault();
   let content = e.target[0].value;
-  let { postId, commentId } = e.target.dataset;
+  let { commentId } = e.target.dataset;
   if (content) {
     axios({
       method: "POST",
@@ -22,13 +22,41 @@ $(document).on("submit", "form.replyForm", function (e) {
       },
       data: {
         content: content,
-        post_id: parseInt(postId),
         comment_id: parseInt(commentId),
       },
     })
       .then((response) => {
+        let comment_view = $(`#comment-id-${commentId}`);
         view_html = response.data.view;
-        post_wrapper.html(view_html);
+        console.log(view_html);
+        comment_view.html(view_html);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
+});
+
+// Add comment
+$(document).on("submit", "form.commentForm", function (e) {
+  e.preventDefault();
+  let content = e.target[0].value;
+  let { postId } = e.target.dataset;
+  if (content) {
+    axios({
+      method: "POST",
+      url: "/api/comment/add",
+      headers: {
+        "X-CSRFTOKEN": Cookies.get("csrftoken"),
+        "Content-Type": "application/json",
+      },
+      data: { content: content, post_id: postId },
+    })
+      .then((response) => {
+        let view_html = response.data.view;
+        let post_wrapper = document.getElementById("posts-wrapper");
+        post_wrapper.innerHTML = view_html;
+        $("#lazyLoadLinkComments").hide();
       })
       .catch((err) => {
         console.log(err.message);
