@@ -32,8 +32,8 @@ from pdb import set_trace
 
 
 def index(request):
-    posts = Post.objects.all()[:10]
-    latest_comments = Comment.objects.all().order_by('-created')[:7]
+    posts = Post.objects.all().prefetch_related('creator', 'category', 'comments')[:10]
+    latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
     filter = PostFilter(request.GET, queryset=Post.objects.all())
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'filter': filter})
 
@@ -160,12 +160,12 @@ def delete_user(request, id):
 
 def post_view(request, id, slug):
     subquery = Subquery(Comment.objects.filter(post__id=OuterRef('post__id')).values_list('id', flat=True)[:5])
-    post = Post.objects.prefetch_related(Prefetch('comments', queryset=Comment.objects.filter(id__in=subquery))).prefetch_related('comments__replies').get(Q(id__exact=id) & Q(
-        slug__exact=slug))
-    rand_ids = Post.objects.filter(category=post.category).values_list('id', flat=True)
+    post = Post.objects.select_related('creator', 'category').filter(Q(id__exact=id) & Q(
+        slug__exact=slug)).prefetch_related('creator', Prefetch('comments', queryset=Comment.objects.filter(id__in=subquery).prefetch_related('user', 'replies__user', 'post', 'post__creator', 'voted_like', 'voted_dislike'))).first()
+    rand_ids = Post.objects.select_related('creator', 'category').filter(category=post.category).values_list('id', flat=True)
     rand_ids = list(rand_ids)
     rand_ids = sample(rand_ids, 5)
-    related_posts = Post.objects.filter(id__in=rand_ids)
+    related_posts = Post.objects.select_related('creator', 'category').filter(id__in=rand_ids)
     comment_form = CommentForm()
     reply_form = ReplyForm()
     return render(request, 'sections/post_view.html', context={'post': post, 'comment_form': comment_form, 'reply_form': reply_form, 'related_posts': related_posts})
@@ -173,7 +173,7 @@ def post_view(request, id, slug):
 
 @ login_required
 def my_posts_view(request, user_id):
-    posts = Post.objects.prefetch_related('comments').prefetch_related('comments__replies').filter(creator__id=user_id)
+    posts = Post.objects.filter(creator__id=user_id).prefetch_related('creator', 'category', 'comments__replies', 'comments__replies__user')
     return render(request, 'sections/user_posts.html', context={'posts': posts})
 
 

@@ -25,7 +25,7 @@ class LazyPostsView(APIView):
 
     def post(self, request, format=None):
         page = request.POST.get('page')
-        posts = Post.objects.all()
+        posts = Post.objects.select_related('creator', 'category').all()
         # use Django's pagination
         # https://docs.djangoproject.com/en/dev/topics/pagination/
         results_per_page = 10
@@ -104,11 +104,10 @@ class CommentsView(APIView):
         serializer = serializers.CommentAddSerializer(data=request.data)
         if serializer.is_valid():
             try:
-                post = Post.objects.prefetch_related(
-                    'comments').prefetch_related('comments__replies').get(id__exact=serializer.data['post_id'])
+                post = Post.objects.select_related('creator', 'category').filter(id__exact=serializer.data['post_id']).first()
                 comment = Comment.objects.create(
                 content=serializer.data['content'], user=request.user, post=post)
-                comment = Comment.objects.get(id=comment.id)
+                comment = Comment.objects.select_related('user', 'post').filter(id=comment.id).first()
                 referesh_post_view_html = loader.render_to_string(
                 'referesh_post_view.html',
                 {'post': comment.post, 'user': request.user})
@@ -134,12 +133,12 @@ class RepliesView(APIView):
         serializer = serializers.ReplyAddSerializer(data=request.data)
         if serializer.is_valid():
             try:
-                comment = Comment.objects.get(id=serializer.data['comment_id'])
+                comment = Comment.objects.select_related('user', 'post').filter(id=serializer.data['comment_id']).first()
                 reply = Reply.objects.create(content=serializer.data['content'], comment=comment, user=request.user)
                 comment.replies.add(reply)
                 comment.save()
-                comment = Comment.objects.prefetch_related(
-                'replies').get(id__exact=serializer.data['comment_id'])
+                comment = Comment.objects.prefetch_related('user', 'post',
+                'replies').filter(id__exact=serializer.data['comment_id']).first()
                 referesh_comment_view_html = loader.render_to_string('referesh_comment_view.html', {'comment': comment, 'user': request.user})
                 output_data = {
                     'view': referesh_comment_view_html,
@@ -162,11 +161,11 @@ class GetMessageView(APIView):
         serializer = serializers.GetMessageSerializer(data=request.data)
         if serializer.is_valid():
             try:
-                fetched_message = Message.objects.prefetch_related(
-                'receiver').get(id__exact=serializer.data['message_id'])
+                fetched_message = Message.objects.select_related('user',
+                'receiver').filter(id__exact=serializer.data['message_id']).first()
                 fetched_message.is_read = True
                 fetched_message.save()
-                messages = Message.objects.filter(receiver__exact=request.user.id)
+                messages = Message.objects.select_related('user', 'receiver').filter(receiver__exact=request.user.id)
                 referesh_message_view_html = loader.render_to_string('messages.html', {'fetched_message': fetched_message, 'user': request.user, 'user_messages': messages})
                 output_data = {
                     'view': referesh_message_view_html,

@@ -3,6 +3,6 @@ from django.db.models import Q
 
 def not_opened_messages(request):
     if request.user.is_authenticated:
-        not_opened_messages = Message.objects.filter(Q(receiver=request.user) & Q(is_read=False))
+        not_opened_messages = Message.objects.filter(Q(receiver=request.user) & Q(is_read=False)).prefetch_related('user', 'receiver')
         return {'not_opened_messages': not_opened_messages}
     return {}
