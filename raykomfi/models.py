@@ -12,6 +12,7 @@ from uuid import uuid4, uuid1
 from django.core.cache import cache 
 import datetime
 from django.conf import settings
+from django_countries.fields import CountryField
 
 def slugify(str):
     str = str.replace(" ", "-")

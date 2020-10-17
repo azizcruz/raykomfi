@@ -26,11 +26,13 @@ from django.urls import NoReverseMatch
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import OuterRef, Subquery, Prefetch
 from .filters import PostFilter
+from django_ip_geolocation.decorators import with_ip_geolocation
+
 
 
 from pdb import set_trace
 
-
+@with_ip_geolocation
 def index(request):
     posts = Post.objects.all().prefetch_related('creator', 'category', 'comments')[:10]
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]

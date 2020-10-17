@@ -14,7 +14,6 @@ from pathlib import Path
 import os
 from django.utils.translation import gettext_lazy as _
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
@@ -54,6 +53,7 @@ INSTALLED_APPS = [
     'admin_auto_filters',
     'django_filters',
     'django_extensions',
+    "compressor",
 ]
 
 MIDDLEWARE = [
@@ -150,11 +150,22 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'raykomfi/static/'
+
+COMPRESS_ENABLED = True
+COMPRESS_ROOT = STATIC_ROOT
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     '/var/www/static/',
 ]
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'compressor.finders.CompressorFinder',
+)
 
 # Custom User Model Settings
 AUTH_USER_MODEL = 'raykomfi.User'

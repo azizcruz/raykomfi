@@ -104,3 +104,33 @@ $("#new-message-content").on("keyup", (e) => {
   content = converter.makeHtml(content);
   $("#message-preview").html(content);
 });
+
+// Lazy load images
+$(".lazy-img").Lazy();
+
+// Get country
+if (!sessionStorage.getItem("country")) {
+  let options = {
+    method: "GET",
+    hostname: "freegeoip.app",
+    port: null,
+    path: "/json/",
+    headers: {
+      accept: "application/json",
+      "content-type": "application/json",
+    },
+  };
+  axios
+    .get("https://freegeoip.app/json/")
+    .then((data) => {
+      sessionStorage.setItem("country", data.data.country_name);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+let countryInput = $("#id_country");
+if (countryInput) {
+  countryInput.val(sessionStorage.getItem("country"));
+}

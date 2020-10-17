@@ -95,7 +95,7 @@
                     <div class="ray-image-section">
                         {% thumbnail post.image "100x100" crop="center" as im %}
                         <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
-                            alt="{{post.slug}}" />
+                            data-src="{{ im.url }}" class="lazy-img" alt="{{post.slug}}" />
                         {% endthumbnail %}
                     </div>
                     {% endif %}

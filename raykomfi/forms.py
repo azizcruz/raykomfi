@@ -22,7 +22,7 @@ class SignupForm(UserCreationForm):
     first_name = forms.CharField(required=False, widget=forms.TextInput())
     last_name = forms.CharField(required=False, widget=forms.TextInput())
     country = forms.CharField(required=False,
-                              widget=forms.TextInput())
+                              widget=forms.HiddenInput())
     bio = forms.CharField(required=False, max_length=144,
                           widget=forms.Textarea())
     email = forms.EmailField(label='', validators=[validate_email], widget=forms.TextInput(), error_messages={

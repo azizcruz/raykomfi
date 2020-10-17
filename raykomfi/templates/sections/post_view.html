@@ -56,7 +56,8 @@
                 {% if post.image %}
 
                 <!-- Trigger the Modal -->
-                <img id="myImg" src="{{ post.image.url }}" alt="{{post.title}}">
+                <img id="myImg" src="{{ post.image.url }}" alt="{{post.title}}" data-src="{{ post.image.url }}"
+                    class="lazy-img">
 
                 <!-- The Modal -->
                 <div id="myModal" class="modal">
