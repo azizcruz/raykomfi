@@ -40,3 +40,13 @@ class GetMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reply
         fields = ['message_id']
+
+
+class LikeDislikeSerializer(serializers.ModelSerializer):
+    action_type = serializers.CharField()
+    comment_id = serializers.IntegerField()
+    user_id = serializers.IntegerField()
+
+    class Meta:
+        model = Comment
+        fields = ['action_type', 'comment_id', 'user_id']

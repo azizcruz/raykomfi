@@ -86,7 +86,8 @@
                         <div class="w3-col s10 m11 l11" id="comment-id-{{comment.id}}">
                             <div class="comment-side">
                                 {% if comment.user and reply.user.is_active != False %}
-                                <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}" class="writer-name">
+                                <a href="{% url 'raykomfi:user-profile' id=comment.post.creator.id %}"
+                                    class="writer-name">
                                     <div class="name">
                                         <i class="fa fa-user" aria-hidden="true"></i>
                                         {{comment.user.username}}
@@ -138,26 +139,20 @@
                             </div>
                             {% endif %}
                         </div>
-                        <div class="w3-col s2 m1 l1 w3-center vote-side">
+                        <div class="w3-col s2 m1 l1 w3-center vote-side" id="comment-{{comment.id}}-vote-side-wrapper">
                             <div>
-                                <form action="{% url 'raykomfi:post-comment-vote' comment_id=comment.id %}"
-                                    method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="vote" value="like">
-                                    <button type="submit" onclick="return 0" {% if user in comment.voted_like.all %}
-                                        disabled {% endif %}><i class="fa fa-thumbs-up w3-large"
-                                            aria-hidden="true"></i></button>
+                                <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}}
+                                    data-vote-type="like">
+                                    <button type="submit" {% if user in comment.voted_like.all %} disabled
+                                        {% endif %}><i class="fa fa-thumbs-up w3-large" aria-hidden="true"></i></button>
                                 </form>
                             </div>
                             <div>{{comment.votes}}</div>
                             <div>
-                                <form action="{% url 'raykomfi:post-comment-vote' comment_id=comment.id %}"
-                                    method="post" id="location-{{comment.id}}-dislike">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="comment-location" value="{{comment.id}}-dislike">
-                                    <input type="hidden" name="vote" value="dislike">
-                                    <button type="submit" onclick="return 0" {% if user in comment.voted_dislike.all %}
-                                        disabled {% endif %}><i class="fa fa-thumbs-down w3-large"
+                                <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}}
+                                    data-vote-type="dislike">
+                                    <button type="submit" {% if user in comment.voted_dislike.all %} disabled
+                                        {% endif %}><i class="fa fa-thumbs-down w3-large"
                                             aria-hidden="true"></i></button>
                                 </form>
                             </div>

@@ -28,7 +28,6 @@ $(document).on("submit", "form.replyForm", function (e) {
       .then((response) => {
         let comment_view = $(`#comment-id-${commentId}`);
         view_html = response.data.view;
-        console.log(view_html);
         comment_view.html(view_html);
       })
       .catch((err) => {
@@ -57,6 +56,35 @@ $(document).on("submit", "form.commentForm", function (e) {
         let post_wrapper = document.getElementById("posts-wrapper");
         post_wrapper.innerHTML = view_html;
         $("#lazyLoadLinkComments").hide();
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
+});
+
+// Vote comment
+$(document).on("submit", "form.voteForm", function (e) {
+  e.preventDefault();
+  let { commentId, userId, voteType } = e.target.dataset;
+  if (voteType) {
+    axios({
+      method: "POST",
+      url: "/api/comment/vote",
+      headers: {
+        "X-CSRFTOKEN": Cookies.get("csrftoken"),
+        "Content-Type": "application/json",
+      },
+      data: {
+        comment_id: parseInt(commentId),
+        user_id: parseInt(userId),
+        action_type: voteType,
+      },
+    })
+      .then((response) => {
+        let votes_view = $(`#comment-${commentId}-vote-side-wrapper`);
+        view_html = response.data.view;
+        votes_view.html(view_html);
       })
       .catch((err) => {
         console.log(err.message);

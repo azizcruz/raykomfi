@@ -151,6 +151,47 @@ class RepliesView(APIView):
         else:
             return Response({'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
 
+class LikeDislikeView(APIView):
+    '''
+    Add Reply
+    '''
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        serializer = serializers.LikeDislikeSerializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                comment = Comment.objects.prefetch_related('user', 'voted_like', 'voted_dislike', 'post').filter(id=serializer.data['comment_id']).first()
+                vote_type = serializer.data['action_type']
+                if vote_type == 'like':
+                    if request.user not in comment.voted_like.all() and request.user in comment.voted_dislike.all():
+                        comment.voted_dislike.remove(request.user)
+                        comment.voted_like.add(request.user)
+                    else:
+                        comment.voted_like.add(request.user)
+                
+                if vote_type == 'dislike':
+                    if request.user not in comment.voted_dislike.all() and request.user in comment.voted_like.all():
+                        comment.voted_dislike.add(request.user)
+                        comment.voted_like.remove(request.user)
+                    else:
+                        comment.voted_dislike.add(request.user)
+
+                comment.votes = comment.voted_like.all().count() - comment.voted_dislike.all().count()
+                comment.save()
+                comment = Comment.objects.prefetch_related('voted_like', 'voted_dislike').get(id=serializer.data['comment_id'])
+                referesh_votes_view_html = loader.render_to_string('referesh_votes_view.html', {'comment': comment, 'user': request.user})
+                output_data = {
+                    'view': referesh_votes_view_html,
+                    'message': 'success'
+                }
+
+                return JsonResponse(output_data)
+            except (Comment.DoesNotExist, Post.DoesNotExist):
+                return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
 class GetMessageView(APIView):
     '''
     Get Message
