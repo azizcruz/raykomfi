@@ -26,13 +26,13 @@ from django.urls import NoReverseMatch
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import OuterRef, Subquery, Prefetch
 from .filters import PostFilter
-from django_ip_geolocation.decorators import with_ip_geolocation
+from notifications.signals import notify
+from notifications.models import Notification
 
 
 
 from pdb import set_trace
 
-@with_ip_geolocation
 def index(request):
     posts = Post.objects.all().prefetch_related('creator', 'category', 'comments')[:10]
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
@@ -170,6 +170,11 @@ def post_view(request, id, slug):
     related_posts = Post.objects.select_related('creator', 'category').filter(id__in=rand_ids)
     comment_form = CommentForm()
     reply_form = ReplyForm()
+    if request.GET.get('read'):
+        full_path = request.get_full_path()
+        notis = Notification.objects.filter(description__icontains=full_path)
+        if notis: 
+            notis.first().delete()
     return render(request, 'sections/post_view.html', context={'post': post, 'comment_form': comment_form, 'reply_form': reply_form, 'related_posts': related_posts})
 
 
@@ -314,6 +319,7 @@ def new_message_view(request, code):
             message = Message.objects.create(user=request.user, receiver=receiver, title=form.cleaned_data['title'], content=form.cleaned_data['content'])
             messages.success(
             request, f'تم إرسال الرسالة الى {receiver.username} بنجاح', extra_tags='pale-green w3-border')
+            notify.send(request.user, recipient=receiver, action_object=message, description=message.get_noti_url(), target=message, verb='لديك رسالة جديدة')
             return redirect(receiver.get_absolute_url())
         else:
             return render(request, 'sections/new_message.html', context={'form': form, 'receiver': receiver})

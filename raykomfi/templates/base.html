@@ -1,5 +1,6 @@
 {% load static %}
 {% load humanize %}
+{% load notifications_tags %}
 <!DOCTYPE html>
 <meta name="robots" content="noindex">
 <html dir="rtl">
@@ -11,9 +12,25 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'css/noti_center.css'  %}">
 <link rel="stylesheet" href="{% static 'css/style.css'  %}">
 
 <body class="scrollbar-outer">
+    <!--Start of Notifications Modal -->
+    <div class="noti-modal">
+        <input id="noti-modal__trigger" type="checkbox" class="notification_input" />
+        <label for="noti-modal__trigger" class="close-noti-model"><i class="fa fa-bell" aria-hidden="true"></i></label>
+        <span class="live_notify_badge_override">
+
+        </span>
+        <div class="noti-modal__overlay">
+            <div class="noti-modal__wrap">
+                <label for="noti-modal__trigger" class="close-noti">&#10006;</label>
+                {% live_notify_list %}
+            </div>
+        </div>
+    </div>
+    <!--End of Notifications Modal -->
     <div id="overlay" class="w3-display-container">
         <div class="w3-display-middle">
             <div class="sk-cube-grid">
@@ -74,13 +91,11 @@
 
     <div class="w3-main raykomfi-main">
 
-        <div id="myTop" class="w3-container w3-top w3-theme raykomfi-theme w3-large">
-            <p><i class="fa fa-bars w3-button w3-teal raykomfi-theme w3-hide-large w3-xlarge" onclick="w3_open()"></i>
-                <span id="myIntro" class="w3-hide">منصة تهتم بالمشترين العرب وتجمعهم ليتبادلو الاراء قبل شراء أي
-                    منتج</span></p>
+        <div id="myTop" class="w3-container w3-top w3-theme raykomfi-theme w3-large w3-row">
+            <i class="fa fa-bars w3-button w3-teal raykomfi-theme w3-hide-large w3-xlarge" onclick="w3_open()"></i>
         </div>
 
-        <header class="w3-container w3-theme raykomfi-theme">
+        <header class="w3-container w3-theme raykomfi-theme w3-hide-small w3-hide-medium">
             <div class="w3-row">
                 <div class="w3-quarter w3-container">
 
@@ -119,10 +134,12 @@
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
     <script type="text/javascript"
         src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
+    <script src="{% static 'notifications/notify.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/loadmore.js' %}"></script>
     <script src="{% static 'js/controllers.js' %}"></script>
     <script src="{% static 'js/validators.js' %}"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
+    {% register_notify_callbacks callbacks='fill_notification_list_override,fill_notification_badge_override' %}
 
 </body>
 

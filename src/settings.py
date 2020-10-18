@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django_filters',
     'django_extensions',
     "compressor",
+    'notifications',
 ]
 
 MIDDLEWARE = [

@@ -125,6 +125,12 @@ class Comment(models.Model):
     def __str__(self):
         return self.content
 
+    def get_absolute_url(self):
+        return reverse('raykomfi:post-view', args=[self.post.id, self.post.slug]) + f'#comment-id-{self.id}'
+
+    def get_noti_url(self):
+        return reverse('raykomfi:post-view', args=[self.post.id, self.post.slug]) + f'?read={self.id}' + f'#comment-id-{self.id}'
+
 
 class Reply(models.Model):
 
@@ -147,6 +153,12 @@ class Reply(models.Model):
     def __str__(self):
         return self.content
 
+    def get_absolute_url(self):
+        return reverse('raykomfi:post-view', args=[self.comment.post.id, self.comment.post.slug]) + f'#to-{self.id}'
+    
+    def get_noti_url(self):
+        return reverse('raykomfi:post-view', args=[self.comment.post.id, self.comment.post.slug]) + f'?read={self.id}' + f'#to-{self.id}'
+
 
 class Message(models.Model):
 
@@ -166,6 +178,12 @@ class Message(models.Model):
         ordering = ('-created', )
         verbose_name = "رسالة"
         verbose_name_plural = "رسائل"
+
+    def get_absolute_url(self):
+        return reverse('raykomfi:get-message', args=[self.user.id, self.message.id])
+    
+    def get_noti_url(self):
+        return reverse('raykomfi:get-message', args=[self.user.id, self.message.id]) + f'?read={self.id}' + f'#to-{self.id}'
 
     def __str__(self):
         return self.content

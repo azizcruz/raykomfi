@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
+from django.conf.urls import url
 from django.conf import settings
 from django.conf.urls.static import static
+
 
 import debug_toolbar
 
@@ -26,6 +28,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include('api.urls')),
     path('__debug__/', include(debug_toolbar.urls)),
+    url('^inbox/notifications/', include('notifications.urls', namespace='notifications')),
 ]
 
 if settings.DEBUG:

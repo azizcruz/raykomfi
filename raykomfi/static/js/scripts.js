@@ -14,24 +14,30 @@ function w3_close() {
 
 // Change style of top container on scroll
 window.onscroll = function () {
-  myFunction();
+  if (myFunction) {
+    myFunction();
+  }
 };
 
 // A CSRF token is required when making post requests in Django
 // To be used for making AJAX requests in script.js
 window.CSRF_TOKEN = document.getElementById("csrf_token").innerHTML;
 
-function myFunction() {
-  if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
-    document
-      .getElementById("myTop")
-      .classList.add("w3-card-4", "w3-animate-opacity");
-    document.getElementById("myIntro").classList.add("w3-show-inline-block");
-  } else {
-    document.getElementById("myIntro").classList.remove("w3-show-inline-block");
-    document
-      .getElementById("myTop")
-      .classList.remove("w3-card-4", "w3-animate-opacity");
+let myTop = document.getElementById("myTop");
+let myIntro = document.getElementById("myIntro");
+
+if (myTop && myIntro) {
+  function myFunction() {
+    if (
+      document.body.scrollTop > 80 ||
+      document.documentElement.scrollTop > 80
+    ) {
+      myTop.classList.add("w3-card-4", "w3-animate-opacity");
+      myIntro.classList.add("w3-show-inline-block");
+    } else {
+      myIntro.classList.remove("w3-show-inline-block");
+      myTop.classList.remove("w3-card-4", "w3-animate-opacity");
+    }
   }
 }
 
@@ -134,3 +140,55 @@ let countryInput = $("#id_country");
 if (countryInput) {
   countryInput.val(sessionStorage.getItem("country"));
 }
+
+// notifications feeds
+function fill_notification_badge_override(data) {
+  var badges = document.getElementsByClassName("live_notify_badge_override");
+  if (badges) {
+    window.unreadCount = data.unread_count;
+    if (data.unread_count > 0) {
+      badges[0].innerHTML = '<i class="fa fa-circle" aria-hidden="true"></i>';
+    } else {
+      badges[0].innerHTML = "";
+    }
+  }
+}
+
+function fill_notification_list_override(data) {
+  var menus = document.getElementsByClassName(notify_menu_class);
+  if (menus) {
+    if (data.unread_list.length > 0) {
+      var messages = data.unread_list
+        .map(function (item) {
+          var message = `<a href='${item.description}'>${item.verb} من ${item.actor} <div>${item.timestamp}</div></a>`;
+          return (
+            "<li class='w3-display-container'>" +
+            message +
+            " <a class='w3-button w3-display-left'>&times;</a></li>"
+          );
+        })
+        .join("");
+
+      for (var i = 0; i < menus.length; i++) {
+        menus[i].innerHTML = messages;
+      }
+    } else {
+      menus[0].innerHTML =
+        "<div class='w3-center'>لا يوجد لديك إشعارات حاليا</div>";
+    }
+  }
+}
+
+let noti_btn = $(".noti-modal");
+let close_noti = $(".close-noti");
+
+noti_btn.on("click", () => {
+  $(".noti-modal__overlay").show();
+});
+
+close_noti.on("click", () => {
+  console.log("shbvs");
+  setTimeout(() => {
+    $(".noti-modal__overlay").css("display", "none");
+  }, 200);
+});

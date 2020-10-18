@@ -14,6 +14,7 @@ from django.template import loader
 from time import sleep
 from pdb import set_trace
 from rest_framework import status
+from notifications.signals import notify
 
 class LazyPostsView(APIView):
     '''
@@ -116,7 +117,7 @@ class CommentsView(APIView):
                     'view': referesh_post_view_html,
                     'message': 'success'
                 }
-
+                notify.send(request.user, recipient=post.creator , action_object=comment,  description=comment.get_noti_url(), target=comment, verb='لديك تعليق جديد')
                 return JsonResponse(output_data)
             except (Comment.DoesNotExist, Post.DoesNotExist):
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -144,7 +145,7 @@ class RepliesView(APIView):
                     'view': referesh_comment_view_html,
                     'message': 'success'
                 }
-
+                notify.send(request.user, recipient=comment.user ,action_object=reply, description=reply.get_noti_url(), target=comment, verb='لديك رد جديد')
                 return JsonResponse(output_data)
             except (Comment.DoesNotExist, Post.DoesNotExist):
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
