@@ -4,9 +4,9 @@
 <p class="raykomfi-main-color w3-white-text w3-center"><i class="fa fa-chevron-down" aria-hidden="true"></i>
     آخر تحديث بدأ من هنا <i class="fa fa-chevron-down" aria-hidden="true"></i>
 </p>
-{% for comment in comments %}
+{% for comment in post.comments.all %}
 <div class="w3-row comment-wrapper w3-border w3-padding w3-round-large">
-    <div class="w3-col s10 m11 l11">
+    <div class="w3-col s10 m11 l11" id="comment-id-{{comment.id}}">
         <div class="comment-side">
             {% if comment.user and reply.user.is_active != False %}
             <a href="{% url 'raykomfi:user-profile' id=comment.post.creator.id %}" class="writer-name">
@@ -50,7 +50,7 @@
         {% endif %}
         {% if user.email_active %}
         <div class="reply">
-            <form class="replyForm" data-comment-id="{{comment.id}}" data-post-id="{{post.id}}">
+            <form class="replyForm" data-comment-id="{{comment.id}}">
                 <textarea name="reply_content" cols="40" rows="1"
                     class="w3-input w3-border  w3-round-large reply-textarea"
                     id="id_reply_content-{{comment.id}}"></textarea>
@@ -61,18 +61,18 @@
         </div>
         {% endif %}
     </div>
-    <div class="w3-col s2 m1 l1 w3-center vote-side">
+    <div class="w3-col s2 m1 l1 w3-center vote-side" id="comment-{{comment.id}}-vote-side-wrapper">
         <div>
             <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}} data-vote-type="like">
-                <button type="submit" {% if user in comment.voted_like.all %} disabled {% endif %}><i
-                        class="fa fa-thumbs-up w3-large" aria-hidden="true"></i></button>
+                <button type="submit" {% if user in comment.voted_like.all %} disabled {% endif %}
+                    class="like-button"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
             </form>
         </div>
         <div>{{comment.votes}}</div>
         <div>
             <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}} data-vote-type="dislike">
-                <button type="submit" {% if user in comment.voted_dislike.all %} disabled {% endif %}><i
-                        class="fa fa-thumbs-down w3-large" aria-hidden="true"></i></button>
+                <button type="submit" {% if user in comment.voted_dislike.all %} disabled {% endif %}
+                    class="dislike-button"><i class="fa fa-thumbs-down" aria-hidden="true"></i></button>
             </form>
         </div>
     </div>

@@ -183,7 +183,7 @@ class Message(models.Model):
         return reverse('raykomfi:get-message', args=[self.user.id, self.message.id])
     
     def get_noti_url(self):
-        return reverse('raykomfi:get-message', args=[self.user.id, self.message.id]) + f'?read={self.id}' + f'#to-{self.id}'
+        return reverse('raykomfi:get-message', args=[self.user.id, self.id]) + f'?read={self.id}' + f'#to-{self.id}'
 
     def __str__(self):
         return self.content

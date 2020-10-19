@@ -47,13 +47,6 @@ body {
   margin: 0 auto;
 }
 
-.live_notify_badge_override {
-  position: relative;
-  color: #f70d0d !important;
-  left: 53px;
-  top: -17px;
-}
-
 .raykomfi-main-background-color {
   background-color: #2196f3 !important;
   color: #fff !important;
@@ -114,6 +107,7 @@ small,
 
 .ray-box {
   margin: 10px 0;
+  padding: 20px !important;
 }
 
 .lazy-load-linkwrapper {
@@ -160,6 +154,7 @@ textarea {
   bottom: 9px;
   font-size: 8px;
   color: #c62828;
+  margin-right: -13px;
 }
 
 .raykomfi-tag {
@@ -301,131 +296,99 @@ select:focus {
 /* Main Style */
 
 /* Notifications Modal Styles */
-.noti-modal {
-  background: transparent;
-  display: inline-block;
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  z-index: 9999;
-}
-
-@media (min-width: 43.75em) {
-  .noti-modal {
-    padding: 1.5em;
-  }
-}
-
-.noti-modal > label {
-  background: #186bae;
-  border-radius: 50%;
-  font-size: 30px;
-  color: #fff;
+.noti-dropbtn {
+  background-color: #3498db;
+  color: white;
+  padding: 11px;
+  font-size: 33px;
+  border: none;
   cursor: pointer;
-  display: inline-block;
-  font-weight: bold;
-  padding: 10px 17.3px;
-  transition: all 0.55s;
-}
-
-.noti-modal__overlay {
-  background: rgba(255, 255, 255, 0.7);
-  bottom: 0;
-  left: 0;
   position: fixed;
-  right: 0;
-  text-align: center;
-  text-shadow: none;
-  top: 0;
-  z-index: 600;
+  z-index: 999;
+  left: 100px;
+  bottom: 100px;
+  border-radius: 50%;
 }
 
-.noti-modal__wrap {
-  background-color: #fff;
-  border: 2px solid #186bae;
-  color: #fff !important;
+.noti-dropbtn:hover,
+.noti-dropbtn:focus {
+  background-color: #2980b9;
+}
+
+.noti-dropdown {
   position: relative;
-  margin: 0 auto;
-  max-width: 500px;
-  width: 90%;
+  height: 0;
 }
 
-.close-noti {
-  color: #aaaaaa !important;
+.noti-dropdown-content {
+  display: none;
+  position: fixed;
+  background-color: #f1f1f1;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  word-break: break-word;
+  left: 176px;
+  bottom: 103px;
+  min-height: 200px;
+  text-align: right;
+  border-radius: 8px;
+  min-width: 500px;
+  padding: 15px;
+}
+.noti-dropdown-content:after {
+  content: " ";
+  position: absolute;
+  left: -10px;
+  bottom: 15px;
+  border-top: 10px solid transparent;
+  border-right: 10px solid #fff;
+  border-left: none;
+  border-bottom: 10px solid transparent;
+}
+
+.noti-dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.noti-dropdown a:hover {
+  background-color: #ddd;
+}
+
+.noti-show {
+  display: block;
 }
 
 .live_notify_list {
-  color: #aaaaaa;
-  text-align: right;
-  margin-top: 30px;
-  list-style: none;
+  margin: 0;
   padding: 0;
+  list-style: none;
 }
 
 .live_notify_list li {
-  border-bottom: 1px solid #aaa;
-  padding: 15px 0;
-}
-
-.live_notify_list li:hover {
-  cursor: pointer;
+  border-bottom: 2px solid #dfdede;
+  padding-bottom: 5px;
 }
 
 .live_notify_list li:last-child {
   border-bottom: none;
 }
 
-@media (min-width: 50em) {
-  .noti-modal__wrap {
-    padding: 1.75em;
-  }
+.live_notify_list > div {
+  text-align: center;
+  vertical-align: center;
 }
 
-@media (min-height: 37.5em) {
-  .noti-modal__wrap {
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -80%);
-  }
-}
-
-.noti-modal__wrap label {
-  border-radius: 50%;
-  color: #186bae;
-  cursor: pointer;
-  display: inline-block;
-  height: 1.5em;
-  line-height: 1.5;
+.live_notify_badge_override {
   position: absolute;
-  right: 0.5em;
-  top: 0.5em;
-  width: 1.5em;
+  color: #f70d0d !important;
+  font-size: 10px;
+  left: 32px;
+  top: 12px;
 }
 
-.noti-modal input.notification_input:focus ~ label {
-  transform: scale(0.97);
-}
-
-input.notification_input {
-  position: absolute;
-  top: -1000px;
-  opacity: 0;
-}
-
-.noti-modal__overlay {
-  opacity: 0;
-  transform: scale(0.5);
-  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  z-index: -100;
-  display: none;
-}
-
-input.notification_input:checked ~ .noti-modal__overlay {
-  opacity: 1;
-  transform: scale(1);
-  z-index: 800;
-}
 /* Notifications Modal Styles */
 
 /* Home Style */
@@ -435,12 +398,27 @@ input.notification_input:checked ~ .noti-modal__overlay {
   background-color: #fff;
 }
 
-.ray-box-footer-icon {
-  margin-top: 10px;
+.ray-box-footer-icons {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  border-top: 1px solid #dbdbdb;
+  padding-top: 10px;
+  flex-direction: row;
 }
 
+.ray-order {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px 10px 10px 10px;
+}
 .ray-order > div {
   margin-bottom: 10px;
+}
+
+.ray-order > div:last-child {
+  margin-bottom: 0;
 }
 
 .ray-order .w3-button:hover {
@@ -451,8 +429,8 @@ input.notification_input:checked ~ .noti-modal__overlay {
 .new-post-side {
   text-align: center;
   margin-bottom: 10px;
-  border: 2px dashed #aaa;
   padding: 10px;
+  border-radius: 8px;
 }
 
 .new-post-side button {
@@ -484,6 +462,7 @@ input.notification_input:checked ~ .noti-modal__overlay {
   padding-right: 5px !important;
   word-break: break-word;
   background-color: #fff;
+  padding-top: 20px !important;
 }
 
 .comment-reply-side {
@@ -626,7 +605,21 @@ input.notification_input:checked ~ .noti-modal__overlay {
 .close:focus {
   color: #bbb;
   text-decoration: none;
+}
+
+.dislike-button,
+.like-button {
+  background-color: transparent;
+  border: none;
+  outline: none;
   cursor: pointer;
+  font-size: 20px;
+}
+
+.dislike-button i,
+.like-button i {
+  font-size: 24px;
+  color: #186bae;
 }
 
 /* 100% Image Width on Smaller Screens */
@@ -924,6 +917,29 @@ input.notification_input:checked ~ .noti-modal__overlay {
   .message-view {
     border: none;
   }
+
+  .noti-dropbtn {
+    left: 25px;
+    bottom: 25px;
+  }
+
+  .noti-dropdown-content {
+    left: 0;
+    bottom: 96px;
+    border-radius: 0;
+    min-width: 100%;
+  }
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (min-width: 601px) and (max-width: 992px) {
+}
+
+@media only screen and (max-width: 600px) {
+  .ray-order {
+    margin-top: 40px;
+    padding: 10px;
+  }
 }
 
 @media only screen and (max-width: 1024px) {
@@ -939,8 +955,8 @@ input.notification_input:checked ~ .noti-modal__overlay {
   } */
 }
 
-@media only screen and (min-width: 425px) and (max-width: 430px) {
-  /* #myIntro {
-    font-size: 16px;
-  } */
+@media only screen and (max-width: 350px) {
+  .ray-box-footer-icons {
+    font-size: 13px;
+  }
 }

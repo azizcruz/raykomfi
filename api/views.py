@@ -117,7 +117,7 @@ class CommentsView(APIView):
                     'view': referesh_post_view_html,
                     'message': 'success'
                 }
-                notify.send(request.user, recipient=post.creator , action_object=comment,  description=comment.get_noti_url(), target=comment, verb='لديك تعليق جديد')
+                notify.send(request.user, recipient=post.creator , action_object=comment,  description=comment.get_noti_url(), target=comment, verb='comment')
                 return JsonResponse(output_data)
             except (Comment.DoesNotExist, Post.DoesNotExist):
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -145,7 +145,7 @@ class RepliesView(APIView):
                     'view': referesh_comment_view_html,
                     'message': 'success'
                 }
-                notify.send(request.user, recipient=comment.user ,action_object=reply, description=reply.get_noti_url(), target=comment, verb='لديك رد جديد')
+                notify.send(request.user, recipient=comment.user ,action_object=reply, description=reply.get_noti_url(), target=comment, verb='reply')
                 return JsonResponse(output_data)
             except (Comment.DoesNotExist, Post.DoesNotExist):
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)

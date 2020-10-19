@@ -17,19 +17,14 @@
 
 <body class="scrollbar-outer">
     <!--Start of Notifications Modal -->
-    <div class="noti-modal">
-        <input id="noti-modal__trigger" type="checkbox" class="notification_input" />
-        <label for="noti-modal__trigger" class="close-noti-model"><i class="fa fa-bell" aria-hidden="true"></i></label>
-        <span class="live_notify_badge_override">
-
-        </span>
-        <div class="noti-modal__overlay">
-            <div class="noti-modal__wrap">
-                <label for="noti-modal__trigger" class="close-noti">&#10006;</label>
-                {% live_notify_list %}
-            </div>
+    {% if user.is_authenticated %}
+    <div class="noti-dropdown">
+        <i class="fa fa-bell noti-dropbtn" id="noti-btn"> <span class="live_notify_badge_override"></span></i>
+        <div id="noti-dropdown" class="noti-dropdown-content">
+            {% live_notify_list %}
         </div>
     </div>
+    {% endif %}
     <!--End of Notifications Modal -->
     <div id="overlay" class="w3-display-container">
         <div class="w3-display-middle">
@@ -58,25 +53,21 @@
             {% if user.is_authenticated %}
             <hr>
             <div>
-                <a class="w3-bar-item w3-button" onclick="myAccordion('demo')" href="javascript:void(0)">حسابي<i
-                        class="fa fa-caret-down"></i></a>
-                <div id="demo" class="w3-hide">
-                    <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-profile' id=user.id %}">الصفحة
-                        الشخصية&nbsp;<i class="fa fa-user-circle" aria-hidden="true"></i></a>
-                    <a class="w3-bar-item w3-button"
-                        href="{% url 'raykomfi:posts-get' user_id=user.id %}">إستفساراتي&nbsp;<i
-                            class="fa fa-question-circle" aria-hidden="true"></i>
-                    </a>
-                    <a class="w3-bar-item w3-button" href="{% url 'raykomfi:messages' user_id=user.id %}">الرسائل
-                        {% if not_opened_messages.count > 0 %}
-                        <i class="fa fa-circle fa-align-center notification-dot" aria-hidden="true"></i>
-                        {% endif %}
-                        &nbsp;<i class="fa fa-envelope-o" aria-hidden="true"></i>
-                    </a>
-                    <hr>
-                    <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-signout' %}">تسجيل خروج &nbsp;<i
-                            class="fa fa-sign-out" aria-hidden="true"></i></a>
-                </div>
+                <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-profile' id=user.id %}">الصفحة
+                    الشخصية&nbsp;<i class="fa fa-user-circle" aria-hidden="true"></i></a>
+                <a class="w3-bar-item w3-button"
+                    href="{% url 'raykomfi:posts-get' user_id=user.id %}">إستفساراتي&nbsp;<i
+                        class="fa fa-question-circle" aria-hidden="true"></i>
+                </a>
+                <a class="w3-bar-item w3-button" href="{% url 'raykomfi:messages' user_id=user.id %}">الرسائل&nbsp;
+                    {% if not_opened_messages.count > 0 %}
+                    <i class="fa fa-circle fa-align-center notification-dot" aria-hidden="true"></i>
+                    {% endif %}
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                </a>
+                <hr>
+                <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-signout' %}">تسجيل خروج &nbsp;<i
+                        class="fa fa-sign-out" aria-hidden="true"></i></a>
             </div>
             {% else %}
             <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-register' %}">حساب جديد &nbsp;<i

@@ -143,8 +143,8 @@
                             <div>
                                 <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}}
                                     data-vote-type="like">
-                                    <button type="submit" {% if user in comment.voted_like.all %} disabled
-                                        {% endif %}><i class="fa fa-thumbs-up w3-large" aria-hidden="true"></i></button>
+                                    <button type="submit" {% if user in comment.voted_like.all %} disabled {% endif %}
+                                        class="like-button"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
                                 </form>
                             </div>
                             <div>{{comment.votes}}</div>
@@ -152,7 +152,7 @@
                                 <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}}
                                     data-vote-type="dislike">
                                     <button type="submit" {% if user in comment.voted_dislike.all %} disabled
-                                        {% endif %}><i class="fa fa-thumbs-down w3-large"
+                                        {% endif %} class="dislike-button"><i class="fa fa-thumbs-down"
                                             aria-hidden="true"></i></button>
                                 </form>
                             </div>

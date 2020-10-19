@@ -319,7 +319,7 @@ def new_message_view(request, code):
             message = Message.objects.create(user=request.user, receiver=receiver, title=form.cleaned_data['title'], content=form.cleaned_data['content'])
             messages.success(
             request, f'تم إرسال الرسالة الى {receiver.username} بنجاح', extra_tags='pale-green w3-border')
-            notify.send(request.user, recipient=receiver, action_object=message, description=message.get_noti_url(), target=message, verb='لديك رسالة جديدة')
+            notify.send(request.user, recipient=receiver ,action_object=message, description=message.get_noti_url(), target=message, verb='message')
             return redirect(receiver.get_absolute_url())
         else:
             return render(request, 'sections/new_message.html', context={'form': form, 'receiver': receiver})

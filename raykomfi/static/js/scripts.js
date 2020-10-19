@@ -160,12 +160,21 @@ function fill_notification_list_override(data) {
     if (data.unread_list.length > 0) {
       var messages = data.unread_list
         .map(function (item) {
-          var message = `<a href='${item.description}'>${item.verb} من ${item.actor} <div>${item.timestamp}</div></a>`;
-          return (
-            "<li class='w3-display-container'>" +
-            message +
-            " <a class='w3-button w3-display-left'>&times;</a></li>"
-          );
+          console.log(item.verb);
+          if (item.verb === "comment") {
+            var message = `<a href='${item.description}'>لديك تعليق جديد على منشورك ${item.target} من ${item.actor}<div>${item.timestamp}</div></a>`;
+            return "<li class='w3-display-container'>" + message + "</li>";
+          }
+
+          if (item.verb === "reply") {
+            var message = `<a href='${item.description}'>لديك رد جديد على تعليقك من ${item.actor}<div>${item.timestamp}</div></a>`;
+            return "<li class='w3-display-container'>" + message + "</li>";
+          }
+
+          if (item.verb === "message") {
+            var message = `<a href='${item.description}'>لديك رسالة جديدة من ${item.actor}<div>${item.timestamp}</div></a>`;
+            return "<li class='w3-display-container'>" + message + "</li>";
+          }
         })
         .join("");
 
@@ -173,8 +182,7 @@ function fill_notification_list_override(data) {
         menus[i].innerHTML = messages;
       }
     } else {
-      menus[0].innerHTML =
-        "<div class='w3-center'>لا يوجد لديك إشعارات حاليا</div>";
+      menus[0].innerHTML = "<div class=''>لا يوجد لديك إشعارات حاليا</div>";
     }
   }
 }
@@ -192,3 +200,27 @@ close_noti.on("click", () => {
     $(".noti-modal__overlay").css("display", "none");
   }, 200);
 });
+
+/* When the user clicks notification button, 
+toggle between hiding and showing the dropdown content */
+function show_hide_notifications() {
+  document.getElementById("noti-dropdown").classList.toggle("noti-show");
+}
+
+$("#noti-btn").on("click", () => {
+  show_hide_notifications();
+});
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function (event) {
+  if (!event.target.matches(".noti-dropbtn")) {
+    var dropdowns = document.getElementsByClassName("noti-dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains("noti-show")) {
+        openDropdown.classList.remove("noti-show");
+      }
+    }
+  }
+};

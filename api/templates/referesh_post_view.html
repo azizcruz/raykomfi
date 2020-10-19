@@ -62,15 +62,15 @@
     <div class="w3-col s2 m1 l1 w3-center vote-side" id="comment-{{comment.id}}-vote-side-wrapper">
         <div>
             <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}} data-vote-type="like">
-                <button type="submit" {% if user in comment.voted_like.all %} disabled {% endif %}><i
-                        class="fa fa-thumbs-up w3-large" aria-hidden="true"></i></button>
+                <button type="submit" {% if user in comment.voted_like.all %} disabled {% endif %}
+                    class="like-button"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
             </form>
         </div>
         <div>{{comment.votes}}</div>
         <div>
             <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}} data-vote-type="dislike">
-                <button type="submit" {% if user in comment.voted_dislike.all %} disabled {% endif %}><i
-                        class="fa fa-thumbs-down w3-large" aria-hidden="true"></i></button>
+                <button type="submit" {% if user in comment.voted_dislike.all %} disabled {% endif %}
+                    class="dislike-button"><i class="fa fa-thumbs-down" aria-hidden="true"></i></button>
             </form>
         </div>
     </div>
@@ -79,4 +79,3 @@
 {% else %}
 <p>لا يوجد رأي حتى الان, كن أول شخص يعطي رأيه</p>
 {% endif %}
-</div>
