@@ -38,8 +38,8 @@ urlpatterns = [
          views.add_reply, name='post-reply'),
     path('posts/<int:user_id>',
          views.my_posts_view, name='posts-get'), 
-    # path('post/delete', views.profile_view, name='post-delete'),
 
+    path('posts/<str:category>', views.filteredPosts, name='filtered-posts'),
     # Messages routes
     path('user/messages/<int:user_id>', views.messages_view, name='messages'),
     path('user/messages/<int:user_id>/<int:message_id>', views.messages_view, name='get-message'),

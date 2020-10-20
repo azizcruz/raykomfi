@@ -33,13 +33,14 @@
         <div class="w3-row ray-order">
             <div class="w3-half">
                 <div class="w3-dropdown-hover w3-round-large">
-                    <button class="w3-button w3-round-large raykomfi-main-background-color"><i class="fa fa-tags"
-                            aria-hidden="true"></i>
+                    <button class="w3-button w3-round-large raykomfi-main-background-color w3-left"><i
+                            class="fa fa-tags" aria-hidden="true"></i>
                         حسب التصنيف</button>
                     <div class="w3-dropdown-content w3-bar-block w3-border">
-                        <a href="#" class="w3-bar-item w3-button">كمبيوتر</a>
-                        <a href="#" class="w3-bar-item w3-button">جوال</a>
-                        <a href="#" class="w3-bar-item w3-button">منزلي</a>
+                        {% for category in categories %}
+                        <a href="{% url 'raykomfi:filtered-posts' category=category.name %}"
+                            class="w3-bar-item w3-button">{{category.name}}</a>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -47,10 +48,10 @@
                 <button class="w3-button w3-round-large raykomfi-main-background-color"><i
                         class="fa fa-sort-amount-desc" aria-hidden="true"></i>
                     الأحدث</button>
+                <button class="w3-button w3-round-large raykomfi-main-background-color"><i class="fa fa-commenting"
+                        aria-hidden="true"></i>
+                    الأكثر مناقشة</button>
             </div>
-        </div>
-        <div class="create-new-post">
-
         </div>
         {% if not user.is_authenticated %}
         <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
@@ -114,6 +115,9 @@
             </div>
             {% endfor %}
         </div>
+        {% if hide_load_more == True %}
+
+        {% else %}
         <div class="sk-chase" id="sk-chase">
             <div class="sk-chase-dot"></div>
             <div class="sk-chase-dot"></div>
@@ -125,6 +129,7 @@
         <div class="lazy-load-linkwrapper w3-center">
             <a id="lazyLoadLink" class="w3-border w3-padding" href="javascript:void(0);" data-page="2">عرض المزيد</a>
         </div>
+        {% endif %}
     </div>
     <div class="w3-col s12 m4 l4 w3-hide-medium w3-hide-large">
         <div class="w3-padding w3-white w3-round-large">

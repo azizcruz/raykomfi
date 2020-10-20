@@ -36,8 +36,6 @@
         <hr>
         <p><span>الاسم الأخير</span>{{profile.last_name}}</p>
         <hr>
-        <p><span>الدولة</span>{{profile.country}}</p>
-        <hr>
         <p><span>أعضاء متفقين</span>15</p>
         <a href="{% url 'raykomfi:new-message' code=profile.uuid %}" class="w3-button raykomfi-button w3-round-large">
             إرسال رسالة
@@ -47,7 +45,7 @@
         <div class="user-posts-wrapper">
             {% for post in profile.posts.all %}
             <a href="{{ post.get_absolute_url }}">
-                <div class="w3-card w3-padding">
+                <div class="w3-padding">
                     {{post.title}}
                 </div>
             </a>

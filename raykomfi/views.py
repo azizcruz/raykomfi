@@ -8,7 +8,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
-from .models import User, Post, Comment, Reply, Message
+from .models import User, Post, Comment, Reply, Message, Category
 from django.core.mail import EmailMessage
 from django.contrib import messages
 from django.db.utils import IntegrityError
@@ -36,8 +36,14 @@ from pdb import set_trace
 def index(request):
     posts = Post.objects.all().prefetch_related('creator', 'category', 'comments')[:10]
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
-    filter = PostFilter(request.GET, queryset=Post.objects.all())
-    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'filter': filter})
+    categories = Category.objects.all()
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories})
+
+def filteredPosts(request, category=False):
+    posts = posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category)
+    categories = Category.objects.all()
+    latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True})
 
 
 @login_required
