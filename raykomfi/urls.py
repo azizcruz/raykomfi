@@ -39,7 +39,8 @@ urlpatterns = [
     path('posts/<int:user_id>',
          views.my_posts_view, name='posts-get'), 
 
-    path('posts/<str:category>', views.filteredPosts, name='filtered-posts'),
+    path('posts/most-discussed', views.most_discussed_posts, name='most-discussed-posts'),
+    path('posts/<str:category>', views.categorized_posts, name='filtered-posts'),
     # Messages routes
     path('user/messages/<int:user_id>', views.messages_view, name='messages'),
     path('user/messages/<int:user_id>/<int:message_id>', views.messages_view, name='get-message'),

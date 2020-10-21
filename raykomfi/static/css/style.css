@@ -163,6 +163,16 @@ textarea {
   padding: 0px 3px 3px 3px;
 }
 
+.w3-dropdown-content {
+  top: 40px;
+  border-radius: 8px;
+  border: none;
+}
+
+.w3-dropdown-content a {
+  text-align: right !important;
+}
+
 .w3-bar-block .w3-bar-item {
   padding: 16px;
   font-weight: bold;

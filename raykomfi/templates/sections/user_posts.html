@@ -1,4 +1,4 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 
 {% load thumbnail %}
 {% load humanize %}
@@ -12,53 +12,50 @@
   </div>
   <div class="w3-col s12 m12 l6">
     <h3>إستفساراتي</h3>
+    <br>
     <div class="my-posts-wrapper">
-      {% if posts %} 
-      
+      {% if posts %}
+
       {% for post in posts %}
-        <div class="w3-padding w3-border ray-box w3-round-large raykomfi-main-box-margin">
-            {% if post.creator %}
-            <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
-                <span class="poster-name">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                    {{post.creator}}
-                </span>
-            </a>
-            {% else %}
-            <span class="poster-name">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                    عضو لم يعد مسجل
-                </span>
-            {% endif %}
-            <a href="{{post.get_absolute_url}}">
-                <h4>{{post.title |truncatechars:100}}</h4>
-                {% if post.image %}
-                <div class="ray-image-section">
-                    {% thumbnail post.image "200x200" crop="center" as im %}
-                    <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
-                        alt="{{post.slug}}" />
-                    {% endthumbnail %}
-                </div>
-                {% endif %}
-                <br>
-                <div>
-                    <a href="{% url 'raykomfi:post-edit' id=post.id slug=post.slug  %}"  class="w3-button raykomfi-button">تعديل</a>
-                </div>
-                <div class="w3-row">
-                    <div class="w3-third ray-box-footer-icon">
-                        <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.created | naturaltime}}</span>
-                    </div>
-                    <div class="w3-third ray-box-footer-icon">
-                        <span><i class="fa fa-comments" aria-hidden="true"></i> {{post.comments.count}}</span>
-                    </div>
-                    <div class="w3-third ray-box-footer-icon">
-                        <span><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</span>
-                    </div>
-                </div>
-            </a>
-        </div>
-        {% endfor %}
-      
+      <div class="w3-padding ray-box w3-round-large">
+        {% if post.creator and post.creator.is_active != False %}
+        <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
+          <span class="poster-name">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            {{post.creator}}
+          </span>
+        </a>
+        {% else %}
+        <span class="poster-name">
+          <i class="fa fa-user" aria-hidden="true"></i>
+          عضو لم يعد موجود
+        </span>
+        {% endif %}
+        <a href="{{post.get_absolute_url}}">
+          <h3>{{post.title |truncatechars:100}}</h3>
+          {% if post.image %}
+          <div class="ray-image-section">
+            {% thumbnail post.image "100x100" crop="center" as im %}
+            <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
+              data-src="{{ im.url }}" class="lazy-img" alt="{{post.slug}}" />
+            {% endthumbnail %}
+          </div>
+          {% endif %}
+          <div class="ray-box-footer-icons">
+            <div class="">
+              <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.created | naturaltime}}</span>
+            </div>
+            <div class="">
+              <span><i class="fa fa-comments" aria-hidden="true"></i> {{post.comments.count}}</span>
+            </div>
+            <div class="">
+              <span><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+
       {% else %}
       <p class="w3-center">لم تسأل رأي الناس عن أي منتج</p>
       {% endif %}
@@ -66,9 +63,7 @@
   </div>
 
   {% else %}
-  <div
-    class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper"
-  >
+  <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
     <p class="w3-center">فعل حسابك لفتح الرسائل</p>
   </div>
 </div>

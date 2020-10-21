@@ -26,7 +26,12 @@ class LazyPostsView(APIView):
 
     def post(self, request, format=None):
         page = request.POST.get('page')
-        posts = Post.objects.select_related('creator', 'category').all()
+        category = request.POST.get('category', '')
+        posts = None
+        if category != 'false':
+            posts = Post.objects.prefetch_related('creator', 'category').filter(category__name__exact=category)
+        else:
+            posts = Post.objects.select_related('creator', 'category').all()
         # use Django's pagination
         # https://docs.djangoproject.com/en/dev/topics/pagination/
         results_per_page = 10

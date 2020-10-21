@@ -3,11 +3,14 @@
   $("#lazyLoadLink").on("click", function () {
     var link = $(this);
     var page = link.data("page");
+    var category = link.data("category") || false;
+    console.log(category);
     $.ajax({
       type: "post",
       url: "/api/lazy-posts/",
       data: {
         page: page,
+        category: category,
         csrfmiddlewaretoken: Cookies.get("csrftoken"), // from index.html
       },
       success: function (data) {

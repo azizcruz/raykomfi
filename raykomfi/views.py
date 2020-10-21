@@ -28,6 +28,7 @@ from django.db.models import OuterRef, Subquery, Prefetch
 from .filters import PostFilter
 from notifications.signals import notify
 from notifications.models import Notification
+from django.db.models import Count
 
 
 
@@ -35,12 +36,18 @@ from pdb import set_trace
 
 def index(request):
     posts = Post.objects.all().prefetch_related('creator', 'category', 'comments')[:10]
-    latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
+    latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:15]
     categories = Category.objects.all()
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories})
 
-def filteredPosts(request, category=False):
-    posts = posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category)
+def categorized_posts(request, category=False):
+    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category)[:10]
+    categories = Category.objects.all()
+    latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'is_categorized': True, 'category': category})
+
+def most_discussed_posts(request):
+    posts = Post.objects.prefetch_related('creator', 'category', 'comments').annotate(count=Count('comments')).order_by('-count')
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True})
@@ -172,7 +179,7 @@ def post_view(request, id, slug):
         slug__exact=slug)).prefetch_related('creator', Prefetch('comments', queryset=Comment.objects.filter(id__in=subquery).prefetch_related('user', 'replies__user', 'post', 'post__creator', 'voted_like', 'voted_dislike'))).first()
     rand_ids = Post.objects.select_related('creator', 'category').filter(category=post.category).values_list('id', flat=True)
     rand_ids = list(rand_ids)
-    rand_ids = sample(rand_ids, 5)
+    rand_ids = sample(rand_ids, 7)
     related_posts = Post.objects.select_related('creator', 'category').filter(id__in=rand_ids)
     comment_form = CommentForm()
     reply_form = ReplyForm()
