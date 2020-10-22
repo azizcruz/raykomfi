@@ -1,4 +1,4 @@
-from raykomfi.models import Comment, User, Reply
+from raykomfi.models import Comment, User, Reply, Post
 from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
@@ -50,3 +50,10 @@ class LikeDislikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['action_type', 'comment_id', 'user_id']
+
+class SearchBarSerializer(serializers.ModelSerializer):
+    searchField = serializers.CharField()
+
+    class Meta:
+        model = Post
+        fields = ['searchField']

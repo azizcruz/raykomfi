@@ -1,8 +1,3 @@
-function addReply(e) {
-  e.preventDefault();
-  console.log(e);
-}
-
 let post_wrapper = $("#posts-wrapper");
 let message_view = $("#messages-view");
 let view_html = "";
@@ -115,6 +110,41 @@ $(document).on("submit", "form.getMessageForm", function (e) {
         $(document).ready(() => {
           let message = document.getElementById("message-content-field");
           message.innerHTML = converter.makeHtml(message.innerHTML);
+        });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
+});
+
+// Posts search
+$(document).on("submit", "form.postsSearchForm", function (e) {
+  e.preventDefault();
+  let link = $(this);
+  let q = link.serializeArray()[0].value;
+  if (q) {
+    axios({
+      method: "POST",
+      url: "/api/posts/search",
+      headers: {
+        "X-CSRFTOKEN": Cookies.get("csrftoken"),
+        "Content-Type": "application/json",
+      },
+      data: {
+        searchField: q,
+      },
+    })
+      .then((response) => {
+        view_html = response.data.view;
+        message_view.html(view_html);
+        $(document).ready(() => {
+          console.log(response.data);
+          let view_html = response.data.view;
+          console.log(view_html);
+          let post_wrapper = document.getElementById("raykomfi-posts");
+          $("#lazyLoadLink").css("display", "none");
+          post_wrapper.innerHTML = view_html;
         });
       })
       .catch((err) => {

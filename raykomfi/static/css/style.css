@@ -10,15 +10,9 @@ html {
   font-size: 16px;
   box-sizing: border-box;
 }
-@media screen and (min-width: 320px) {
-  html {
-    font-size: calc(16px + 6 * ((100vw - 320px) / 680));
-  }
-}
-@media screen and (min-width: 1000px) {
-  html {
-    font-size: 22px;
-  }
+
+:root {
+  font-size: calc(16px + (24 - 16) * (100vw - 320px) / (1920 - 320));
 }
 
 body {
@@ -421,14 +415,11 @@ select:focus {
 .ray-order {
   background-color: #fff;
   border-radius: 8px;
-  padding: 20px 10px 10px 10px;
-}
-.ray-order > div {
-  margin-bottom: 10px;
+  padding: 10px;
 }
 
-.ray-order > div:last-child {
-  margin-bottom: 0;
+.ray-order .order-btn {
+  margin: 5px;
 }
 
 .ray-order .w3-button:hover {
@@ -524,6 +515,23 @@ select:focus {
 .vote-side span:hover {
   color: #2c3e50;
 }
+
+/* Searchbar Style */
+#search-field-wrapper {
+  display: none;
+}
+.search-input {
+  border: 0;
+  padding: 10px;
+}
+.search-input:focus {
+  outline: none;
+  border: 0 !important;
+}
+.show-search-field {
+  display: block !important;
+}
+/* Searchbar Style */
 
 /* Style the Image Used to Trigger the Modal */
 #myImg {
@@ -916,6 +924,57 @@ select:focus {
   background: #186bae;
 }
 /* Custom Scrollbar */
+
+/* Search loader */
+.spinner {
+  text-align: center;
+}
+
+.spinner > div {
+  width: 10px;
+  height: 10px;
+  background-color: #1e618e;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%,
+  80%,
+  100% {
+    -webkit-transform: scale(0);
+  }
+  40% {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes sk-bouncedelay {
+  0%,
+  80%,
+  100% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+  40% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+/* Search loader */
 
 /* 100% Image Width on Smaller Screens */
 @media only screen and (max-width: 700px) {

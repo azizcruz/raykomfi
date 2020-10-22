@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
 import api.serializers as serializers
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -66,7 +66,7 @@ class LazyCommentsView(APIView):
         page = request.POST.get('page')
         serializer = serializers.LazyCommentsSerializer(data=request.data)
         if serializer.is_valid():
-            comments = Comment.objects.prefetch_related('replies').filter(post__id=serializer.data['post_id'])
+            comments = Comment.objects.prefetch_related('user' ,'replies').filter(post__id=serializer.data['post_id'])
             results_per_page = 5
             paginator = Paginator(comments, results_per_page)
             try:
@@ -224,3 +224,26 @@ class GetMessageView(APIView):
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+class SearchPostsView(APIView):
+    '''
+    Search Posts
+    '''
+    permission_classes = [permissions.AllowAny]
+    
+    def post(self, request):
+        serializer = serializers.SearchBarSerializer(data=request.data)
+        if serializer.is_valid():
+            q = serializer.data['searchField']
+            posts = Post.objects.prefetch_related('creator', 'comments', 'category').filter(Q(title__icontains=q) | Q(content__icontains=q)).annotate(counted_comments=Sum('comments')).order_by('-counted_comments')
+            referesh_posts_view_html = loader.render_to_string('posts.html', {'posts': posts, 'user': request.user})
+            output_data = {
+                'view': referesh_posts_view_html,
+                'message': 'success'
+            }
+
+            if posts == []:
+                return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
+
+            return JsonResponse(output_data)
+        

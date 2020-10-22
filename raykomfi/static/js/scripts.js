@@ -103,6 +103,15 @@ $(document)
     $loading.hide();
   });
 
+var $searchLoading = $("#spinner").hide();
+$(document)
+  .ajaxStart(function () {
+    $searchLoading.show();
+  })
+  .ajaxStop(function () {
+    $searchLoading.hide();
+  });
+
 // New message preview
 $("#new-message-content").on("keyup", (e) => {
   let content = e.target.value;
@@ -224,3 +233,7 @@ window.onclick = function (event) {
     }
   }
 };
+
+$("#search-btn").on("click", () => {
+  $("#search-field-wrapper").toggleClass("show-search-field");
+});

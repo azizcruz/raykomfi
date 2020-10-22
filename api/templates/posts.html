@@ -1,6 +1,7 @@
 {% load thumbnail %}
 {% load humanize %}
 
+{% if posts %}
 {% for post in posts %}
 <div class="w3-padding ray-box w3-round-large">
     {% if post.creator and post.creator.is_active != False %}
@@ -40,3 +41,6 @@
     </a>
 </div>
 {% endfor %}
+{% else %}
+<p class="w3-center">لا توجد نتائج لبحثك</p>
+{% endif %}
