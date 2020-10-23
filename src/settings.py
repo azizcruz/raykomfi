@@ -13,9 +13,12 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 from django.utils.translation import gettext_lazy as _
+from google.oauth2 import service_account
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -89,6 +92,7 @@ TEMPLATES = [
     },
 ]
 
+# Check new messages
 TEMPLATE_CONTEXT_PROCESSORS = (
     'raykomfi.context_processors.not_opened_messages',
 )
@@ -224,3 +228,10 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
 ]
+
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = 'raykomfi'
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    f'{BASE_DIR}/src/creds/googleStorage.json'
+)

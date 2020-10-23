@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% load thumbnail %}
 {% load humanize %}
 
@@ -35,10 +34,12 @@
           <h3>{{post.title |truncatechars:100}}</h3>
           {% if post.image %}
           <div class="ray-image-section">
+
             {% thumbnail post.image "100x100" crop="center" as im %}
-            <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
-              data-src="{{ im.url }}" class="lazy-img" alt="{{post.slug}}" />
+            <img src="" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}" data-src="{{ im.url }}"
+              class="lazy-img" alt="{{post.slug}}" />
             {% endthumbnail %}
+
           </div>
           {% endif %}
           <div class="ray-box-footer-icons">
@@ -55,6 +56,10 @@
         </a>
       </div>
       {% endfor %}
+
+      <div class="lazy-load-linkwrapper w3-center">
+        <a id="lazyLoadLink" class="w3-border w3-padding" href="javascript:void(0);" data-page="2">عرض المزيد</a>
+      </div>
 
       {% else %}
       <p class="w3-center">لم تسأل رأي الناس عن أي منتج</p>

@@ -106,8 +106,8 @@
                     {% if post.image %}
                     <div class="ray-image-section">
                         {% thumbnail post.image "100x100" crop="center" as im %}
-                        <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
-                            data-src="{{ im.url }}" class="lazy-img" alt="{{post.slug}}" />
+                        <img src="" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
+                            data-src="{{ im.url }}" class="lazy-img w3-round-large" alt="{{post.slug}}" />
                         {% endthumbnail %}
                     </div>
                     {% endif %}

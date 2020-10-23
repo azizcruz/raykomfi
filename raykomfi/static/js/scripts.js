@@ -121,7 +121,11 @@ $("#new-message-content").on("keyup", (e) => {
 });
 
 // Lazy load images
-$(".lazy-img").Lazy();
+$(".lazy-img").Lazy({
+  scrollDirection: "vertical",
+  effect: "fadeIn",
+  visibleOnly: true,
+});
 
 // Get country
 if (!sessionStorage.getItem("country")) {
@@ -169,7 +173,6 @@ function fill_notification_list_override(data) {
     if (data.unread_list.length > 0) {
       var messages = data.unread_list
         .map(function (item) {
-          console.log(item.verb);
           if (item.verb === "comment") {
             var message = `<a href='${item.description}'>لديك تعليق جديد على منشورك ${item.target} من ${item.actor}<div>${item.timestamp}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";

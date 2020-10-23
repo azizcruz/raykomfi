@@ -57,3 +57,10 @@ class SearchBarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ['searchField']
+
+class UploadImageSerialzer(serializers.Serializer):
+    image = serializers.ImageField()
+    for_object = serializers.CharField(required=False)
+
+    class Meta:
+        fields = ['image', 'for_object']

@@ -26,6 +26,8 @@ urlpatterns = [
          views.activate, name='user-activate'),
     path('user/restore-password/<uidb64>/<token>/',
          views.restore_password, name='user-restore-password'),
+    path('user/posts/<int:user_id>',
+         views.my_posts_view, name='posts-get'), 
 
     # Post routes
     path('post/new', views.create_post, name='post-new'),
@@ -36,8 +38,6 @@ urlpatterns = [
     path('post/comment/vote/<int:comment_id>', views.comment_vote, name='post-comment-vote'),
     path('post/reply/<int:post_id>/<int:comment_id>',
          views.add_reply, name='post-reply'),
-    path('posts/<int:user_id>',
-         views.my_posts_view, name='posts-get'), 
 
     path('posts/most-discussed', views.most_discussed_posts, name='most-discussed-posts'),
     path('posts/<str:category>', views.categorized_posts, name='filtered-posts'),

@@ -36,7 +36,7 @@ from pdb import set_trace
 
 def index(request):
     posts = Post.objects.all().prefetch_related('creator', 'category', 'comments')[:10]
-    latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:15]
+    latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').all().order_by('-created')[:10]
     categories = Category.objects.all()
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories})
 
@@ -193,7 +193,7 @@ def post_view(request, id, slug):
 
 @ login_required
 def my_posts_view(request, user_id):
-    posts = Post.objects.filter(creator__id=user_id).prefetch_related('creator', 'category', 'comments__replies', 'comments__replies__user')
+    posts = Post.objects.prefetch_related('creator', 'category').filter(creator__id=user_id)
     return render(request, 'sections/user_posts.html', context={'posts': posts})
 
 
@@ -224,9 +224,8 @@ def create_post(request):
             post = form.save(commit=False)
             post.creator = request.user
             post.save()
-            comment_form = CommentForm()
-            reply_form = ReplyForm()
-            return render(request, 'sections/post_view.html', context={'post': post, 'comment_form': comment_form, 'reply_form': reply_form})
+            set_trace()
+            return redirect(post.get_absolute_url())
         else:
             return render(request, 'sections/create_post.html', context={'form': form})
     else:
