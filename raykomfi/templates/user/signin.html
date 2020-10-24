@@ -8,6 +8,9 @@
         <h3 class="w3-center ">تسجيل الدخول</h3>
         <form action="{% url 'raykomfi:user-signin' %}" method='post' id="signin-form">
             {% csrf_token %}
+            {% if next %}
+            <input type="hidden" name="next" value="{{next}}">
+            {% endif %}
             {{ form }}
             <div class="col s12">
                 <p><a href="{% url 'raykomfi:user-forgot-password' %}" class="w3-text-blue">نسيت كلمة المرور؟</a></p>

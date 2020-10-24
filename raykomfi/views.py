@@ -83,6 +83,7 @@ def profile_view(request, id):
 
 def sign_in_view(request):
     if request.method == 'POST':
+        goto_next = request.POST.get('next')
         form = SigninForm(request.POST, use_required_attribute=False)
         if form.is_valid():
             username = request.POST.get('username')
@@ -98,7 +99,10 @@ def sign_in_view(request):
                         user.stay_logged_in = False
                         user.save()
                     login(request, user)
-                    return HttpResponseRedirect(reverse('raykomfi:raykomfi-home'))
+                    if goto_next:
+                        return HttpResponseRedirect(goto_next)
+                    else:
+                        return HttpResponseRedirect(reverse('raykomfi:raykomfi-home'))
             else:
                 messages.success(
                     request, 'اسم المستخدم أو كلمة المرور خاطئة', extra_tags='pale-red w3-border')
@@ -106,15 +110,17 @@ def sign_in_view(request):
         else:
             return render(request, 'user/signin.html', context={'form': form})
     else:
+        form = SigninForm(use_required_attribute=False)
+        context = {'form': form}
         if request.user.is_anonymous and 'next' in request.GET:
             messages.success(
                 request, 'يجب عليك تسجيل الدخول أولا', extra_tags='pale-yellow w3-border')
+            context['next'] = request.GET.get('next')
         if request.user.is_authenticated:
             messages.success(
                 request, 'أنت مسجل الدخول بالفعل', extra_tags='pale-green w3-border')
             return redirect('/')
-        form = SigninForm(use_required_attribute=False)
-        return render(request, 'user/signin.html', context={'form': form})
+        return render(request, 'user/signin.html', context=context)
 
 
 def user_logout(request):
