@@ -193,7 +193,7 @@ def post_view(request, id, slug):
 
 @ login_required
 def my_posts_view(request, user_id):
-    posts = Post.objects.prefetch_related('creator', 'category').filter(creator__id=user_id)
+    posts = Post.objects.prefetch_related('creator', 'category').filter(creator__id=user_id)[:10]
     return render(request, 'sections/user_posts.html', context={'posts': posts})
 
 
@@ -224,7 +224,6 @@ def create_post(request):
             post = form.save(commit=False)
             post.creator = request.user
             post.save()
-            set_trace()
             return redirect(post.get_absolute_url())
         else:
             return render(request, 'sections/create_post.html', context={'form': form})

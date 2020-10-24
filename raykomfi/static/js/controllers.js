@@ -150,5 +150,55 @@ $(document).on("submit", "form.postsSearchForm", function (e) {
       .catch((err) => {
         console.log(err.message);
       });
+
+    $.ajax({
+      type: "post",
+      url: "/api/lazy-posts/",
+      data: {
+        page: page,
+        category: category,
+        user_id: user_id,
+        csrfmiddlewaretoken: Cookies.get("csrftoken"), // from index.html
+      },
+      success: function (data) {
+        // if there are still more pages to load,
+        // add 1 to the "Load More Posts" link's page data attribute
+        // else hide the link
+        if (data.has_next) {
+          link.data("page", page + 1);
+        } else {
+          link.hide();
+        }
+        // append html to the posts div
+        $("#raykomfi-posts").append(data.posts_html);
+      },
+      error: function (xhr, status, error) {
+        console.log(error);
+      },
+    });
   }
 });
+
+// Upload Image
+// $("#id_image").on("change", function (e) {
+//   var file = e.target.files[0];
+//   var fd = new FormData();
+//   fd.append("image", file);
+//   if (file.size > 0) {
+//     axios({
+//       method: "POST",
+//       url: "/api/post/image",
+//       headers: {
+//         "X-CSRFTOKEN": Cookies.get("csrftoken"),
+//         "Content-Type": "application/json",
+//       },
+//       data: fd,
+//     })
+//       .then((response) => {
+//         console.log(response.data);
+//       })
+//       .catch((err) => {
+//         console.log(err.message);
+//       });
+//   }
+// });

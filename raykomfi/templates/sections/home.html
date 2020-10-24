@@ -105,10 +105,8 @@
                     <h3>{{post.title |truncatechars:100}}</h3>
                     {% if post.image %}
                     <div class="ray-image-section">
-                        {% thumbnail post.image "100x100" crop="center" as im %}
-                        <img src="" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
-                            data-src="{{ im.url }}" class="lazy-img w3-round-large" alt="{{post.slug}}" />
-                        {% endthumbnail %}
+                        <img src="" alt="{{post.title}}" data-src="{{ post.image.url }}"
+                            class="lazy-img w3-round-large">
                     </div>
                     {% endif %}
                     <div class="ray-box-footer-icons">

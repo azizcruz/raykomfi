@@ -125,6 +125,7 @@ $(".lazy-img").Lazy({
   scrollDirection: "vertical",
   effect: "fadeIn",
   visibleOnly: true,
+  effectTime: 1000,
 });
 
 // Get country

@@ -12,9 +12,8 @@
   <div class="w3-col s12 m12 l6">
     <h3>إستفساراتي</h3>
     <br>
-    <div class="my-posts-wrapper">
-      {% if posts %}
-
+    {% if posts %}
+    <div id="raykomfi-posts">
       {% for post in posts %}
       <div class="w3-padding ray-box w3-round-large">
         {% if post.creator and post.creator.is_active != False %}
@@ -34,14 +33,14 @@
           <h3>{{post.title |truncatechars:100}}</h3>
           {% if post.image %}
           <div class="ray-image-section">
-
-            {% thumbnail post.image "100x100" crop="center" as im %}
-            <img src="" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}" data-src="{{ im.url }}"
-              class="lazy-img" alt="{{post.slug}}" />
-            {% endthumbnail %}
-
+            <img src="" alt="{{post.title}}" data-src="{{ post.image.url }}" class="lazy-img w3-round-large">
           </div>
           {% endif %}
+          <br>
+          <div>
+            <a href="{% url 'raykomfi:post-edit' id=post.id slug=post.slug  %}"
+              class="w3-button raykomfi-button w3-round-large">تعديل</a>
+          </div>
           <div class="ray-box-footer-icons">
             <div class="">
               <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.created | naturaltime}}</span>
@@ -56,20 +55,25 @@
         </a>
       </div>
       {% endfor %}
-
-      <div class="lazy-load-linkwrapper w3-center">
-        <a id="lazyLoadLink" class="w3-border w3-padding" href="javascript:void(0);" data-page="2">عرض المزيد</a>
-      </div>
-
       {% else %}
       <p class="w3-center">لم تسأل رأي الناس عن أي منتج</p>
       {% endif %}
     </div>
+    <div class="sk-chase" id="sk-chase">
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+    </div>
+    <div class="lazy-load-linkwrapper w3-center">
+      <a id="lazyLoadLink" class="w3-border w3-padding" href="javascript:void(0);" data-page="2"
+        data-user="{{ user.id }}">عرض المزيد</a>
+    </div>
+    {% else %}
+    <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
+      <p class="w3-center">فعل حسابك لفتح الرسائل</p>
+    </div>
   </div>
-
-  {% else %}
-  <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
-    <p class="w3-center">فعل حسابك لفتح الرسائل</p>
-  </div>
-</div>
-{% endif %} {% endblock content %}
+  {% endif %} {% endblock content %}

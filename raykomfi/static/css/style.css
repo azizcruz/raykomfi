@@ -42,10 +42,8 @@ body {
 }
 
 .lazy-img {
-  max-width: 100px;
-  max-height: 100px;
-  width: 100px;
-  height: 100px;
+  max-width: 15%;
+  height: auto;
 }
 
 .raykomfi-main-background-color {
@@ -542,7 +540,7 @@ select:focus {
 
 /* Style the Image Used to Trigger the Modal */
 #myImg {
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   transition: 0.3s;
   max-width: 20%;

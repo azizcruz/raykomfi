@@ -27,6 +27,13 @@
             {% endthumbnail %}
         </div>
         {% endif %}
+        {% if show_edit %}
+        <br>
+        <div>
+            <a href="{% url 'raykomfi:post-edit' id=post.id slug=post.slug  %}"
+                class="w3-button raykomfi-button">تعديل</a>
+        </div>
+        {% endif %}
         <div class="ray-box-footer-icons">
             <div class="">
                 <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.created | naturaltime}}</span>

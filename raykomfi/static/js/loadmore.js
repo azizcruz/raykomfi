@@ -4,13 +4,14 @@
     var link = $(this);
     var page = link.data("page");
     var category = link.data("category") || false;
-    console.log(category);
+    var user_id = link.data("user") || false;
     $.ajax({
       type: "post",
       url: "/api/lazy-posts/",
       data: {
         page: page,
         category: category,
+        user_id: user_id,
         csrfmiddlewaretoken: Cookies.get("csrftoken"), // from index.html
       },
       success: function (data) {
