@@ -71,6 +71,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'raykomfi.custom_middlewares.AutoLogout',
+    'ratelimit.middleware.RatelimitMiddleware',
     ]
 
 ROOT_URLCONF = 'src.urls'
@@ -207,12 +208,7 @@ DEFAULT_FROM_EMAIL = 'azizcruz11111@gmail.com'
 # Auto logout delay in minutes
 AUTO_LOGOUT_DELAY = 5 #equivalent to 5 minutes
 
-CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-            'LOCATION': 'localhost:8000',              
-        }
-    }
+
 
 # Rest framework
 REST_FRAMEWORK = {
@@ -221,7 +217,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated' 
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.SessionAuthentication']
 }
 
 # Cors settings

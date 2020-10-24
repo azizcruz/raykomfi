@@ -2,6 +2,8 @@ from raykomfi import models
 import api.views as views
 from django.urls import include, path
 from rest_framework import routers
+from ratelimit.decorators import ratelimit
+from django.utils.decorators import method_decorator
 
 app_name = 'raykomfiapi'
 

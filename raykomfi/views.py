@@ -29,6 +29,7 @@ from .filters import PostFilter
 from notifications.signals import notify
 from notifications.models import Notification
 from django.db.models import Count
+from ratelimit.decorators import ratelimit
 
 
 
@@ -194,7 +195,7 @@ def post_view(request, id, slug):
         notis = Notification.objects.filter(description__icontains=full_path)
         if notis: 
             notis.first().delete()
-    return render(request, 'sections/post_view.html', context={'post': post, 'comment_form': comment_form, 'reply_form': reply_form, 'related_posts': related_posts})
+    return render(request, 'sections/post_view.html', context={'post': post, 'comment_form': comment_form, 'reply_form': reply_form, 'related_posts': related_posts, 'comments_count': post.comments.count()})
 
 
 @ login_required

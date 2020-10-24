@@ -6,6 +6,7 @@ from dateutil.parser import parse
 from django.core.cache import cache 
 from django.conf import settings
 
+
 from .models import User
 
 class AutoLogout(object):

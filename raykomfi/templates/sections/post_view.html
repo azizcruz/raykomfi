@@ -164,6 +164,8 @@
                     {% endif %}
                 </div>
             </div>
+
+            {% if comments_count > 10 %}
             <div class="sk-chase" id="sk-chase">
                 <div class="sk-chase-dot"></div>
                 <div class="sk-chase-dot"></div>
@@ -176,6 +178,8 @@
                 <a id="lazyLoadLinkComments" class="w3-border w3-padding" href="javascript:void(0);" data-page="2">عرض
                     المزيد</a>
             </div>
+            {% endif %}
+
             <input type="hidden" id="post_id" value={{post.id}}>
             <div class="w3-mobile w3-container comment-button">
                 <h3>اضافة تعليق</h3>

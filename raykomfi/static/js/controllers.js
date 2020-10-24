@@ -1,6 +1,21 @@
 let post_wrapper = $("#posts-wrapper");
 let message_view = $("#messages-view");
 let view_html = "";
+let loading = $("#spinner");
+
+function custom_alert(message, icon) {
+  Swal.fire({
+    title: "",
+    html: message,
+    icon: icon,
+    showCloseButton: false,
+    showConfirmButton: false,
+    showCancelButton: true,
+    focusConfirm: false,
+    cancelButtonText: "إغلاق",
+    cancelButtonAriaLabel: "Thumbs down",
+  });
+}
 
 // Add reply
 $(document).on("submit", "form.replyForm", function (e) {
@@ -26,7 +41,15 @@ $(document).on("submit", "form.replyForm", function (e) {
         comment_view.html(view_html);
       })
       .catch((err) => {
-        console.log(err.message);
+        if (
+          err.response.status === 403 &&
+          err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+        ) {
+          custom_alert(
+            "<h3>محاولات متكررة, يرجى المحاولة لاحقا</h3>",
+            "warning"
+          );
+        }
       });
   }
 });
@@ -53,7 +76,15 @@ $(document).on("submit", "form.commentForm", function (e) {
         $("#lazyLoadLinkComments").hide();
       })
       .catch((err) => {
-        console.log(err.message);
+        if (
+          err.response.status === 403 &&
+          err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+        ) {
+          custom_alert(
+            "<h3>محاولات متكررة, يرجى المحاولة لاحقا</h3>",
+            "warning"
+          );
+        }
       });
   }
 });
@@ -82,7 +113,15 @@ $(document).on("submit", "form.voteForm", function (e) {
         votes_view.html(view_html);
       })
       .catch((err) => {
-        console.log(err.message);
+        if (
+          err.response.status === 403 &&
+          err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+        ) {
+          custom_alert(
+            "<h3>محاولات متكررة, يرجى المحاولة لاحقا</h3>",
+            "warning"
+          );
+        }
       });
   }
 });
@@ -113,7 +152,15 @@ $(document).on("submit", "form.getMessageForm", function (e) {
         });
       })
       .catch((err) => {
-        console.log(err.message);
+        if (
+          err.response.status === 403 &&
+          err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+        ) {
+          custom_alert(
+            "<h3>محاولات متكررة, يرجى المحاولة لاحقا</h3>",
+            "warning"
+          );
+        }
       });
   }
 });
@@ -123,6 +170,7 @@ $(document).on("submit", "form.postsSearchForm", function (e) {
   e.preventDefault();
   let link = $(this);
   let q = link.serializeArray()[0].value;
+  loading.css("display", "block");
   if (q) {
     axios({
       method: "POST",
@@ -144,38 +192,21 @@ $(document).on("submit", "form.postsSearchForm", function (e) {
           console.log(view_html);
           let post_wrapper = document.getElementById("raykomfi-posts");
           $("#lazyLoadLink").css("display", "none");
+          loading.css("display", "none");
           post_wrapper.innerHTML = view_html;
         });
       })
       .catch((err) => {
-        console.log(err.message);
-      });
-
-    $.ajax({
-      type: "post",
-      url: "/api/lazy-posts/",
-      data: {
-        page: page,
-        category: category,
-        user_id: user_id,
-        csrfmiddlewaretoken: Cookies.get("csrftoken"), // from index.html
-      },
-      success: function (data) {
-        // if there are still more pages to load,
-        // add 1 to the "Load More Posts" link's page data attribute
-        // else hide the link
-        if (data.has_next) {
-          link.data("page", page + 1);
-        } else {
-          link.hide();
+        if (
+          err.response.status === 403 &&
+          err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+        ) {
+          custom_alert(
+            "<h3>محاولات متكررة, يرجى المحاولة لاحقا</h3>",
+            "warning"
+          );
         }
-        // append html to the posts div
-        $("#raykomfi-posts").append(data.posts_html);
-      },
-      error: function (xhr, status, error) {
-        console.log(error);
-      },
-    });
+      });
   }
 });
 

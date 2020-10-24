@@ -18,7 +18,10 @@ from notifications.signals import notify
 from gcloud import storage
 from oauth2client.service_account import ServiceAccountCredentials
 import os
-from rest_framework.parsers import FileUploadParser
+from django.utils.decorators import method_decorator
+from ratelimit.decorators import ratelimit
+
+
 
 class LazyPostsView(APIView):
     '''
@@ -28,6 +31,7 @@ class LazyPostsView(APIView):
     queryset = Post.objects.all()
     permission_classes = [permissions.AllowAny]
 
+    @method_decorator(ratelimit(key='ip', rate='100/m', block=True))
     def post(self, request, format=None):
         page = request.POST.get('page')
         category = request.POST.get('category', '')
@@ -72,12 +76,13 @@ class LazyCommentsView(APIView):
     queryset = Comment.objects.prefetch_related('comments__replies').all()
     permission_classes = [permissions.AllowAny]
 
+    @method_decorator(ratelimit(key='ip', rate='100/m', block=True))
     def post(self, request, format=None):
         page = request.POST.get('page')
         serializer = serializers.LazyCommentsSerializer(data=request.data)
         if serializer.is_valid():
             comments = Comment.objects.prefetch_related('user' ,'replies').filter(post__id=serializer.data['post_id'])
-            results_per_page = 5
+            results_per_page = 10
             paginator = Paginator(comments, results_per_page)
             try:
                 comments = paginator.page(page)
@@ -87,7 +92,7 @@ class LazyCommentsView(APIView):
                 comments = paginator.page(paginator.num_pages)
             comments_html = loader.render_to_string(
                 'comments.html',
-                
+                {'comments': comments, 'user': request.user}
             )
             output_data = {
                 'comments_html': comments_html,
@@ -105,6 +110,7 @@ class BestUsers(APIView):
     queryset = Comment.objects.all()
     permission_classes = [permissions.AllowAny]
 
+    @method_decorator(ratelimit(key='ip', rate='10/m', block=True))
     def get(self, request, format=None):
         best_users = User.objects.all().annotate(Sum('my_comments__votes')).order_by('-my_comments__votes__sum').values('username', 'id', 'my_comments__votes__sum')
         return Response(best_users)
@@ -116,6 +122,7 @@ class CommentsView(APIView):
     '''
     permission_classes = [permissions.IsAuthenticated]
 
+    @method_decorator(ratelimit(key='ip', rate='3/m', block=True))
     def post(self, request):
         serializer = serializers.CommentAddSerializer(data=request.data)
         if serializer.is_valid():
@@ -145,6 +152,7 @@ class RepliesView(APIView):
     '''
     permission_classes = [permissions.IsAuthenticated]
 
+    @method_decorator(ratelimit(key='ip', rate='3/m', block=True))
     def post(self, request):
         serializer = serializers.ReplyAddSerializer(data=request.data)
         if serializer.is_valid():
@@ -167,12 +175,14 @@ class RepliesView(APIView):
         else:
             return Response({'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class LikeDislikeView(APIView):
     '''
-    Add Reply
+    Vote a comment
     '''
     permission_classes = [permissions.IsAuthenticated]
 
+    @method_decorator(ratelimit(key='ip', rate='10/m', block=True))
     def post(self, request):
         serializer = serializers.LikeDislikeSerializer(data=request.data)
         if serializer.is_valid():
@@ -240,13 +250,14 @@ class SearchPostsView(APIView):
     Search Posts
     '''
     permission_classes = [permissions.AllowAny]
-    
+
+    @method_decorator(ratelimit(key='ip', rate='10/m', block=True))
     def post(self, request):
         serializer = serializers.SearchBarSerializer(data=request.data)
         if serializer.is_valid():
             q = serializer.data['searchField']
             posts = Post.objects.prefetch_related('creator', 'comments', 'category').filter(Q(title__icontains=q) | Q(content__icontains=q)).annotate(counted_comments=Sum('comments')).order_by('-counted_comments')
-            referesh_posts_view_html = loader.render_to_string('posts.html', {'posts': posts, 'user': request.user})
+            referesh_posts_view_html = loader.render_to_string('posts.html', {'posts': posts, 'user': request.user, 'search_request': True})
             output_data = {
                 'view': referesh_posts_view_html,
                 'message': 'success'

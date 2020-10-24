@@ -55,6 +55,7 @@
         }
         // append html to the posts div
         $("#posts-wrapper").append(data.comments_html);
+        console.log(data.comments_html);
       },
       error: function (xhr, status, error) {
         console.log(error);
