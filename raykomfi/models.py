@@ -14,6 +14,10 @@ import datetime
 from django.conf import settings
 from django_countries.fields import CountryField
 
+from hitcount.models import HitCountMixin, HitCount
+from django.contrib.contenttypes.fields import GenericRelation
+
+
 def slugify(str):
     str = str.replace(" ", "-")
     str = str.replace(",", "-")
@@ -77,6 +81,7 @@ class Post(models.Model):
     isActive = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    hit_count_generic = GenericRelation(HitCount, object_id_field='object_p',related_query_name='hit_count_generic_relation')
 
     class Meta:
         ordering = ('-created', )

@@ -39,6 +39,7 @@ $(document).on("submit", "form.replyForm", function (e) {
         let comment_view = $(`#comment-id-${commentId}`);
         view_html = response.data.view;
         comment_view.html(view_html);
+        fixTime();
       })
       .catch((err) => {
         if (
@@ -74,6 +75,7 @@ $(document).on("submit", "form.commentForm", function (e) {
         let post_wrapper = document.getElementById("posts-wrapper");
         post_wrapper.innerHTML = view_html;
         $("#lazyLoadLinkComments").hide();
+        fixTime();
       })
       .catch((err) => {
         if (
@@ -111,6 +113,7 @@ $(document).on("submit", "form.voteForm", function (e) {
         let votes_view = $(`#comment-${commentId}-vote-side-wrapper`);
         view_html = response.data.view;
         votes_view.html(view_html);
+        fixTime();
       })
       .catch((err) => {
         if (
@@ -146,10 +149,9 @@ $(document).on("submit", "form.getMessageForm", function (e) {
         view_html = response.data.view;
         message_view.html(view_html);
         let converter = new showdown.Converter();
-        $(document).ready(() => {
-          let message = document.getElementById("message-content-field");
-          message.innerHTML = converter.makeHtml(message.innerHTML);
-        });
+        let message = document.getElementById("message-content-field");
+        message.innerHTML = converter.makeHtml(message.innerHTML);
+        fixTime();
       })
       .catch((err) => {
         if (
@@ -194,6 +196,7 @@ $(document).on("submit", "form.postsSearchForm", function (e) {
           $("#lazyLoadLink").css("display", "none");
           loading.css("display", "none");
           post_wrapper.innerHTML = view_html;
+          fixTime();
         });
       })
       .catch((err) => {

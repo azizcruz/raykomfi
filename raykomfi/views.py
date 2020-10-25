@@ -30,6 +30,8 @@ from notifications.signals import notify
 from notifications.models import Notification
 from django.db.models import Count
 from ratelimit.decorators import ratelimit
+from hitcount.utils import get_hitcount_model
+from hitcount.views import HitCountMixin
 
 
 
@@ -195,7 +197,20 @@ def post_view(request, id, slug):
         notis = Notification.objects.filter(description__icontains=full_path)
         if notis: 
             notis.first().delete()
-    return render(request, 'sections/post_view.html', context={'post': post, 'comment_form': comment_form, 'reply_form': reply_form, 'related_posts': related_posts, 'comments_count': post.comments.count()})
+    context = {'post': post, 'comment_form': comment_form, 'reply_form': reply_form, 'related_posts': related_posts, 'comments_count': post.comments.count()}
+
+     # hitcount logic
+    hit_count = get_hitcount_model().objects.get_for_object(post)
+    hits = hit_count.hits
+    hitcontext = context['hitcount'] = {'pk': hit_count.pk}
+    hit_count_response = HitCountMixin.hit_count(request, hit_count)
+    if hit_count_response.hit_counted:
+        hits = hits + 1
+        hitcontext['hit_counted'] = hit_count_response.hit_counted
+        hitcontext['hit_message'] = hit_count_response.hit_message
+        hitcontext['total_hits'] = hits
+        
+    return render(request, 'sections/post_view.html', context=context)
 
 
 @ login_required

@@ -35,8 +35,9 @@
             عضو لم يعد مسجل
         </div>
         {% endif %}
-        <small><i class="fa fa-clock-o" aria-hidden="true"></i>
-            {{reply.created | naturaltime}}</small>
+        <small><i class="fa fa-clock-o" aria-hidden="true"></i><span
+                class='created-time'>{{reply.created | naturaltime}}</span>
+        </small>
         <div class="comment">{{ reply.content }}</div>
     </div>
     {% endfor %}

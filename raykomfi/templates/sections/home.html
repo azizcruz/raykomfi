@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load thumbnail %}
 {% load humanize %}
+{% load hitcount_tags %}
 
 
 {% block content %}
@@ -111,10 +112,14 @@
                     {% endif %}
                     <div class="ray-box-footer-icons">
                         <div class="">
-                            <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.created | naturaltime}}</span>
+                            <span><i class="fa fa-clock-o" aria-hidden="true"></i>
+                                <span class='created-time'>{{post.created | naturaltime}}</span></span>
                         </div>
                         <div class="">
                             <span><i class="fa fa-comments" aria-hidden="true"></i> {{post.comments.count}}</span>
+                        </div>
+                        <div class="">
+                            <span><i class="fa fa-eye" aria-hidden="true"></i> {% get_hit_count for post %}</span>
                         </div>
                         <div class="">
                             <span><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</span>

@@ -1,5 +1,7 @@
 {% load thumbnail %}
 {% load humanize %}
+{% load hitcount_tags %}
+
 
 {% if not search_request %}
 <p class="raykomfi-main-color w3-white-text w3-center"><i class="fa fa-chevron-down" aria-hidden="true"></i>
@@ -26,25 +28,20 @@
         <h3>{{post.title |truncatechars:100}}</h3>
         {% if post.image %}
         <div class="ray-image-section">
-            {% thumbnail post.image "100x100" crop="center" as im %}
-            <img src="{{ im.url }}" alt="{{post.title}}" width="{{ im.width }}" height="{{ im.height }}"
-                data-src="{{ im.url }}" class="lazy-img" alt="{{post.slug}}" />
-            {% endthumbnail %}
-        </div>
-        {% endif %}
-        {% if show_edit %}
-        <br>
-        <div>
-            <a href="{% url 'raykomfi:post-edit' id=post.id slug=post.slug  %}"
-                class="w3-button raykomfi-button">تعديل</a>
+            <img src="" alt="{{post.title}}" data-src="{{ post.image.url }}" class="lazy-img w3-round-large">
         </div>
         {% endif %}
         <div class="ray-box-footer-icons">
             <div class="">
-                <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.created | naturaltime}}</span>
+                <span><i class="fa fa-clock-o" aria-hidden="true"></i>
+                    <span class='created-time'>{{post.created | naturaltime}}</span>
+                </span>
             </div>
             <div class="">
                 <span><i class="fa fa-comments" aria-hidden="true"></i> {{post.comments.count}}</span>
+            </div>
+            <div class="">
+                <span><i class="fa fa-eye" aria-hidden="true"></i> {% get_hit_count for post %}</span>
             </div>
             <div class="">
                 <span><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</span>

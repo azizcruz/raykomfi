@@ -238,6 +238,29 @@ window.onclick = function (event) {
   }
 };
 
+// Show search field
 $("#search-btn").on("click", () => {
   $("#search-field-wrapper").toggleClass("show-search-field");
 });
+
+// Edit created display time
+fixTime();
+
+// Force Raykomfi in the beginning
+let postTitle = $("#create-post-form #id_title");
+
+if (postTitle) {
+  postTitle.val("رايكم في ");
+  postTitle.on("keydown", (e) => {
+    let currentVal = e.target.value;
+    if (currentVal.length <= 9) {
+      e.target.value = "رايكم في ";
+    }
+
+    let count = (currentVal.match(/رايكم في/g) || []).length;
+    console.log(count);
+    if (count > 1) {
+      postTitle.val("رايكم في");
+    }
+  });
+}

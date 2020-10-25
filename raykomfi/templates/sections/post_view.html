@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load thumbnail %}
 {% load humanize %}
+{% load hitcount_tags %}
 
 {% block content %}
 
@@ -71,10 +72,13 @@
 
                 {% endif %}
             </div>
+            <br>
             <div class="w3-container">
-                <div><small><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.created | naturaltime}}</small>
+                <div><small><i class="fa fa-clock-o" aria-hidden="true"></i> <span
+                            class="created-time">{{post.created | naturaltime}}</span></small>
                 </div>
                 <div><small><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</small></div>
+                <div><small><i class="fa fa-eye"></i> {% get_hit_count for post %}</small></div>
             </div>
             <div class="w3-mobile w3-container reply-buttons">
                 <hr>
@@ -99,8 +103,9 @@
                                     عضو لم يعد مسجل
                                 </div>
                                 {% endif %}
-                                <small><i class="fa fa-clock-o" aria-hidden="true"></i>
-                                    {{comment.created | naturaltime}}</small>
+                                <small><i class="fa fa-clock-o" aria-hidden="true"></i><span
+                                        class="created-time">{{comment.created | naturaltime}}</span>
+                                </small>
                                 <div class="comment">{{ comment.content }}</div>
                             </div>
                             <hr>
@@ -119,8 +124,9 @@
                                         عضو لم يعد مسجل
                                     </div>
                                     {% endif %}
-                                    <small><i class="fa fa-clock-o" aria-hidden="true"></i>
-                                        {{reply.created | naturaltime}}</small>
+                                    <small><i class="fa fa-clock-o" aria-hidden="true"></i><span class="created-time">
+                                            {{reply.created | naturaltime}}</span>
+                                    </small>
                                     <div class="comment">{{ reply.content }}</div>
                                 </div>
                                 {% endfor %}

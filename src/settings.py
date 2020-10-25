@@ -30,7 +30,7 @@ SECRET_KEY = 'y#micn0*%3d33ew1l=!5^#*5@9q$mr38*48pkv%@i@gc-p&&fs'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1',]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.106']
 
 
 # Application definition
@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'django_extensions',
     "compressor",
     'notifications',
+    'hitcount'
 ]
 
 MIDDLEWARE = [

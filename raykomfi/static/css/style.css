@@ -417,6 +417,10 @@ select:focus {
   flex-direction: row;
 }
 
+.ray-box-footer-icons:nth-child(1) {
+  flex: 0 1 156.25px;
+}
+
 .ray-order {
   background-color: #fff;
   border-radius: 8px;

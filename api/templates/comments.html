@@ -22,7 +22,7 @@
             </div>
             {% endif %}
             <small><i class="fa fa-clock-o" aria-hidden="true"></i>
-                {{comment.created | naturaltime}}</small>
+                <span class='created-time'>{{comment.created | naturaltime}}</span></small>
             <div class="comment">{{ comment.content }}</div>
         </div>
         <hr>

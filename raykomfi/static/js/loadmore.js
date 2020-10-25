@@ -25,6 +25,7 @@
         }
         // append html to the posts div
         $("#raykomfi-posts").append(data.posts_html);
+        fixTime();
       },
       error: function (xhr, status, error) {
         console.log(error);
@@ -55,7 +56,7 @@
         }
         // append html to the posts div
         $("#posts-wrapper").append(data.comments_html);
-        console.log(data.comments_html);
+        fixTime();
       },
       error: function (xhr, status, error) {
         console.log(error);

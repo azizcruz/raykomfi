@@ -217,15 +217,15 @@ class NewPostForm(forms.ModelForm):
         for fieldname in ['category', 'title', 'content', 'image']:
 
             if fieldname == 'category':
-                self.fields[fieldname].label = 'تصنيف الموضوع'
+                self.fields[fieldname].label = 'تصنيف الإستفسار'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-select w3-border  w3-round-large'
             if fieldname == 'title':
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
-                self.fields[fieldname].label = 'عنوان الموضوع'
+                self.fields[fieldname].label = 'عنوان الإستفسار'
             if fieldname == 'content':
-                self.fields[fieldname].widget.attrs['placeholder'] = 'نبذة عن الموضوع'
+                self.fields[fieldname].widget.attrs['placeholder'] = 'نبذة عن الإستفسار'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
-                self.fields[fieldname].label = 'نبذة عن الموضوع'
+                self.fields[fieldname].label = 'نبذة عن الإستفسار'
             if fieldname == 'image':
                 self.fields[fieldname].label = 'صورة'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
@@ -246,6 +246,19 @@ class NewPostForm(forms.ModelForm):
                     "ملف الصورة تالف أو نوع الملف ليس صورة")
 
         return image
+
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        ALLOWED_EXT = ['jpg', 'png', 'jpeg']
+        if title.find('رايكم في') == -1:
+            raise forms.ValidationError(
+                    "يجب أن يبدأ عنوان الإستفسار برايكم في")
+
+        if len(title) - 15 < 0 :
+            raise forms.ValidationError(
+                    "إستفسر عن شيء حقيقي")
+
+        return title
 
 @parsleyfy
 class CustomChangePasswordForm(PasswordChangeForm):
