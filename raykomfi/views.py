@@ -32,6 +32,7 @@ from django.db.models import Count
 from ratelimit.decorators import ratelimit
 from hitcount.utils import get_hitcount_model
 from hitcount.views import HitCountMixin
+from django.db.models import F
 
 
 
@@ -51,6 +52,12 @@ def categorized_posts(request, category=False):
 
 def most_discussed_posts(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').annotate(count=Count('comments')).order_by('-count')
+    categories = Category.objects.all()
+    latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True})
+
+def most_searched_posts(request):
+    posts = Post.objects.prefetch_related('creator', 'category', 'comments').order_by("-hit_count_generic__hits")[:10]
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True})
@@ -187,9 +194,12 @@ def post_view(request, id, slug):
     post = Post.objects.select_related('creator', 'category').filter(Q(id__exact=id) & Q(
         slug__exact=slug)).prefetch_related('creator', Prefetch('comments', queryset=Comment.objects.filter(id__in=subquery).prefetch_related('user', 'replies__user', 'post', 'post__creator', 'voted_like', 'voted_dislike'))).first()
     rand_ids = Post.objects.select_related('creator', 'category').filter(category=post.category).values_list('id', flat=True)
-    rand_ids = list(rand_ids)
-    rand_ids = sample(rand_ids, 7)
-    related_posts = Post.objects.select_related('creator', 'category').filter(id__in=rand_ids)
+    if len(rand_ids) > 10:
+        rand_ids = list(rand_ids)
+        rand_ids = sample(rand_ids, 7)
+        related_posts = Post.objects.select_related('creator', 'category').filter(id__in=rand_ids)
+
+    related_posts = []
     comment_form = CommentForm()
     reply_form = ReplyForm()
     if request.GET.get('read'):
@@ -197,6 +207,7 @@ def post_view(request, id, slug):
         notis = Notification.objects.filter(description__icontains=full_path)
         if notis: 
             notis.first().delete()
+
     context = {'post': post, 'comment_form': comment_form, 'reply_form': reply_form, 'related_posts': related_posts, 'comments_count': post.comments.count()}
 
      # hitcount logic

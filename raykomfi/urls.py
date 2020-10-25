@@ -40,6 +40,7 @@ urlpatterns = [
          views.add_reply, name='post-reply'),
 
     path('posts/most-discussed', views.most_discussed_posts, name='most-discussed-posts'),
+    path('posts/most-searched', views.most_searched_posts, name='most-searched-posts'),
     path('posts/<str:category>', views.categorized_posts, name='filtered-posts'),
     # Messages routes
     path('user/messages/<int:user_id>', views.messages_view, name='messages'),

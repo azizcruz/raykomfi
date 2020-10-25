@@ -264,3 +264,33 @@ if (postTitle) {
     }
   });
 }
+
+// Get best user of the month
+let bestUserWrapper = $("#user-of-the-month");
+let whereToDisplayResponse = $("#display-best-user");
+let bestUserLoading = $("#sk-chase-best-user");
+bestUserLoading.css("display", "block");
+if (bestUserWrapper) {
+  axios({
+    method: "GET",
+    url: "/api/best-users/",
+    headers: {
+      "X-CSRFTOKEN": Cookies.get("csrftoken"),
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      let name = response.data[0].username;
+      let agreed = response.data[0].my_comments__votes__sum;
+      let id = response.data[0].id;
+      let displayHtml = `<a href="/user/profile/${id}/"><strong>${name}</strong></a> بـ <span> <span
+      class="agreed-number">${agreed}</span> عضو متفق مع
+  آرائه</span>`;
+
+      whereToDisplayResponse.html(displayHtml);
+      bestUserLoading.css("display", "none");
+    })
+    .catch((err) => {
+      bestUserWrapper.hide();
+    });
+}

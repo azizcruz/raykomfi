@@ -96,10 +96,6 @@ small,
   height: auto;
 }
 
-/* small {
-  font-size: 13px;
-} */
-
 .raykomfi-margin-small {
   margin: 5px;
 }
@@ -122,10 +118,6 @@ small,
   right: 36%;
   bottom: 3%;
 }
-
-/* div {
-  font-size: 18px;
-} */
 
 #myIntro {
   color: #fff !important;
@@ -302,6 +294,24 @@ select:focus {
   border: 2px solid #186bae !important;
 }
 
+.best-user-wrapper {
+  padding: 14px;
+}
+
+.best-user-wrapper > div:nth-child(1) {
+  margin-bottom: 8px;
+  color: #2196f3 !important;
+  font-weight: 600;
+}
+
+.best-user-wrapper .agreed-number {
+  font-weight: 700;
+}
+
+.best-user-wrapper p {
+  margin-bottom: 0;
+}
+
 /* Main Style */
 
 /* Notifications Modal Styles */
@@ -425,10 +435,20 @@ select:focus {
   background-color: #fff;
   border-radius: 8px;
   padding: 10px;
+  overflow: visible;
 }
 
-.ray-order .order-btn {
-  margin: 5px;
+.ray-order.w3-bar > .w3-bar-item {
+  padding: 4px;
+}
+
+.ray-order .w3-dropdown-content {
+  z-index: 999;
+  top: 40px;
+}
+
+.ray-order .w3-dropdown-hover {
+  position: relative;
 }
 
 .ray-order .w3-button:hover {

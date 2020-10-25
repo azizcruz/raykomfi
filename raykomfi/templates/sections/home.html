@@ -11,7 +11,7 @@
     <div class="w3-col l1 w3-hide-small">&nbsp</div>
     <div class="w3-col s12 m4 l4 w3-hide-small">
         <div class="w3-padding w3-white w3-round-large">
-            <h4 class="w3-center">اخر الأراء</h4>
+            <h4 class="w3-center">آخر الآراء</h4>
             {% for comment in latest_comments %}
             <div class="w3-row latest-opinion">
                 {% if comment.user and comment.user.is_active != False %}
@@ -31,27 +31,37 @@
         </div>
     </div>
     <div class="w3-col s12 m8 l6 ray w3-round-large">
-        <div class="w3-row ray-order">
-            <a href="/" class="order-btn"><button class="w3-button w3-round-large raykomfi-main-background-color"><i
-                        class="fa fa-sort-amount-desc" aria-hidden="true"></i>
-                    الأحدث</button></a>
-            <a href="{% url 'raykomfi:most-discussed-posts' %}" class="order-btn"><button
-                    class="w3-button w3-round-large raykomfi-main-background-color"><i class="fa fa-commenting"
-                        aria-hidden="true"></i>
-                    الأكثر مناقشة</button></a>
-            <div class="w3-dropdown-hover w3-round-large order-btn">
-                <button class="w3-button w3-round-large raykomfi-main-background-color"><i class="fa fa-tags"
-                        aria-hidden="true"></i>
-                    حسب التصنيف</button>
-                <div class="w3-dropdown-content w3-bar-block w3-round-large w3-card">
-                    {% for category in categories %}
-                    <a href="{% url 'raykomfi:filtered-posts' category=category.name %}"
-                        class="w3-bar-item w3-button">{{category.name}}</a>
-                    {% endfor %}
+        <div class="w3-row">
+            <div class="w3-bar w3-white w3-round-large ray-order">
+                <div class="w3-bar-item  w3-right"> <a href="/" class="order-btn"><button
+                            class="w3-button w3-round-large raykomfi-main-background-color"><i
+                                class="fa fa-sort-amount-desc" aria-hidden="true"></i>
+                            الأحدث</button></a></div>
+                <div class="w3-bar-item  w3-right"><a href="{% url 'raykomfi:most-discussed-posts' %}"
+                        class="order-btn"><button class="w3-button w3-round-large raykomfi-main-background-color"><i
+                                class="fa fa-commenting" aria-hidden="true"></i>
+                            الأكثر مناقشة</button></a></div>
+                <div class="w3-bar-item  w3-right"><a href="{% url 'raykomfi:most-searched-posts' %}"
+                        class="order-btn"><button class="w3-button w3-round-large raykomfi-main-background-color"><i
+                                class="fa fa-fire" aria-hidden="true"></i>
+                            الأكثر بحثا</button></a></div>
+                <div class="w3-bar-item  w3-right w3-dropdown-hover w3-round-large order-btn">
+                    <button class="w3-button w3-round-large raykomfi-main-background-color"><i class="fa fa-tags"
+                            aria-hidden="true"></i>
+                        حسب التصنيف</button>
+                    <div class="w3-dropdown-content w3-bar-block w3-round-large w3-card">
+                        {% for category in categories %}
+                        <a href="{% url 'raykomfi:filtered-posts' category=category.name %}"
+                            class="w3-bar-item w3-button">{{category.name}}</a>
+                        {% endfor %}
+                    </div>
+
+                </div>
+                <div class="w3-bar-item w3-right">
+                    <button class="w3-button w3-round-large raykomfi-main-background-color order-btn" id="search-btn">
+                        <i class="fa fa-search"></i> بحث </button>
                 </div>
             </div>
-            <button class="w3-button w3-round-large raykomfi-main-background-color order-btn" id="search-btn">
-                <i class="fa fa-search"></i> بحث </button>
         </div>
         <div class="w3-row" id="search-field-wrapper">
             <br>
@@ -65,6 +75,21 @@
                     <input class="w3-input search-input" type="text" placeholder="بحث عن إستفسار ..." name="q">
                 </form>
             </div>
+        </div>
+        <br>
+        <div class="w3-row w3-white w3-round-large best-user-wrapper w3-center" id="user-of-the-month">
+            <div>عضو الشهر</div>
+            <div class="sk-chase" id="sk-chase-best-user">
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+            </div>
+            <p id="display-best-user"><a href="#"><strong>admin</strong></a> بـ <span> <span
+                        class="agreed-number">36</span> عضو متفق مع
+                    آرائه</span></p>
         </div>
         {% if not user.is_authenticated %}
         <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">

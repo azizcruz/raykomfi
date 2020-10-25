@@ -66,7 +66,7 @@ class Category(models.Model):
         super(Category, self).save(*args, **kwargs)
 
 
-class Post(models.Model):
+class Post(models.Model, HitCountMixin):
     creator = models.ForeignKey(
         User, related_name='posts', verbose_name='الكاتب',  on_delete=models.SET_DEFAULT, default=None, null=True, db_index=True)
     category = models.ForeignKey(
@@ -81,7 +81,7 @@ class Post(models.Model):
     isActive = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    hit_count_generic = GenericRelation(HitCount, object_id_field='object_p',related_query_name='hit_count_generic_relation')
+    hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk', related_query_name='hit_count_generic_relation')
 
     class Meta:
         ordering = ('-created', )

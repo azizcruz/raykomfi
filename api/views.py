@@ -21,6 +21,8 @@ import os
 from django.utils.decorators import method_decorator
 from ratelimit.decorators import ratelimit
 import datetime
+from django.utils import timezone
+
 
 
 
@@ -113,7 +115,10 @@ class BestUsers(APIView):
 
     @method_decorator(ratelimit(key='ip', rate='10/m', block=True))
     def get(self, request, format=None):
-        best_users = User.objects.filter(my_comments__created__lte=datetime.datetime.today(), my_comments__created__gt=datetime.datetime.today()-datetime.timedelta(days=30)).annotate(Sum('my_comments__votes')).order_by('-my_comments__votes__sum').values('username', 'id', 'my_comments__votes__sum')
+        best_users = User.objects.filter(
+            my_comments__created__lte=timezone.now(),
+            my_comments__created__gt=timezone.now()-datetime.timedelta(days=30)
+            ).annotate(Sum('my_comments__votes')).order_by('-my_comments__votes__sum').values('username', 'id', 'my_comments__votes__sum')
         return Response(best_users)
 
 
