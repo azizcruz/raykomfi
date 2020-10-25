@@ -104,8 +104,6 @@ class ProfileForm(forms.ModelForm):
         label='', required=False, widget=forms.TextInput())
     last_name = forms.CharField(
         label='', required=False, widget=forms.TextInput())
-    country = forms.CharField(label='', required=False,
-                              widget=forms.TextInput())
     bio = forms.CharField(label='', required=False,
                           max_length=144, widget=forms.Textarea())
     email = forms.EmailField(label='', validators=[validate_email], widget=forms.TextInput(), error_messages={
@@ -125,12 +123,12 @@ class ProfileForm(forms.ModelForm):
             },
         }
         fields = ('username', 'email', 'first_name',
-                  'last_name', 'country', 'bio', )
+                  'last_name', 'bio', )
 
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
 
-        for fieldname in ['username', 'first_name', 'last_name', 'country', 'bio', 'email']:
+        for fieldname in ['username', 'first_name', 'last_name', 'bio', 'email']:
             if fieldname == 'username':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'اسم المستخدم'
@@ -143,10 +141,6 @@ class ProfileForm(forms.ModelForm):
             if fieldname == 'last_name':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'الاسم الأخير'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
-            if fieldname == 'country':
-                self.fields[fieldname].widget.attrs['placeholder'] = ''
-                self.fields[fieldname].label = 'الدولة'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
             if fieldname == 'email':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
@@ -223,7 +217,6 @@ class NewPostForm(forms.ModelForm):
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
                 self.fields[fieldname].label = 'عنوان الإستفسار'
             if fieldname == 'content':
-                self.fields[fieldname].widget.attrs['placeholder'] = 'نبذة عن الإستفسار'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
                 self.fields[fieldname].label = 'نبذة عن الإستفسار'
             if fieldname == 'image':

@@ -209,13 +209,13 @@ def post_view(request, id, slug):
         hitcontext['hit_counted'] = hit_count_response.hit_counted
         hitcontext['hit_message'] = hit_count_response.hit_message
         hitcontext['total_hits'] = hits
-        
+
     return render(request, 'sections/post_view.html', context=context)
 
 
 @ login_required
 def my_posts_view(request, user_id):
-    posts = Post.objects.prefetch_related('creator', 'category').filter(creator__id=user_id)[:10]
+    posts = Post.objects.prefetch_related('creator', 'category').filter(creator__id=user_id)[:5]
     return render(request, 'sections/user_posts.html', context={'posts': posts})
 
 
@@ -371,7 +371,7 @@ def add_comment(request, post_id):
         comment = Comment.objects.create(
             content=comment_form.cleaned_data['content'], user=request.user, post=post)
         messages.success(
-            request, 'تم اضافة تعليقك بنجاح', extra_tags='pale-green w3-border')
+            request, 'تم إضافة رأيك بنجاح', extra_tags='pale-green w3-border')
         return HttpResponseRedirect(post.get_absolute_url())
     else:
         return render(request, 'sections/post_view.html', {'post': post, 'comment_form': comment_form})
