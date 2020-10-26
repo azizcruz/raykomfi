@@ -95,7 +95,7 @@ def sign_in_view(request):
         goto_next = request.POST.get('next')
         form = SigninForm(request.POST, use_required_attribute=False)
         if form.is_valid():
-            username = request.POST.get('username')
+            username = request.POST.get('email')
             password = request.POST.get('password')
             stay_logged_in = request.POST.get('stay_logged_in', 'off')
             user = authenticate(username=username, password=password)
@@ -226,7 +226,8 @@ def post_view(request, id, slug):
 @ login_required
 def my_posts_view(request, user_id):
     posts = Post.objects.prefetch_related('creator', 'category').filter(creator__id=user_id)[:5]
-    return render(request, 'sections/user_posts.html', context={'posts': posts})
+    count = posts.count()
+    return render(request, 'sections/user_posts.html', context={'posts': posts, 'count_posts': count})
 
 
 @ login_required
@@ -435,7 +436,7 @@ def activate(request, uidb64, token):
         if user.email_active == True:
             messages.success(
             request, 'حسابك مفعل من قبل', extra_tags='pale-green w3-border')
-        return redirect('raykomfi:user-signin')
+            return redirect('raykomfi:user-signin')
         user.email_active = True
         user.save()
         logout(request)
@@ -461,10 +462,10 @@ def send_link(request):
     if request.method == 'POST':
         current_site = get_current_site(request)
         email = request.POST.get('email')
-        if '@' not in email:
+        if email.find('@') == -1:
             messages.success(
                 request, 'أدخل بريد إلكتروني صحيح, أعد المحاولة مرة أخرى', extra_tags='pale-red w3-border')
-            return redirect('raykomfi:sign-in')
+            return redirect('raykomfi:user-signin')
         to_email = email
         user = get_object_or_404(User, email=to_email)
         mail_subject = 'تفعيل حسابك على رايكم في'
@@ -484,8 +485,8 @@ def send_link(request):
         msg.send()
         messages.success(
             request, 'تم إرسال رابط التفعيل الى بريدك الإلكتروني', extra_tags='pale-green w3-border')
-
-        return HttpResponseRedirect('/user/signin')
+        return HttpResponseRedirect(reverse('raykomfi:user-signin'))
+        
 
     else:
         return render(request, 'user/activate_account.html')

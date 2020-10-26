@@ -5,7 +5,7 @@
     آخر تحديث بدأ من هنا <i class="fa fa-chevron-down" aria-hidden="true"></i>
 </p>
 {% for comment in comments %}
-<div class="w3-row comment-wrapper w3-border w3-padding w3-round-large">
+<div class="w3-row comment-wrapper w3-border w3-padding w3-round-large raykomfi-shadow-1">
     <div class="w3-col s10 m11 l11" id="comment-id-{{comment.id}}">
         <div class="comment-side">
             {% if comment.user and reply.user.is_active != False %}

@@ -15,7 +15,7 @@
     {% if posts %}
     <div id="raykomfi-posts">
       {% for post in posts %}
-      <div class="w3-padding ray-box w3-round-large">
+      <div class="w3-padding ray-box w3-round-large raykomfi-shadow-1">
         {% if post.creator and post.creator.is_active != False %}
         <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
           <span class="poster-name">
@@ -67,13 +67,12 @@
       <div class="sk-chase-dot"></div>
       <div class="sk-chase-dot"></div>
     </div>
+    {% if count_posts < 6 %}
+
+    {% else %}
     <div class="lazy-load-linkwrapper w3-center">
       <a id="lazyLoadLink" class="w3-border w3-padding" href="javascript:void(0);" data-page="2"
         data-user="{{ user.id }}">عرض المزيد</a>
     </div>
-    {% else %}
-    <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
-      <p class="w3-center">فعل حسابك لفتح الرسائل</p>
-    </div>
-  </div>
-  {% endif %} {% endblock content %}
+    {% endif %}
+    {% endif %} {% endblock content %}

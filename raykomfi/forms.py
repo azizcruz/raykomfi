@@ -170,7 +170,9 @@ class ProfileForm(forms.ModelForm):
 
 @parsleyfy
 class SigninForm(forms.Form):
-    username = forms.CharField(widget=forms.TextInput())
+    email = forms.EmailField(label='', validators=[validate_email], widget=forms.TextInput(), error_messages={
+        'invalid': _("بريد إلكتروني غير صالح"),
+    })
     password = forms.CharField(widget=forms.PasswordInput())
     stay_logged_in = forms.CharField(widget=forms.CheckboxInput())
 
@@ -181,15 +183,15 @@ class SigninForm(forms.Form):
                 'required': 'false',
             },
         }
-        fields = ('username', 'password',)
+        fields = ('email', 'password',)
 
     def __init__(self, *args, **kwargs):
         super(SigninForm, self).__init__(*args, **kwargs)
 
-        for fieldname in ['username', 'password', 'stay_logged_in']:
-            if fieldname == 'username':
+        for fieldname in ['email', 'password', 'stay_logged_in']:
+            if fieldname == 'email':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
-                self.fields[fieldname].label = 'اسم المستخدم'
+                self.fields[fieldname].label = 'البريد الإلكتروني'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
             if fieldname == 'password':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''

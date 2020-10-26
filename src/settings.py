@@ -176,6 +176,7 @@ STATICFILES_FINDERS = (
 
 # Custom User Model Settings
 AUTH_USER_MODEL = 'raykomfi.User'
+AUTHENTICATION_BACKENDS = ['raykomfi.backends.EmailBackend']
 
 # Media settings.
 MEDIA_URL = '/media/'

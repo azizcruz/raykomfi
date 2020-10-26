@@ -10,7 +10,7 @@
 <div class="w3-row-padding">
     <div class="w3-col l1 w3-hide-small">&nbsp</div>
     <div class="w3-col s12 m4 l4 w3-hide-small">
-        <div class="w3-padding w3-white w3-round-large">
+        <div class="w3-padding w3-white w3-round-large raykomfi-shadow-1">
             <h4 class="w3-center">آخر الآراء</h4>
             {% for comment in latest_comments %}
             <div class="w3-row latest-opinion">
@@ -32,7 +32,7 @@
     </div>
     <div class="w3-col s12 m8 l6 ray w3-round-large">
         <div class="w3-row">
-            <div class="w3-bar w3-white w3-round-large ray-order">
+            <div class="w3-bar w3-white w3-round-large ray-order raykomfi-shadow-1">
                 <div class="w3-bar-item  w3-right"> <a href="/" class="order-btn"><button
                             class="w3-button w3-round-large raykomfi-main-background-color"><i
                                 class="fa fa-sort-amount-desc" aria-hidden="true"></i>
@@ -77,7 +77,8 @@
             </div>
         </div>
         <br>
-        <div class="w3-row w3-white w3-round-large best-user-wrapper w3-center" id="user-of-the-month">
+        <div class="w3-row w3-white w3-round-large best-user-wrapper w3-center raykomfi-shadow-1"
+            id="user-of-the-month">
             <div>عضو الشهر</div>
             <div class="sk-chase" id="sk-chase-best-user">
                 <div class="sk-chase-dot"></div>
@@ -113,7 +114,7 @@
         {% endif %}
         <div id="raykomfi-posts">
             {% for post in posts %}
-            <div class="w3-padding ray-box w3-round-large">
+            <div class="w3-padding ray-box w3-round-large raykomfi-shadow-1">
                 {% if post.creator and post.creator.is_active != False %}
                 <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
                     <span class="poster-name">
@@ -179,7 +180,7 @@
 
     </div>
     <div class="w3-col s12 m4 l4 w3-hide-medium w3-hide-large">
-        <div class="w3-padding w3-white w3-round-large">
+        <div class="w3-padding w3-white w3-round-large raykomfi-shadow-1">
             <h4 class="w3-center">اخر الأراء</h4>
             {% for comment in latest_comments %}
             <div class="w3-row latest-opinion">
