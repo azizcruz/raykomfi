@@ -29,7 +29,7 @@ def slugify(str):
 
 class User(AbstractUser):
     bio = models.TextField(blank=True, verbose_name='نبذة عن',)
-    country = models.CharField(max_length=255, verbose_name='الدولة',)
+    country = models.CharField(max_length=255, verbose_name='الدولة', blank=True)
     isBlocked = models.BooleanField(default=False, verbose_name='محظور؟')
     uuid = models.UUIDField(default=uuid4, editable=False, verbose_name='رمز العضو', null=True)
     secret_code = models.UUIDField(default=uuid1, editable=False, verbose_name='رمز العمليات', null=True)
@@ -38,6 +38,12 @@ class User(AbstractUser):
     stay_logged_in = models.BooleanField(
         default=False, verbose_name='البقاء متصلا')
     email = models.EmailField(unique=True, verbose_name='بريد الإلكتروني',)
+    get_notifications = models.BooleanField(
+        default=True, verbose_name='إستقبال إشعارات ؟')
+    hide_name = models.BooleanField(
+        default=True, verbose_name='إظهارالإسم ؟')
+    allow_messages = models.BooleanField(
+        default=True, verbose_name='إستقبال رسائل ؟')
 
 
     def get_absolute_url(self):

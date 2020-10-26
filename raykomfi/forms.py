@@ -111,6 +111,7 @@ class ProfileForm(forms.ModelForm):
         'invalid': _("بريد إلكتروني غير صالح"),
     })
 
+
     class Meta:
         model = User
         parsley_extras = {
@@ -123,12 +124,12 @@ class ProfileForm(forms.ModelForm):
             },
         }
         fields = ('username', 'email', 'first_name',
-                  'last_name', 'bio', )
+                  'last_name', 'bio', 'stay_logged_in', 'get_notifications', 'hide_name', 'allow_messages')
 
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
 
-        for fieldname in ['username', 'first_name', 'last_name', 'bio', 'email']:
+        for fieldname in ['username', 'first_name', 'last_name', 'bio', 'email', 'stay_logged_in', 'get_notifications', 'hide_name', 'allow_messages']:
             if fieldname == 'username':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'اسم المستخدم'
@@ -147,9 +148,25 @@ class ProfileForm(forms.ModelForm):
                 self.fields[fieldname].label = 'الايميل'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
             if fieldname == 'bio':
-                self.fields[fieldname].widget.attrs['placeholder'] = 'مسموح فقط 144 حرف'
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'نبذة عنك'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+            if fieldname == 'stay_logged_in':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'البقاء متصلا ً'
+                self.fields[fieldname].widget.attrs['class'] = 'raykomfi-input'
+            if fieldname == 'get_notifications':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'السماح بالإشعارات'
+                self.fields[fieldname].widget.attrs['class'] = 'raykomfi-input'
+            if fieldname == 'hide_name':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'إخفاء الإسم'
+                self.fields[fieldname].widget.attrs['class'] = 'raykomfi-input'
+            if fieldname == 'allow_messages':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'السماح بالرسائل الخاصة'
+                self.fields[fieldname].widget.attrs['class'] = 'raykomfi-input'
 
 @parsleyfy
 class SigninForm(forms.Form):

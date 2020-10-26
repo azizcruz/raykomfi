@@ -19,7 +19,22 @@
     <div class="w3-col s12 m6 l6">
         <form action="{% url 'raykomfi:user-profile' id=user.id %}" id="profile-form" method='post'>
             {% csrf_token %}
-            {{ form }}
+            {% for field in form %}
+            {% if field.field.widget.input_type == 'checkbox' %}
+            <div class="w3-col">
+                <br>
+                <label class="raykomfi-switch">
+                    {{ field }}
+                    <span class="raykomfi-slider"></span>
+                </label>
+                {{ field.label }}
+            </div>
+            {% else %}
+            {{ field.errors }}
+            {{ field.label_tag }} <br />
+            {{ field }}
+            {% endif %}
+            {% endfor %}
             <button class="w3-button raykomfi-button w3-round-large">تعديل</button>
         </form>
     </div>

@@ -72,7 +72,6 @@ def profile_view(request, id):
             request.user.username = form.cleaned_data['username']
             request.user.first_name = form.cleaned_data['first_name']
             request.user.last_name = form.cleaned_data['last_name']
-            request.user.country = form.cleaned_data['country']
             request.user.bio = form.cleaned_data['bio']
             request.user.email = form.cleaned_data['email']
             request.user.save()
