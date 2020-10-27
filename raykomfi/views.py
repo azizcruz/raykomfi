@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
-from .forms import SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, CustomPasswordResetForm, CommentForm, ReplyForm, ProfileForm, MessageForm, RestorePasswordForm
+from .forms import SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, CustomPasswordResetForm, CommentForm, ReplyForm, ProfileForm, MessageForm, RestorePasswordForm, ChangeEmailForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -33,6 +33,9 @@ from ratelimit.decorators import ratelimit
 from hitcount.utils import get_hitcount_model
 from hitcount.views import HitCountMixin
 from django.db.models import F
+import secrets
+from django.utils import timezone
+
 
 
 
@@ -144,7 +147,12 @@ def sign_up_view(request):
         form = SignupForm(request.POST, use_required_attribute=False)
 
         if form.is_valid():
+            token = secrets.token_hex(20)
             user = form.save(commit=False)
+            user.verification_code = token
+            current_date_and_time =timezone.now()
+            hours_added = timezone.timedelta(hours=1)
+            user.verification_code_expire = current_date_and_time + hours_added
             user.save()
             current_site = get_current_site(request)
             mail_subject = 'تفعيل حسابك على رايكم في'
@@ -155,8 +163,8 @@ def sign_up_view(request):
                 {
                     'site': SimpleLazyObject(lambda: get_current_site(request)),
                     'user': user,
-                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                    'token': default_token_generator.make_token(user),
+                    'uid': user.id,
+                    'token': token
                 }
             )
             msg = EmailMultiAlternatives(
@@ -313,7 +321,13 @@ def forgot_password_view(request):
     if request.method == 'POST':
         form = CustomPasswordResetForm(request.POST ,use_required_attribute=False)
         if form.is_valid():
+            token = secrets.token_hex(20)
             user = get_object_or_404(User, email=form.cleaned_data['email'])
+            user.verification_code = token
+            current_date_and_time =timezone.now()
+            hours_added = timezone.timedelta(hours=1)
+            user.verification_code_expire = current_date_and_time + hours_added
+            user.save()
             current_site = get_current_site(request)
             mail_subject = 'رابط تغيير كلمة المرور'
             to_email = form.cleaned_data.get('email')
@@ -322,9 +336,9 @@ def forgot_password_view(request):
             html_email_template = get_template("user/restore_password_email_view.html").render(
                 {
                     'site': SimpleLazyObject(lambda: get_current_site(request)),
-                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                    'token': default_token_generator.make_token(user),
-                    'id': user.id
+                    'user': user,
+                    'uid': user.id,
+                    'token': token
                 }
             )
             msg = EmailMultiAlternatives(
@@ -340,6 +354,67 @@ def forgot_password_view(request):
     else:
         form = CustomPasswordResetForm(use_required_attribute=False)
         return render(request, 'user/forgot_password.html', context={'form': form})
+
+@login_required
+def change_email_view(request):
+    if request.method == 'POST':
+        form = ChangeEmailForm(request.POST, request=request ,use_required_attribute=False)
+        if form.is_valid():
+            token = secrets.token_hex(20)
+            user = get_object_or_404(User, email=form.cleaned_data['current_email'])
+            user.verification_code = token
+            current_date_and_time =timezone.now()
+            hours_added = timezone.timedelta(hours=1)
+            user.verification_code_expire = current_date_and_time + hours_added
+            user.save()
+            current_site = get_current_site(request)
+            mail_subject = 'تأكيد البريد الإلكتروني'
+            to_email = form.cleaned_data.get('new_email2')
+            from_email = 'no-reply@raykomfi.com'
+            # Send data to email template and get email template.
+            html_email_template = get_template("user/change_email_email_view.html").render(
+                {
+                    'site': SimpleLazyObject(lambda: get_current_site(request)),
+                    'user': user,
+                    'uid': user.id,
+                    'token': token,
+                    'new_email': to_email
+                }
+            )
+            msg = EmailMultiAlternatives(
+                f"{mail_subject}", "nothing", from_email, [to_email])
+            msg.attach_alternative(html_email_template, "text/html")
+            msg.send()
+            messages.success(
+                request, 'تم إرسال رابط  تأكيد البريد الإلكتروني إلى بريدك الإلكتروني الجديد', extra_tags='pale-green w3-border')
+
+            return HttpResponseRedirect('/user/signin')
+        else:
+            return render(request, 'user/change_email.html', context={'form': form})
+    else:
+        form = ChangeEmailForm(use_required_attribute=False, request=request)
+        return render(request, 'user/change_email.html', context={'form': form})
+
+@login_required
+def confirm_new_email(request, uid, token, new_email):
+    try:
+        user = User.objects.get(id=uid)
+        current_date_and_time = timezone.now()
+        set_trace()
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and current_date_and_time < user.verification_code_expire and user.verification_code == token:
+        user.email = new_email
+        user.save()
+        logout(request)
+        messages.success(
+            request, 'تم تغيير بريدك الإلكتروني بنجاح', extra_tags='pale-green w3-border')
+        return redirect('raykomfi:user-signin')
+    else:
+        logout(request)
+        messages.success(
+                request, 'رابط غير صالح, أعد المحاولة', extra_tags='pale-red w3-border')
+        return redirect('raykomfi:user-signin')
 
 @ login_required
 def messages_view(request, user_id, message_id=0):
@@ -426,18 +501,21 @@ def add_reply(request, post_id, comment_id):
     else:
         return render(request, 'sections/post_view.html', {'post': post, 'comment_form': comment_form, 'reply_form': reply_form})
 
-def activate(request, uidb64, token):
+def activate(request, uid, token):
     try:
-        uid = urlsafe_base64_decode(uidb64).decode()
-        user = User.objects.get(pk=uid)
+        user = User.objects.get(id=uid)
+        current_date_and_time = timezone.now()
+        set_trace()
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
-    if user is not None and default_token_generator.check_token(user, token):
+    if user is not None and current_date_and_time < user.verification_code_expire and user.verification_code == token:
         if user.email_active == True:
             messages.success(
             request, 'حسابك مفعل من قبل', extra_tags='pale-green w3-border')
             return redirect('raykomfi:user-signin')
         user.email_active = True
+        user.verification_code = ""
+        user.verification_code_expire = None
         user.save()
         logout(request)
         messages.success(
@@ -446,20 +524,26 @@ def activate(request, uidb64, token):
     else:
         return render(request, 'user/activate_fail.html')
 
-def restore_password(request, uidb64, token):
+def restore_password(request, uid, token):
     try:
-        uid = urlsafe_base64_decode(uidb64).decode()
-        user = User.objects.get(pk=uid)
+        user = User.objects.get(id=uid)
+        current_date_and_time = timezone.now()
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
-    if user is not None and default_token_generator.check_token(user, token):
+    if user is not None and current_date_and_time < user.verification_code_expire and user.verification_code == token:
+        user.verification_code = ""
+        user.verification_code_expire = None
+        user.save()
         form = RestorePasswordForm(use_required_attribute=False)
         return render(request, 'user/restore_password.html', {'form': form, 'user': user})
     else:
-        return render(request, 'user/activate_fail.html', {'user': user})
+        messages.success(
+                request, 'رابط غير صالح, أعد المحاولة', extra_tags='pale-red w3-border')
+        return redirect('raykomfi:user-signin')
 
 def send_link(request):
     if request.method == 'POST':
+        token = secrets.token_hex(20)
         current_site = get_current_site(request)
         email = request.POST.get('email')
         if email.find('@') == -1:
@@ -468,6 +552,11 @@ def send_link(request):
             return redirect('raykomfi:user-signin')
         to_email = email
         user = get_object_or_404(User, email=to_email)
+        user.verification_code = token
+        current_date_and_time =timezone.now()
+        hours_added = timezone.timedelta(hours=1)
+        user.verification_code_expire = current_date_and_time + hours_added
+        user.save()
         mail_subject = 'تفعيل حسابك على رايكم في'
         from_email = 'no-reply@raykomfi.com'
         # Send data to email template and get email template.
@@ -475,8 +564,8 @@ def send_link(request):
             {
                 'site': SimpleLazyObject(lambda: get_current_site(request)),
                 'user': user,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': default_token_generator.make_token(user),
+                'uid': user.id,
+                'token': token
             }
         )
         msg = EmailMultiAlternatives(

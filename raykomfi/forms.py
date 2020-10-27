@@ -202,6 +202,81 @@ class SigninForm(forms.Form):
                 self.fields[fieldname].label = 'البقاء متصلا'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-check raykomfi-margin-small w3-border'
 
+
+@parsleyfy
+class ChangeEmailForm(forms.Form):
+    current_email = forms.EmailField(label='', validators=[validate_email], widget=forms.TextInput(), error_messages={
+        'invalid': _("بريد إلكتروني غير صالح"),
+    })
+    new_email1 = forms.EmailField(label='', validators=[validate_email], widget=forms.TextInput(), error_messages={
+        'unique': _("البريد الإلكتروني موجود مسبقا"),
+        'invalid': _("بريد إلكتروني غير صالح"),
+    })
+    new_email2 = forms.EmailField(label='', validators=[validate_email], widget=forms.TextInput(), error_messages={
+        'unique': _("البريد الإلكتروني موجود مسبقا"),
+        'invalid': _("بريد إلكتروني غير صالح"),
+    })
+
+    class Meta:
+        parsley_extras = {
+            'new_email2': {
+                'equalto': "new_email1",
+                'equalto-message': "بريد إلكتروني غير متطابق",
+            }
+        }
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(ChangeEmailForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['current_email', 'new_email1', 'new_email2']:
+            if fieldname == 'current_email':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].label = 'البريد الإلكتروني الحالي'
+
+            if fieldname == 'new_email1':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].label = 'البريد الإلكتروني الجديد'
+
+            if fieldname == 'new_email2':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].label = 'تكرار البريد الإلكتروني الجديد'
+
+    def clean_current_email(self, *args, **kwargs):
+        current_email = self.cleaned_data.get('current_email')
+
+        if self.request.user.email != current_email:
+            raise forms.ValidationError(
+                    "بريدك الإلكتروني الحالي غير صحيح")
+
+        return current_email
+
+    def clean_new_email1(self, *args, **kwargs):
+        new_email1 = self.cleaned_data.get('new_email1')
+
+        
+        if User.objects.filter(email=new_email1).exists():
+            raise forms.ValidationError(
+                    "البريد الإلكتروني موجود مسبقا")
+
+        return new_email1
+
+    def clean_new_email2(self, *args, **kwargs):
+        new_email2 = self.cleaned_data.get('new_email2')
+
+        
+        if User.objects.filter(email=new_email2).exists():
+            raise forms.ValidationError(
+                    "البريد الإلكتروني موجود مسبقا")
+
+        return new_email2
+
+
+
+
 @parsleyfy
 class CustomPasswordResetForm(PasswordResetForm):
     email = forms.EmailField(label='', validators=[validate_email], widget=forms.TextInput(), error_messages={

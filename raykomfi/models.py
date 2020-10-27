@@ -44,6 +44,8 @@ class User(AbstractUser):
         default=True, verbose_name='إظهارالإسم ؟')
     allow_messages = models.BooleanField(
         default=True, verbose_name='إستقبال رسائل ؟')
+    verification_code = models.CharField(max_length=255, blank=True, null=True)
+    verification_code_expire = models.DateTimeField(blank=True, null=True)
 
 
     def get_absolute_url(self):

@@ -29,6 +29,12 @@
                 </label>
                 {{ field.label }}
             </div>
+            {% elif field.name == 'email' %}
+            {{ field.errors }}
+            {{ field.label_tag }} <br />
+            {{ field }}
+            <a href="{% url 'raykomfi:user-change-email' %}" class="w3-btn raykomfi-button">تغيير البريد الإلكتروني</a>
+            <br>
             {% else %}
             {{ field.errors }}
             {{ field.label_tag }} <br />
