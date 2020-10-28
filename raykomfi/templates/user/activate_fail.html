@@ -2,15 +2,15 @@
 
 {% block content %}
 
-<div class="row raykomfi-main-padding w3-round-large raykomfi-max-width">
+<div class="row raykomfi-main-padding  raykomfi-max-width">
     <div class="w3-col s12 m6 l6">&nbsp;</div>
     <div class="w3-col s12 m6 l6">
-        <p class="w3-center">رابط منتهي الصلاحية, اضغط لطلب رابط جديد</p>
+        <p class="w3-center">رابط منتهي الصلاحية, إضغط لطلب رابط جديد</p>
         <form action="{% url 'raykomfi:user-send-link' %}" method='post'>
             {% csrf_token %}
             <label for="">البريد الإلكتروني</label>
-            <input type="email" name="email" class="w3-input w3-border w3-round-large">
-            <button class="w3-button raykomfi-button w3-round-center w3-round-large">طلب مرة أخرى</button>
+            <input type="email" name="email" class="w3-input w3-border ">
+            <button class="w3-button raykomfi-button w3-round-center ">طلب مرة أخرى</button>
         </form>
     </div>
 </div>

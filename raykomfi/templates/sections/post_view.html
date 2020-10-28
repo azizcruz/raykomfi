@@ -8,7 +8,7 @@
 <div class="w3-row raykomfi-main-padding raykomfi-max-width">
     <div class="w3-col s12 m4 l4 w3-hide-small">
         <h4>إستفسارات مشابهة</h4>
-        <div class="related-posts w3-border w3-padding-16 w3-white  w3-round-large raykomfi-shadow-1">
+        <div class="related-posts w3-border w3-padding-16 w3-white   ">
             <div class="w3-row">
                 <div class="w3-mobile">
                     {% for related_post in related_posts %}
@@ -57,8 +57,7 @@
                 {% if post.image %}
 
                 <!-- Trigger the Modal -->
-                <img id="myImg" src="" alt="{{post.title}}" data-src="{{ post.image.url }}"
-                    class="lazy-img w3-round-large">
+                <img id="myImg" src="" alt="{{post.title}}" data-src="{{ post.image.url }}" class="lazy-img ">
 
                 <!-- The Modal -->
                 <div id="myModal" class="modal">
@@ -86,7 +85,7 @@
                 <div id="posts-wrapper">
                     {% if post.comments.all|length > 0 %}
                     {% for comment in post.comments.all %}
-                    <div class="w3-row comment-wrapper w3-border w3-padding w3-round-large raykomfi-shadow-2">
+                    <div class="w3-row comment-wrapper w3-border w3-padding  ">
                         <div class="w3-col s10 m11 l11" id="comment-id-{{comment.id}}">
                             <div class="comment-side">
                                 {% if comment.user and reply.user.is_active != False %}
@@ -110,7 +109,7 @@
                             </div>
                             <hr>
                             {% if comment.replies.all|length > 0 %}
-                            <div class="comment-reply-side w3-padding w3-round-large">
+                            <div class="comment-reply-side w3-padding ">
                                 {% for reply in comment.replies.all %}
                                 <div class="w3-panel" id="to-{{reply.id}}">
                                     {% if reply.user and reply.user.is_active != False %}
@@ -136,10 +135,10 @@
                             <div class="reply">
                                 <form class="replyForm" data-comment-id="{{comment.id}}">
                                     <textarea name="reply_content" cols="40" rows="1"
-                                        class="w3-input w3-border  w3-round-large reply-textarea"
+                                        class="w3-input w3-border   reply-textarea"
                                         id="id_reply_content-{{comment.id}}"></textarea>
                                     <div class="col s12">
-                                        <button class='w3-button w3-round-large' type="submit"> اضافة رد</button>
+                                        <button class='w3-button ' type="submit"> اضافة رد</button>
                                     </div>
                                 </form>
                             </div>
@@ -202,9 +201,9 @@
                 {% if user.email_active %}
                 <div id="comment">
                     <form class="commentForm" data-post-id="{{post.id}}">
-                        <textarea cols="40" rows="10" class="w3-input w3-border  w3-round-large"></textarea>
+                        <textarea cols="40" rows="10" class="w3-input w3-border  "></textarea>
                         <div class="col s12">
-                            <button class='w3-button raykomfi-button w3-round-large'>
+                            <button class='w3-button raykomfi-button '>
                                 إضافة رأي</button>
                         </div>
                     </form>

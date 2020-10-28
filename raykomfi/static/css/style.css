@@ -91,6 +91,22 @@ small,
   color: #484848 !important;
 }
 
+h1 {
+  font-size: 2.2rem;
+}
+
+h2 {
+  font-size: 1.66rem;
+}
+
+h3 {
+  font-size: 1.45rem;
+}
+
+h4 {
+  font-size: 1.28rem;
+}
+
 .logo {
   width: 100%;
   height: auto;
@@ -156,7 +172,6 @@ textarea {
 
 .w3-dropdown-content {
   top: 40px;
-  border-radius: 8px;
   border: none;
 }
 
@@ -262,14 +277,12 @@ a {
   margin: 0;
   margin-bottom: 10px;
   background-color: #ffdddd !important;
-  border-radius: 8px;
   border: 1px solid #ccc;
 }
 
 .helptext ul {
   background-color: #ddffdd !important;
   border: 1px solid #eee color #000 !important;
-  border-radius: 8px;
 }
 
 .errorlist li {
@@ -309,31 +322,6 @@ select:focus {
 
 .best-user-wrapper p {
   margin-bottom: 0;
-}
-
-.raykomfi-shadow-1 {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.raykomfi-hoverable {
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.18);
-}
-
-.raykomfi-shadow-2 {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-}
-
-.raykomfi-shadow-3 {
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-}
-
-.raykomfi-shadow-4 {
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-}
-
-.raykomfi-shadow-5 {
-  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
 }
 
 /* Main Style */
@@ -457,7 +445,6 @@ select:focus {
 
 .ray-order {
   background-color: #fff;
-  border-radius: 8px;
   padding: 10px;
   overflow: visible;
 }
@@ -484,7 +471,6 @@ select:focus {
   text-align: center;
   margin-bottom: 10px;
   padding: 10px;
-  border-radius: 8px;
 }
 
 .new-post-side button {
@@ -527,7 +513,6 @@ select:focus {
   margin-bottom: 15px;
   background-color: #e6e6e6;
   padding: 10px;
-  border-radius: 8px;
 }
 
 .reply {

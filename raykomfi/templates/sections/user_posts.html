@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div class="w3-row-padding raykomfi-main-padding w3-round-large raykomfi-max-width">
+<div class="w3-row-padding raykomfi-main-padding  raykomfi-max-width">
   {% if user.email_active %}
   <div class="w3-col s12 m6 l6">
     &nbsp;
@@ -15,7 +15,7 @@
     {% if posts %}
     <div id="raykomfi-posts">
       {% for post in posts %}
-      <div class="w3-padding ray-box w3-round-large raykomfi-shadow-1">
+      <div class="w3-padding ray-box  z-depth-1 ">
         {% if post.creator and post.creator.is_active != False %}
         <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
           <span class="poster-name">
@@ -33,13 +33,13 @@
           <h3>{{post.title |truncatechars:100}}</h3>
           {% if post.image %}
           <div class="ray-image-section">
-            <img src="" alt="{{post.title}}" data-src="{{ post.image.url }}" class="lazy-img w3-round-large">
+            <img src="" alt="{{post.title}}" data-src="{{ post.image.url }}" class="lazy-img ">
           </div>
           {% endif %}
           <br>
           <div>
             <a href="{% url 'raykomfi:post-edit' id=post.id slug=post.slug  %}"
-              class="w3-button raykomfi-button w3-round-large">تعديل</a>
+              class="w3-button raykomfi-button ">تعديل</a>
           </div>
           <div class="ray-box-footer-icons">
             <div class="">

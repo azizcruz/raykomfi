@@ -21,7 +21,7 @@
 </div>
 <hr>
 {% if comment.replies.all|length > 0 %}
-<div class="comment-reply-side w3-padding w3-round-large">
+<div class="comment-reply-side w3-padding ">
     {% for reply in comment.replies.all %}
     <div class="w3-panel" id="to-{{reply.id}}">
         {% if reply.user and reply.user.is_active != False %}
@@ -46,10 +46,10 @@
 {% if user.email_active %}
 <div class="reply">
     <form class="replyForm" data-comment-id="{{comment.id}}">
-        <textarea name="reply_content" cols="40" rows="1" class="w3-input w3-border  w3-round-large reply-textarea"
+        <textarea name="reply_content" cols="40" rows="1" class="w3-input w3-border   reply-textarea"
             id="id_reply_content-{{comment.id}}"></textarea>
         <div class="col s12">
-            <button class='w3-button w3-round-large' type="submit"> اضافة رد</button>
+            <button class='w3-button ' type="submit"> اضافة رد</button>
         </div>
     </form>
 </div>

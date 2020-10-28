@@ -2,10 +2,11 @@
 
 {% block content %}
 
-<div class="row raykomfi-main-padding w3-round-large raykomfi-max-width">
+<div class="row raykomfi-main-padding  raykomfi-max-width">
     <h3>هل أنت متأكد ؟</h3>
-    <a href="{% url 'raykomfi:user-profile' id=user.id %}" class="w3-button w3-green w3-text-white w3-round-large">لا</a>
-    <a href="{% url 'raykomfi:user-delete' id=user.id %}?question={{ true }}" class="w3-button w3-red w3-text-white w3-round-large">نعم</a>
+    <a href="{% url 'raykomfi:user-profile' id=user.id %}" class="w3-button w3-green w3-text-white ">لا</a>
+    <a href="{% url 'raykomfi:user-delete' id=user.id %}?question={{ true }}"
+        class="w3-button w3-red w3-text-white ">نعم</a>
 </div>
 
 

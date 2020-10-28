@@ -65,37 +65,37 @@ class SignupForm(UserCreationForm):
             if fieldname == 'username':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'اسم المستخدم'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].widget.attrs.pop("autofocus", None)
             if fieldname == 'first_name':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'الاسم الاول'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'last_name':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'الاسم الأخير'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'country':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'الدولة'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'email':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'الايميل'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'bio':
                 self.fields[fieldname].widget.attrs['placeholder'] = 'مسموح فقط 144 حرف'
                 self.fields[fieldname].label = 'نبذة عنك'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'password1':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'كلمة المرور'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].help_text = '<ul><li>كلمة المرور لا يمكن أن تكون مشابهة للمعلومات الشخصية الأخرى.</li><li>كلمة المرور الخاصة بك يجب أن تتضمن 8 حروف على الأقل.</li><li>كلمة المرور لا يمكن أن تكون سهلة شائعة الاستخدام.</li><li>كلمة المرور لا يمكن أن تحتوي على أرقام فقط.</li></ul>'
             if fieldname == 'password2':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'تأكيد كلمة المرور'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
 
 @parsleyfy
 class ProfileForm(forms.ModelForm):
@@ -133,24 +133,24 @@ class ProfileForm(forms.ModelForm):
             if fieldname == 'username':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'اسم المستخدم'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border '
                 self.fields[fieldname].widget.attrs.pop("autofocus", None)
             if fieldname == 'first_name':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'الاسم الاول'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'last_name':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'الاسم الأخير'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'email':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'الايميل'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'bio':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'نبذة عنك'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'stay_logged_in':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'البقاء متصلا ً'
@@ -192,11 +192,11 @@ class SigninForm(forms.Form):
             if fieldname == 'email':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'البريد الإلكتروني'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'password':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'كلمة المرور'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'stay_logged_in':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'البقاء متصلا'
@@ -232,17 +232,17 @@ class ChangeEmailForm(forms.Form):
         for fieldname in ['current_email', 'new_email1', 'new_email2']:
             if fieldname == 'current_email':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].label = 'البريد الإلكتروني الحالي'
 
             if fieldname == 'new_email1':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].label = 'البريد الإلكتروني الجديد'
 
             if fieldname == 'new_email2':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].label = 'تكرار البريد الإلكتروني الجديد'
 
     def clean_current_email(self, *args, **kwargs):
@@ -289,7 +289,7 @@ class CustomPasswordResetForm(PasswordResetForm):
         for fieldname in ['email']:
             if fieldname == 'email':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].label = 'بريد الكتروني'
 
 @parsleyfy
@@ -306,16 +306,16 @@ class NewPostForm(forms.ModelForm):
 
             if fieldname == 'category':
                 self.fields[fieldname].label = 'تصنيف الإستفسار'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-select w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-select w3-border  '
             if fieldname == 'title':
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].label = 'عنوان الإستفسار'
             if fieldname == 'content':
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].label = 'نبذة عن الإستفسار'
             if fieldname == 'image':
                 self.fields[fieldname].label = 'صورة'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
 
     def clean_image(self):
         image = self.cleaned_data.get('image')
@@ -370,15 +370,15 @@ class CustomChangePasswordForm(PasswordChangeForm):
 
             if fieldname == 'old_password':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].label = 'كلمة المرور الحالية'
             if fieldname == 'new_password1':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].label = 'كلمة المرور الجديدة'
             if fieldname == 'new_password2':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].label = 'تأكيد كلمة الجديدة'
 
 class CommentForm(forms.ModelForm):
@@ -394,7 +394,7 @@ class CommentForm(forms.ModelForm):
 
             if fieldname == 'content':
                 self.fields[fieldname].widget.attrs['rows'] = 3
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].label = ''
                 self.fields[fieldname].required = True
 
@@ -412,7 +412,7 @@ class ReplyForm(forms.ModelForm):
 
             if fieldname == 'content':
                 self.fields[fieldname].widget.attrs['rows'] = 2
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].label = ''
                 self.fields[fieldname].required = True
 
@@ -428,12 +428,12 @@ class MessageForm(forms.ModelForm):
 
         for fieldname in ['title','content']:
             if fieldname == 'title':
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].required = True
             if fieldname == 'content':
                 self.fields[fieldname].widget.attrs['rows'] = 10
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].widget.attrs['id'] = 'new-message-content'
                 self.fields[fieldname].help_text = 'مسموح 300 حرف فقط'
@@ -461,12 +461,12 @@ class RestorePasswordForm(forms.Form):
 
         for fieldname in ['password1','password2']:
             if fieldname == 'password1':
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].required = True
                 self.fields[fieldname].label = 'كلمة المرور الجديدة'
             if fieldname == 'password2':
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  w3-round-large'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].required = True
                 self.fields[fieldname].label = 'تأكيد كلمة المرور'

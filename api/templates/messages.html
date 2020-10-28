@@ -23,8 +23,7 @@
         {% if user_messages %}
         {% for message in user_messages %}
         <form class="getMessageForm" data-message-id="{{ message.id }}">
-            <button type="submit"
-                class="w3-card w3-padding message-button w3-round-large {{ message.is_read|yesno:'opened, ' }}">
+            <button type="submit" class="w3-card w3-padding message-button  {{ message.is_read|yesno:'opened, ' }}">
                 {% if message.is_read %}
                 <i class="fa fa-envelope-open w3-left" aria-hidden="true"></i>
                 {% else %}

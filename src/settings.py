@@ -198,11 +198,11 @@ MULTILINGUAL_LANGUAGES = (
 )
 
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'mail.privateemail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'azizcruz11111@gmail.com'
-EMAIL_HOST_PASSWORD = 'abdelaziz77??'
-DEFAULT_FROM_EMAIL = 'azizcruz11111@gmail.com'
+EMAIL_HOST_USER = 'no-reply@raykomfi.com'
+EMAIL_HOST_PASSWORD = 'SX0A9w7BHFlh0NfSUfl3x4iOXy0pwN'
+DEFAULT_FROM_EMAIL = 'no-reply@raykomfi.com'
 
 #Handle session is not Json Serializable
 # SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'

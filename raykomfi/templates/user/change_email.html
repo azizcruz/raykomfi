@@ -3,14 +3,14 @@
 
 {% block content %}
 
-<div class="row raykomfi-main-padding w3-round-large raykomfi-max-width">
+<div class="row raykomfi-main-padding  raykomfi-max-width">
     <div class="w3-col s12 m6 l6">&nbsp;</div>
     <div class="w3-col s12 m6 l6">
         <h3 class="w3-center">تغيير البريد الإلكتروني</h3>
         <form action="{% url 'raykomfi:user-change-email' %}" method='post' id="change-email-form">
             {% csrf_token %}
             {{ form }}
-            <button class="w3-button raykomfi-button w3-round-large">تأكيد</button>
+            <button class="w3-button raykomfi-button ">تأكيد</button>
         </form>
     </div>
 </div>
