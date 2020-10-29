@@ -233,9 +233,29 @@ def post_view(request, id, slug):
 
 @ login_required
 def my_posts_view(request, user_id):
-    posts = Post.objects.prefetch_related('creator', 'category').filter(creator__id=user_id)[:5]
-    count = posts.count()
+    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(creator__id=user_id)[:5]
+    count = Post.objects.prefetch_related('creator', 'category', 'comments').filter(creator__id=user_id).count()
     return render(request, 'sections/user_posts.html', context={'posts': posts, 'count_posts': count})
+
+@ login_required
+def my_comments_view(request, user_id):
+    comments = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id)[:5]
+    count = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id).count()
+    return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count})
+
+@ login_required
+def my_comments_most_replied_view(request, user_id):
+    comments = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id).annotate(replies_count=Count('replies')).order_by('-replies_count')
+    count = 0
+    return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count})
+
+@ login_required
+def my_comments_most_voted_view(request, user_id):
+    comments = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id).order_by('-votes')
+    count = 0
+    return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count})
+
+
 
 
 @ login_required
@@ -461,6 +481,8 @@ def add_comment(request, post_id):
         return HttpResponseRedirect(post.get_absolute_url())
     else:
         return render(request, 'sections/post_view.html', {'post': post, 'comment_form': comment_form})
+
+
 
 @login_required
 def comment_vote(request, comment_id):

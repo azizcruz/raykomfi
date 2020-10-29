@@ -16,11 +16,11 @@
       <div class="message-content" id="message-content-field">
         <span>{{ fetched_message.content }}</span>
       </div>
-      {% else %} لم تعرض أي رسالة {% endif %}
+      {% else %} <p class="center">لم تعرض أي رسالة</p> {% endif %}
     </div>
   </div>
   <div class="w3-col s12 m12 l6">
-    <h3>الرسائل الواردة</h3>
+    <h3 class="center">الرسائل الواردة</h3>
     <div class="incoming-messages-wrapper">
       {% if user_messages %}
       {% for message in user_messages %}

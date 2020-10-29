@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="w3-row-padding raykomfi-main-padding  raykomfi-max-width">
+    {% if user.email_active %}
+    <div class="w3-col s12 m6 l6">
+        &nbsp;
+    </div>
+    <div class="w3-col s12 m12 l6">
+        <h3>آرائي</h3>
+        <br>
+        <a href="{% url 'raykomfi:most-voted-comments' user_id=user.id %}"
+            class="raykomfi-button btn raykomfi-main-background-color">الأعلى تصويتا <i class="fa fa-heart"
+                aria-hidden="true"></i></a>
+        <a href="{% url 'raykomfi:most-replied-comments' user_id=user.id %}"
+            class="raykomfi-button btn raykomfi-main-background-color">الأكثر ردا <i class="fa fa-reply"
+                aria-hidden="true"></i></a>
+        <div href="" class="raykomfi-button btn raykomfi-main-background-color" id="search-btn"><i
+                class="fa fa-search"></i> بحث</div>
+        <div class="w3-row" id="search-field-wrapper">
+            <br>
+            <div class="w3-col w3-padding  w3-white  z-depth-1">
+                <div class="spinner" id="spinner">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                </div>
+                <form class="commentsSearchForm">
+                    <input class="w3-input search-input" type="text" placeholder="بحث عن رأي ..." name="q">
+                </form>
+            </div>
+        </div>
+        {% if comments %}
+        <div id="user-comments">
+            {% for comment in comments %}
+            <a href="{{ comment.get_absolute_url }}">
+                <div class="row">
+                    <div class="col s12 m6">
+                        <div class="card">
+                            <div class="card-content">
+                                <p>{{ comment.content }}</p>
+                            </div>
+                            <div class="card-action">
+                                <span class="raykomfi-color"> <i class="fa fa-reply" aria-hidden="true"></i>
+                                    {{ comment.replies.count }}
+                                </span>
+                                <span class="raykomfi-color"><i class="fa fa-heart" aria-hidden="true"></i>
+                                    {{ comment.votes }}</span>
+                                <span class="raykomfi-color"> <span
+                                        class="created-time">{{comment.created | naturaltime}}</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>لا يوجد لديك أي رأي</p>
+        {% endif %}
+        <div class="sk-chase" id="sk-chase">
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+        </div>
+        {% if count_comments < 6 %}
+
+        {% else %}
+        <div class="lazy-load-linkwrapper w3-center">
+            <a id="lazyLoadLinkComments" class="w3-border w3-padding raykomfi-button z-depth-1"
+                href="javascript:void(0);" data-page="2" data-user="{{ user.id }}">عرض المزيد</a>
+        </div>
+        {% endif %}
+        {% endif %} {% endblock content %}

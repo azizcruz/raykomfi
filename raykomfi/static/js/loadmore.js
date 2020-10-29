@@ -37,13 +37,18 @@
   $("#lazyLoadLinkComments").on("click", function () {
     var link = $(this);
     var page = link.data("page");
+    var user_id = link.data("user") || false;
+    var post_id = document.getElementById("post_id")
+      ? parseInt(document.getElementById("post_id").value)
+      : false;
     $.ajax({
       type: "post",
       url: "/api/lazy-comments/",
       data: {
         page: page,
-        post_id: parseInt(document.getElementById("post_id").value),
+        post_id: post_id,
         csrfmiddlewaretoken: Cookies.get("csrftoken"), // from index.html
+        user_id: user_id,
       },
       success: function (data) {
         // if there are still more pages to load,
@@ -54,8 +59,14 @@
         } else {
           link.hide();
         }
-        // append html to the posts div
-        $("#posts-wrapper").append(data.comments_html);
+        if (user_id !== false) {
+          // append html to the posts div
+          $("#user-comments").append(data.comments_html);
+        } else {
+          // append html to the posts div
+          console.log("ys");
+          $("#posts-wrapper").append(data.comments_html);
+        }
         fixTime();
       },
       error: function (xhr, status, error) {

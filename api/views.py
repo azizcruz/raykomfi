@@ -82,9 +82,14 @@ class LazyCommentsView(APIView):
     @method_decorator(ratelimit(key='ip', rate='100/m', block=True))
     def post(self, request, format=None):
         page = request.POST.get('page')
+        user_id = request.POST.get('user_id')
         serializer = serializers.LazyCommentsSerializer(data=request.data)
         if serializer.is_valid():
-            comments = Comment.objects.prefetch_related('user' ,'replies').filter(post__id=serializer.data['post_id'])
+            comments = []
+            if user_id != 'false':
+                comments = Comment.objects.prefetch_related('user' ,'replies').filter(user__id=user_id)
+            else:
+                comments = Comment.objects.prefetch_related('user' ,'replies').filter(post__id=serializer.data['post_id'])
             results_per_page = 10
             paginator = Paginator(comments, results_per_page)
             try:
@@ -93,7 +98,15 @@ class LazyCommentsView(APIView):
                 comments = paginator.page(2)
             except EmptyPage:
                 comments = paginator.page(paginator.num_pages)
-            comments_html = loader.render_to_string(
+
+            comments_html = None
+            if user_id != 'false':
+                comments_html = loader.render_to_string(
+                'user_comments.html',
+                {'comments': comments, 'user': request.user}
+            )
+            else:
+                comments_html = loader.render_to_string(
                 'comments.html',
                 {'comments': comments, 'user': request.user}
             )
@@ -262,6 +275,8 @@ class SearchPostsView(APIView):
         serializer = serializers.SearchBarSerializer(data=request.data)
         if serializer.is_valid():
             q = serializer.data['searchField']
+            if q == '':
+                return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
             posts = Post.objects.prefetch_related('creator', 'comments', 'category').filter(Q(title__icontains=q) | Q(content__icontains=q)).annotate(counted_comments=Sum('comments')).order_by('-counted_comments')
             referesh_posts_view_html = loader.render_to_string('posts.html', {'posts': posts, 'user': request.user, 'search_request': True})
             output_data = {
@@ -270,6 +285,32 @@ class SearchPostsView(APIView):
             }
 
             if posts == []:
+                return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
+
+            return JsonResponse(output_data)
+
+class SearchCommentsView(APIView):
+    '''
+    Search Comments
+    '''
+    permission_classes = [permissions.AllowAny]
+
+    @method_decorator(ratelimit(key='ip', rate='10/m', block=True))
+    def post(self, request):
+        serializer = serializers.SearchBarSerializer(data=request.data)
+        if serializer.is_valid():
+            q = serializer.data['searchField']
+            if q == '':
+                return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
+
+            comments = Comment.objects.prefetch_related('user', 'replies').filter(Q(content__icontains=q)).annotate(counted_replies=Sum('replies')).order_by('-counted_replies')
+            referesh_user_comments_view_html = loader.render_to_string('user_comments.html', {'comments': comments, 'user': request.user, 'search_request': True})
+            output_data = {
+                'view': referesh_user_comments_view_html,
+                'message': 'success'
+            }
+
+            if comments == []:
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
 
             return JsonResponse(output_data)

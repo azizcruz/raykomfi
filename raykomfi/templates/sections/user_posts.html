@@ -12,6 +12,23 @@
   <div class="w3-col s12 m12 l6">
     <h3>إستفساراتي</h3>
     <br>
+    <a href="" class="raykomfi-button btn raykomfi-main-background-color">الأكثر ردا <i class="fa fa-reply"
+        aria-hidden="true"></i></a>
+    <div class="raykomfi-button btn raykomfi-main-background-color" id="search-btn">
+      بحث <i class="fa fa-search"></i></div>
+    <div class="w3-row" id="search-field-wrapper">
+      <br>
+      <div class="w3-col w3-padding  w3-white  z-depth-1">
+        <div class="spinner" id="spinner">
+          <div class="bounce1"></div>
+          <div class="bounce2"></div>
+          <div class="bounce3"></div>
+        </div>
+        <form class="postsSearchForm">
+          <input class="w3-input search-input" type="text" placeholder="بحث عن إستفسار ..." name="q">
+        </form>
+      </div>
+    </div>
     {% if posts %}
     <div id="raykomfi-posts">
       {% for post in posts %}
@@ -71,8 +88,8 @@
 
     {% else %}
     <div class="lazy-load-linkwrapper w3-center">
-      <a id="lazyLoadLink" class="w3-border w3-padding" href="javascript:void(0);" data-page="2"
-        data-user="{{ user.id }}">عرض المزيد</a>
+      <a id="lazyLoadLink" class="w3-border w3-padding raykomfi-button z-depth-1" href="javascript:void(0);"
+        data-page="2" data-user="{{ user.id }}">عرض المزيد</a>
     </div>
     {% endif %}
     {% endif %} {% endblock content %}

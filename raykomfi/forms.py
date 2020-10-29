@@ -339,7 +339,7 @@ class NewPostForm(forms.ModelForm):
         ALLOWED_EXT = ['jpg', 'png', 'jpeg']
         if title.find('رايكم في') == -1:
             raise forms.ValidationError(
-                    "يجب أن يبدأ عنوان الإستفسار برايكم في")
+                    "يجب أن يبدأ عنوان الإستفسار بعبارة رايكم في")
 
         if len(title) - 15 < 0 :
             raise forms.ValidationError(

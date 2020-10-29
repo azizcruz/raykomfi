@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="w3-row w3-white raykomfi-main-padding  raykomfi-max-width  z-depth-1">
+<div class="w3-row w3-white raykomfi-main-padding  raykomfi-max-width z-depth-1">
     {% if user.id == request.resolver_match.kwargs.id %}
     <div class="w3-col s12 m6 l6">
         <div class="w3-center">
@@ -33,7 +33,8 @@
             {{ field.errors }}
             {{ field.label_tag }} <br />
             {{ field }}
-            <a href="{% url 'raykomfi:user-change-email' %}" class="w3-btn raykomfi-button">تغيير البريد الإلكتروني</a>
+            <a href="{% url 'raykomfi:user-change-email' %}" class="w3-button raykomfi-button">تغيير البريد
+                الإلكتروني</a>
             <br>
             {% else %}
             {{ field.errors }}

@@ -210,6 +210,56 @@ $(document).on("submit", "form.postsSearchForm", function (e) {
           );
         }
       });
+  } else {
+    loading.css("display", "none");
+  }
+});
+
+// Comments search
+$(document).on("submit", "form.commentsSearchForm", function (e) {
+  e.preventDefault();
+  let link = $(this);
+  let q = link.serializeArray()[0].value;
+  loading.css("display", "block");
+  if (q) {
+    axios({
+      method: "POST",
+      url: "/api/comments/search",
+      headers: {
+        "X-CSRFTOKEN": Cookies.get("csrftoken"),
+        "Content-Type": "application/json",
+      },
+      data: {
+        searchField: q,
+      },
+    })
+      .then((response) => {
+        view_html = response.data.view;
+        message_view.html(view_html);
+        $(document).ready(() => {
+          console.log(response.data);
+          let view_html = response.data.view;
+          console.log(view_html);
+          let post_wrapper = document.getElementById("user-comments");
+          $("#lazyLoadLink").css("display", "none");
+          loading.css("display", "none");
+          post_wrapper.innerHTML = view_html;
+          fixTime();
+        });
+      })
+      .catch((err) => {
+        if (
+          err.response.status === 403 &&
+          err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+        ) {
+          custom_alert(
+            "<h3>محاولات متكررة, يرجى المحاولة لاحقا</h3>",
+            "warning"
+          );
+        }
+      });
+  } else {
+    loading.css("display", "none");
   }
 });
 

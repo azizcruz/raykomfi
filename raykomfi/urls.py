@@ -42,6 +42,12 @@ urlpatterns = [
     path('post/comment/vote/<int:comment_id>', views.comment_vote, name='post-comment-vote'),
     path('post/reply/<int:post_id>/<int:comment_id>',
          views.add_reply, name='post-reply'),
+     path('user/comments/<int:user_id>',
+         views.my_comments_view, name='comments-get'), 
+     path('user/most-replied-comments/<int:user_id>',
+         views.my_comments_most_replied_view, name='most-replied-comments'), 
+     path('user/most-voted-comments/<int:user_id>',
+         views.my_comments_most_voted_view, name='most-voted-comments'), 
 
     path('posts/most-discussed', views.most_discussed_posts, name='most-discussed-posts'),
     path('posts/most-searched', views.most_searched_posts, name='most-searched-posts'),

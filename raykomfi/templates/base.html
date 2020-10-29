@@ -48,28 +48,35 @@
             {% if user.is_authenticated %}
             <h3 class="w3-center">مرحبا {{user.username}}</h3>
             {% endif %}
-            <a class="w3-bar-item w3-button" href="{% url 'raykomfi:raykomfi-home' %}">الرئيسية &nbsp;<i
-                    class="fa fa-home" aria-hidden="true"></i></a>
+            {% with request.resolver_match.url_name as url_name %}
+            <a class="w3-bar-item w3-button {% if url_name == 'raykomfi-home' %}active-page-sidenav{% endif %}"
+                href="{% url 'raykomfi:raykomfi-home' %}">الرئيسية &nbsp;<i class="fa fa-home"
+                    aria-hidden="true"></i></a>
             {% if user.is_authenticated %}
             <hr>
             <div>
-                <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-profile' id=user.id %}">الصفحة
+                <a class="w3-bar-item w3-button {% if url_name == 'user-profile' %}active-page-sidenav{% endif %}"
+                    href="{% url 'raykomfi:user-profile' id=user.id %}">الصفحة
                     الشخصية&nbsp;<i class="fa fa-user-circle" aria-hidden="true"></i></a>
-                <a class="w3-bar-item w3-button"
+                <a class="w3-bar-item w3-button {% if url_name == 'posts-get' %}active-page-sidenav{% endif %}"
                     href="{% url 'raykomfi:posts-get' user_id=user.id %}">إستفساراتي&nbsp;<i
                         class="fa fa-question-circle" aria-hidden="true"></i>
                 </a>
-                <a class="w3-bar-item w3-button" href="{% url 'raykomfi:posts-get' user_id=user.id %}">آرائي&nbsp;<i
-                        class="fa fa-comments" aria-hidden="true"></i>
-                    <a class="w3-bar-item w3-button" href="{% url 'raykomfi:messages' user_id=user.id %}">الرسائل&nbsp;
+                <a class="w3-bar-item w3-button {% if url_name == 'comments-get' %}active-page-sidenav{% endif %}"
+                    href="{% url 'raykomfi:comments-get' user_id=user.id %}">آرائي&nbsp;<i class="fa fa-comments"
+                        aria-hidden="true"></i>
+                    <a class="w3-bar-item w3-button {% if url_name == 'messages' %}active-page-sidenav{% endif %}"
+                        href="{% url 'raykomfi:messages' user_id=user.id %}">الرسائل&nbsp;
                         {% if not_opened_messages.count > 0 %}
                         <i class="fa fa-circle fa-align-center notification-dot" aria-hidden="true"></i>
                         {% endif %}
                         <i class="fa fa-envelope" aria-hidden="true"></i>
                     </a>
                     <hr>
-                    <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-signout' %}">تسجيل خروج &nbsp;<i
-                            class="fa fa-sign-out" aria-hidden="true"></i></a>
+                    <a class="w3-bar-item w3-button {% if request.resolver_match.url_name == view_name %}active-page-sidenav{% endif %}"
+                        href="{% url 'raykomfi:user-signout' %}">تسجيل خروج &nbsp;<i class="fa fa-sign-out"
+                            aria-hidden="true"></i></a>
+
             </div>
             {% else %}
             <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-register' %}">حساب جديد &nbsp;<i
@@ -77,6 +84,7 @@
             <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-signin' %}">تسجيل دخول &nbsp;<i
                     class="fa fa-sign-in" aria-hidden="true"></i></a>
             {% endif %}
+            {% endwith %}
     </nav>
 
     <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" id="myOverlay">

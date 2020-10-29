@@ -248,21 +248,21 @@ fixTime();
 
 // Force Raykomfi in the beginning
 let postTitle = $("#create-post-form #id_title");
+if (postTitle.length > 0) {
+  if (postTitle.val().length < 1) {
+    postTitle.val("رايكم في ");
+    postTitle.on("keydown", (e) => {
+      let currentVal = e.target.value;
+      if (currentVal.length <= 9) {
+        e.target.value = "رايكم في ";
+      }
 
-if (postTitle) {
-  postTitle.val("رايكم في ");
-  postTitle.on("keydown", (e) => {
-    let currentVal = e.target.value;
-    if (currentVal.length <= 9) {
-      e.target.value = "رايكم في ";
-    }
-
-    let count = (currentVal.match(/رايكم في/g) || []).length;
-    console.log(count);
-    if (count > 1) {
-      postTitle.val("رايكم في");
-    }
-  });
+      let count = (currentVal.match(/رايكم في/g) || []).length;
+      if (count > 1) {
+        postTitle.val("رايكم في");
+      }
+    });
+  }
 }
 
 // Get best user of the month
