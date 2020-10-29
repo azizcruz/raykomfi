@@ -5,16 +5,15 @@
 
 {% block content %}
 
-<div class="w3-row raykomfi-main-padding raykomfi-max-width">
+<div class="w3-row-padding raykomfi-main-padding raykomfi-max-width">
     <div class="w3-col s12 m4 l4 w3-hide-small">
         <h4>إستفسارات مشابهة</h4>
-        <div class="related-posts w3-border w3-padding-16 w3-white   ">
+        <div class="related-posts w3-border w3-padding-16 w3-white z-depth-1">
             <div class="w3-row">
                 <div class="w3-mobile">
                     {% for related_post in related_posts %}
                     <div class="w3-margin">
                         <a href="{{ related_post.get_absolute_url }}">
-
                             {% if related_post.creator and related_post.creator.is_active != False %}
                             <span class="w3-round-small w3-right">
                                 {{related_post.creator}}
@@ -35,16 +34,16 @@
             <div class="w3-mobile w3-container">
                 {% if post.creator and post.creator.is_active != False %}
                 <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}" class="writer-name">
-                    <h2>
+                    <h6>
                         <i class="fa fa-user" aria-hidden="true"></i>
                         {{post.creator}}
-                    </h2>
+                    </h6>
                 </a>
                 {% else %}
-                <h2>
+                <h6>
                     <i class="fa fa-user" aria-hidden="true"></i>
                     عضو لم يعد مسجل
-                </h2>
+                </h6>
                 {% endif %}
             </div>
             <div class="w3-mobile w3-container">
@@ -73,11 +72,11 @@
             </div>
             <br>
             <div class="w3-container">
-                <div><small><i class="fa fa-clock-o" aria-hidden="true"></i> <span
-                            class="created-time">{{post.created | naturaltime}}</span></small>
+                <div><i class="fa fa-clock-o" aria-hidden="true"></i> <span
+                        class="created-time">{{post.created | naturaltime}}</span>
                 </div>
-                <div><small><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</small></div>
-                <div><small><i class="fa fa-eye"></i> {% get_hit_count for post %}</small></div>
+                <div><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</div>
+                <div><i class="fa fa-eye"></i> {% get_hit_count for post %}</div>
             </div>
             <div class="w3-mobile w3-container reply-buttons">
                 <hr>
@@ -85,7 +84,7 @@
                 <div id="posts-wrapper">
                     {% if post.comments.all|length > 0 %}
                     {% for comment in post.comments.all %}
-                    <div class="w3-row comment-wrapper w3-border w3-padding">
+                    <div class="w3-row comment-wrapper w3-border w3-padding z-depth-1">
                         <div class="w3-col s10 m11 l11" id="comment-id-{{comment.id}}">
                             <div class="comment-side">
                                 {% if comment.user and reply.user.is_active != False %}
@@ -111,7 +110,7 @@
                             {% if comment.replies.all|length > 0 %}
                             <div class="comment-reply-side w3-padding ">
                                 {% for reply in comment.replies.all %}
-                                <div class="w3-panel" id="to-{{reply.id}}">
+                                <div class="w3-panel z-depth-1" id="to-{{reply.id}}">
                                     {% if reply.user and reply.user.is_active != False %}
                                     <a href="{% url 'raykomfi:user-profile' id=reply.user.id %}" class="writer-name">
                                         <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
@@ -138,7 +137,7 @@
                                         class="w3-input w3-border   reply-textarea"
                                         id="id_reply_content-{{comment.id}}"></textarea>
                                     <div class="col s12">
-                                        <button class='w3-button ' type="submit"> اضافة رد</button>
+                                        <button class='w3-button z-depth-1' type="submit"> اضافة رد</button>
                                     </div>
                                 </form>
                             </div>
@@ -203,7 +202,7 @@
                     <form class="commentForm" data-post-id="{{post.id}}">
                         <textarea cols="40" rows="10" class="w3-input w3-border  "></textarea>
                         <div class="col s12">
-                            <button class='w3-button raykomfi-button '>
+                            <button class='w3-button raykomfi-button z-depth-1'>
                                 إضافة رأي</button>
                         </div>
                     </form>
@@ -220,7 +219,7 @@
     </div>
     <div class="w3-col s12 m4 l4 w3-hide-medium w3-hide-large">
         <h4>إستفسارات مشابهة</h4>
-        <div class="related-posts w3-border w3-padding-16 w3-white">
+        <div class="related-posts w3-border w3-padding-16 w3-white z-depth-1">
             <div class="w3-row">
                 <div class="w3-mobile">
                     {% for related_post in related_posts %}

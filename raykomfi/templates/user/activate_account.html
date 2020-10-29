@@ -5,7 +5,7 @@
 <div class="row raykomfi-main-padding  raykomfi-max-width">
     <div class="w3-col s12 m6 l6">&nbsp;</div>
     <div class="w3-col s12 m6 l6">
-        <p class="w3-center">طلب رابط تفعيل جديد</p>
+        <h3 class="w3-center">طلب رابط تفعيل جديد</h3>
         <form action="{% url 'raykomfi:user-send-link' %}" method='post'>
             {% csrf_token %}
             <input type="email" name="email" class="w3-input w3-border " value="{{user.email}}">

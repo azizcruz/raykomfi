@@ -33,7 +33,7 @@
             {{ field.errors }}
             {{ field.label_tag }} <br />
             {{ field }}
-            <a href="{% url 'raykomfi:user-change-email' %}" class="w3-button raykomfi-button">تغيير البريد
+            <a href="{% url 'raykomfi:user-change-email' %}" class="w3-button raykomfi-button z-depth-1">تغيير البريد
                 الإلكتروني</a>
             <br>
             {% else %}
@@ -42,7 +42,7 @@
             {{ field }}
             {% endif %}
             {% endfor %}
-            <button class="w3-button raykomfi-button ">تعديل</button>
+            <button class="w3-button raykomfi-button z-depth-1">تعديل</button>
         </form>
     </div>
     {% else %}
@@ -70,7 +70,7 @@
         <div class="user-posts-wrapper">
             {% for post in profile.posts.all %}
             <a href="{{ post.get_absolute_url }}">
-                <div class=" ">
+                <div class="z-depth-1 blue white-text">
                     {{post.title}}
                 </div>
             </a>

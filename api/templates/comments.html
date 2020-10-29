@@ -4,7 +4,7 @@
     آخر تحديث بدأ من هنا <i class="fa fa-chevron-down" aria-hidden="true"></i>
 </p>
 {% for comment in comments %}
-<div class="w3-row comment-wrapper w3-border w3-padding  ">
+<div class="w3-row comment-wrapper w3-border w3-padding z-depth-1">
     <div class="w3-col s10 m11 l11" id="comment-id-{{comment.id}}">
         <div class="comment-side">
             {% if comment.user and reply.user.is_active != False %}
@@ -28,7 +28,7 @@
         {% if comment.replies.all|length > 0 %}
         <div class="comment-reply-side w3-padding ">
             {% for reply in comment.replies.all %}
-            <div class="w3-panel" id="to-{{reply.id}}">
+            <div class="w3-panel z-depth-1" id="to-{{reply.id}}">
                 {% if reply.user and reply.user.is_active != False %}
                 <a href="{% url 'raykomfi:user-profile' id=reply.user.id %}" class="writer-name">
                     <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
@@ -53,7 +53,7 @@
                 <textarea name="reply_content" cols="40" rows="1" class="w3-input w3-border   reply-textarea"
                     id="id_reply_content-{{comment.id}}"></textarea>
                 <div class="col s12">
-                    <button class='w3-button ' type="submit"> اضافة رد</button>
+                    <button class='w3-button z-depth-1' type="submit"> اضافة رد</button>
                 </div>
             </form>
         </div>

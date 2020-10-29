@@ -201,12 +201,11 @@ def post_view(request, id, slug):
     post = Post.objects.select_related('creator', 'category').filter(Q(id__exact=id) & Q(
         slug__exact=slug)).prefetch_related('creator', Prefetch('comments', queryset=Comment.objects.filter(id__in=subquery).prefetch_related('user', 'replies__user', 'post', 'post__creator', 'voted_like', 'voted_dislike'))).first()
     rand_ids = Post.objects.select_related('creator', 'category').filter(category=post.category).values_list('id', flat=True)
-    if len(rand_ids) > 10:
+    if len(rand_ids) > 7:
         rand_ids = list(rand_ids)
         rand_ids = sample(rand_ids, 7)
         related_posts = Post.objects.select_related('creator', 'category').filter(id__in=rand_ids)
 
-    related_posts = []
     comment_form = CommentForm()
     reply_form = ReplyForm()
     if request.GET.get('read'):

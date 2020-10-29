@@ -290,7 +290,7 @@ class CustomPasswordResetForm(PasswordResetForm):
             if fieldname == 'email':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
-                self.fields[fieldname].label = 'بريد الكتروني'
+                self.fields[fieldname].label = 'بريد إلكتروني'
 
 @parsleyfy
 class NewPostForm(forms.ModelForm):
