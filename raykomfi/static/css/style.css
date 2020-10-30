@@ -192,6 +192,7 @@ textarea {
 nav {
   z-index: 3 !important;
   width: 250px !important;
+  word-break: break-word;
 }
 
 .raykomfi-logo {
@@ -337,10 +338,20 @@ select:focus {
   padding: 14px;
 }
 
-.best-user-wrapper > div:nth-child(1) {
-  margin-bottom: 8px;
+.collapsible .collapsible-header {
   color: #2196f3 !important;
   font-weight: 600;
+}
+
+.collapsible .collapsible-header:focus {
+  border: none;
+  outline: none;
+}
+
+.collapsible .collapsible-header i {
+  font-size: 18px;
+  color: #ffd700;
+  margin: 0;
 }
 
 .best-user-wrapper .agreed-number {
@@ -351,6 +362,17 @@ select:focus {
   margin-bottom: 0;
 }
 
+.collapsible {
+  padding: 0;
+}
+
+.collapsible .collapsible-body {
+  padding: 20px;
+}
+
+.collapsible .collapsible-body li {
+  list-style-type: decimal;
+}
 /* Main Style */
 
 /* Notifications Modal Styles */

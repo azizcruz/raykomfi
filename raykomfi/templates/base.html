@@ -15,11 +15,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="{% static 'css/style.css'  %}">
 
-<body class="scrollbar-outer">
+<body>
     <!--Start of Notifications Modal -->
     {% if user.is_authenticated %}
     <div class="noti-dropdown">
-        <i class="fa fa-bell noti-dropbtn" id="noti-btn"> <span class="live_notify_badge_override"></span></i>
+        <i class="fa fa-bell noti-dropbtn z-depth-2" id="noti-btn"> <span class="live_notify_badge_override"></span></i>
         <div id="noti-dropdown" class="noti-dropdown-content">
             {% live_notify_list %}
         </div>
@@ -46,7 +46,7 @@
         <a class="w3-bar-item w3-large" href="#">
             <input type="hidden" name="" id="csrf_token" value="{{ csrf_token }}">
             {% if user.is_authenticated %}
-            <h3 class="w3-center">مرحبا {{user.username}}</h3>
+            <h4 class="w3-center">مرحبا {{user.username}}</h4>
             {% endif %}
             {% with request.resolver_match.url_name as url_name %}
             <a class="w3-bar-item w3-button {% if url_name == 'raykomfi-home' %}active-page-sidenav{% endif %}"
@@ -137,6 +137,9 @@
     <script src="{% static 'js/fixTime.js' %}"></script>
     <script src="{% static 'js/controllers.js' %}"></script>
     <script src="{% static 'js/validators.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
+        integrity="sha512-NiWqa2rceHnN3Z5j6mSAvbwwg3tiwVNxiAQaaSMSXnRRDh5C2mk/+sKQRw8qjV1vN4nf8iK2a0b048PnHbyx+Q=="
+        crossorigin="anonymous"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
     {% register_notify_callbacks callbacks='fill_notification_list_override,fill_notification_badge_override' %}
 

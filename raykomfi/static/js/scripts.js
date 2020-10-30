@@ -267,9 +267,10 @@ if (postTitle.length > 0) {
 
 // Get best user of the month
 let bestUserWrapper = $("#user-of-the-month");
-let whereToDisplayResponse = $("#display-best-user");
+let whereToDisplayResponse = $("#display-best-users ol");
 let bestUserLoading = $("#sk-chase-best-user");
 bestUserLoading.css("display", "block");
+let displayHtml = "";
 if (bestUserWrapper) {
   axios({
     method: "GET",
@@ -280,12 +281,14 @@ if (bestUserWrapper) {
     },
   })
     .then((response) => {
-      let name = response.data[0].username;
-      let agreed = response.data[0].my_comments__votes__sum;
-      let id = response.data[0].id;
-      let displayHtml = `<a href="/user/profile/${id}/"><strong>${name}</strong></a> بـ <span> <span
-      class="agreed-number">${agreed}</span> عضو متفق مع
-  آرائه</span>`;
+      let users = response.data;
+      for (let i = 0; i < users.length; i++) {
+        let user = users[i];
+        displayHtml += `<li><a href="/user/profile/${user.id}/"><strong>${user.username}</strong></a> بـ <span> <span
+      class="agreed-number">${user.my_comments__votes__sum}</span> عضو متفق مع
+  آرائه</span> </li>`;
+        console.log(user);
+      }
 
       whereToDisplayResponse.html(displayHtml);
       bestUserLoading.css("display", "none");
@@ -294,3 +297,9 @@ if (bestUserWrapper) {
       bestUserWrapper.hide();
     });
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  var elems = document.querySelectorAll(".collapsible");
+  var options = {};
+  var instances = M.Collapsible.init(elems, options);
+});

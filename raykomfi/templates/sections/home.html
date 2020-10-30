@@ -77,19 +77,31 @@
             </div>
         </div>
         <br>
-        <div class="w3-row w3-white  best-user-wrapper w3-center z-depth-1" id="user-of-the-month">
-            <div>عضو الشهر</div>
-            <div class="sk-chase" id="sk-chase-best-user">
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-            </div>
-            <p id="display-best-user"><a href="#"><strong>admin</strong></a> بـ <span> <span
-                        class="agreed-number">36</span> عضو متفق مع
-                    آرائه</span></p>
+        <div id="user-of-the-month">
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header">أعضاء
+                        الشهر
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                    </div>
+                    <div class="collapsible-body white best-user-wrapper" id="display-best-users">
+                        <div class="sk-chase" id="sk-chase-best-user">
+                            <div class="sk-chase-dot"></div>
+                            <div class="sk-chase-dot"></div>
+                            <div class="sk-chase-dot"></div>
+                            <div class="sk-chase-dot"></div>
+                            <div class="sk-chase-dot"></div>
+                            <div class="sk-chase-dot"></div>
+                        </div>
+                        <ol>
+
+                        </ol>
+                    </div>
+                </li>
+            </ul>
         </div>
         {% if not user.is_authenticated %}
         <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
@@ -102,14 +114,14 @@
 
         <div class="new-post-side">
             <a href="{% url 'raykomfi:post-new' %}" title="اضافة منشور جديد">
-                <button class="w3-button w3-center"><i class="fa fa-plus" aria-hidden="true"></i>
+                <button class="w3-button w3-center z-depth-2"><i class="fa fa-plus" aria-hidden="true"></i>
                 </button>
             </a>
             </a>
         </div>
 
         {% else %}
-        <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
+        <div class="w3-display-container panel yellow z-depth-1 message-wrapper">
             <p class="w3-center">فعل حسابك للإستفسار الناس عن ما تريد الشراء</p>
         </div>
         {% endif %}
@@ -174,7 +186,7 @@
         </div>
         {% else %}
         <div class="lazy-load-linkwrapper w3-center">
-            <a id="lazyLoadLink" class="w3-border w3-padding raykomfi-button z-depth-1" href="javascript:void(0);"
+            <a id="lazyLoadLink" class="w3-padding raykomfi-button z-depth-1" href="javascript:void(0);"
                 data-page="2">عرض
                 المزيد</a>
         </div>
@@ -183,7 +195,7 @@
 
     </div>
     <div class="w3-col s12 m4 l4 w3-hide-medium w3-hide-large">
-        <div class="w3-padding w3-white  ">
+        <div class="w3-padding w3-white  z-depth-1">
             <h4 class="w3-center">اخر الأراء</h4>
             {% for comment in latest_comments %}
             <div class="w3-row latest-opinion">
