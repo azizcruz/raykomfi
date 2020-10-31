@@ -22,6 +22,7 @@ from django.utils.decorators import method_decorator
 from ratelimit.decorators import ratelimit
 import datetime
 from django.utils import timezone
+from django.core.cache import cache
 
 
 
@@ -124,15 +125,45 @@ class BestUsers(APIView):
     '''
 
     queryset = Comment.objects.all()
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
     @method_decorator(ratelimit(key='ip', rate='10/m', block=True))
     def get(self, request, format=None):
-        best_users = User.objects.filter(
-            my_comments__created__lte=timezone.now(),
-            my_comments__created__gt=timezone.now()-datetime.timedelta(days=30)
-            ).annotate(Sum('my_comments__votes')).order_by('-my_comments__votes__sum').values('username', 'id', 'my_comments__votes__sum')
-        return Response(best_users)
+        today_date = timezone.now()
+        current_best_users = cache.get('best_users')
+        if current_best_users and current_best_users['last_time_checked'] + datetime.timedelta(days=32) < today_date:
+            return Response(current_best_users['best_users'])
+        else:
+            best_users = User.objects.filter(
+                my_comments__created__lte=timezone.now(),
+                my_comments__created__gt=timezone.now()-datetime.timedelta(days=30),
+                ).annotate(Sum('my_comments__votes')).order_by('-my_comments__votes__sum')[:10]
+
+            users_list = {'best_users': [], 'last_time_checked': today_date}
+            obj = {}
+            for rank, user in enumerate(best_users):
+                if user.last_time_best_user == None or user.my_comments__votes__sum > 0.0:
+                    if rank + 1 in [1, 2]:
+                        if (user.user_trust == 6.0 and user.user_trust > -1.0) and (user.last_time_best_user + datetime.timedelta(days=32) < today_date) or user.last_time_best_user == None:
+                            if user.user_trust == 5.5:
+                                user.user_trust = 6.0
+                            else:
+
+                                user.user_trust += 1.0
+                            user.last_time_best_user = today_date
+                    else:
+                        if (user.user_trust < 7.0 and user.user_trust > -1.0) and (user.last_time_best_user + datetime.timedelta(days=32) < today_date) or user.last_time_best_user == None:
+                            user.user_trust += 0.5
+                            user.last_time_best_user = today_date
+                    user.save()
+                    obj['username'] = user.username
+                    obj['id'] = user.id
+                    obj['my_comments__votes__sum'] = user.my_comments__votes__sum
+                    obj['last_time_best_user'] = user.last_time_best_user
+                    users_list['best_users'].append(obj)
+                    obj = {}
+            cache.set('best_users', users_list)
+            return Response(users_list['best_users'])
 
 
 class CommentsView(APIView):

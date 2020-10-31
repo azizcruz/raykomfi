@@ -197,6 +197,14 @@ MULTILINGUAL_LANGUAGES = (
     "ar-ae",
 )
 
+#DataFlair #Local Memory Cache
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'DataFlair',
+    }
+}
+
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'mail.privateemail.com'
 EMAIL_PORT = 587

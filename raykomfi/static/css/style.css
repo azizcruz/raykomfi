@@ -94,6 +94,9 @@ small,
   font-family: "Almarai", sans-serif;
   color: #484848 !important;
 }
+p {
+  font-size: 0.8rem;
+}
 
 h1 {
   font-size: 2.2rem;
@@ -124,6 +127,30 @@ h4 {
 .ray-box {
   margin: 10px 0;
   padding: 20px !important;
+}
+
+.what-is-this {
+  padding: 3px;
+  cursor: pointer;
+  font-size: 8px;
+  position: relative;
+}
+
+.what-is-this:hover .what-is-this-content {
+  display: block;
+  color: #fff !important;
+  background-color: rgba(0, 0, 0, 0.7);
+  margin: 0;
+  line-height: 0.6rem;
+}
+
+.what-is-this-content {
+  position: absolute;
+  padding: 5px;
+  display: none;
+  top: 10px;
+  right: 38px;
+  left: -130px;
 }
 
 .lazy-load-linkwrapper {
@@ -364,6 +391,7 @@ select:focus {
 
 .collapsible {
   padding: 0;
+  margin-bottom: 0.5rem;
 }
 
 .collapsible .collapsible-body {
@@ -372,6 +400,11 @@ select:focus {
 
 .collapsible .collapsible-body li {
   list-style-type: decimal;
+  margin-bottom: 10px;
+}
+
+.collapsible .collapsible-body li:last-child {
+  margin-bottom: 0;
 }
 /* Main Style */
 
@@ -520,7 +553,6 @@ select:focus {
   text-align: center;
   margin-bottom: 10px;
   padding: 10px;
-  padding-top: 20px;
 }
 
 .new-post-side button {
@@ -780,6 +812,11 @@ input ~ .parsley-errors-list.filled {
   padding: 20px;
 }
 
+.user-profile .fa-star {
+  font-size: 18px;
+  color: #ffd700;
+  margin: 0;
+}
 /* Pofile Style */
 
 /* Messages Style */

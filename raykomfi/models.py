@@ -8,6 +8,8 @@ from django import forms
 from sorl.thumbnail import ImageField
 from cloudinary.models import CloudinaryField
 from uuid import uuid4, uuid1
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 
 from django.core.cache import cache 
 import datetime
@@ -44,8 +46,10 @@ class User(AbstractUser):
         default=True, verbose_name='إظهارالإسم ؟')
     allow_messages = models.BooleanField(
         default=True, verbose_name='إستقبال رسائل ؟')
-    verification_code = models.CharField(max_length=255, blank=True, null=True)
-    verification_code_expire = models.DateTimeField(blank=True, null=True)
+    verification_code = models.CharField(max_length=255, blank=True, null=True, verbose_name='رمز العمليات')
+    verification_code_expire = models.DateTimeField(blank=True, null=True, verbose_name='تاريخ إنتهاء رمز العمليات')
+    last_time_best_user = models.DateTimeField(blank=True, null=True, verbose_name='اخر مرة حصل على عضو الشهر')
+    user_trust = models.FloatField(validators=[MaxValueValidator(6.0), MinValueValidator(0.0)], default=0.0, verbose_name='قوة الرأي')
 
 
     def get_absolute_url(self):
