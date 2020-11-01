@@ -292,3 +292,61 @@ $(document).on("submit", "form.commentsSearchForm", function (e) {
 //       });
 //   }
 // });
+
+// Add report
+$(document).on("submit", "form.reportForm", function (e) {
+  e.preventDefault();
+  let content = e.target[0].value;
+  let data = $(this).serializeArray();
+  data = {
+    content: data[0].value,
+    reported_url: data[1].value,
+    topic: data[2].value,
+  };
+
+  console.log(data);
+  if (content) {
+    axios({
+      method: "POST",
+      url: "/api/report/",
+      headers: {
+        "X-CSRFTOKEN": Cookies.get("csrftoken"),
+        "Content-Type": "application/json",
+      },
+      data: data,
+    })
+      .then((response) => {
+        $(".w3-modal").appendTo(
+          `<p class="center addedMessage">${response.data.message}</p>`
+        );
+        setTimeout(() => {
+          let reportPost = $("#reportPost") || false;
+          let reportComment = $("#reportComment") || false;
+          let reportReply = $("#reportReply") || false;
+
+          if (reportPost) {
+            reportPost.css("display", "none");
+          }
+
+          if (reportComment) {
+            reportComment.css("display", "none");
+          }
+
+          if (reportReply) {
+            reportReply.css("display", "none");
+          }
+        }, 800);
+      })
+      .catch((err) => {
+        if (
+          err.response.status === 403 &&
+          err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+        ) {
+          custom_alert(
+            "<h3>محاولات متكررة, يرجى المحاولة لاحقا</h3>",
+            "warning"
+          );
+        }
+      });
+  }
+});

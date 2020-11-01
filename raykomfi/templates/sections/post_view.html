@@ -4,7 +4,6 @@
 {% load hitcount_tags %}
 
 {% block content %}
-
 <div class="w3-row-padding raykomfi-main-padding raykomfi-max-width">
     <div class="w3-col s12 m4 l4 w3-hide-small">
         <h4>إستفسارات مشابهة</h4>
@@ -56,16 +55,16 @@
                 {% if post.image %}
 
                 <!-- Trigger the Modal -->
-                <img id="myImg" src="" alt="{{post.title}}" data-src="{{ post.image.url }}" class="lazy-img ">
+                <img id="raykomfi-myImg" src="" alt="{{post.title}}" data-src="{{ post.image.url }}" class="lazy-img ">
 
                 <!-- The Modal -->
-                <div id="myModal" class="modal">
+                <div id="raykomfi-myModal" class="raykomfi-modal">
 
                     <!-- Modal Content (The Image) -->
-                    <img class="modal-content" id="modalImage">
+                    <img class="raykomfi-modal-content" id="raykomfi-modalImage">
 
                     <!-- Modal Caption (Image Text) -->
-                    <div id="caption"></div>
+                    <div id="raykomfi-caption"></div>
                 </div>
 
                 {% endif %}
@@ -77,175 +76,280 @@
                 </div>
                 <div><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</div>
                 <div><i class="fa fa-eye"></i> {% get_hit_count for post %}</div>
+                <button class="btn red raykomfi-report-btn"
+                    onclick="document.getElementById('reportPost').style.display='block'">إبلاغ</button>
+                <!-- The Post Report Modal -->
+                <div id="reportPost" class="w3-modal">
+                    <div class="w3-modal-content w3-animate-top">
+                        <div class="container">
+                            <div class="col s12 m6">
+                                <div class="card">
+                                    <div class="card-content white-text">
+                                        <h6>حدد نوع الإبلاغ</h6>
+                                        <form class="reportForm">
+                                            <input class="w3-radio" type="radio" name="content" value="إساءة شخصية">
+                                            <label class="black-text">إساءة شخصية</label>
+                                            <br>
+                                            <input class="w3-radio" type="radio" name="content"
+                                                value="مخالف لشروط إستخدام المنصة">
+                                            <label class="black-text">مخالف لشروط إستخدام المنصة</label>
+                                            <br>
+                                            <input class="w3-radio" type="radio" name="content"
+                                                value="إساءة لطائفة أو إلى الدين">
+                                            <label class="black-text">إساءة لطائفة أو إلى الدين</label>
+                                            <input type="hidden" name="reported_url" value="{{post.get_absolute_url}}">
+                                            <input type="hidden" name="topic" value="post">
+                                            <br>
+                                            <button type="submit"
+                                                class="btn raykomfi-main-background-color">إرسال</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- The Post Report Modal -->
             </div>
-            <div class="w3-mobile w3-container reply-buttons">
-                <hr>
-                <h3>الآراء</h3>
-                <div id="posts-wrapper">
-                    {% if post.comments.all|length > 0 %}
-                    {% for comment in post.comments.all %}
-                    <div class="w3-row comment-wrapper w3-border w3-padding z-depth-1">
-                        <div class="w3-col s10 m11 l11" id="comment-id-{{comment.id}}">
-                            <div class="comment-side">
-                                {% if comment.user and reply.user.is_active != False %}
-                                <a href="{% url 'raykomfi:user-profile' id=comment.post.creator.id %}"
-                                    class="writer-name">
-                                    <div class="name">
-                                        <i class="fa fa-user" aria-hidden="true"></i>
-                                        {{comment.user.username}}
+        </div>
+        <div class="w3-mobile w3-container reply-buttons">
+            <hr>
+            <h3>الآراء</h3>
+            <div id="posts-wrapper">
+                {% if post.comments.all|length > 0 %}
+                {% for comment in post.comments.all %}
+                <div class="w3-row comment-wrapper w3-border w3-padding z-depth-1">
+                    <div class="w3-col s10 m11 l11" id="comment-id-{{comment.id}}">
+                        <div class="comment-side">
+                            {% if comment.user and reply.user.is_active != False %}
+                            <a href="{% url 'raykomfi:user-profile' id=comment.post.creator.id %}" class="writer-name">
+                                <div class="name">
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                    {{comment.user.username}}
+                                    <span class="opinion-power">
+                                        {{comment.user.user_trust}}
+                                    </span>
+                                </div>
+                            </a>
+                            {% else %}
+                            <div class="name">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                                عضو لم يعد مسجل
+                            </div>
+                            {% endif %}
+                            <small><i class="fa fa-clock-o" aria-hidden="true"></i><span
+                                    class="created-time">{{comment.created | naturaltime}}</span>
+                            </small>
+                            <div class="comment">{{ comment.content }}</div>
+                            <button class="btn red raykomfi-report-btn"
+                                onclick="document.getElementById('reportComment').style.display='block'">إبلاغ</button>
+                            <!-- The Comment Report Modal -->
+                            <div id="reportComment" class="w3-modal">
+                                <div class="w3-modal-content w3-animate-top">
+                                    <div class="container">
+                                        <div class="col s12 m6">
+                                            <div class="card">
+                                                <div class="card-content white-text">
+                                                    <h6>حدد نوع الإبلاغ</h6>
+                                                    <form class="reportForm">
+                                                        <input class="w3-radio" type="radio" name="content"
+                                                            value="إساءة شخصية">
+                                                        <label class="black-text">إساءة شخصية</label>
+                                                        <br>
+                                                        <input class="w3-radio" type="radio" name="content"
+                                                            value="مخالف لشروط إستخدام المنصة">
+                                                        <label class="black-text">مخالف لشروط إستخدام المنصة</label>
+                                                        <br>
+                                                        <input class="w3-radio" type="radio" name="content"
+                                                            value="إساءة لطائفة أو إلى الدين">
+                                                        <label class="black-text">إساءة لطائفة أو إلى الدين</label>
+                                                        <input type="hidden" name="reported_url"
+                                                            value="{{comment.get_absolute_url}}">
+                                                        <br>
+                                                        <button type="submit"
+                                                            class="btn raykomfi-main-background-color">إرسال</button>
+                                                        <input type="hidden" name="topic" value="comment">
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- The Comment Report Modal -->
+                        </div>
+
+                        {% if comment.replies.all|length > 0 %}
+                        <div class="comment-reply-side w3-padding ">
+                            {% for reply in comment.replies.all %}
+                            <div class="w3-panel z-depth-1" id="to-{{reply.id}}">
+                                {% if reply.user and reply.user.is_active != False %}
+                                <a href="{% url 'raykomfi:user-profile' id=reply.user.id %}" class="writer-name">
+                                    <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
+                                        {{reply.user.username}}
                                         <span class="opinion-power">
                                             {{comment.user.user_trust}}
                                         </span>
                                     </div>
                                 </a>
                                 {% else %}
-                                <div class="name">
-                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
                                     عضو لم يعد مسجل
                                 </div>
                                 {% endif %}
-                                <small><i class="fa fa-clock-o" aria-hidden="true"></i><span
-                                        class="created-time">{{comment.created | naturaltime}}</span>
+                                <small><i class="fa fa-clock-o" aria-hidden="true"></i><span class="created-time">
+                                        {{reply.created | naturaltime}}</span>
                                 </small>
-                                <div class="comment">{{ comment.content }}</div>
-                            </div>
-
-                            {% if comment.replies.all|length > 0 %}
-                            <div class="comment-reply-side w3-padding ">
-                                {% for reply in comment.replies.all %}
-                                <div class="w3-panel z-depth-1" id="to-{{reply.id}}">
-                                    {% if reply.user and reply.user.is_active != False %}
-                                    <a href="{% url 'raykomfi:user-profile' id=reply.user.id %}" class="writer-name">
-                                        <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
-                                            {{reply.user.username}}
-                                            <span class="opinion-power">
-                                                {{comment.user.user_trust}}
-                                            </span>
+                                <div class="comment">{{ reply.content }}</div>
+                                <button class="btn red raykomfi-report-btn"
+                                    onclick="document.getElementById('reportReply').style.display='block'">إبلاغ</button>
+                                <!-- The Reply Report Modal -->
+                                <div id="reportReply" class="w3-modal">
+                                    <div class="w3-modal-content w3-animate-top">
+                                        <div class="container">
+                                            <div class="col s12 m6">
+                                                <div class="card">
+                                                    <div class="card-content white-text">
+                                                        <h6>حدد نوع الإبلاغ</h6>
+                                                        <form class="reportForm">
+                                                            <input class="w3-radio" type="radio" name="content"
+                                                                value="إساءة شخصية">
+                                                            <label class="black-text">إساءة شخصية</label>
+                                                            <br>
+                                                            <input class="w3-radio" type="radio" name="content"
+                                                                value="مخالف لشروط إستخدام المنصة">
+                                                            <label class="black-text">مخالف لشروط إستخدام المنصة</label>
+                                                            <br>
+                                                            <input class="w3-radio" type="radio" name="content"
+                                                                value="إساءة لطائفة أو إلى الدين">
+                                                            <label class="black-text">إساءة لطائفة أو إلى الدين</label>
+                                                            <input type="hidden" name="reported_url"
+                                                                value="{{reply.get_noti_url}}">
+                                                            <input type="hidden" name="topic" value="reply">
+                                                            <br>
+                                                            <button type="submit"
+                                                                class="btn raykomfi-main-background-color">إرسال</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </a>
-                                    {% else %}
-                                    <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
-                                        عضو لم يعد مسجل
                                     </div>
-                                    {% endif %}
-                                    <small><i class="fa fa-clock-o" aria-hidden="true"></i><span class="created-time">
-                                            {{reply.created | naturaltime}}</span>
-                                    </small>
-                                    <div class="comment">{{ reply.content }}</div>
                                 </div>
-                                {% endfor %}
+                                <!-- The Comment Report Modal -->
                             </div>
-                            {% endif %}
-                            {% if user.email_active %}
-                            <div class="reply">
-                                <form class="replyForm" data-comment-id="{{comment.id}}">
-                                    <textarea name="reply_content" cols="40" rows="1"
-                                        class="w3-input w3-border   reply-textarea"
-                                        id="id_reply_content-{{comment.id}}"></textarea>
-                                    <div class="col s12">
-                                        <button class='w3-button z-depth-1' type="submit"> اضافة رد</button>
-                                    </div>
-                                </form>
-                            </div>
-                            {% endif %}
+                            {% endfor %}
                         </div>
-                        <div class="w3-col s2 m1 l1 w3-center vote-side" id="comment-{{comment.id}}-vote-side-wrapper">
-                            <div>
-                                <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}}
-                                    data-vote-type="like">
-                                    <button type="submit" {% if user in comment.voted_like.all %} disabled {% endif %}
-                                        class="like-button"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
-                                </form>
-                            </div>
-                            <div>{{comment.votes}}</div>
-                            <div>
-                                <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}}
-                                    data-vote-type="dislike">
-                                    <button type="submit" {% if user in comment.voted_dislike.all %} disabled
-                                        {% endif %} class="dislike-button"><i class="fa fa-thumbs-down"
-                                            aria-hidden="true"></i></button>
-                                </form>
-                            </div>
+                        {% endif %}
+                        {% if user.email_active %}
+                        <div class="reply">
+                            <form class="replyForm" data-comment-id="{{comment.id}}">
+                                <textarea name="reply_content" cols="40" rows="1"
+                                    class="w3-input w3-border   reply-textarea"
+                                    id="id_reply_content-{{comment.id}}"></textarea>
+                                <div class="col s12">
+                                    <button class='w3-button z-depth-1' type="submit"> اضافة رد</button>
+                                </div>
+                            </form>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="w3-col s2 m1 l1 w3-center vote-side" id="comment-{{comment.id}}-vote-side-wrapper">
+                        <div>
+                            <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}}
+                                data-vote-type="like">
+                                <button type="submit" {% if user in comment.voted_like.all %} disabled {% endif %}
+                                    class="like-button"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
+                            </form>
+                        </div>
+                        <div>{{comment.votes}}</div>
+                        <div>
+                            <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}}
+                                data-vote-type="dislike">
+                                <button type="submit" {% if user in comment.voted_dislike.all %} disabled {% endif %}
+                                    class="dislike-button"><i class="fa fa-thumbs-down" aria-hidden="true"></i></button>
+                            </form>
                         </div>
                     </div>
-                    {% endfor %}
-                    {% else %}
-                    <p>لا يوجد رأي حتى الان, كن أول شخص يعطي رأيه</p>
-                    {% endif %}
                 </div>
+                {% endfor %}
+                {% else %}
+                <p>لا يوجد رأي حتى الان, كن أول شخص يعطي رأيه</p>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if comments_count > 10 %}
+        <div class="sk-chase" id="sk-chase">
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+        </div>
+        <div class="lazy-load-linkwrapper w3-center">
+            <a id="lazyLoadLinkComments" class="w3-padding" href="javascript:void(0);" data-page="2">عرض
+                المزيد</a>
+        </div>
+        {% endif %}
+
+        <input type="hidden" id="post_id" value={{post.id}}>
+        <div class="w3-mobile w3-container comment-button">
+            <h3>إضافة رأي</h3>
+
+            {% if not user.is_authenticated %}
+            <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
+                <p class="w3-center"><a href="{% url 'raykomfi:user-register' %}" class="w3-text-blue">سجل حساب
+                        جديد</a> أو <a href="{% url 'raykomfi:user-signin' %}" class="w3-text-blue">سجل الدخول</a>
+                    للمشاركة في التعليقات</p>
             </div>
 
-            {% if comments_count > 10 %}
-            <div class="sk-chase" id="sk-chase">
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
+            {% else %}
+
+            {% if user.email_active %}
+            <div id="comment">
+                <form class="commentForm" data-post-id="{{post.id}}">
+                    <textarea cols="40" rows="10" class="w3-input w3-border  "></textarea>
+                    <div class="col s12">
+                        <button class='w3-button raykomfi-button z-depth-1'>
+                            إضافة رأي</button>
+                    </div>
+                </form>
             </div>
-            <div class="lazy-load-linkwrapper w3-center">
-                <a id="lazyLoadLinkComments" class="w3-padding" href="javascript:void(0);" data-page="2">عرض
-                    المزيد</a>
+            {% else %}
+            <div class="w3-display-container w3-panel w3-border message-wrapper w3-pale-yellow">
+                <p class="w3-center">فعل حسابك للمشاركة في التعليقات</p>
             </div>
+
             {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="w3-col s12 m4 l4 w3-hide-medium w3-hide-large">
+    <h4>إستفسارات مشابهة</h4>
+    <div class="related-posts w3-border w3-padding-16 w3-white z-depth-1">
+        <div class="w3-row">
+            <div class="w3-mobile">
+                {% for related_post in related_posts %}
+                <div class="w3-margin">
+                    <a href="{{ related_post.get_absolute_url }}">
 
-            <input type="hidden" id="post_id" value={{post.id}}>
-            <div class="w3-mobile w3-container comment-button">
-                <h3>إضافة رأي</h3>
+                        {% if related_post.creator and related_post.creator.is_active != False %}
+                        <span class="w3-round-small w3-right">
+                            {{related_post.creator}}
+                        </span>
+                        {% else %}
+                        <span class="w3-round-small w3-right">عضو لم يعد مسجل</span>
+                        {% endif %}
 
-                {% if not user.is_authenticated %}
-                <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
-                    <p class="w3-center"><a href="{% url 'raykomfi:user-register' %}" class="w3-text-blue">سجل حساب
-                            جديد</a> أو <a href="{% url 'raykomfi:user-signin' %}" class="w3-text-blue">سجل الدخول</a>
-                        للمشاركة في التعليقات</p>
+                        &nbsp; <span class="raykomfi-color">{{related_post.title}}</span></a>
                 </div>
-
-                {% else %}
-
-                {% if user.email_active %}
-                <div id="comment">
-                    <form class="commentForm" data-post-id="{{post.id}}">
-                        <textarea cols="40" rows="10" class="w3-input w3-border  "></textarea>
-                        <div class="col s12">
-                            <button class='w3-button raykomfi-button z-depth-1'>
-                                إضافة رأي</button>
-                        </div>
-                    </form>
-                </div>
-                {% else %}
-                <div class="w3-display-container w3-panel w3-border message-wrapper w3-pale-yellow">
-                    <p class="w3-center">فعل حسابك للمشاركة في التعليقات</p>
-                </div>
-
-                {% endif %}
-                {% endif %}
+                {% endfor %}
             </div>
         </div>
     </div>
-    <div class="w3-col s12 m4 l4 w3-hide-medium w3-hide-large">
-        <h4>إستفسارات مشابهة</h4>
-        <div class="related-posts w3-border w3-padding-16 w3-white z-depth-1">
-            <div class="w3-row">
-                <div class="w3-mobile">
-                    {% for related_post in related_posts %}
-                    <div class="w3-margin">
-                        <a href="{{ related_post.get_absolute_url }}">
+</div>
 
-                            {% if related_post.creator and related_post.creator.is_active != False %}
-                            <span class="w3-round-small w3-right">
-                                {{related_post.creator}}
-                            </span>
-                            {% else %}
-                            <span class="w3-round-small w3-right">عضو لم يعد مسجل</span>
-                            {% endif %}
-
-                            &nbsp; <span class="raykomfi-color">{{related_post.title}}</span></a>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {% endblock content %}
+{% endblock content %}

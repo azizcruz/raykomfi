@@ -204,3 +204,20 @@ class Message(models.Model):
 
     def __str__(self):
         return self.content
+
+    
+class Report(models.Model):
+    user = models.ForeignKey(User, related_name='reported', on_delete=models.CASCADE, verbose_name='المبلغ')
+    content = models.CharField(max_length=255)
+    topic = models.CharField(max_length=255, default="")
+    reported_url = models.CharField(max_length=255, default="")
+    created = models.DateTimeField(auto_now_add=True, verbose_name='وقت اضافة الإبلاغ', db_index=True)
+    resolved = models.BooleanField(default=False, verbose_name='تم المعالجة ؟')
+
+    class Meta:
+        ordering = ('-created',)
+        verbose_name = "إبلاغ"
+        verbose_name_plural = "إبلاغات"
+
+    def __str__(self):
+        return self.content

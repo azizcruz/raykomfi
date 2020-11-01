@@ -26,6 +26,39 @@
                     class="created-time">{{comment.created | naturaltime}}</span>
             </small>
             <div class="comment">{{ comment.content }}</div>
+            <button class="btn red raykomfi-report-btn"
+                onclick="document.getElementById('reportComment').style.display='block'">إبلاغ</button>
+            <!-- The Comment Report Modal -->
+            <div id="reportComment" class="w3-modal">
+                <div class="w3-modal-content w3-animate-top">
+                    <div class="container">
+                        <div class="col s12 m6">
+                            <div class="card">
+                                <div class="card-content white-text">
+                                    <h6>حدد نوع الإبلاغ</h6>
+                                    <form class="reportForm">
+                                        <input class="w3-radio" type="radio" name="content" value="إساءة شخصية">
+                                        <label class="black-text">إساءة شخصية</label>
+                                        <br>
+                                        <input class="w3-radio" type="radio" name="content"
+                                            value="مخالف لشروط إستخدام المنصة">
+                                        <label class="black-text">مخالف لشروط إستخدام المنصة</label>
+                                        <br>
+                                        <input class="w3-radio" type="radio" name="content"
+                                            value="إساءة لطائفة أو إلى الدين">
+                                        <label class="black-text">إساءة لطائفة أو إلى الدين</label>
+                                        <input type="hidden" name="reported_url" value="{{comment.get_absolute_url}}">
+                                        <input type="hidden" name="topic" value="comment">
+                                        <br>
+                                        <button type="submit" class="btn raykomfi-main-background-color">إرسال</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- The Comment Report Modal -->
         </div>
 
         {% if comment.replies.all|length > 0 %}
@@ -37,7 +70,7 @@
                     <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
                         {{reply.user.username}}
                         <span class="opinion-power">
-                            {{reply.user.user_trust}}
+                            {{comment.user.user_trust}}
                         </span>
                     </div>
                 </a>
@@ -50,6 +83,40 @@
                         {{reply.created | naturaltime}}</span>
                 </small>
                 <div class="comment">{{ reply.content }}</div>
+                <button class="btn red raykomfi-report-btn"
+                    onclick="document.getElementById('reportReply').style.display='block'">إبلاغ</button>
+                <!-- The Reply Report Modal -->
+                <div id="reportReply" class="w3-modal">
+                    <div class="w3-modal-content w3-animate-top">
+                        <div class="container">
+                            <div class="col s12 m6">
+                                <div class="card">
+                                    <div class="card-content white-text">
+                                        <h6>حدد نوع الإبلاغ</h6>
+                                        <form class="reportForm">
+                                            <input class="w3-radio" type="radio" name="content" value="إساءة شخصية">
+                                            <label class="black-text">إساءة شخصية</label>
+                                            <br>
+                                            <input class="w3-radio" type="radio" name="content"
+                                                value="مخالف لشروط إستخدام المنصة">
+                                            <label class="black-text">مخالف لشروط إستخدام المنصة</label>
+                                            <br>
+                                            <input class="w3-radio" type="radio" name="content"
+                                                value="إساءة لطائفة أو إلى الدين">
+                                            <label class="black-text">إساءة لطائفة أو إلى الدين</label>
+                                            <input type="hidden" name="reported_url" value="{{reply.get_noti_url}}">
+                                            <input type="hidden" name="topic" value="reply">
+                                            <br>
+                                            <button type="submit"
+                                                class="btn raykomfi-main-background-color">إرسال</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- The Comment Report Modal -->
             </div>
             {% endfor %}
         </div>

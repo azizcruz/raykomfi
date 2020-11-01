@@ -1,4 +1,4 @@
-from raykomfi.models import Comment, User, Reply, Post
+from raykomfi.models import Comment, User, Reply, Post, Report
 from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
@@ -65,3 +65,9 @@ class UploadImageSerialzer(serializers.Serializer):
 
     class Meta:
         fields = ['image', 'for_object']
+
+class ReportSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Report
+        fields = ['content', 'reported_url', 'topic']

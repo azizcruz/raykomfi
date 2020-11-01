@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from raykomfi.models import Comment, User, Post, Reply, Message
+from raykomfi.models import Comment, User, Post, Reply, Message, Report
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -23,6 +23,7 @@ from ratelimit.decorators import ratelimit
 import datetime
 from django.utils import timezone
 from django.core.cache import cache
+from notifications.signals import notify
 
 
 
@@ -383,3 +384,18 @@ class UploadImageView(APIView):
                 set_trace()
                 return blob.public_url
     
+
+class ReportView(APIView):
+    '''
+    Search Comments
+    '''
+    permission_classes = [permissions.IsAuthenticated]
+
+    @method_decorator(ratelimit(key='ip', rate='1/m', block=True))
+    def post(self, request):
+        serializer = serializers.ReportSerializer(data=request.data)
+        if serializer.is_valid():
+            admin = User.objects.get(username="admin")
+            report = Report.objects.create(user=request.user, content=serializer.validated_data['content'], topic=serializer.validated_data['topic'], reported_url=serializer.validated_data['reported_url'])
+            notify.send(request.user, recipient=admin ,action_object=report, description=serializer.validated_data['reported_url'], target=report, verb='report')
+            return JsonResponse({'message': 'تم الإبلاغ'})

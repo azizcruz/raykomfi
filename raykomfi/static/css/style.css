@@ -124,6 +124,14 @@ h4 {
   margin: 5px;
 }
 
+.raykomfi-report-btn {
+  padding: 0.5rem 0.3rem !important;
+  font-size: 0.6rem !important;
+  line-height: 0 !important;
+  margin-top: 20px;
+  height: 20px;
+}
+
 .ray-box {
   margin: 10px 0;
   padding: 20px !important;
@@ -659,7 +667,7 @@ select:focus {
 /* Searchbar Style */
 
 /* Style the Image Used to Trigger the Modal */
-#myImg {
+#raykomfi-myImg {
   border-radius: 8px;
   cursor: pointer;
   transition: 0.3s;
@@ -667,12 +675,12 @@ select:focus {
   height: auto;
 }
 
-#myImg:hover {
+#raykomfi-myImg:hover {
   opacity: 0.7;
 }
 
 /* The Modal (background) */
-.modal {
+.raykomfi-modal {
   display: none;
   /* Hidden by default */
   position: fixed;
@@ -697,7 +705,7 @@ select:focus {
 }
 
 /* Modal Content (Image) */
-.modal-content {
+.raykomfi-modal-content {
   margin: auto;
   display: block;
   width: 80%;
@@ -705,7 +713,7 @@ select:focus {
 }
 
 /* Caption of Modal Image (Image Text) - Same Width as the Image */
-#caption {
+#raykomfi-caption {
   margin: auto;
   display: block;
   width: 80%;
@@ -717,8 +725,8 @@ select:focus {
 }
 
 /* Add Animation - Zoom in the Modal */
-.modal-content,
-#caption {
+.raykomfi-modal-content,
+#raykomfi-caption {
   animation-name: zoom;
   animation-duration: 0.6s;
 }
@@ -734,7 +742,7 @@ select:focus {
 }
 
 /* The Close Button */
-.close {
+.raykomfi-close {
   position: absolute;
   top: 3%;
   left: 11%;
@@ -744,8 +752,8 @@ select:focus {
   transition: 0.3s;
 }
 
-.close:hover,
-.close:focus {
+.raykomfi-close:hover,
+.raykomfi-close:focus {
   color: #bbb;
   text-decoration: none;
 }

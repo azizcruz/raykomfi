@@ -56,12 +56,12 @@ function myAccordion(id) {
   }
 }
 
-var modal = document.getElementById("myModal");
+var modal = document.getElementById("raykomfi-myModal");
 
 // Get the image and insert it inside the modal - use its "alt" text as a caption
-var img = document.getElementById("myImg") || false;
-var modalImg = document.getElementById("modalImage");
-var captionText = document.getElementById("caption");
+var img = document.getElementById("raykomfi-myImg") || false;
+var modalImg = document.getElementById("raykomfi-modalImage");
+var captionText = document.getElementById("raykomfi-caption");
 if (img) {
   img.onclick = function () {
     modal.style.display = "block";
@@ -70,19 +70,19 @@ if (img) {
   };
 }
 // Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+var span = document.getElementsByClassName("raykomfi-close")[0];
 
 // When the user clicks on anywhere except the image, close the modal
 if (img) {
   $(document).on("click", function (event) {
-    if (!$(event.target).closest("#myImg").length) {
+    if (!$(event.target).closest("#raykomfi-myImg").length) {
       // ... clicked on the 'body', but not inside of #menutop
       modal.style.display = "none";
     }
   });
 }
 // When you click everywhere the image module close except when you click on the image
-$("#modalImage").on("click", function (event) {
+$("#raykomfi-modalImage").on("click", function (event) {
   event.stopPropagation();
 });
 
@@ -188,6 +188,12 @@ function fill_notification_list_override(data) {
             var message = `<a href='${item.description}'>لديك رسالة جديدة من ${item.actor}<div>${item.timestamp}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
           }
+
+          if (item.verb === "report") {
+            var message = `<a href='${item.description}'>لديك بلاغ جديد<div>${item.timestamp}</div></a>`;
+            return "<li class='w3-display-container'>" + message + "</li>";
+          }
+          console.log(message);
         })
         .join("");
 
@@ -327,4 +333,11 @@ document.addEventListener("DOMContentLoaded", function () {
   var elems = document.querySelectorAll(".tooltipped");
   var options = {};
   var instances = M.Tooltip.init(elems, options);
+});
+
+// Initialize modals
+document.addEventListener("DOMContentLoaded", function () {
+  var elems = document.querySelectorAll(".modal");
+  var options = {};
+  var instances = M.Modal.init(elems, options);
 });
