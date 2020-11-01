@@ -93,6 +93,9 @@
                                     <div class="name">
                                         <i class="fa fa-user" aria-hidden="true"></i>
                                         {{comment.user.username}}
+                                        <span class="opinion-power">
+                                            {{comment.user.user_trust}}
+                                        </span>
                                     </div>
                                 </a>
                                 {% else %}
@@ -106,7 +109,7 @@
                                 </small>
                                 <div class="comment">{{ comment.content }}</div>
                             </div>
-                            <hr>
+
                             {% if comment.replies.all|length > 0 %}
                             <div class="comment-reply-side w3-padding ">
                                 {% for reply in comment.replies.all %}
@@ -115,6 +118,9 @@
                                     <a href="{% url 'raykomfi:user-profile' id=reply.user.id %}" class="writer-name">
                                         <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
                                             {{reply.user.username}}
+                                            <span class="opinion-power">
+                                                {{comment.user.user_trust}}
+                                            </span>
                                         </div>
                                     </a>
                                     {% else %}

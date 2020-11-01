@@ -287,7 +287,6 @@ if (bestUserWrapper) {
         displayHtml += `<li><a href="/user/profile/${user.id}/"><strong>${user.username}</strong></a> بـ <span> <span
       class="agreed-number">${user.my_comments__votes__sum}</span> عضو متفق مع
   آرائه</span> </li>`;
-        console.log(user);
       }
 
       whereToDisplayResponse.html(displayHtml);
@@ -302,4 +301,30 @@ document.addEventListener("DOMContentLoaded", function () {
   var elems = document.querySelectorAll(".collapsible");
   var options = {};
   var instances = M.Collapsible.init(elems, options);
+});
+
+// Opinion power starts algorithm
+generateStars();
+
+// Highlight of the to div box
+if (window.location.hash) {
+  let anchor = $(window.location.hash);
+  $("html,body").animate({ scrollTop: anchor.offset().top - 50 }, "slow");
+  setTimeout(() => {
+    anchor
+      .stop()
+      .animate({ backgroundColor: "#FFFFE0" }, 250)
+      .animate({ backgroundColor: "#FFFFFF" }, 250)
+      .animate({ backgroundColor: "#FFFFE0" }, 250)
+      .animate({ backgroundColor: "#FFFFFF" }, 250)
+      .animate({ backgroundColor: "#FFFFE0" }, 250)
+      .animate({ backgroundColor: "#FFFFFF" }, 250);
+  }, 700);
+}
+
+// tooltip initialization
+document.addEventListener("DOMContentLoaded", function () {
+  var elems = document.querySelectorAll(".tooltipped");
+  var options = {};
+  var instances = M.Tooltip.init(elems, options);
 });

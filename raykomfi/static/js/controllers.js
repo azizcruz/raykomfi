@@ -40,6 +40,8 @@ $(document).on("submit", "form.replyForm", function (e) {
         view_html = response.data.view;
         comment_view.html(view_html);
         fixTime();
+        generateStars();
+        e.target[0].value = "";
       })
       .catch((err) => {
         if (
@@ -75,7 +77,9 @@ $(document).on("submit", "form.commentForm", function (e) {
         let post_wrapper = document.getElementById("posts-wrapper");
         post_wrapper.innerHTML = view_html;
         $("#lazyLoadLinkComments").hide();
+        e.target[0].value = "";
         fixTime();
+        generateStars();
       })
       .catch((err) => {
         if (
@@ -114,6 +118,7 @@ $(document).on("submit", "form.voteForm", function (e) {
         view_html = response.data.view;
         votes_view.html(view_html);
         fixTime();
+        generateStars();
       })
       .catch((err) => {
         if (
@@ -245,6 +250,7 @@ $(document).on("submit", "form.commentsSearchForm", function (e) {
           loading.css("display", "none");
           post_wrapper.innerHTML = view_html;
           fixTime();
+          generateStars();
         });
       })
       .catch((err) => {
