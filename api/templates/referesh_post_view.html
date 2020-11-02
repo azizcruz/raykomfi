@@ -50,7 +50,11 @@
                                         <input type="hidden" name="reported_url" value="{{comment.get_absolute_url}}">
                                         <input type="hidden" name="topic" value="comment">
                                         <br>
-                                        <button type="submit" class="btn raykomfi-main-background-color">إرسال</button>
+                                        <button type="submit"
+                                            class="btn raykomfi-main-background-color send-report-btn">إرسال</button>
+
+                                        <a class="btn red"
+                                            onclick="document.getElementById('reportComment').style.display='none'">إغلاق</a>
                                     </form>
                                 </div>
                             </div>
@@ -108,7 +112,10 @@
                                             <input type="hidden" name="topic" value="reply">
                                             <br>
                                             <button type="submit"
-                                                class="btn raykomfi-main-background-color">إرسال</button>
+                                                class="btn raykomfi-main-background-color send-report-btn">إرسال</button>
+
+                                            <a class="btn red"
+                                                onclick="document.getElementById('reportReply').style.display='none'">إغلاق</a>
                                         </form>
                                     </div>
                                 </div>

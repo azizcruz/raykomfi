@@ -101,7 +101,10 @@
                                             <input type="hidden" name="topic" value="post">
                                             <br>
                                             <button type="submit"
-                                                class="btn raykomfi-main-background-color">إرسال</button>
+                                                class="btn raykomfi-main-background-color send-report-btn">إرسال</button>
+
+                                            <a class="btn red"
+                                                onclick="document.getElementById('reportPost').style.display='none'">إغلاق</a>
                                         </form>
                                     </div>
                                 </div>
@@ -112,7 +115,7 @@
                 <!-- The Post Report Modal -->
             </div>
         </div>
-        <div class="w3-mobile w3-container reply-buttons">
+        <div class=" w3-mobile w3-container reply-buttons">
             <hr>
             <h3>الآراء</h3>
             <div id="posts-wrapper">
@@ -154,21 +157,30 @@
                                                     <form class="reportForm">
                                                         <input class="w3-radio" type="radio" name="content"
                                                             value="إساءة شخصية">
-                                                        <label class="black-text">إساءة شخصية</label>
+                                                        <label class="black-text">إساءة
+                                                            شخصية</label>
                                                         <br>
                                                         <input class="w3-radio" type="radio" name="content"
                                                             value="مخالف لشروط إستخدام المنصة">
-                                                        <label class="black-text">مخالف لشروط إستخدام المنصة</label>
+                                                        <label class="black-text">مخالف
+                                                            لشروط إستخدام
+                                                            المنصة</label>
                                                         <br>
                                                         <input class="w3-radio" type="radio" name="content"
                                                             value="إساءة لطائفة أو إلى الدين">
-                                                        <label class="black-text">إساءة لطائفة أو إلى الدين</label>
+                                                        <label class="black-text">إساءة
+                                                            لطائفة أو إلى
+                                                            الدين</label>
                                                         <input type="hidden" name="reported_url"
                                                             value="{{comment.get_absolute_url}}">
                                                         <br>
-                                                        <button type="submit"
-                                                            class="btn raykomfi-main-background-color">إرسال</button>
+
                                                         <input type="hidden" name="topic" value="comment">
+                                                        <button type="submit"
+                                                            class="btn raykomfi-main-background-color send-report-btn">إرسال</button>
+
+                                                        <a class="btn red"
+                                                            onclick="document.getElementById('reportComment').style.display='none'">إغلاق</a>
                                                     </form>
                                                 </div>
                                             </div>
@@ -214,21 +226,29 @@
                                                         <form class="reportForm">
                                                             <input class="w3-radio" type="radio" name="content"
                                                                 value="إساءة شخصية">
-                                                            <label class="black-text">إساءة شخصية</label>
+                                                            <label class="black-text">إساءة
+                                                                شخصية</label>
                                                             <br>
                                                             <input class="w3-radio" type="radio" name="content"
                                                                 value="مخالف لشروط إستخدام المنصة">
-                                                            <label class="black-text">مخالف لشروط إستخدام المنصة</label>
+                                                            <label class="black-text">مخالف
+                                                                لشروط إستخدام
+                                                                المنصة</label>
                                                             <br>
                                                             <input class="w3-radio" type="radio" name="content"
                                                                 value="إساءة لطائفة أو إلى الدين">
-                                                            <label class="black-text">إساءة لطائفة أو إلى الدين</label>
+                                                            <label class="black-text">إساءة
+                                                                لطائفة أو إلى
+                                                                الدين</label>
                                                             <input type="hidden" name="reported_url"
                                                                 value="{{reply.get_noti_url}}">
                                                             <input type="hidden" name="topic" value="reply">
                                                             <br>
                                                             <button type="submit"
-                                                                class="btn raykomfi-main-background-color">إرسال</button>
+                                                                class="btn raykomfi-main-background-color send-report-btn">إرسال</button>
+
+                                                            <a class="btn red"
+                                                                onclick="document.getElementById('reportReply').style.display='none'">إغلاق</a>
                                                         </form>
                                                     </div>
                                                 </div>

@@ -316,26 +316,14 @@ $(document).on("submit", "form.reportForm", function (e) {
       data: data,
     })
       .then((response) => {
-        $(".w3-modal").appendTo(
-          `<p class="center addedMessage">${response.data.message}</p>`
-        );
+        let sendBtn = $(".send-report-btn");
+        sendBtn.attr("disabled", true);
+        sendBtn.text(response.data.message);
+        $("form.reportForm").trigger("reset");
         setTimeout(() => {
-          let reportPost = $("#reportPost") || false;
-          let reportComment = $("#reportComment") || false;
-          let reportReply = $("#reportReply") || false;
-
-          if (reportPost) {
-            reportPost.css("display", "none");
-          }
-
-          if (reportComment) {
-            reportComment.css("display", "none");
-          }
-
-          if (reportReply) {
-            reportReply.css("display", "none");
-          }
-        }, 800);
+          sendBtn.attr("disabled", false);
+          sendBtn.text("إرسال");
+        }, 60 * 1000);
       })
       .catch((err) => {
         if (
