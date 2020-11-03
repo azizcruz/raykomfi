@@ -4,17 +4,9 @@ let view_html = "";
 let loading = $("#spinner");
 
 function custom_alert(message, icon) {
-  Swal.fire({
-    title: "",
-    html: message,
-    icon: icon,
-    showCloseButton: false,
-    showConfirmButton: false,
-    showCancelButton: true,
-    focusConfirm: false,
-    cancelButtonText: "إغلاق",
-    cancelButtonAriaLabel: "Thumbs down",
-  });
+  document.getElementById("alert-message").innerText = message;
+  document.getElementById("alert-icon").innerHTML = icon;
+  document.getElementById("alert-modal").style.display = "block";
 }
 
 // Add reply
@@ -49,8 +41,8 @@ $(document).on("submit", "form.replyForm", function (e) {
           err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
         ) {
           custom_alert(
-            "<h3>محاولات متكررة, يرجى المحاولة لاحقا</h3>",
-            "warning"
+            "محاولات متكررة, يرجى المحاولة لاحقا",
+            "<i class='fa fa-warning'></i>"
           );
         }
       });
@@ -87,8 +79,8 @@ $(document).on("submit", "form.commentForm", function (e) {
           err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
         ) {
           custom_alert(
-            "<h3>محاولات متكررة, يرجى المحاولة لاحقا</h3>",
-            "warning"
+            "محاولات متكررة, يرجى المحاولة لاحقا",
+            "<i class='fa fa-warning'></i>"
           );
         }
       });
@@ -126,8 +118,8 @@ $(document).on("submit", "form.voteForm", function (e) {
           err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
         ) {
           custom_alert(
-            "<h3>محاولات متكررة, يرجى المحاولة لاحقا</h3>",
-            "warning"
+            "محاولات متكررة, يرجى المحاولة لاحقا",
+            "<i class='fa fa-warning'></i>"
           );
         }
       });
@@ -164,8 +156,8 @@ $(document).on("submit", "form.getMessageForm", function (e) {
           err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
         ) {
           custom_alert(
-            "<h3>محاولات متكررة, يرجى المحاولة لاحقا</h3>",
-            "warning"
+            "محاولات متكررة, يرجى المحاولة لاحقا",
+            "<i class='fa fa-warning'></i>"
           );
         }
       });
@@ -210,8 +202,8 @@ $(document).on("submit", "form.postsSearchForm", function (e) {
           err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
         ) {
           custom_alert(
-            "<h3>محاولات متكررة, يرجى المحاولة لاحقا</h3>",
-            "warning"
+            "محاولات متكررة, يرجى المحاولة لاحقا",
+            "<i class='fa fa-warning'></i>"
           );
         }
       });
@@ -259,8 +251,8 @@ $(document).on("submit", "form.commentsSearchForm", function (e) {
           err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
         ) {
           custom_alert(
-            "<h3>محاولات متكررة, يرجى المحاولة لاحقا</h3>",
-            "warning"
+            "محاولات متكررة, يرجى المحاولة لاحقا",
+            "<i class='fa fa-warning'></i>"
           );
         }
       });
@@ -331,8 +323,8 @@ $(document).on("submit", "form.reportForm", function (e) {
           err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
         ) {
           custom_alert(
-            "<h3>محاولات متكررة, يرجى المحاولة لاحقا</h3>",
-            "warning"
+            "محاولات متكررة, يرجى المحاولة لاحقا",
+            "<i class='fa fa-warning'></i>"
           );
         }
       });

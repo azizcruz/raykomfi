@@ -341,3 +341,30 @@ document.addEventListener("DOMContentLoaded", function () {
   var options = {};
   var instances = M.Modal.init(elems, options);
 });
+
+// Share dropdown
+function shareDropdown() {
+  var x = document.getElementById("share-dropdown");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+
+$("#share-btn").on("click", () => {
+  shareDropdown();
+});
+
+// Copy post url
+$("#copy-post-url").on("click", (e) => {
+  e.preventDefault();
+  var copyText = document.getElementById("inputToCopy");
+
+  /* Select the text field */
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+});

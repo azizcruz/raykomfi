@@ -26,6 +26,10 @@ body {
   overflow: hidden;
 }
 
+noscript span {
+  color: #fff !important;
+}
+
 #overlay {
   position: fixed;
   z-index: 99999;
@@ -124,7 +128,39 @@ h4 {
   margin: 5px;
 }
 
-.raykomfi-report-btn {
+.raykomfi-dropdown-click:hover {
+  background-color: transparent !important;
+}
+
+.raykomfi-share-dropdown {
+  top: 10px;
+  right: 3.2rem;
+  max-width: 200px;
+}
+
+.raykomfi-share-dropdown:after {
+  content: " ";
+  position: absolute;
+  right: -8px;
+  top: 15px;
+  border-top: 8px solid transparent;
+  border-right: none;
+  border-left: 8px solid #fff;
+  border-bottom: 8px solid transparent;
+}
+.raykomfi-share-dropdown a {
+  text-align: center !important;
+}
+
+.raykomfi-post-url-box {
+  padding: 10px;
+  border: 1px solid #eee;
+  background-color: #f3f3f3;
+  word-break: break-all;
+}
+
+.raykomfi-report-btn,
+.raykomfi-share-btn {
   padding: 0.5rem 0.3rem !important;
   font-size: 0.6rem !important;
   line-height: 0 !important;
@@ -210,12 +246,12 @@ textarea {
   padding: 0px 3px 3px 3px;
 }
 
-.w3-dropdown-content {
+.raykomfi-category-dropdown {
   top: 40px;
   border: none;
 }
 
-.w3-dropdown-content a {
+.raykomfi-category-dropdown a {
   text-align: right !important;
 }
 
@@ -294,6 +330,17 @@ footer {
   outline: none;
 }
 
+.raykomfi-social-media {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 40px;
+}
+
+.raykomfi-rights {
+  margin-top: 10px;
+}
+
 .message-wrapper span.w3-button:hover {
   background-color: transparent !important;
 }
@@ -307,6 +354,11 @@ a {
   color: #fff;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12),
     0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  margin-top: 10px;
+}
+
+.btn {
+  margin-top: 10px;
 }
 
 .raykomfi-button:hover {

@@ -49,7 +49,7 @@
                     <button class="w3-button  raykomfi-main-background-color z-depth-1"><i class="fa fa-tags"
                             aria-hidden="true"></i>
                         حسب التصنيف</button>
-                    <div class="w3-dropdown-content w3-bar-block  w3-card z-depth-1">
+                    <div class="w3-dropdown-content raykomfi-category-dropdown w3-bar-block  w3-card z-depth-1">
                         {% for category in categories %}
                         <a href="{% url 'raykomfi:filtered-posts' category=category.name %}"
                             class="w3-bar-item w3-button">{{category.name}}</a>

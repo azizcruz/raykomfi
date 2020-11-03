@@ -76,6 +76,7 @@
                 </div>
                 <div><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</div>
                 <div><i class="fa fa-eye"></i> {% get_hit_count for post %}</div>
+                {% if user.is_authenticated %}
                 <button class="btn red raykomfi-report-btn"
                     onclick="document.getElementById('reportPost').style.display='block'">إبلاغ</button>
                 <!-- The Post Report Modal -->
@@ -113,6 +114,20 @@
                     </div>
                 </div>
                 <!-- The Post Report Modal -->
+                {% endif %}
+                <div class="w3-dropdown-click raykomfi-dropdown-click">
+                    <button id="share-btn"
+                        class="btn raykomfi-main-background-color raykomfi-report-btn">مشاركة</button>
+                    <div id="share-dropdown" class="w3-dropdown-content raykomfi-share-dropdown w3-bar-block z-depth-1">
+                        <a href="https://twitter.com/intent/tweet?text={{request.build_absolute_uri}}"
+                            class="w3-bar-item w3-button center" target="_blank">على
+                            تويتر <i class="fa fa-twitter"></i></a>
+                        <a href="#" id="copy-post-url" class="w3-bar-item w3-button center">نسخ الرابط <i
+                                class="fa fa-files-o" aria-hidden="true"></i>
+                        </a>
+                        <input type="text" value="{{request.build_absolute_uri}}" id="inputToCopy" readonly>
+                    </div>
+                </div>
             </div>
         </div>
         <div class=" w3-mobile w3-container reply-buttons">
