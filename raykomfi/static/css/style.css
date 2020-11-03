@@ -1320,9 +1320,9 @@ input.raykomfi-input:checked + .raykomfi-slider:before {
 
 /* 100% Image Width on Smaller Screens */
 @media only screen and (min-width: 320px) and (max-width: 420px) {
-  /* #myIntro {
-    font-size: 12px;
-  } */
+  #posts-wrapper .comment-reply-side {
+    padding-left: 0 !important;
+  }
 }
 
 @media only screen and (max-width: 350px) {

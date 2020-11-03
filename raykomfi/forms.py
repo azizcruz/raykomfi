@@ -64,7 +64,7 @@ class SignupForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(SignupForm, self).__init__(*args, **kwargs)
 
-        for fieldname in ['username', 'first_name', 'last_name', 'country', 'bio', 'email', 'password1', 'password2', 'image']:
+        for fieldname in ['username', 'first_name', 'last_name', 'country', 'bio', 'email', 'password1', 'password2']:
             if fieldname == 'username':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'اسم المستخدم'
@@ -98,9 +98,6 @@ class SignupForm(UserCreationForm):
             if fieldname == 'password2':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'تأكيد كلمة المرور'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
-            if fieldname == 'image':
-                self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
 
 @parsleyfy
