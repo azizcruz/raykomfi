@@ -15,6 +15,7 @@ urlpatterns = [
     path('comment/add', views.CommentsView.as_view()),
     path('comment/edit', views.CommentsView.as_view()),
     path('reply/add', views.RepliesView.as_view()),
+    path('reply/edit', views.RepliesView.as_view()),
     path('messages/get', views.GetMessageView.as_view()),
     path('comment/vote', views.LikeDislikeView.as_view()),
     path('posts/search', views.SearchPostsView.as_view()),

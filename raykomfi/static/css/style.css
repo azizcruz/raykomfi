@@ -713,7 +713,8 @@ select:focus {
   color: #2c3e50;
 }
 
-.closest-edit-comment-form {
+.closest-edit-comment-form,
+.closest-edit-reply-form {
   display: none;
   margin-top: 20px;
 }

@@ -42,6 +42,13 @@ class ReplyAddSerializer(serializers.ModelSerializer):
         model = Reply
         fields = ['content', 'comment_id']
 
+class ReplyEditSerializer(serializers.ModelSerializer):
+    reply_id = serializers.IntegerField()
+    comment_id = serializers.IntegerField()
+    class Meta:
+        model = Reply
+        fields = ['content', 'reply_id', 'comment_id']
+
 class GetMessageSerializer(serializers.ModelSerializer):
     message_id = serializers.IntegerField()
     class Meta:

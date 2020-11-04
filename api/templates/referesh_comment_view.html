@@ -32,8 +32,8 @@
     <button class="btn red raykomfi-report-btn comment-action-btn"
         onclick="document.getElementById('reportReply').style.display='block'">إبلاغ</button>
     {% if comment.user.id == user.id %}
-    <button class="btn raykomfi-main-background-color raykomfi-report-btn comment-action-btn edit-comment-btn"
-        data-comment-id="{{ comment.id }}" data-content="{{comment.content}}">تعديل </button>
+    <button class="btn green raykomfi-report-btn comment-action-btn edit-comment-btn" data-comment-id="{{ comment.id }}"
+        data-content="{{comment.content}}">تعديل </button>
     {% endif %}
     {% endif %}
     <!-- The Comment Report Modal -->
@@ -98,13 +98,20 @@
         <small><i class="fa fa-clock-o" aria-hidden="true"></i><span class="created-time">
                 {{reply.created | naturaltime}}</span>
         </small>
-        <div class="comment">{{ reply.content }}</div>
+        <div class="reply">{{ reply.content }}</div>
+        <form class="editReplyForm-{{reply.id}} closest-edit-reply-form" data-comment-id="{{comment.id}}"
+            data-reply-id="{{reply.id}}">
+            <input type="text" name="content" class="w3-input w3-border">
+            <button class="btn raykomfi-main-background-color raykomfi-report-btn" type="submit">تأكيد</button>
+            <a href="" class="btn red raykomfi-report-btn close-reply-edit-form" data-reply-id="{{reply.id}}">إلغاء</a>
+        </form>
         {% if user.is_authenticated %}
-        <button class="btn red raykomfi-report-btn"
+        <button class="btn red raykomfi-report-btn reply-action-btn"
             onclick="document.getElementById('reportReply').style.display='block'">إبلاغ</button>
-        {% if reply.user.id == user.id %}
-        <button class="btn raykomfi-main-background-color raykomfi-report-btn" id="edit-reply-btn"
-            data-reply-id="{{reply.id}}" data-reply-content="{{reply.content}}">تعديل </button>
+        {% if comment.user.id == user.id %}
+        <button class="btn green raykomfi-report-btn reply-action-btn edit-reply-btn" data-reply-id="{{ reply.id }}"
+            data-content="{{reply.content}}">تعديل
+        </button>
         {% endif %}
         {% endif %}
         <!-- The Reply Report Modal -->

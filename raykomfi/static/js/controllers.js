@@ -49,6 +49,46 @@ $(document).on("submit", "form.replyForm", function (e) {
   }
 });
 
+// Edit reply
+$(document).on("submit", "form.closest-edit-reply-form", function (e) {
+  e.preventDefault();
+  let content = e.target[0].value;
+  let { replyId, commentId } = e.target.dataset;
+  if (content) {
+    axios({
+      method: "PUT",
+      url: "/api/reply/edit",
+      headers: {
+        "X-CSRFTOKEN": Cookies.get("csrftoken"),
+        "Content-Type": "application/json",
+      },
+      data: { content: content, reply_id: replyId, comment_id: commentId },
+    })
+      .then((response) => {
+        let view_html = response.data.view;
+        let comment_wrapper = document.getElementById(
+          `comment-id-${commentId}`
+        );
+        comment_wrapper.innerHTML = view_html;
+        $("#lazyLoadLinkComments").hide();
+        e.target[0].value = "";
+        fixTime();
+        generateStars();
+      })
+      .catch((err) => {
+        if (
+          err.response.status === 403 &&
+          err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+        ) {
+          custom_alert(
+            "محاولات متكررة, يرجى المحاولة لاحقا",
+            "<i class='fa fa-warning'></i>"
+          );
+        }
+      });
+  }
+});
+
 // Add comment
 $(document).on("submit", "form.commentForm", function (e) {
   e.preventDefault();

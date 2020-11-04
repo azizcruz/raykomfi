@@ -405,3 +405,29 @@ $(document).on("click", ".close-comment-edit-form", (e) => {
   closestEditCommentForm.parent().find(".comment").show();
   closestEditCommentForm.parent().find(".comment-action-btn").show();
 });
+
+// Edit Reply
+$(document).on("click", ".edit-reply-btn", (e) => {
+  let replyContent = e.target.dataset.content;
+  let replyId = e.target.dataset.replyId;
+  let closestEditReplyForm = $(".edit-reply-btn")
+    .parent()
+    .find(".editReplyForm-" + replyId);
+  closestEditReplyForm[0][0].value = replyContent;
+  closestEditReplyForm.css("display", "block");
+  closestEditReplyForm.parent().find(".reply").hide();
+  closestEditReplyForm.parent().find(".reply-action-btn").hide();
+});
+
+$(document).on("click", ".close-reply-edit-form", (e) => {
+  e.preventDefault();
+  let replyId = e.target.dataset.replyId;
+  let closestEditReplyForm = $(".close-reply-edit-form")
+    .parent()
+    .parent()
+    .find(".editReplyForm-" + replyId);
+  closestEditReplyForm[0][0].value = "";
+  closestEditReplyForm.css("display", "none");
+  closestEditReplyForm.parent().find(".reply").show();
+  closestEditReplyForm.parent().find(".reply-action-btn").show();
+});

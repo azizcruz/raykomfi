@@ -229,8 +229,8 @@ class RepliesView(APIView):
     def post(self, request):
         serializer = serializers.ReplyAddSerializer(data=request.data)
         if serializer.is_valid():
-            try:
-                comment = Comment.objects.select_related('user', 'post').filter(id=serializer.data['comment_id']).first()
+            comment = Comment.objects.select_related('user', 'post').filter(id=serializer.data['comment_id']).first()
+            if comment:
                 reply = Reply.objects.create(content=serializer.data['content'], comment=comment, user=request.user)
                 comment.replies.add(reply)
                 comment.save()
@@ -243,8 +243,28 @@ class RepliesView(APIView):
                 }
                 notify.send(request.user, recipient=comment.user ,action_object=reply, description=reply.get_noti_url(), target=comment, verb='reply')
                 return JsonResponse(output_data)
-            except (Comment.DoesNotExist, Post.DoesNotExist):
-                return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)                
+        else:
+            return Response({'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+    @method_decorator(ratelimit(key='ip', rate='3/m', block=True))
+    def put(self, request):
+        serializer = serializers.ReplyEditSerializer(data=request.data)
+        if serializer.is_valid():
+            reply = Reply.objects.select_related('user', 'comment').filter(id=serializer.data['reply_id'])
+            if reply:
+                reply.update(content=serializer.data['content'])
+                comment = Comment.objects.prefetch_related('user', 'post',
+                'replies').filter(id__exact=serializer.data['comment_id']).first()
+                referesh_comment_view_html = loader.render_to_string('referesh_comment_view.html', {'comment': comment, 'user': request.user})
+                output_data = {
+                    'view': referesh_comment_view_html,
+                    'message': 'success'
+                }
+                return JsonResponse(output_data)
+            else:
+                return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)   
         else:
             return Response({'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
 
