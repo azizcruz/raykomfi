@@ -177,8 +177,8 @@ class CommentsView(APIView):
     def post(self, request):
         serializer = serializers.CommentAddSerializer(data=request.data)
         if serializer.is_valid():
-            try:
-                post = Post.objects.select_related('creator', 'category').filter(id__exact=serializer.data['post_id']).first()
+            post = Post.objects.select_related('creator', 'category').filter(id__exact=serializer.data['post_id']).first()
+            if post:
                 comment = Comment.objects.create(
                 content=serializer.data['content'], user=request.user, post=post)
                 comment = Comment.objects.select_related('user', 'post').filter(id=comment.id).first()
@@ -192,7 +192,29 @@ class CommentsView(APIView):
                 }
                 notify.send(request.user, recipient=post.creator , action_object=comment,  description=comment.get_noti_url(), target=comment, verb='comment')
                 return JsonResponse(output_data)
-            except (Comment.DoesNotExist, Post.DoesNotExist):
+            else:
+                return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+    @method_decorator(ratelimit(key='ip', rate='3/m', block=True))
+    def put(self, request):
+        serializer = serializers.CommentEditSerializer(data=request.data)
+        if serializer.is_valid():
+            comment = Comment.objects.select_related('user').filter(id__exact=serializer.data['comment_id'])
+            if comment:
+                comment.update(content=serializer.data['content'])
+                comment = Comment.objects.select_related('user', 'post').filter(id=comment[0].id).first()
+                referesh_comment_view_html = loader.render_to_string(
+                'referesh_comment_view.html',
+                {'comment': comment, 'user': request.user})
+
+                output_data = {
+                    'view': referesh_comment_view_html,
+                    'message': 'success'
+                }
+                return JsonResponse(output_data)
+            else:
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)

@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'css/cookiebar.min.css' %}">
 <link rel="stylesheet" href="{% static 'css/style.css'  %}">
 
 <body>
@@ -165,13 +166,31 @@
             {% block content %}{% endblock %}
         </div>
 
-        <!-- <footer class="w3-container w3-theme raykomfi-theme">
-            <p>جميع الحقوق محفوظة 2020</p>
-        </footer> -->
 
+        <div class="cookie-message">
+            <p class="center">
+                عندما يقوم شخص ما بزيارة موقعنا على الويب، نستخدم خدمة طرف ثالث لجمع معلومات قياسية
+                عن سجل الإنترنت وتفاصيل أنماط سلوك الزائر. نحن نفعل ذلك للسماح
+                لنا بتتبع عدد الزوار إلى أجزاء مختلفة من المواقع وفهم كيفية استخدام موقعنا على الانترنت. نحن لا نقوم بأي
+                محاولة لمعرفة هويات أو طبيعة أولئك الذين يزورون موقعنا. لن نشارك معلوماتك مع أي منظمات أخرى لأغراض
+                التسويق أو أبحاث السوق أو الأغراض التجارية، ولا نقوم بتمرير بياناتك إلى مواقع ويب أخرى.
+            </p>
+            <p class="center">
+                Wenn jemand unsere Website besucht, verwenden wir einen Drittanbieterdienst, um
+                standardmäßige Internetprotokollinformationen (wie IP-Adresse und Art des von ihnen verwendeten
+                Browsers) und Details zu den Verhaltensmustern der Besucher zu erfassen. Wir tun dies, um die Anzahl der
+                Besucher der verschiedenen Teile der Websites zu verfolgen und zu verstehen, wie unsere Website genutzt
+                wird. Wir unternehmen keinen Versuch, die Identität oder Die Art der Besucher unserer Websites
+                herauszufinden. Wir geben Ihre Daten nicht an andere Organisationen für Marketing-, Marktforschungs-
+                oder kommerzielle Zwecke weiter und geben Ihre Daten nicht an andere Websites weiter.
+            </p>
+            <div class="cookie-close-button center">أوافق / Ich stimme zu</div>
+            <div class="cookie-close-button center" id="i-dont-want-cookies">أرفض / Ich stimme nicht zu</div>
+        </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="{% static 'js/cookiebar.min.js' %}"></script>
     <script src="{% static 'js/jquery.animate.color.min.js' %}"></script>
     <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.7.0/parsley.min.js"></script>

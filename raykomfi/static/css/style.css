@@ -152,6 +152,18 @@ h4 {
   text-align: center !important;
 }
 
+.cookie-message {
+  padding: 10px;
+  bottom: 0;
+  top: auto;
+}
+.cookie-close-button {
+  background-color: #186bae;
+  color: #fff !important;
+  width: 200px;
+  margin: 10px auto;
+  cursor: pointer;
+}
 .raykomfi-post-url-box {
   padding: 10px;
   border: 1px solid #eee;
@@ -701,6 +713,11 @@ select:focus {
   color: #2c3e50;
 }
 
+.closest-edit-comment-form {
+  display: none;
+  margin-top: 20px;
+}
+/* Post View Style */
 /* Searchbar Style */
 #search-field-wrapper {
   display: none;

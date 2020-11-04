@@ -368,3 +368,40 @@ $("#copy-post-url").on("click", (e) => {
   /* Copy the text inside the text field */
   document.execCommand("copy");
 });
+
+// Cookie bar
+$(".cookie-message").cookieBar({
+  closeButton: ".cookie-close-button",
+  expiresDays: 30,
+});
+$("#i-dont-want-cookies").on("click", () => {
+  Cookies.set("cookiebar", "hide");
+  Cookies.set("useCookies", false, { expires: 30 });
+});
+
+// Edit comment
+$(document).on("click", ".edit-comment-btn", (e) => {
+  let commentContent = e.target.dataset.content;
+  let commentId = e.target.dataset.commentId;
+  let closestEditCommentForm = $(".edit-comment-btn")
+    .parent()
+    .find(".editCommentForm-" + commentId);
+  console.log(closestEditCommentForm);
+  closestEditCommentForm[0][0].value = commentContent;
+  closestEditCommentForm.css("display", "block");
+  closestEditCommentForm.parent().find(".comment").hide();
+  closestEditCommentForm.parent().find(".comment-action-btn").hide();
+});
+
+$(document).on("click", ".close-comment-edit-form", (e) => {
+  e.preventDefault();
+  let commentId = e.target.dataset.commentId;
+  let closestEditCommentForm = $(".close-comment-edit-form")
+    .parent()
+    .parent()
+    .find(".editCommentForm-" + commentId);
+  closestEditCommentForm[0][0].value = "";
+  closestEditCommentForm.css("display", "none");
+  closestEditCommentForm.parent().find(".comment").show();
+  closestEditCommentForm.parent().find(".comment-action-btn").show();
+});

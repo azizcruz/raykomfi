@@ -159,8 +159,23 @@
                                     class="created-time">{{comment.created | naturaltime}}</span>
                             </small>
                             <div class="comment">{{ comment.content }}</div>
-                            <button class="btn red raykomfi-report-btn"
-                                onclick="document.getElementById('reportComment').style.display='block'">إبلاغ</button>
+                            <form class="editCommentForm-{{comment.id}} closest-edit-comment-form"
+                                data-comment-id="{{comment.id}}">
+                                <input type="text" name="content" class="w3-input w3-border">
+                                <button class="btn raykomfi-main-background-color raykomfi-report-btn"
+                                    type="submit">تأكيد</button>
+                                <a href="" class="btn red raykomfi-report-btn close-comment-edit-form"
+                                    data-comment-id="{{comment.id}}">إلغاء</a>
+                            </form>
+                            {% if user.is_authenticated %}
+                            <button class="btn red raykomfi-report-btn comment-action-btn"
+                                onclick="document.getElementById('reportReply').style.display='block'">إبلاغ</button>
+                            {% if comment.user.id == user.id %}
+                            <button
+                                class="btn raykomfi-main-background-color raykomfi-report-btn comment-action-btn edit-comment-btn"
+                                data-comment-id="{{ comment.id }}" data-content="{{comment.content}}">تعديل </button>
+                            {% endif %}
+                            {% endif %}
                             <!-- The Comment Report Modal -->
                             <div id="reportComment" class="w3-modal">
                                 <div class="w3-modal-content w3-animate-top">
@@ -228,8 +243,15 @@
                                         {{reply.created | naturaltime}}</span>
                                 </small>
                                 <div class="comment">{{ reply.content }}</div>
+                                {% if user.is_authenticated %}
                                 <button class="btn red raykomfi-report-btn"
                                     onclick="document.getElementById('reportReply').style.display='block'">إبلاغ</button>
+                                {% if reply.user.id == user.id %}
+                                <button class="btn raykomfi-main-background-color raykomfi-report-btn"
+                                    id="edit-reply-btn" data-reply-id="{{reply.id}}"
+                                    data-reply-content="{{reply.content}}">تعديل </button>
+                                {% endif %}
+                                {% endif %}
                                 <!-- The Reply Report Modal -->
                                 <div id="reportReply" class="w3-modal">
                                     <div class="w3-modal-content w3-animate-top">
