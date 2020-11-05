@@ -92,7 +92,7 @@ class LazyCommentsView(APIView):
                 comments = Comment.objects.prefetch_related('user' ,'replies').filter(user__id=user_id)
             else:
                 comments = Comment.objects.prefetch_related('user' ,'replies').filter(post__id=serializer.data['post_id'])
-            results_per_page = 10
+            results_per_page = 5
             paginator = Paginator(comments, results_per_page)
             try:
                 comments = paginator.page(page)
@@ -423,7 +423,6 @@ class UploadImageView(APIView):
                 gdir = f'post_image/{image.name}'
                 blob = bucket.blob(gdir)
                 blob.upload_from_string(image.read(), content_type=image.content_type)
-                set_trace()
                 return blob.public_url
     
 

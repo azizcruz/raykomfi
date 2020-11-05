@@ -108,7 +108,7 @@
         {% if user.is_authenticated %}
         <button class="btn red raykomfi-report-btn reply-action-btn"
             onclick="document.getElementById('reportReply').style.display='block'">إبلاغ</button>
-        {% if comment.user.id == user.id %}
+        {% if reply.user.id == user.id %}
         <button class="btn green raykomfi-report-btn reply-action-btn edit-reply-btn" data-reply-id="{{ reply.id }}"
             data-content="{{reply.content}}">تعديل
         </button>

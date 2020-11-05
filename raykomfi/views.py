@@ -197,15 +197,21 @@ def delete_user(request, id):
         return render(request, 'sections/are_you_sure.html')
 
 def post_view(request, id, slug):
-    subquery = Subquery(Comment.objects.filter(post__id=OuterRef('post__id')).values_list('id', flat=True)[:5])
+    comments_count = 0
+    if request.get_raw_uri().find('all_comments') < 0:
+        comments_count =  Post.objects.select_related('creator', 'category').filter(id__exact=id).first().comments.count()
+        subquery = Subquery(Comment.objects.filter(post__id=OuterRef('post__id')).values_list('id', flat=True)[:5])
+    else:
+        subquery = Subquery(Comment.objects.filter(post__id=OuterRef('post__id')).values_list('id', flat=True))
+
+    
     post = Post.objects.select_related('creator', 'category').filter(Q(id__exact=id) & Q(
-        slug__exact=slug)).prefetch_related('creator', Prefetch('comments', queryset=Comment.objects.filter(id__in=subquery).prefetch_related('user', 'replies__user', 'post', 'post__creator', 'voted_like', 'voted_dislike'))).first()
+            slug__exact=slug)).prefetch_related('creator', Prefetch('comments', queryset=Comment.objects.filter(id__in=subquery).prefetch_related('user', 'replies__user', 'post', 'post__creator', 'voted_like', 'voted_dislike'))).first()
     rand_ids = Post.objects.select_related('creator', 'category').filter(category=post.category).values_list('id', flat=True)
     if len(rand_ids) > 7:
         rand_ids = list(rand_ids)
         rand_ids = sample(rand_ids, 7)
         related_posts = Post.objects.select_related('creator', 'category').filter(id__in=rand_ids)
-
     comment_form = CommentForm()
     reply_form = ReplyForm()
     if request.GET.get('read'):
@@ -214,7 +220,7 @@ def post_view(request, id, slug):
         if notis: 
             notis.first().delete()
 
-    context = {'post': post, 'comment_form': comment_form, 'reply_form': reply_form, 'related_posts': related_posts, 'comments_count': post.comments.count()}
+    context = {'post': post, 'comment_form': comment_form, 'reply_form': reply_form, 'related_posts': related_posts, 'comments_count': comments_count}
 
      # hitcount logic
     hit_count = get_hitcount_model().objects.get_for_object(post)
@@ -238,7 +244,7 @@ def my_posts_view(request, user_id):
 
 @ login_required
 def my_comments_view(request, user_id):
-    comments = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id)[:5]
+    comments = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id).order_by('-created')[:5]
     count = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id).count()
     return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count})
 

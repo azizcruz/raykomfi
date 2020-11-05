@@ -253,7 +253,7 @@
                                 {% if user.is_authenticated %}
                                 <button class="btn red raykomfi-report-btn reply-action-btn"
                                     onclick="document.getElementById('reportReply').style.display='block'">إبلاغ</button>
-                                {% if comment.user.id == user.id %}
+                                {% if reply.user.id == user.id %}
                                 <button class="btn green raykomfi-report-btn reply-action-btn edit-reply-btn"
                                     data-reply-id="{{ reply.id }}" data-content="{{reply.content}}">تعديل
                                 </button>
@@ -343,7 +343,7 @@
             </div>
         </div>
 
-        {% if comments_count > 10 %}
+        {% if comments_count > 5 %}
         <div class="sk-chase" id="sk-chase">
             <div class="sk-chase-dot"></div>
             <div class="sk-chase-dot"></div>
@@ -353,7 +353,8 @@
             <div class="sk-chase-dot"></div>
         </div>
         <div class="lazy-load-linkwrapper w3-center">
-            <a id="lazyLoadLinkComments" class="w3-padding" href="javascript:void(0);" data-page="2">عرض
+            <a id="lazyLoadLinkComments" class="w3-padding raykomfi-main-background-color" href="javascript:void(0);"
+                data-page="2">عرض
                 المزيد</a>
         </div>
         {% endif %}

@@ -70,7 +70,6 @@ $(document).on("submit", "form.closest-edit-reply-form", function (e) {
           `comment-id-${commentId}`
         );
         comment_wrapper.innerHTML = view_html;
-        $("#lazyLoadLinkComments").hide();
         e.target[0].value = "";
         fixTime();
         generateStars();
@@ -148,7 +147,7 @@ $(document).on("submit", "form.closest-edit-comment-form", function (e) {
           `comment-id-${commentId}`
         );
         comment_wrapper.innerHTML = view_html;
-        $("#lazyLoadLinkComments").hide();
+        // $("#lazyLoadLinkComments").hide();
         e.target[0].value = "";
         fixTime();
         generateStars();

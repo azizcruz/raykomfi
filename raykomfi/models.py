@@ -145,6 +145,9 @@ class Comment(models.Model):
     def get_absolute_url(self):
         return reverse('raykomfi:post-view', args=[self.post.id, self.post.slug]) + f'#comment-id-{self.id}'
 
+    def get_absolute_url_for_my_comments(self):
+        return reverse('raykomfi:post-view', args=[self.post.id, self.post.slug]) + f'?all_comments=true' + f'#comment-id-{self.id}'
+
     def get_noti_url(self):
         return reverse('raykomfi:post-view', args=[self.post.id, self.post.slug]) + f'?read={self.id}' + f'#comment-id-{self.id}'
 
