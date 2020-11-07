@@ -421,10 +421,15 @@ class ReplyForm(forms.ModelForm):
                 self.fields[fieldname].label = ''
                 self.fields[fieldname].required = True
 
-@parsleyfy
 class MessageForm(forms.ModelForm):
 
     class Meta:
+        parsley_extras = {
+                'content': {
+                    'maxlength': 255,
+                    'maxlength-message': "لقد تعديت الحد المسموح",
+                },
+            }  
         model = Message
         fields = ('title', 'content')
 
@@ -441,8 +446,7 @@ class MessageForm(forms.ModelForm):
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].widget.attrs['id'] = 'new-message-content'
-                self.fields[fieldname].help_text = 'مسموح 300 حرف فقط'
-                self.fields[fieldname].required = True
+                self.fields[fieldname].help_text = 'مسموح 255 حرف فقط'
 
 @parsleyfy
 class RestorePasswordForm(forms.Form):

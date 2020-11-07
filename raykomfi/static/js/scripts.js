@@ -467,7 +467,9 @@ $(document).on("click", ".close-reply-edit-form", (e) => {
 });
 
 // Init tiny mce
+
 tinymce.init({
+  max_chars: 300,
   selector: "#new-message-content",
   language: "ar",
   directionality: "rtl",

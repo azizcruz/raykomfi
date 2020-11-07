@@ -14,7 +14,7 @@ def send_email(html_email_template, mail_subject, to_email, from_email, token):
     msg.send()
 
 # @background(schedule=5)
-def send_notify(notify_model, sender_id, recipient_id , action_object_id,  description, target, verb):
+def send_notify(notify_model, sender_id, recipient_id , action_object_id, target, verb, description=None):
     sender = User.objects.filter(id=sender_id)
     receiver = User.objects.filter(id=recipient_id)
     action_object = ''

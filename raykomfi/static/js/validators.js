@@ -1,5 +1,5 @@
 $(
-  "#raykomfi-register-form, #profile-form, #signin-form, #forgot-password-form, #create-post-form, #change-password-form, #change-email-form"
+  "#raykomfi-register-form, #profile-form, #signin-form, #forgot-password-form, #create-post-form, #change-password-form, #change-email-form, #new-message-form"
 )
   .parsley()
   .on("field:validated", function (e) {});

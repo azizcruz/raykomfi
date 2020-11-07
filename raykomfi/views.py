@@ -36,7 +36,7 @@ from django.db.models import F
 import secrets
 from django.utils import timezone
 from background_task import background
-from .background_tasks import send_email
+from .background_tasks import send_email, send_notify
 
 
 
@@ -461,6 +461,7 @@ def new_message_view(request, code):
             request, f'تم إرسال الرسالة الى {receiver.username} بنجاح', extra_tags='pale-green w3-border')
             if receiver.id != request.user.id:
                 notify.send(request.user, recipient=receiver ,action_object=message, description=message.get_noti_url(), target=message, verb='message')
+                # send_notify(notify_model='message', sender_id=request.user.id, recipient_id=receiver.id, action_object_id=message.id, verb='message')
             return redirect(receiver.get_absolute_url())
         else:
             return render(request, 'sections/new_message.html', context={'form': form, 'receiver': receiver})
