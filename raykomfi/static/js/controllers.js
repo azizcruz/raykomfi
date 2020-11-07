@@ -226,7 +226,7 @@ $(document).on("submit", "form.getMessageForm", function (e) {
         message_view.html(view_html);
         let converter = new showdown.Converter();
         let message = document.getElementById("message-content-field");
-        message.innerHTML = converter.makeHtml(message.innerHTML);
+        message.innerHTML = message.innerHTML;
         fixTime();
       })
       .catch((err) => {

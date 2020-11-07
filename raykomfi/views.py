@@ -42,25 +42,25 @@ from django.utils import timezone
 from pdb import set_trace
 
 def index(request):
-    posts = Post.objects.all().prefetch_related('creator', 'category', 'comments')[:10]
+    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True)[:10]
     latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').all().order_by('-created')[:10]
     categories = Category.objects.all()
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories})
 
 def categorized_posts(request, category=False):
-    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category)[:10]
+    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True)[:10]
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'is_categorized': True, 'category': category})
 
 def most_discussed_posts(request):
-    posts = Post.objects.prefetch_related('creator', 'category', 'comments').annotate(count=Count('comments')).order_by('-count')
+    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(count=Count('comments')).order_by('-count')
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True})
 
 def most_searched_posts(request):
-    posts = Post.objects.prefetch_related('creator', 'category', 'comments').order_by("-hit_count_generic__hits")[:10]
+    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).order_by("-hit_count_generic__hits")[:10]
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True})

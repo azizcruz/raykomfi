@@ -16,10 +16,22 @@ html {
 }
 
 body {
-  font-family: "Almarai", sans-serif;
-  color: #484848;
+  font-family: "Almarai", sans-serif !important;
+  color: #484848 !important;
   background-color: #f2f2f2;
   box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+div {
+  font-family: "Almarai", sans-serif !important;
+  color: #484848 !important;
 }
 
 .hide-overflow {
@@ -84,18 +96,7 @@ noscript span {
   margin: 10px 0;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-span,
-div,
-p,
-small,
 .force-main-color {
-  font-family: "Almarai", sans-serif;
   color: #484848 !important;
 }
 p {
@@ -112,6 +113,7 @@ h2 {
 
 h3 {
   font-size: 1.45rem;
+  line-height: 40px;
 }
 
 h4 {
@@ -133,9 +135,13 @@ h4 {
 }
 
 .raykomfi-share-dropdown {
-  top: 10px;
-  right: 3.2rem;
-  max-width: 200px;
+  top: 0;
+  right: 3.5rem;
+  max-width: 300px;
+}
+
+.raykomfi-share-dropdown input {
+  padding: 8px;
 }
 
 .raykomfi-share-dropdown:after {
@@ -418,13 +424,13 @@ a {
   padding-right: 5px;
 }
 
-.errorlist li::after {
+/* .errorlist li::after {
   font-family: FontAwesome;
   font-weight: 500;
   content: "\f063";
   padding-right: 5px;
-  /* font-size: 12px; */
-}
+  /* font-size: 12px;
+} */
 
 textarea:focus,
 input:focus,
@@ -526,7 +532,7 @@ select:focus {
   left: -10px;
   bottom: 15px;
   border-top: 10px solid transparent;
-  border-right: 10px solid #fff;
+  border-right: 10px solid #f1f1f1;
   border-left: none;
   border-bottom: 10px solid transparent;
 }
@@ -718,6 +724,7 @@ select:focus {
   display: none;
   margin-top: 20px;
 }
+
 /* Post View Style */
 /* Searchbar Style */
 #search-field-wrapper {
@@ -958,10 +965,6 @@ input ~ .parsley-errors-list.filled {
   margin: 10px 0;
   border: 1px solid #000;
   transition: background-color 0.2s ease-in-out;
-}
-
-.message-button:hover {
-  background-color: #2196f3;
 }
 
 .message-button.opened {

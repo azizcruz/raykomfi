@@ -130,6 +130,11 @@
                 </div>
             </div>
         </div>
+        <div>
+            {% if post.creator.id == user.id  and post.isActive == False %}
+            تحت المراجعة
+            {% endif %}
+        </div>
         <div class=" w3-mobile w3-container reply-buttons">
             <hr>
             <h3>الآراء</h3>

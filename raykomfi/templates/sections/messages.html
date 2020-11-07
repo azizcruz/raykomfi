@@ -14,7 +14,9 @@
       </div>
       <hr />
       <div class="message-content" id="message-content-field">
-        <span>{{ fetched_message.content }}</span>
+        {% autoescape off %}
+        {{ fetched_message.content|safe }}
+        {% endautoescape %}
       </div>
       {% else %} <p class="center">لم تعرض أي رسالة</p> {% endif %}
     </div>

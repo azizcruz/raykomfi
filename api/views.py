@@ -43,11 +43,11 @@ class LazyPostsView(APIView):
         user_id = request.POST.get('user_id')
         posts = None
         if user_id != 'false':
-            posts = Post.objects.prefetch_related('creator', 'category').filter(creator__id=int(user_id))
+            posts = Post.objects.prefetch_related('creator', 'category').filter(creator__id=int(user_id), isActive=True)
         elif category != 'false':
-            posts = Post.objects.prefetch_related('creator', 'category').filter(category__name__exact=category)
+            posts = Post.objects.prefetch_related('creator', 'category').filter(category__name__exact=category, isActive=True)
         else:
-            posts = Post.objects.select_related('creator', 'category').all()
+            posts = Post.objects.select_related('creator', 'category').filter(isActive=True)
         # use Django's pagination
         # https://docs.djangoproject.com/en/dev/topics/pagination/
         results_per_page = 10

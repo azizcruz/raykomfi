@@ -1,6 +1,8 @@
 from django.db.models.signals import post_save
 from notifications.signals import notify
-from raykomfi.models import Reply, Comment, Message
+from raykomfi.models import Reply, Comment, Message, Post, User
+from django.dispatch import receiver
+
 
 def new_reply(sender, instance, created, **kwargs):
     notify.send(instance, verb='was saved')

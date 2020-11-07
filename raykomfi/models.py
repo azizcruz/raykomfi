@@ -5,7 +5,7 @@ from django_countries.fields import CountryField
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django import forms
-from sorl.thumbnail import ImageField
+from django_resized import ResizedImageField
 from cloudinary.models import CloudinaryField
 from uuid import uuid4, uuid1
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -18,6 +18,11 @@ from django_countries.fields import CountryField
 
 from hitcount.models import HitCountMixin, HitCount
 from django.contrib.contenttypes.fields import GenericRelation
+from tinymce.models import HTMLField
+from notifications.signals import notify
+
+
+
 
 
 def slugify(str):
@@ -87,10 +92,10 @@ class Post(models.Model, HitCountMixin):
         max_length=200, verbose_name='الموضوع', db_index=True)
     slug = models.CharField(
         max_length=200, db_index=True, null=True, blank=True)
-    image = ImageField(
+    image = ResizedImageField(
         upload_to='post_images', verbose_name='صورة', default=None, null=True, blank=True)
-    content = models.TextField(verbose_name='نبذة عن الموضوع', max_length=144, blank=True)
-    isActive = models.BooleanField(default=True)
+    content = models.TextField(verbose_name='نبذة عن الموضوع', max_length=144, blank=True, db_index=True)
+    isActive = models.BooleanField(default=False, db_index=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk', related_query_name='hit_count_generic_relation')
@@ -111,10 +116,16 @@ class Post(models.Model, HitCountMixin):
         return self.image.url
 
     def save(self, *args, **kwargs):
+        # When post gets accepted
+        prev_post_status = Post.objects.filter(pk=self.pk)
+        if len(prev_post_status) > 0:
+            if prev_post_status != self.isActive and self.isActive == True:
+                prev_post_status = prev_post_status.values('isActive').first()['isActive']
+                admin = User.objects.get(username='admin')
+                notify.send(admin, recipient=self.creator ,action_object=self, description=self.get_absolute_url(), target=self, verb='post_accepted')
         # Generate slug
         self.slug = slugify(self.title)
         super(Post, self).save(*args, **kwargs)
-
 
 class Comment(models.Model):
 
@@ -135,7 +146,7 @@ class Comment(models.Model):
         auto_now=True, verbose_name='وقت تحديث التعليق')
 
     class Meta:
-        ordering = ('created', )
+        ordering = ('-user__user_trust','created')
         verbose_name = "تعليق"
         verbose_name_plural = "تعليقات"
 
@@ -149,7 +160,8 @@ class Comment(models.Model):
         return reverse('raykomfi:post-view', args=[self.post.id, self.post.slug]) + f'?all_comments=true' + f'#comment-id-{self.id}'
 
     def get_noti_url(self):
-        return reverse('raykomfi:post-view', args=[self.post.id, self.post.slug]) + f'?read={self.id}' + f'#comment-id-{self.id}'
+        return reverse('raykomfi:post-view', args=[self.post.id, self.post.slug]) + f'?all_comments=true' + f'#comment-id-{self.id}'
+
 
 
 class Reply(models.Model):
@@ -177,7 +189,7 @@ class Reply(models.Model):
         return reverse('raykomfi:post-view', args=[self.comment.post.id, self.comment.post.slug]) + f'#to-{self.id}'
     
     def get_noti_url(self):
-        return reverse('raykomfi:post-view', args=[self.comment.post.id, self.comment.post.slug]) + f'?read={self.id}' + f'#to-{self.id}'
+        return reverse('raykomfi:post-view', args=[self.comment.post.id, self.comment.post.slug])+ f'?all_comments=true' + f'?read={self.id}' + f'#to-{self.id}'
 
 
 class Message(models.Model):
@@ -187,7 +199,7 @@ class Message(models.Model):
     receiver = models.ForeignKey(
         User, related_name='my_messages', verbose_name='المستقبل', on_delete=models.CASCADE)
     title = models.CharField(max_length=300, verbose_name='عنوان الرسالة', null=True, default=None)
-    content = models.TextField(verbose_name='محتوى الرسالة')
+    content = HTMLField(verbose_name='محتوى الرسالة', max_length=255)
     is_read = models.BooleanField(default=False, db_index=True)
     created = models.DateTimeField(
         auto_now_add=True, verbose_name='وقت اضافة الرسالة', db_index=True)

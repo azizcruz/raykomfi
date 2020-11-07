@@ -1,10 +1,11 @@
 function generateStars() {
   let opinionPower = $(".opinion-power");
+  let starsGenerated = "";
   if (opinionPower.length > 0) {
     for (let i = 0; i < opinionPower.length; i++) {
       let opinionPowerValue =
         parseFloat(opinionPower[i].innerHTML.replace(",", ".")) || false;
-      let starsGenerated = "";
+      starsGenerated = "";
       if (opinionPowerValue) {
         for (let i = 0; i < parseInt(opinionPowerValue); i++) {
           starsGenerated +=
@@ -15,9 +16,12 @@ function generateStars() {
           starsGenerated +=
             '<span><i class="fa fa-star-half-o" aria-hidden="true"></i></span>';
         }
-
-        opinionPower[i].innerHTML = starsGenerated;
+      } else {
+        starsGenerated =
+          '<span><i class="fa fa-star-o" aria-hidden="true"></i></span>';
       }
+
+      opinionPower[i].innerHTML = starsGenerated;
     }
   }
 }

@@ -8,7 +8,7 @@
             <i class="fa fa-user-circle-o large-font profile-icon" aria-hidden="true"></i>
             <h1 class="w3-xxxlarge">{{user.username}}</h1>
             <!-- <h4 class="w3-xlarge">رمز العضو <br> {{ user.uuid }}</h4> -->
-            <h4 class="w3-xlarge">قوة رأيي<br></h4>
+            <h4 class="w3-xlarge">قوة آرائي<br></h4>
             <div class="opinion-power">
                 {{user.user_trust}}
             </div>
@@ -74,7 +74,7 @@
         <div class="user-posts-wrapper">
             {% for post in profile.posts.all %}
             <a href="{{ post.get_absolute_url }}">
-                <div class="z-depth-1 blue white-text">
+                <div class="z-depth-1 raykomfi-main-background-color white-text">
                     {{post.title}}
                 </div>
             </a>

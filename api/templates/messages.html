@@ -11,8 +11,10 @@
                     href="{% url 'raykomfi:user-profile' id=fetched_message.user.id %}">{{ fetched_message.user }}</a></span>
         </div>
         <hr />
-        <div class="message-content">
-            <span id="message-content-field">{{ fetched_message.content }}</span>
+        <div class="message-content" id="message-content-field">
+            {% autoescape off %}
+            {{ fetched_message.content|safe }}
+            {% endautoescape %}
         </div>
         {% else %} لم تعرض أي رسالة {% endif %}
     </div>
