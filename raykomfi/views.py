@@ -35,6 +35,8 @@ from hitcount.views import HitCountMixin
 from django.db.models import F
 import secrets
 from django.utils import timezone
+from background_task import background
+from .background_tasks import send_email
 
 
 
@@ -158,8 +160,8 @@ def sign_up_view(request):
             mail_subject = 'تفعيل حسابك على رايكم في'
             to_email = form.cleaned_data.get('email')
             from_email = 'no-reply@raykomfi.com'
-            # Send data to email template and get email template.
-            html_email_template = get_template("user/acc_activate_email.html").render(
+            template="user/acc_activate_email.html"
+            html_email_template = get_template(template).render(
                 {
                     'site': SimpleLazyObject(lambda: get_current_site(request)),
                     'user': user,
@@ -167,10 +169,8 @@ def sign_up_view(request):
                     'token': token
                 }
             )
-            msg = EmailMultiAlternatives(
-                f"{mail_subject}", "nothing", from_email, [to_email])
-            msg.attach_alternative(html_email_template, "text/html")
-            msg.send()
+            # send email
+            send_email(html_email_template=html_email_template, mail_subject=mail_subject, to_email=to_email, from_email=from_email, token=token)
             messages.success(
                 request, 'تم انشاء الحساب, يرجى مراجعة بريدك الالكتروني, سوف تجد رسالة فيها رابط التفعيل لتفعيل حسابك', extra_tags='pale-green w3-border')
 
@@ -366,10 +366,8 @@ def forgot_password_view(request):
                     'token': token
                 }
             )
-            msg = EmailMultiAlternatives(
-                f"{mail_subject}", "nothing", from_email, [to_email])
-            msg.attach_alternative(html_email_template, "text/html")
-            msg.send()
+             # send email
+            send_email(html_email_template=html_email_template, mail_subject=mail_subject, to_email=to_email, from_email=from_email, token=token)
             messages.success(
                 request, 'تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني', extra_tags='pale-green w3-border')
 
@@ -406,10 +404,8 @@ def change_email_view(request):
                     'new_email': to_email
                 }
             )
-            msg = EmailMultiAlternatives(
-                f"{mail_subject}", "nothing", from_email, [to_email])
-            msg.attach_alternative(html_email_template, "text/html")
-            msg.send()
+             # send email
+            send_email(html_email_template=html_email_template, mail_subject=mail_subject, to_email=to_email, from_email=from_email, token=token)
             messages.success(
                 request, 'تم إرسال رابط  تأكيد البريد الإلكتروني إلى بريدك الإلكتروني الجديد', extra_tags='pale-green w3-border')
 
@@ -596,10 +592,8 @@ def send_link(request):
                 'token': token
             }
         )
-        msg = EmailMultiAlternatives(
-            f"{mail_subject}", "nothing", from_email, [to_email])
-        msg.attach_alternative(html_email_template, "text/html")
-        msg.send()
+         # send email
+        send_email(html_email_template=html_email_template, mail_subject=mail_subject, to_email=to_email, from_email=from_email, token=token)
         messages.success(
             request, 'تم إرسال رابط التفعيل الى بريدك الإلكتروني', extra_tags='pale-green w3-border')
         return HttpResponseRedirect(reverse('raykomfi:user-signin'))

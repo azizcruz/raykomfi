@@ -7,6 +7,7 @@
 <div>{{comment.votes}}</div>
 <div>
     <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}} data-vote-type="dislike">
+        {% csrf_token %}
         <button type="submit" {% if user in comment.voted_dislike.all %} disabled {% endif %} class="dislike-button"><i
                 class="fa fa-thumbs-down" aria-hidden="true"></i></button>
     </form>

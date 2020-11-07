@@ -25,6 +25,7 @@
           <div class="bounce3"></div>
         </div>
         <form class="postsSearchForm">
+          {% csrf_token %}
           <input class="w3-input search-input" type="text" placeholder="بحث عن إستفسار ..." name="q">
         </form>
       </div>

@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'parsley',
     'admin_auto_filters',
     'django_filters',
+    'background_task',
     'django_extensions',
     "compressor",
     'notifications',
@@ -237,7 +238,7 @@ CORS_ALLOWED_ORIGINS = [
 
 
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-GS_BUCKET_NAME = 'raykomfi'
+GS_BUCKET_NAME = 'raykomfi-assets'
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
     f'{BASE_DIR}/src/creds/googleStorage.json'
 )

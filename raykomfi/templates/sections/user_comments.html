@@ -29,6 +29,7 @@
                     <div class="bounce3"></div>
                 </div>
                 <form class="commentsSearchForm">
+                    {% csrf_token %}
                     <input class="w3-input search-input" type="text" placeholder="بحث عن رأي ..." name="q">
                 </form>
             </div>

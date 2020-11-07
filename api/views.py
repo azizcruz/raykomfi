@@ -24,6 +24,9 @@ import datetime
 from django.utils import timezone
 from django.core.cache import cache
 from notifications.signals import notify
+from django.middleware.csrf import get_token
+from raykomfi.background_tasks import send_notify
+
 
 
 
@@ -182,15 +185,18 @@ class CommentsView(APIView):
                 comment = Comment.objects.create(
                 content=serializer.data['content'], user=request.user, post=post)
                 comment = Comment.objects.select_related('user', 'post').filter(id=comment.id).first()
+                csrf_token = get_token(request)
+                csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
                 referesh_post_view_html = loader.render_to_string(
                 'referesh_post_view.html',
-                {'post': comment.post, 'user': request.user})
+                {'post': comment.post, 'user': request.user, 'csrf_token': csrf_token})
 
                 output_data = {
                     'view': referesh_post_view_html,
                     'message': 'success'
                 }
                 notify.send(request.user, recipient=post.creator , action_object=comment,  description=comment.get_noti_url(), target=comment, verb='comment')
+                # send_notify(notify_model='comment', sender_id=request.user.id, action_object_id=comment.id, recipient_id=post.creator.id, verb='comment')
                 return JsonResponse(output_data)
             else:
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -205,9 +211,11 @@ class CommentsView(APIView):
             if comment:
                 comment.update(content=serializer.data['content'])
                 comment = Comment.objects.select_related('user', 'post').filter(id=comment[0].id).first()
+                csrf_token = get_token(request)
+                csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
                 referesh_comment_view_html = loader.render_to_string(
                 'referesh_comment_view.html',
-                {'comment': comment, 'user': request.user})
+                {'comment': comment, 'user': request.user, 'csrf_token': csrf_token})
 
                 output_data = {
                     'view': referesh_comment_view_html,
@@ -236,12 +244,15 @@ class RepliesView(APIView):
                 comment.save()
                 comment = Comment.objects.prefetch_related('user', 'post',
                 'replies').filter(id__exact=serializer.data['comment_id']).first()
-                referesh_comment_view_html = loader.render_to_string('referesh_comment_view.html', {'comment': comment, 'user': request.user})
+                csrf_token = get_token(request)
+                csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
+                referesh_comment_view_html = loader.render_to_string('referesh_comment_view.html', {'comment': comment, 'user': request.user, 'csrf_token': csrf_token})
                 output_data = {
                     'view': referesh_comment_view_html,
                     'message': 'success'
                 }
                 notify.send(request.user, recipient=comment.user ,action_object=reply, description=reply.get_noti_url(), target=comment, verb='reply')
+                # send_notify(notify_model='reply', sender_id=request.user.id, action_object_id=reply.id, recipient_id=comment.user.id, verb='reply')
                 return JsonResponse(output_data)
             else:
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)                
@@ -257,7 +268,9 @@ class RepliesView(APIView):
                 reply.update(content=serializer.data['content'])
                 comment = Comment.objects.prefetch_related('user', 'post',
                 'replies').filter(id__exact=serializer.data['comment_id']).first()
-                referesh_comment_view_html = loader.render_to_string('referesh_comment_view.html', {'comment': comment, 'user': request.user})
+                csrf_token = get_token(request)
+                csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
+                referesh_comment_view_html = loader.render_to_string('referesh_comment_view.html', {'comment': comment, 'user': request.user, 'csrf_token': csrf_token})
                 output_data = {
                     'view': referesh_comment_view_html,
                     'message': 'success'
@@ -299,7 +312,9 @@ class LikeDislikeView(APIView):
                 comment.votes = comment.voted_like.all().count() - comment.voted_dislike.all().count()
                 comment.save()
                 comment = Comment.objects.prefetch_related('voted_like', 'voted_dislike').get(id=serializer.data['comment_id'])
-                referesh_votes_view_html = loader.render_to_string('referesh_votes_view.html', {'comment': comment, 'user': request.user})
+                csrf_token = get_token(request)
+                csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
+                referesh_votes_view_html = loader.render_to_string('referesh_votes_view.html', {'comment': comment, 'user': request.user, 'csrf_token': csrf_token})
                 output_data = {
                     'view': referesh_votes_view_html,
                     'message': 'success'
@@ -326,7 +341,9 @@ class GetMessageView(APIView):
                 fetched_message.is_read = True
                 fetched_message.save()
                 messages = Message.objects.select_related('user', 'receiver').filter(receiver__exact=request.user.id)
-                referesh_message_view_html = loader.render_to_string('messages.html', {'fetched_message': fetched_message, 'user': request.user, 'user_messages': messages})
+                csrf_token = get_token(request)
+                csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
+                referesh_message_view_html = loader.render_to_string('messages.html', {'fetched_message': fetched_message, 'user': request.user, 'user_messages': messages, 'csrf_token': csrf_token})
                 output_data = {
                     'view': referesh_message_view_html,
                     'message': 'success'
@@ -352,7 +369,9 @@ class SearchPostsView(APIView):
             if q == '':
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
             posts = Post.objects.prefetch_related('creator', 'comments', 'category').filter(Q(title__icontains=q) | Q(content__icontains=q)).annotate(counted_comments=Sum('comments')).order_by('-counted_comments')
-            referesh_posts_view_html = loader.render_to_string('posts.html', {'posts': posts, 'user': request.user, 'search_request': True})
+            csrf_token = get_token(request)
+            csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
+            referesh_posts_view_html = loader.render_to_string('posts.html', {'posts': posts, 'user': request.user, 'search_request': True, 'csrf_token': csrf_token})
             output_data = {
                 'view': referesh_posts_view_html,
                 'message': 'success'
@@ -378,7 +397,9 @@ class SearchCommentsView(APIView):
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
 
             comments = Comment.objects.prefetch_related('user', 'replies').filter(Q(content__icontains=q)).annotate(counted_replies=Sum('replies')).order_by('-counted_replies')
-            referesh_user_comments_view_html = loader.render_to_string('user_comments.html', {'comments': comments, 'user': request.user, 'search_request': True})
+            csrf_token = get_token(request)
+            csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
+            referesh_user_comments_view_html = loader.render_to_string('user_comments.html', {'comments': comments, 'user': request.user, 'search_request': True, 'csrf_token': csrf_token})
             output_data = {
                 'view': referesh_user_comments_view_html,
                 'message': 'success'
@@ -428,7 +449,7 @@ class UploadImageView(APIView):
 
 class ReportView(APIView):
     '''
-    Search Comments
+    Report View
     '''
     permission_classes = [permissions.IsAuthenticated]
 
@@ -439,4 +460,5 @@ class ReportView(APIView):
             admin = User.objects.get(username="admin")
             report = Report.objects.create(user=request.user, content=serializer.validated_data['content'], topic=serializer.validated_data['topic'], reported_url=serializer.validated_data['reported_url'])
             notify.send(request.user, recipient=admin ,action_object=report, description=serializer.validated_data['reported_url'], target=report, verb='report')
+            # send_notify(notify_model='report', sender_id=request.user.id, recipient_id=admin.id, action_object_id=report.id, description=serializer.validated_data['reported_url'], verb='report')
             return JsonResponse({'message': 'تم الإبلاغ'})

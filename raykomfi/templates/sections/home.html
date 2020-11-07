@@ -72,10 +72,12 @@
                     <div class="bounce3"></div>
                 </div>
                 <form class="postsSearchForm">
+                    {% csrf_token %}
                     <input class="w3-input search-input" type="text" placeholder="بحث عن إستفسار ..." name="q">
                 </form>
             </div>
         </div>
+        {% if user.is_authenticated %}
         <div id="user-of-the-month">
             <ul class="collapsible">
                 <li>
@@ -106,6 +108,7 @@
                 </li>
             </ul>
         </div>
+        {% endif %}
         {% if not user.is_authenticated %}
         <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
             <p class="w3-center"><a href="{% url 'raykomfi:user-register' %}" class="w3-text-blue">سجل حساب جديد</a> أو

@@ -12,7 +12,7 @@ function custom_alert(message, icon) {
 // Add reply
 $(document).on("submit", "form.replyForm", function (e) {
   e.preventDefault();
-  let content = e.target[0].value;
+  let content = e.target[1].value;
   let { commentId } = e.target.dataset;
   if (content) {
     axios({
@@ -52,7 +52,7 @@ $(document).on("submit", "form.replyForm", function (e) {
 // Edit reply
 $(document).on("submit", "form.closest-edit-reply-form", function (e) {
   e.preventDefault();
-  let content = e.target[0].value;
+  let content = e.target[1].value;
   let { replyId, commentId } = e.target.dataset;
   if (content) {
     axios({
@@ -70,7 +70,7 @@ $(document).on("submit", "form.closest-edit-reply-form", function (e) {
           `comment-id-${commentId}`
         );
         comment_wrapper.innerHTML = view_html;
-        e.target[0].value = "";
+        e.target[1].value = "";
         fixTime();
         generateStars();
       })
@@ -91,7 +91,7 @@ $(document).on("submit", "form.closest-edit-reply-form", function (e) {
 // Add comment
 $(document).on("submit", "form.commentForm", function (e) {
   e.preventDefault();
-  let content = e.target[0].value;
+  let content = e.target[1].value;
   let { postId } = e.target.dataset;
   if (content) {
     axios({
@@ -108,7 +108,7 @@ $(document).on("submit", "form.commentForm", function (e) {
         let post_wrapper = document.getElementById("posts-wrapper");
         post_wrapper.innerHTML = view_html;
         $("#lazyLoadLinkComments").hide();
-        e.target[0].value = "";
+        e.target[1].value = "";
         fixTime();
         generateStars();
       })
@@ -129,7 +129,7 @@ $(document).on("submit", "form.commentForm", function (e) {
 // Edit comment
 $(document).on("submit", "form.closest-edit-comment-form", function (e) {
   e.preventDefault();
-  let content = e.target[0].value;
+  let content = e.target[1].value;
   let { commentId } = e.target.dataset;
   if (content) {
     axios({
@@ -148,7 +148,7 @@ $(document).on("submit", "form.closest-edit-comment-form", function (e) {
         );
         comment_wrapper.innerHTML = view_html;
         // $("#lazyLoadLinkComments").hide();
-        e.target[0].value = "";
+        e.target[1].value = "";
         fixTime();
         generateStars();
       })

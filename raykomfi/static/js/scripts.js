@@ -175,27 +175,49 @@ function fill_notification_list_override(data) {
       var messages = data.unread_list
         .map(function (item) {
           if (item.verb === "comment") {
-            var message = `<a href='${item.description}'>لديك تعليق جديد على إستفسارك ${item.target} من ${item.actor}<div>${item.timestamp}</div></a>`;
+            var message = `<a href='${
+              item.description
+            }'>لديك تعليق جديد على إستفسارك ${item.target} من ${
+              item.actor
+            }<div>${moment(item.timestamp).fromNow()}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
           }
 
           if (item.verb === "reply") {
-            var message = `<a href='${item.description}'>لديك رد جديد على تعليقك من ${item.actor}<div>${item.timestamp}</div></a>`;
+            var message = `<a href='${
+              item.description
+            }'>لديك رد جديد على تعليقك من ${item.actor}<div>${moment(
+              item.timestamp
+            )
+              .locale("ar-dz")
+              .fromNow()}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
           }
 
           if (item.verb === "message") {
-            var message = `<a href='${item.description}'>لديك رسالة جديدة من ${item.actor}<div>${item.timestamp}</div></a>`;
+            var message = `<a href='${item.description}'>لديك رسالة جديدة من ${
+              item.actor
+            }<div>${moment(item.timestamp)
+              .locale("ar-dz")
+              .fromNow()}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
           }
 
           if (item.verb === "report") {
-            var message = `<a href='${item.description}'>لديك بلاغ جديد<div>${item.timestamp}</div></a>`;
+            var message = `<a href='${
+              item.description
+            }'>لديك بلاغ جديد<div>${moment(item.timestamp)
+              .locale("ar-dz")
+              .fromNow()}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
           }
 
           if (item.verb === "post_accepted") {
-            var message = `<a href='${item.description}'>تم قبول إستفسارك ${item.target}<div>${item.timestamp}</div></a>`;
+            var message = `<a href='${item.description}'>تم قبول إستفسارك ${
+              item.target
+            }<div>${moment(item.timestamp)
+              .locale("ar-dz")
+              .fromNow()}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
           }
         })
@@ -316,7 +338,6 @@ if (bestUserWrapper) {
       bestUserWrapper.hide();
     });
 }
-
 document.addEventListener("DOMContentLoaded", function () {
   var elems = document.querySelectorAll(".collapsible");
   var options = {};
@@ -400,8 +421,7 @@ $(document).on("click", ".edit-comment-btn", (e) => {
   let closestEditCommentForm = $(".edit-comment-btn")
     .parent()
     .find(".editCommentForm-" + commentId);
-  console.log(closestEditCommentForm);
-  closestEditCommentForm[0][0].value = commentContent;
+  closestEditCommentForm[0][1].value = commentContent;
   closestEditCommentForm.css("display", "block");
   closestEditCommentForm.parent().find(".comment").hide();
   closestEditCommentForm.parent().find(".comment-action-btn").hide();
@@ -414,7 +434,7 @@ $(document).on("click", ".close-comment-edit-form", (e) => {
     .parent()
     .parent()
     .find(".editCommentForm-" + commentId);
-  closestEditCommentForm[0][0].value = "";
+  closestEditCommentForm[0][1].value = "";
   closestEditCommentForm.css("display", "none");
   closestEditCommentForm.parent().find(".comment").show();
   closestEditCommentForm.parent().find(".comment-action-btn").show();
@@ -427,7 +447,7 @@ $(document).on("click", ".edit-reply-btn", (e) => {
   let closestEditReplyForm = $(".edit-reply-btn")
     .parent()
     .find(".editReplyForm-" + replyId);
-  closestEditReplyForm[0][0].value = replyContent;
+  closestEditReplyForm[0][1].value = replyContent;
   closestEditReplyForm.css("display", "block");
   closestEditReplyForm.parent().find(".reply").hide();
   closestEditReplyForm.parent().find(".reply-action-btn").hide();
@@ -440,7 +460,7 @@ $(document).on("click", ".close-reply-edit-form", (e) => {
     .parent()
     .parent()
     .find(".editReplyForm-" + replyId);
-  closestEditReplyForm[0][0].value = "";
+  closestEditReplyForm[0][1].value = "";
   closestEditReplyForm.css("display", "none");
   closestEditReplyForm.parent().find(".reply").show();
   closestEditReplyForm.parent().find(".reply-action-btn").show();

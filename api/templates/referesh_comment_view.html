@@ -23,6 +23,7 @@
     </small>
     <div class="comment">{{ comment.content }}</div>
     <form class="editCommentForm-{{comment.id}} closest-edit-comment-form" data-comment-id="{{comment.id}}">
+        {% csrf_token %}
         <input type="text" name="content" class="w3-input w3-border">
         <button class="btn raykomfi-main-background-color raykomfi-report-btn" type="submit">تأكيد</button>
         <a href="" class="btn red raykomfi-report-btn close-comment-edit-form"
@@ -45,6 +46,7 @@
                         <div class="card-content white-text">
                             <h6>حدد نوع الإبلاغ</h6>
                             <form class="reportForm">
+                                {% csrf_token %}
                                 <input class="w3-radio" type="radio" name="content" value="إساءة شخصية">
                                 <label class="black-text">إساءة
                                     شخصية</label>
@@ -101,6 +103,7 @@
         <div class="reply">{{ reply.content }}</div>
         <form class="editReplyForm-{{reply.id}} closest-edit-reply-form" data-comment-id="{{comment.id}}"
             data-reply-id="{{reply.id}}">
+            {% csrf_token %}
             <input type="text" name="content" class="w3-input w3-border">
             <button class="btn raykomfi-main-background-color raykomfi-report-btn" type="submit">تأكيد</button>
             <a href="" class="btn red raykomfi-report-btn close-reply-edit-form" data-reply-id="{{reply.id}}">إلغاء</a>
@@ -123,6 +126,7 @@
                             <div class="card-content white-text">
                                 <h6>حدد نوع الإبلاغ</h6>
                                 <form class="reportForm">
+                                    {% csrf_token %}
                                     <input class="w3-radio" type="radio" name="content" value="إساءة شخصية">
                                     <label class="black-text">إساءة
                                         شخصية</label>
@@ -161,6 +165,7 @@
 {% if user.email_active %}
 <div class="reply">
     <form class="replyForm" data-comment-id="{{comment.id}}">
+        {% csrf_token %}
         <textarea name="reply_content" cols="40" rows="1" class="w3-input w3-border   reply-textarea"
             id="id_reply_content-{{comment.id}}"></textarea>
         <div class="col s12">

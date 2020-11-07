@@ -88,6 +88,7 @@
                                     <div class="card-content white-text">
                                         <h6>حدد نوع الإبلاغ</h6>
                                         <form class="reportForm">
+                                            {% csrf_token %}
                                             <input class="w3-radio" type="radio" name="content" value="إساءة شخصية">
                                             <label class="black-text">إساءة شخصية</label>
                                             <br>
@@ -166,6 +167,7 @@
                             <div class="comment">{{ comment.content }}</div>
                             <form class="editCommentForm-{{comment.id}} closest-edit-comment-form"
                                 data-comment-id="{{comment.id}}">
+                                {% csrf_token %}
                                 <input type="text" name="content" class="w3-input w3-border">
                                 <button class="btn raykomfi-main-background-color raykomfi-report-btn"
                                     type="submit">تأكيد</button>
@@ -189,6 +191,7 @@
                                                 <div class="card-content white-text">
                                                     <h6>حدد نوع الإبلاغ</h6>
                                                     <form class="reportForm">
+                                                        {% csrf_token %}
                                                         <input class="w3-radio" type="radio" name="content"
                                                             value="إساءة شخصية">
                                                         <label class="black-text">إساءة
@@ -249,6 +252,7 @@
                                 <div class="reply">{{ reply.content }}</div>
                                 <form class="editReplyForm-{{reply.id}} closest-edit-reply-form"
                                     data-comment-id="{{comment.id}}" data-reply-id="{{reply.id}}">
+                                    {% csrf_token %}
                                     <input type="text" name="content" class="w3-input w3-border">
                                     <button class="btn raykomfi-main-background-color raykomfi-report-btn"
                                         type="submit">تأكيد</button>
@@ -273,6 +277,7 @@
                                                     <div class="card-content white-text">
                                                         <h6>حدد نوع الإبلاغ</h6>
                                                         <form class="reportForm">
+                                                            {% csrf_token %}
                                                             <input class="w3-radio" type="radio" name="content"
                                                                 value="إساءة شخصية">
                                                             <label class="black-text">إساءة
@@ -313,6 +318,7 @@
                         {% if user.email_active %}
                         <div class="reply">
                             <form class="replyForm" data-comment-id="{{comment.id}}">
+                                {% csrf_token %}
                                 <textarea name="reply_content" cols="40" rows="1"
                                     class="w3-input w3-border   reply-textarea"
                                     id="id_reply_content-{{comment.id}}"></textarea>
@@ -327,6 +333,7 @@
                         <div>
                             <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}}
                                 data-vote-type="like">
+                                {% csrf_token %}
                                 <button type="submit" {% if user in comment.voted_like.all %} disabled {% endif %}
                                     class="like-button"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
                             </form>
@@ -380,6 +387,7 @@
             {% if user.email_active %}
             <div id="comment">
                 <form class="commentForm" data-post-id="{{post.id}}">
+                    {% csrf_token %}
                     <textarea cols="40" rows="10" class="w3-input w3-border  "></textarea>
                     <div class="col s12">
                         <button class='w3-button raykomfi-button z-depth-1'>
