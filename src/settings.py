@@ -262,3 +262,7 @@ GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
 DJANGORESIZED_DEFAULT_SIZE = [900, 600]
 DJANGORESIZED_DEFAULT_QUALITY = 75
 DJANGORESIZED_DEFAULT_KEEP_META = True
+
+# Ratelimit
+
+RATELIMIT_VIEW='raykomfi.views.suspicious_limit'

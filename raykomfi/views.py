@@ -37,30 +37,38 @@ import secrets
 from django.utils import timezone
 from background_task import background
 from .background_tasks import send_email, send_notify
+from ratelimit.decorators import ratelimit
+from django.http import JsonResponse
+from rest_framework import status
+
 
 
 
 
 from pdb import set_trace
 
+@ratelimit(key='ip', rate='50/m', block=True)
 def index(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True)[:10]
     latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').all().order_by('-created')[:10]
     categories = Category.objects.all()
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'view_title': 'رايكم في'})
 
+@ratelimit(key='ip', rate='50/m', block=True)
 def categorized_posts(request, category=False):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True)[:10]
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'is_categorized': True, 'category': category, 'view_title': f'رايكم في | { category }'})
 
+@ratelimit(key='ip', rate='50/m', block=True)
 def most_discussed_posts(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(count=Count('comments')).order_by('-count')
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True, 'view_title': 'رايكم في | الأكثر مناقشة'})
 
+@ratelimit(key='ip', rate='50/m', block=True)
 def most_searched_posts(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).order_by("-hit_count_generic__hits")[:10]
     categories = Category.objects.all()
@@ -69,6 +77,7 @@ def most_searched_posts(request):
 
 
 @login_required
+@ratelimit(key='ip', rate='50/m', block=True)
 def profile_view(request, id):
     if request.method == 'POST':
         form = ProfileForm(request.POST or None,
@@ -94,7 +103,7 @@ def profile_view(request, id):
                                use_required_attribute=False)
             return render(request, 'user/profile.html', {'form': form, 'view_title': f'رايكم في | { request.user.username }'})
 
-
+@ratelimit(key='ip', rate='50/m', block=True)
 def sign_in_view(request):
     if request.method == 'POST':
         goto_next = request.POST.get('next')
@@ -136,14 +145,14 @@ def sign_in_view(request):
             return redirect('/')
         return render(request, 'user/signin.html', context=context)
 
-
+@ratelimit(key='ip', rate='50/m', block=True)
 def user_logout(request):
     logout(request)
     messages.success(
         request, 'تم تسجيل الخروج', extra_tags='pale-green w3-border')
     return HttpResponseRedirect('/user/signin/')
 
-
+@ratelimit(key='ip', rate='50/m', block=True)
 def sign_up_view(request):
     if request.method == 'POST':
         form = SignupForm(request.POST, use_required_attribute=False)
@@ -184,6 +193,7 @@ def sign_up_view(request):
         return render(request, 'user/register.html', context={'form': form})
 
 @login_required
+@ratelimit(key='ip', rate='50/m', block=True)
 def delete_user(request, id):
     user = User.objects.get(id=id)
     question = request.GET['question']
@@ -196,6 +206,7 @@ def delete_user(request, id):
     else:
         return render(request, 'sections/are_you_sure.html')
 
+@ratelimit(key='ip', rate='50/m', block=True)
 def post_view(request, id, slug):
     comments_count = 0
     if request.get_raw_uri().find('all_comments') < 0:
@@ -237,24 +248,28 @@ def post_view(request, id, slug):
 
 
 @ login_required
+@ratelimit(key='ip', rate='50/m', block=True)
 def my_posts_view(request, user_id):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(creator__id=user_id)[:5]
     count = Post.objects.prefetch_related('creator', 'category', 'comments').filter(creator__id=user_id).count()
     return render(request, 'sections/user_posts.html', context={'posts': posts, 'count_posts': count, 'view_title': f'رايكم في | إستفساراتي'})
 
 @ login_required
+@ratelimit(key='ip', rate='50/m', block=True)
 def my_comments_view(request, user_id):
     comments = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id).order_by('-created')[:5]
     count = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id).count()
     return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count, 'view_title': f'رايكم في | آرائي'})
 
 @ login_required
+@ratelimit(key='ip', rate='50/m', block=True)
 def my_comments_most_replied_view(request, user_id):
     comments = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id).annotate(replies_count=Count('replies')).order_by('-replies_count')
     count = 0
     return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count, 'view_title': f'رايكم في | آرائي الأكثر ردا'})
 
 @ login_required
+@ratelimit(key='ip', rate='50/m', block=True)
 def my_comments_most_voted_view(request, user_id):
     comments = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id).order_by('-votes')
     count = 0
@@ -264,6 +279,7 @@ def my_comments_most_voted_view(request, user_id):
 
 
 @ login_required
+@ratelimit(key='ip', rate='50/m', block=True)
 def post_edit(request, id, slug):
     instance = get_object_or_404(Post, id=id, slug=slug)
     if request.method == 'POST':
@@ -282,6 +298,7 @@ def post_edit(request, id, slug):
 
 
 @ login_required
+@ratelimit(key='ip', rate='50/m', block=True)
 def create_post(request):
     if request.method == 'POST':
         form = NewPostForm(request.POST or None, request.FILES or None,
@@ -298,6 +315,7 @@ def create_post(request):
         return render(request, 'sections/create_post.html', context={'form': form, 'view_title': f'رايكم في | إستفسار جديد'})
 
 @login_required
+@ratelimit(key='ip', rate='50/m', block=True)
 def change_password_view(request):
     if request.method == 'POST':
         form = CustomChangePasswordForm(
@@ -319,6 +337,7 @@ def change_password_view(request):
             'form': form, 'view_title': f'رايكم في | تغيير كلمة المرور'
         })
 
+@ratelimit(key='ip', rate='50/m', block=True)
 def restore_password_view(request):
     if request.method == 'POST':
         try:
@@ -343,6 +362,8 @@ def restore_password_view(request):
                 })
         else:
             return redirect('raykomfi:user-signin')
+
+@ratelimit(key='ip', rate='50/m', block=True)
 def forgot_password_view(request):
     if request.method == 'POST':
         form = CustomPasswordResetForm(request.POST ,use_required_attribute=False)
@@ -380,6 +401,7 @@ def forgot_password_view(request):
         return render(request, 'user/forgot_password.html', context={'form': form, 'view_title': f'رايكم في | نسيت كلمة المرور'})
 
 @login_required
+@ratelimit(key='ip', rate='50/m', block=True)
 def change_email_view(request):
     if request.method == 'POST':
         form = ChangeEmailForm(request.POST, request=request ,use_required_attribute=False)
@@ -418,6 +440,7 @@ def change_email_view(request):
         return render(request, 'user/change_email.html', context={'form': form, 'view_title': f'رايكم في | تغيير البريد الإلكتروني'})
 
 @login_required
+@ratelimit(key='ip', rate='50/m', block=True)
 def confirm_new_email(request, uid, token, new_email):
     try:
         user = User.objects.get(id=uid)
@@ -439,6 +462,7 @@ def confirm_new_email(request, uid, token, new_email):
         return redirect('raykomfi:user-signin')
 
 @ login_required
+@ratelimit(key='ip', rate='50/m', block=True)
 def messages_view(request, user_id, message_id=0):
     if request.method == 'POST':
         message = get_object_or_404(Message, id=message_id)
@@ -451,6 +475,7 @@ def messages_view(request, user_id, message_id=0):
         return render(request, 'sections/messages.html', {'user_messages': user_messages, 'view_title': f'رايكم في | الرسائل'})
         
 @ login_required
+@ratelimit(key='ip', rate='50/m', block=True)
 def new_message_view(request, code):
     receiver = get_object_or_404(User, uuid=code)
     if request.method == 'POST':
@@ -472,6 +497,7 @@ def new_message_view(request, code):
 
 
 @login_required
+@ratelimit(key='ip', rate='50/m', block=True)
 def add_comment(request, post_id):
     comment_form = CommentForm(request.POST or None)
     post = Post.objects.prefetch_related(
@@ -488,6 +514,7 @@ def add_comment(request, post_id):
 
 
 @login_required
+@ratelimit(key='ip', rate='50/m', block=True)
 def comment_vote(request, comment_id):
     comment = Comment.objects.prefetch_related('voted_like').prefetch_related('voted_dislike').prefetch_related('post').get(id=comment_id)
     vote_type = request.POST.get('vote')
@@ -513,6 +540,7 @@ def comment_vote(request, comment_id):
     return redirect(comment.post.get_absolute_url())
 
 @login_required
+@ratelimit(key='ip', rate='50/m', block=True)
 def add_reply(request, post_id, comment_id):
     reply_form = ReplyForm(request.POST or None)
     comment_form = CommentForm(request.POST or None)
@@ -549,6 +577,7 @@ def activate(request, uid, token):
     else:
         return render(request, 'user/activate_fail.html')
 
+@ratelimit(key='ip', rate='50/m', block=True)
 def restore_password(request, uid, token):
     try:
         user = User.objects.get(id=uid)
@@ -566,6 +595,7 @@ def restore_password(request, uid, token):
                 request, 'رابط غير صالح, أعد المحاولة', extra_tags='pale-red w3-border')
         return redirect('raykomfi:user-signin')
 
+@ratelimit(key='ip', rate='50/m', block=True)
 def send_link(request):
     if request.method == 'POST':
         token = secrets.token_hex(20)
@@ -602,3 +632,8 @@ def send_link(request):
 
     else:
         return render(request, 'user/activate_account.html')
+
+@ratelimit(key='ip', rate='50/m', block=True)
+def suspicious_limit(request , exception=None):
+    print('LimitedError:', 'with ip', request.META.get('X-Real-IP'))
+    return JsonResponse({'message': 'Sorry, you are blocked'}, status=status.HTTP_429_TOO_MANY_REQUESTS)
