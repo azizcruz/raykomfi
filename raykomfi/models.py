@@ -115,6 +115,9 @@ class Post(models.Model, HitCountMixin):
     def get_image_url(self):
         return self.image.url
 
+    def get_noti_url(self):
+        return reverse('raykomfi:post-view', args=[self.id, self.slug]) + f'?read={self.id}'
+
     def save(self, *args, **kwargs):
         # When post gets accepted
         prev_post_status = Post.objects.filter(pk=self.pk)
@@ -122,7 +125,7 @@ class Post(models.Model, HitCountMixin):
             if prev_post_status != self.isActive and self.isActive == True:
                 prev_post_status = prev_post_status.values('isActive').first()['isActive']
                 admin = User.objects.get(username='admin')
-                notify.send(admin, recipient=self.creator ,action_object=self, description=self.get_absolute_url(), target=self, verb='post_accepted')
+                notify.send(admin, recipient=self.creator ,action_object=self, description=self.get_noti_url(), target=self, verb='post_accepted')
         # Generate slug
         self.slug = slugify(self.title)
         super(Post, self).save(*args, **kwargs)

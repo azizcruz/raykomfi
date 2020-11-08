@@ -47,25 +47,25 @@ def index(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True)[:10]
     latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').all().order_by('-created')[:10]
     categories = Category.objects.all()
-    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories})
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'view_title': 'رايكم في'})
 
 def categorized_posts(request, category=False):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True)[:10]
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
-    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'is_categorized': True, 'category': category})
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'is_categorized': True, 'category': category, 'view_title': f'رايكم في | { category }'})
 
 def most_discussed_posts(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(count=Count('comments')).order_by('-count')
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
-    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True})
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True, 'view_title': 'رايكم في | الأكثر مناقشة'})
 
 def most_searched_posts(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).order_by("-hit_count_generic__hits")[:10]
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
-    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True})
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True, 'view_title': 'رايكم في | الأكثر بحثا'})
 
 
 @login_required
@@ -82,17 +82,17 @@ def profile_view(request, id):
             request.user.save()
             messages.success(
                 request, 'تم الحفظ بنجاح', extra_tags='pale-green w3-border')
-            return render(request, 'user/profile.html', context={'form': form})
+            return render(request, 'user/profile.html', context={'form': form, 'view_title': f'رايكم في | { request.user.username }'})
         else:
-            return render(request, 'user/profile.html', context={'form': form})
+            return render(request, 'user/profile.html', context={'form': form, 'view_title': f'رايكم في | { request.user.username }'})
     else:
         if request.user.id != id:
             profile = User.objects.prefetch_related('posts').get(id=id)
-            return render(request, 'user/profile.html', {'profile': profile})
+            return render(request, 'user/profile.html', {'profile': profile, 'view_title': f'رايكم في | { profile.username }'})
         else:
             form = ProfileForm(instance=request.user,
                                use_required_attribute=False)
-            return render(request, 'user/profile.html', {'form': form})
+            return render(request, 'user/profile.html', {'form': form, 'view_title': f'رايكم في | { request.user.username }'})
 
 
 def sign_in_view(request):
@@ -120,12 +120,12 @@ def sign_in_view(request):
             else:
                 messages.success(
                     request, 'اسم المستخدم أو كلمة المرور خاطئة', extra_tags='pale-red w3-border')
-                return render(request, 'user/signin.html', context={'form': form})
+                return render(request, 'user/signin.html', context={'form': form, 'view_title': f'رايكم في | تسجيل الدخول'})
         else:
-            return render(request, 'user/signin.html', context={'form': form})
+            return render(request, 'user/signin.html', context={'form': form, 'view_title': f'رايكم في | تسجيل الدخول'})
     else:
         form = SigninForm(use_required_attribute=False)
-        context = {'form': form}
+        context = {'form': form, 'view_title': f'رايكم في | تسجيل الدخول'}
         if request.user.is_anonymous and 'next' in request.GET:
             messages.success(
                 request, 'يجب عليك تسجيل الدخول أولا', extra_tags='pale-yellow w3-border')
@@ -177,7 +177,7 @@ def sign_up_view(request):
             return HttpResponseRedirect('/user/signin')
 
         else:
-            return render(request, 'user/register.html', context={'form': form})
+            return render(request, 'user/register.html', context={'form': form, 'view_title': f'رايكم في | حساب جديد'})
 
     else:
         form = SignupForm(use_required_attribute=False)
@@ -200,14 +200,14 @@ def post_view(request, id, slug):
     comments_count = 0
     if request.get_raw_uri().find('all_comments') < 0:
         comments_count =  Post.objects.select_related('creator', 'category').filter(id__exact=id).first().comments.count()
-        subquery = Subquery(Comment.objects.filter(post__id=OuterRef('post__id')).values_list('id', flat=True)[:5])
+        post_comments = Comment.objects.filter(post__id=id)[:5]
     else:
-        subquery = Subquery(Comment.objects.filter(post__id=OuterRef('post__id')).values_list('id', flat=True))
-
+        post_comments = Comment.objects.filter(post__id=id)
     
     post = Post.objects.select_related('creator', 'category').filter(Q(id__exact=id) & Q(
-            slug__exact=slug)).prefetch_related('creator', Prefetch('comments', queryset=Comment.objects.filter(id__in=subquery).prefetch_related('user', 'replies__user', 'post', 'post__creator', 'voted_like', 'voted_dislike'))).first()
+            slug__exact=slug)).first()
     rand_ids = Post.objects.select_related('creator', 'category').filter(category=post.category).values_list('id', flat=True)
+    related_posts = []
     if len(rand_ids) > 7:
         rand_ids = list(rand_ids)
         rand_ids = sample(rand_ids, 7)
@@ -220,7 +220,7 @@ def post_view(request, id, slug):
         if notis: 
             notis.first().delete()
 
-    context = {'post': post, 'comment_form': comment_form, 'reply_form': reply_form, 'related_posts': related_posts, 'comments_count': comments_count}
+    context = {'post': post, 'comment_form': comment_form, 'reply_form': reply_form, 'related_posts': related_posts, 'comments_count': comments_count, 'post_comments': post_comments, 'view_title': f'رايكم في | { post.title }'}
 
      # hitcount logic
     hit_count = get_hitcount_model().objects.get_for_object(post)
@@ -240,25 +240,25 @@ def post_view(request, id, slug):
 def my_posts_view(request, user_id):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(creator__id=user_id)[:5]
     count = Post.objects.prefetch_related('creator', 'category', 'comments').filter(creator__id=user_id).count()
-    return render(request, 'sections/user_posts.html', context={'posts': posts, 'count_posts': count})
+    return render(request, 'sections/user_posts.html', context={'posts': posts, 'count_posts': count, 'view_title': f'رايكم في | إستفساراتي'})
 
 @ login_required
 def my_comments_view(request, user_id):
     comments = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id).order_by('-created')[:5]
     count = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id).count()
-    return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count})
+    return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count, 'view_title': f'رايكم في | آرائي'})
 
 @ login_required
 def my_comments_most_replied_view(request, user_id):
     comments = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id).annotate(replies_count=Count('replies')).order_by('-replies_count')
     count = 0
-    return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count})
+    return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count, 'view_title': f'رايكم في | آرائي الأكثر ردا'})
 
 @ login_required
 def my_comments_most_voted_view(request, user_id):
     comments = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id).order_by('-votes')
     count = 0
-    return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count})
+    return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count, 'view_title': f'رايكم في | آرائي الأكثر تصويتا'})
 
 
 
@@ -272,13 +272,13 @@ def post_edit(request, id, slug):
         if form.is_valid():
             form.save()
             instance = get_object_or_404(Post, id=id)
-            return render(request, 'sections/post_view.html', context={'form': form, 'post': instance})
+            return render(request, 'sections/post_view.html', context={'form': form, 'post': instance, 'view_title': f'رايكم في | {instance.title}'})
         else:
-            return render(request, 'sections/edit_post.html', context={'form': form, 'post': instance})
+            return render(request, 'sections/edit_post.html', context={'form': form, 'post': instance, 'view_title': f'رايكم في | {instance.title}'})
     else:
         post = Post.objects.get(Q(id__exact=id) & Q(slug__exact=slug))
         form = NewPostForm(instance=instance, use_required_attribute=False)
-        return render(request, 'sections/edit_post.html', context={'form': form, 'post': post})
+        return render(request, 'sections/edit_post.html', context={'form': form, 'post': post, 'view_title': f'رايكم في | {post.title}'})
 
 
 @ login_required
@@ -292,10 +292,10 @@ def create_post(request):
             post.save()
             return redirect(post.get_absolute_url())
         else:
-            return render(request, 'sections/create_post.html', context={'form': form})
+            return render(request, 'sections/create_post.html', context={'form': form, 'view_title': f'رايكم في | إستفسار جديد'})
     else:
         form = NewPostForm(use_required_attribute=False)
-        return render(request, 'sections/create_post.html', context={'form': form})
+        return render(request, 'sections/create_post.html', context={'form': form, 'view_title': f'رايكم في | إستفسار جديد'})
 
 @login_required
 def change_password_view(request):
@@ -310,13 +310,13 @@ def change_password_view(request):
             return redirect('raykomfi:raykomfi-home')
         else:
             return render(request, 'user/change_password.html', {
-                'form': form
+                'form': form, 'view_title': f'رايكم في | تغيير كلمة المرور'
             })
     else:
         form = CustomChangePasswordForm(
             request.user, use_required_attribute=False)
         return render(request, 'user/change_password.html', {
-            'form': form
+            'form': form, 'view_title': f'رايكم في | تغيير كلمة المرور'
         })
 
 def restore_password_view(request):
@@ -338,7 +338,8 @@ def restore_password_view(request):
             else:
                 return render(request, 'user/restore_password.html', {
                     'form': form,
-                    'user': user
+                    'user': user,
+                    'view_title': f'رايكم في | إعادة تعيين كلمة المرور'
                 })
         else:
             return redirect('raykomfi:user-signin')
@@ -373,10 +374,10 @@ def forgot_password_view(request):
 
             return HttpResponseRedirect('/user/signin')
         else:
-            return render(request, 'user/forgot_password.html', context={'form': form})
+            return render(request, 'user/forgot_password.html', context={'form': form, 'view_title': f'رايكم في | نسيت كلمة المرور'})
     else:
         form = CustomPasswordResetForm(use_required_attribute=False)
-        return render(request, 'user/forgot_password.html', context={'form': form})
+        return render(request, 'user/forgot_password.html', context={'form': form, 'view_title': f'رايكم في | نسيت كلمة المرور'})
 
 @login_required
 def change_email_view(request):
@@ -411,10 +412,10 @@ def change_email_view(request):
 
             return HttpResponseRedirect('/user/signin')
         else:
-            return render(request, 'user/change_email.html', context={'form': form})
+            return render(request, 'user/change_email.html', context={'form': form, 'view_title': f'رايكم في | تغيير البريد الإلكتروني'})
     else:
         form = ChangeEmailForm(use_required_attribute=False, request=request)
-        return render(request, 'user/change_email.html', context={'form': form})
+        return render(request, 'user/change_email.html', context={'form': form, 'view_title': f'رايكم في | تغيير البريد الإلكتروني'})
 
 @login_required
 def confirm_new_email(request, uid, token, new_email):
@@ -444,10 +445,10 @@ def messages_view(request, user_id, message_id=0):
         message.is_read = True
         message.save()
         user_messages = Message.objects.filter(receiver__exact=user_id)
-        return render(request, 'sections/messages.html', {'user_messages': user_messages, 'fetched_message': message})
+        return render(request, 'sections/messages.html', {'user_messages': user_messages, 'fetched_message': message, 'view_title': f'رايكم في | الرسائل'})
     else:
         user_messages = Message.objects.filter(receiver__exact=user_id)
-        return render(request, 'sections/messages.html', {'user_messages': user_messages})
+        return render(request, 'sections/messages.html', {'user_messages': user_messages, 'view_title': f'رايكم في | الرسائل'})
         
 @ login_required
 def new_message_view(request, code):
@@ -463,10 +464,10 @@ def new_message_view(request, code):
                 notify.send(request.user, recipient=receiver ,action_object=message, description=message.get_noti_url(), target=message, verb='message')
             return redirect(receiver.get_absolute_url())
         else:
-            return render(request, 'sections/new_message.html', context={'form': form, 'receiver': receiver})
+            return render(request, 'sections/new_message.html', context={'form': form, 'receiver': receiver, 'view_title': f'رايكم في | رسالة جديدة'})
     else:
         form = MessageForm(use_required_attribute=False)
-        return render(request, 'sections/new_message.html', context={'form': form, 'receiver': receiver})
+        return render(request, 'sections/new_message.html', context={'form': form, 'receiver': receiver, 'view_title': f'رايكم في | رسالة جديدة'})
     
 
 

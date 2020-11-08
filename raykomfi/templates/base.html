@@ -4,8 +4,9 @@
 <!DOCTYPE html>
 <meta name="robots" content="noindex">
 <html dir="rtl">
-<title>W3.CSS</title>
+<title> {{ view_title }}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="{% static 'css/custom_materialize.css'  %}">
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-flat.css">
@@ -202,6 +203,9 @@
     <script src="{% static 'js/generateOpinionsStars.js' %}"></script>
     <script src="{% static 'js/controllers.js' %}"></script>
     <script src="{% static 'js/validators.js' %}"></script>
+    {% if user.is_authenticated %}
+    <script src="{% static 'js/best_users.js' %}"></script>
+    {% endif %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
         integrity="sha512-NiWqa2rceHnN3Z5j6mSAvbwwg3tiwVNxiAQaaSMSXnRRDh5C2mk/+sKQRw8qjV1vN4nf8iK2a0b048PnHbyx+Q=="
         crossorigin="anonymous"></script>

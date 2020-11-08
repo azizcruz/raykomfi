@@ -144,8 +144,8 @@
         </div>
         <div class=" w3-mobile reply-buttons">
             <div id="posts-wrapper">
-                {% if post.comments.all|length > 0 %}
-                {% for comment in post.comments.all %}
+                {% if post_comments|length > 0 %}
+                {% for comment in post_comments %}
                 <div class="w3-row comment-wrapper w3-border w3-padding z-depth-1">
                     <div class="w3-col s10 m11 l11" id="comment-id-{{comment.id}}">
                         <div class="comment-side">
