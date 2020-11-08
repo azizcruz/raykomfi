@@ -65,9 +65,11 @@
             <p><span class="title">الاسم الأخير</span>{{profile.last_name}}</p>
             <hr>
             <p><span class="title">قوة الرأي</span><span class="opinion-power">{{profile.user_trust}}</span></p>
+            {% if user.email_active %}
             <a href="{% url 'raykomfi:new-message' code=profile.uuid %}" class="w3-button raykomfi-button ">
                 إرسال رسالة
             </a>
+            {% endif %}
         </div>
         <br>
         <h3>إستفسارات {{profile.username}}</h3>

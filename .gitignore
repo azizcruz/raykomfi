@@ -1,5 +1,5 @@
 migrations
-db.ssqlite3
+db.sqlite3
 __pycache__
 env
 .vscode

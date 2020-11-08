@@ -76,7 +76,7 @@
                 </form>
             </div>
         </div>
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and email_active%}
         <div id="user-of-the-month">
             <ul class="collapsible">
                 <li>
@@ -126,7 +126,7 @@
         </div>
 
         {% else %}
-        <div class="w3-display-container panel yellow z-depth-1 message-wrapper">
+        <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
             <p class="w3-center">فعل حسابك للإستفسار الناس عن ما تريد الشراء</p>
         </div>
         {% endif %}

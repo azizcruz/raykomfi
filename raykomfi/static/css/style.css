@@ -882,6 +882,10 @@ input ~ .parsley-errors-list.filled {
 /* Parcely Validator Styles */
 
 /* Profile Style */
+
+.user-profile {
+  padding: 15px !important;
+}
 .another-user-profile {
   padding: 15px;
 }

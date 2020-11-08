@@ -1,4 +1,3 @@
-from background_task import background
 from django.utils.functional import SimpleLazyObject
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import get_template
@@ -6,14 +5,12 @@ from django.core.mail import EmailMultiAlternatives
 from notifications.signals import notify
 from .models import User, Message, Post, Comment, Reply, Report
 
-# @background(schedule=5)
 def send_email(html_email_template, mail_subject, to_email, from_email, token):
     msg = EmailMultiAlternatives(
         f"{mail_subject}", "nothing", from_email, [to_email])
     msg.attach_alternative(html_email_template, "text/html")
     msg.send()
 
-# @background(schedule=5)
 def send_notify(notify_model, sender_id, recipient_id , action_object_id, target, verb, description=None):
     sender = User.objects.filter(id=sender_id)
     receiver = User.objects.filter(id=recipient_id)

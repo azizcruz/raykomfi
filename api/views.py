@@ -198,8 +198,8 @@ class CommentsView(APIView):
                     'view': referesh_post_view_html,
                     'message': 'success'
                 }
-                notify.send(request.user, recipient=post.creator , action_object=comment,  description=comment.get_noti_url(), target=comment, verb='comment')
-                # send_notify(notify_model='comment', sender_id=request.user.id, action_object_id=comment.id, recipient_id=post.creator.id, verb='comment')
+                if request.user.id != post.creator.id:
+                    notify.send(request.user, recipient=post.creator , action_object=comment,  description=comment.get_noti_url(), target=comment, verb='comment')
                 return JsonResponse(output_data)
             else:
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -254,8 +254,8 @@ class RepliesView(APIView):
                     'view': referesh_comment_view_html,
                     'message': 'success'
                 }
-                notify.send(request.user, recipient=comment.user ,action_object=reply, description=reply.get_noti_url(), target=comment, verb='reply')
-                # send_notify(notify_model='reply', sender_id=request.user.id, action_object_id=reply.id, recipient_id=comment.user.id, verb='reply')
+                if request.user.id != reply.user.id:
+                    notify.send(request.user, recipient=comment.user ,action_object=reply, description=reply.get_noti_url(), target=comment, verb='reply')
                 return JsonResponse(output_data)
             else:
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)                
@@ -463,5 +463,4 @@ class ReportView(APIView):
             admin = User.objects.get(username="admin")
             report = Report.objects.create(user=request.user, content=serializer.validated_data['content'], topic=serializer.validated_data['topic'], reported_url=serializer.validated_data['reported_url'])
             notify.send(request.user, recipient=admin ,action_object=report, description=serializer.validated_data['reported_url'], target=report, verb='report')
-            # send_notify(notify_model='report', sender_id=request.user.id, recipient_id=admin.id, action_object_id=report.id, description=serializer.validated_data['reported_url'], verb='report')
             return JsonResponse({'message': 'تم الإبلاغ'})
