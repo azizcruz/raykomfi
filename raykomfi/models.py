@@ -199,7 +199,7 @@ class Message(models.Model):
     receiver = models.ForeignKey(
         User, related_name='my_messages', verbose_name='المستقبل', on_delete=models.CASCADE)
     title = models.CharField(max_length=100, verbose_name='عنوان الرسالة', null=True, default=None)
-    content = HTMLField(verbose_name='محتوى الرسالة', max_length=255)
+    content = models.TextField(verbose_name='محتوى الرسالة', max_length=255)
     is_read = models.BooleanField(default=False, db_index=True)
     created = models.DateTimeField(
         auto_now_add=True, verbose_name='وقت اضافة الرسالة', db_index=True)

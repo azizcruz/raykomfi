@@ -243,10 +243,6 @@ GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
     f'{BASE_DIR}/src/creds/googleStorage.json'
 )
 
-# TinyMCE settings
-TINYMCE_JS_URL = 'https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js'
-TINYMCE_COMPRESSOR = False
-
 # Image resize
 DJANGORESIZED_DEFAULT_SIZE = [900, 600]
 DJANGORESIZED_DEFAULT_QUALITY = 75

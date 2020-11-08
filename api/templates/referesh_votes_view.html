@@ -1,5 +1,6 @@
 <div>
     <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}} data-vote-type="like">
+        {% csrf_token %}
         <button type="submit" {% if user in comment.voted_like.all %} disabled {% endif %} class="like-button"><i
                 class="fa fa-thumbs-up" aria-hidden="true"></i></button>
     </form>

@@ -85,7 +85,7 @@ noscript span {
 }
 
 .raykomfi-main-padding {
-  padding: 20px !important;
+  padding: 20px 0 !important;
 }
 
 .raykomfi-max-width {
@@ -662,6 +662,9 @@ select:focus {
 /* Home Style */
 
 /* Post View Style */
+.post-box {
+  padding: 24px 16px;
+}
 .comment-wrapper {
   margin-bottom: 10px;
   padding-right: 5px !important;
@@ -729,6 +732,7 @@ select:focus {
 /* Searchbar Style */
 #search-field-wrapper {
   display: none;
+  margin-top: 10px;
 }
 .search-input {
   border: 0;

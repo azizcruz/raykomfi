@@ -28,7 +28,6 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('__debug__/', include(debug_toolbar.urls)),
     url('^inbox/notifications/', include('notifications.urls', namespace='notifications')),
-    path('tinymce/', include('tinymce.urls')),
 ]
 
 if settings.DEBUG:

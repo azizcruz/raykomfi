@@ -104,16 +104,19 @@ class LazyCommentsView(APIView):
             except EmptyPage:
                 comments = paginator.page(paginator.num_pages)
 
+            csrf_token = get_token(request)
+            csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
+
             comments_html = None
             if user_id != 'false':
                 comments_html = loader.render_to_string(
                 'user_comments.html',
-                {'comments': comments, 'user': request.user}
+                {'comments': comments, 'user': request.user, 'csrf_token': csrf_token}
             )
             else:
                 comments_html = loader.render_to_string(
                 'comments.html',
-                {'comments': comments, 'user': request.user}
+                {'comments': comments, 'user': request.user, 'csrf_token': csrf_token}
             )
             output_data = {
                 'comments_html': comments_html,

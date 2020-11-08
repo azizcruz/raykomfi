@@ -64,7 +64,6 @@
           $("#user-comments").append(data.comments_html);
         } else {
           // append html to the posts div
-          console.log(data.comments_html);
           $("#posts-wrapper").append(data.comments_html);
         }
         fixTime();

@@ -6,8 +6,8 @@
 {% block content %}
 <div class="w3-row-padding raykomfi-main-padding raykomfi-max-width">
     <div class="w3-col s12 m4 l4 w3-hide-small">
-        <h4>إستفسارات مشابهة</h4>
-        <div class="related-posts w3-border w3-padding-16 w3-white z-depth-1">
+        <div class="related-posts w3-padding-16 w3-white z-depth-1">
+            <h4 class="center">إستفسارات مشابهة</h4>
             <div class="w3-row">
                 <div class="w3-mobile">
                     {% for related_post in related_posts %}
@@ -29,8 +29,8 @@
         </div>
     </div>
     <div class="w3-col s12 m8 l8">
-        <div class="w3-row">
-            <div class="w3-mobile w3-container">
+        <div class="w3-row white post-box z-depth-1">
+            <div class="w3-mobile">
                 {% if post.creator and post.creator.is_active != False %}
                 <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}" class="writer-name">
                     <h6>
@@ -45,13 +45,13 @@
                 </h6>
                 {% endif %}
             </div>
-            <div class="w3-mobile w3-container">
+            <div class="w3-mobile">
                 <h3>{{post.title}}</h3>
                 {% if post.content %}
                 <p>{{post.content}}</p>
                 {% endif %}
             </div>
-            <div class="w3-mobile w3-container">
+            <div class="w3-mobile">
                 {% if post.image %}
 
                 <!-- Trigger the Modal -->
@@ -70,7 +70,7 @@
                 {% endif %}
             </div>
             <br>
-            <div class="w3-container">
+            <div class="">
                 <div><i class="fa fa-clock-o" aria-hidden="true"></i> <span
                         class="created-time">{{post.created | naturaltime}}</span>
                 </div>
@@ -116,6 +116,7 @@
                 </div>
                 <!-- The Post Report Modal -->
                 {% endif %}
+                {% if post.isActive == True %}
                 <div class="w3-dropdown-click raykomfi-dropdown-click">
                     <button id="share-btn"
                         class="btn raykomfi-main-background-color raykomfi-report-btn">مشاركة</button>
@@ -129,16 +130,19 @@
                         <input type="text" value="{{request.build_absolute_uri}}" id="inputToCopy" readonly>
                     </div>
                 </div>
+                {% endif %}
             </div>
         </div>
         <div>
             {% if post.creator.id == user.id  and post.isActive == False %}
-            تحت المراجعة
+            <div class="red white-text center w3-padding">يرجى الإنتظار ريثما تتم مراجعة الإستفسار</div>
             {% endif %}
         </div>
-        <div class=" w3-mobile w3-container reply-buttons">
+        <div>
             <hr>
             <h3>الآراء</h3>
+        </div>
+        <div class=" w3-mobile reply-buttons">
             <div id="posts-wrapper">
                 {% if post.comments.all|length > 0 %}
                 {% for comment in post.comments.all %}
@@ -350,7 +354,7 @@
                 </div>
                 {% endfor %}
                 {% else %}
-                <p>لا يوجد رأي حتى الان, كن أول شخص يعطي رأيه</p>
+                <p class="center">لا يوجد رأي حتى الان, كن أول شخص يعطي رأيه</p>
                 {% endif %}
             </div>
         </div>
@@ -372,7 +376,7 @@
         {% endif %}
 
         <input type="hidden" id="post_id" value={{post.id}}>
-        <div class="w3-mobile w3-container comment-button">
+        <div class="w3-mobile comment-button">
             <h3>إضافة رأي</h3>
 
             {% if not user.is_authenticated %}
@@ -406,8 +410,8 @@
     </div>
 </div>
 <div class="w3-col s12 m4 l4 w3-hide-medium w3-hide-large">
-    <h4>إستفسارات مشابهة</h4>
-    <div class="related-posts w3-border w3-padding-16 w3-white z-depth-1">
+    <div class="related-posts w3-padding-16 w3-white z-depth-1">
+        <h4 class="center">إستفسارات مشابهة</h4>
         <div class="w3-row">
             <div class="w3-mobile">
                 {% for related_post in related_posts %}

@@ -14,6 +14,7 @@ $(document).on("submit", "form.replyForm", function (e) {
   e.preventDefault();
   let content = e.target[1].value;
   let { commentId } = e.target.dataset;
+  console.log(content);
   if (content) {
     axios({
       method: "POST",
@@ -188,8 +189,6 @@ $(document).on("submit", "form.voteForm", function (e) {
         let votes_view = $(`#comment-${commentId}-vote-side-wrapper`);
         view_html = response.data.view;
         votes_view.html(view_html);
-        fixTime();
-        generateStars();
       })
       .catch((err) => {
         if (
@@ -226,7 +225,7 @@ $(document).on("submit", "form.getMessageForm", function (e) {
         message_view.html(view_html);
         let converter = new showdown.Converter();
         let message = document.getElementById("message-content-field");
-        message.innerHTML = message.innerHTML;
+        message.innerHTML = converter.makeHtml(message.innerHTML);
         fixTime();
       })
       .catch((err) => {
@@ -247,7 +246,7 @@ $(document).on("submit", "form.getMessageForm", function (e) {
 $(document).on("submit", "form.postsSearchForm", function (e) {
   e.preventDefault();
   let link = $(this);
-  let q = link.serializeArray()[0].value;
+  let q = link.serializeArray()[1].value;
   loading.css("display", "block");
   if (q) {
     axios({
@@ -262,20 +261,15 @@ $(document).on("submit", "form.postsSearchForm", function (e) {
       },
     })
       .then((response) => {
-        view_html = response.data.view;
-        message_view.html(view_html);
-        $(document).ready(() => {
-          console.log(response.data);
-          let view_html = response.data.view;
-          console.log(view_html);
-          let post_wrapper = document.getElementById("raykomfi-posts");
-          $("#lazyLoadLink").css("display", "none");
-          loading.css("display", "none");
-          post_wrapper.innerHTML = view_html;
-          fixTime();
-        });
+        let view_html = response.data.view;
+        let post_wrapper = document.getElementById("raykomfi-posts");
+        $("#lazyLoadLink").css("display", "none");
+        loading.css("display", "none");
+        post_wrapper.innerHTML = view_html;
+        fixTime();
       })
       .catch((err) => {
+        loading.css("display", "none");
         if (
           err.response.status === 403 &&
           err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
@@ -295,7 +289,7 @@ $(document).on("submit", "form.postsSearchForm", function (e) {
 $(document).on("submit", "form.commentsSearchForm", function (e) {
   e.preventDefault();
   let link = $(this);
-  let q = link.serializeArray()[0].value;
+  let q = link.serializeArray()[1].value;
   loading.css("display", "block");
   if (q) {
     axios({
@@ -367,12 +361,12 @@ $(document).on("submit", "form.commentsSearchForm", function (e) {
 // Add report
 $(document).on("submit", "form.reportForm", function (e) {
   e.preventDefault();
-  let content = e.target[0].value;
+  let content = e.target[1].value;
   let data = $(this).serializeArray();
   data = {
-    content: data[0].value,
-    reported_url: data[1].value,
-    topic: data[2].value,
+    content: data[1].value,
+    reported_url: data[2].value,
+    topic: data[3].value,
   };
 
   console.log(data);

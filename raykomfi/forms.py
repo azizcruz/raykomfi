@@ -421,6 +421,7 @@ class ReplyForm(forms.ModelForm):
                 self.fields[fieldname].label = ''
                 self.fields[fieldname].required = True
 
+@parsleyfy
 class MessageForm(forms.ModelForm):
 
     class Meta:

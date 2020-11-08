@@ -113,12 +113,12 @@ $(document)
   });
 
 // New message preview
-// $("#new-message-content").on("keyup", (e) => {
-//   let content = e.target.value;
-//   let converter = new showdown.Converter();
-//   content = converter.makeHtml(content);
-//   $("#message-preview").html(content);
-// });
+$("#new-message-content").on("keyup", (e) => {
+  let content = e.target.value;
+  let converter = new showdown.Converter();
+  content = converter.makeHtml(content);
+  $("#message-preview").html(content);
+});
 
 // Lazy load images
 $(".lazy-img").Lazy({
@@ -464,17 +464,4 @@ $(document).on("click", ".close-reply-edit-form", (e) => {
   closestEditReplyForm.css("display", "none");
   closestEditReplyForm.parent().find(".reply").show();
   closestEditReplyForm.parent().find(".reply-action-btn").show();
-});
-
-// Init tiny mce
-
-tinymce.init({
-  max_chars: 300,
-  selector: "#new-message-content",
-  language: "ar",
-  directionality: "rtl",
-  plugins: "preview",
-  menubar: false,
-  toolbar:
-    "preview | alignleft aligncenter alignright alignjustify | bold italic | undo redo ",
 });
