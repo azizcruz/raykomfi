@@ -23,7 +23,7 @@ if (bestUserWrapper) {
     آرائه</span> </li>`;
         }
       } else {
-        displayHtml += `<p class="center">لم يتم التحديد </p>`;
+        displayHtml = `<p class="center">لم يتم إختيار الأعضاء بعد </p>`;
       }
 
       whereToDisplayResponse.html(displayHtml);

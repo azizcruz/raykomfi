@@ -14,6 +14,9 @@ from pathlib import Path
 import os
 from django.utils.translation import gettext_lazy as _
 from google.oauth2 import service_account
+from dotenv import load_dotenv
+import json
+load_dotenv()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,7 +28,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'y#micn0*%3d33ew1l=!5^#*5@9q$mr38*48pkv%@i@gc-p&&fs'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -117,11 +120,11 @@ WSGI_APPLICATION = 'src.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'raykomfi',
-        'USER': 'root',
-        'PASSWORD': 'itabdelaziz1921',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASS"),
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT"),
     },
     'OPTIONS': { "init_command": "SET storage_engine=innoDB" }
 }
@@ -220,11 +223,11 @@ CACHES = {
 }
 
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'mail.privateemail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'no-reply@raykomfi.com'
-EMAIL_HOST_PASSWORD = 'SX0A9w7BHFlh0NfSUfl3x4iOXy0pwN'
-DEFAULT_FROM_EMAIL = 'no-reply@raykomfi.com'
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
 
 #Handle session is not Json Serializable
 # SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
@@ -250,9 +253,9 @@ CORS_ALLOWED_ORIGINS = [
 
 
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-GS_BUCKET_NAME = 'raykomfi-assets'
-GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    f'{BASE_DIR}/src/creds/googleStorage.json'
+GS_BUCKET_NAME = os.getenv("GS_BUCKET_NAME")
+GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
+    json.loads(os.getenv("GS_CREDENTIALS"))
 )
 
 # Image resize

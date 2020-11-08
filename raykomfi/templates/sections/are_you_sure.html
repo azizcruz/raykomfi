@@ -4,9 +4,12 @@
 
 <div class="row raykomfi-main-padding  raykomfi-max-width">
     <h3>هل أنت متأكد ؟</h3>
-    <a href="{% url 'raykomfi:user-profile' id=user.id %}" class="w3-button w3-green w3-text-white ">لا</a>
-    <a href="{% url 'raykomfi:user-delete' id=user.id %}?question={{ true }}"
-        class="w3-button w3-red w3-text-white ">نعم</a>
+    <p class="card-panel white center">حذفك للحساب يجعلك غير قادر على الدخول لحسابك, لكن إستفساراتك, آراءك و ردودك ستبقى
+        لكن
+        بدون إسم المستخدم</p>
+    <a href="{% url 'raykomfi:user-profile' id=user.id %}" class="btn red">لا</a>
+    <a href="{% url 'raykomfi:user-delete' id=user.id %}?question={{ true }}" class="btn green w3-text-white ">نعم, أنا
+        متأكد</a>
 </div>
 
 

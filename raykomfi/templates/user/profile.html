@@ -56,13 +56,16 @@
             <i class="fa fa-user-circle-o large-font profile-icon" aria-hidden="true"></i>
             <h1 class="w3-xxxlarge">{{profile.username}}</h1>
             <h3 class="w3-xlarge">رمز العضو <br> {{ profile.uuid }}</h3>
+            <div class="card-panel white raykomfi-main-color">{{ profile.bio }}</div>
         </div>
     </div>
     <div class="w3-col s12 m6 l6 profile-view-data">
         <div class=" another-user-profile ">
-            <p><span class="title">الاسم الأول</span>{{profile.first_name}}</p>
+            <p><span class="title">الاسم الأول</span>{% if profile.hide_name == True %} {% else %}
+                {{ profile.first_name }} {% endif %}</p>
             <hr>
-            <p><span class="title">الاسم الأخير</span>{{profile.last_name}}</p>
+            <p><span class="title">الاسم الأخير</span>{% if profile.hide_name == True %} {% else %}
+                {{ profile.last_name }} {% endif %}</p>
             <hr>
             <p><span class="title">قوة الرأي</span><span class="opinion-power">{{profile.user_trust}}</span></p>
             {% if user.email_active %}

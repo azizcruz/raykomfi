@@ -2,22 +2,25 @@
 
 {% block content %}
 
-<div class="row raykomfi-main-padding  raykomfi-max-width">
-    <div class="w3-col s12 m6 l6">&nbsp;</div>
-    <div class="w3-col s12 m6 l6">
-        <h3 class="w3-center ">تسجيل الدخول</h3>
-        <form action="{% url 'raykomfi:user-signin' %}" method='post' id="signin-form">
-            {% csrf_token %}
-            {% if next %}
-            <input type="hidden" name="next" value="{{next}}">
-            {% endif %}
-            {{ form }}
-            <div class="col s12">
-                <p><a href="{% url 'raykomfi:user-forgot-password' %}" class="w3-text-blue">نسيت كلمة المرور؟</a></p>
-                <p><a href="{% url 'raykomfi:user-send-link' %}" class="w3-text-blue">طلب رابط تفعيل الحساب</a></p>
-            </div>
-            <button class="w3-button raykomfi-button " name="button">تسجيل دخول</button>
-        </form>
+<div class="w3-container">
+    <div class="row raykomfi-main-padding  raykomfi-max-width">
+        <div class="w3-col s12 m12 l8">&nbsp;</div>
+        <div class="w3-col s12 m12 l4">
+            <h3 class="w3-center ">تسجيل الدخول</h3>
+            <form action="{% url 'raykomfi:user-signin' %}" method='post' id="signin-form">
+                {% csrf_token %}
+                {% if next %}
+                <input type="hidden" name="next" value="{{next}}">
+                {% endif %}
+                {{ form }}
+                <div class="col s12">
+                    <p><a href="{% url 'raykomfi:user-forgot-password' %}" class="w3-text-blue">نسيت كلمة المرور؟</a>
+                    </p>
+                    <p><a href="{% url 'raykomfi:user-send-link' %}" class="w3-text-blue">طلب رابط تفعيل الحساب</a></p>
+                </div>
+                <button class="w3-button raykomfi-button " name="button">تسجيل دخول</button>
+            </form>
+        </div>
     </div>
 </div>
 

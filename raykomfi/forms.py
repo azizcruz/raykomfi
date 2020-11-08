@@ -166,7 +166,7 @@ class ProfileForm(forms.ModelForm):
                 self.fields[fieldname].widget.attrs['class'] = 'raykomfi-input'
             if fieldname == 'hide_name':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
-                self.fields[fieldname].label = 'إخفاء الإسم'
+                self.fields[fieldname].label = 'إخفاء الإسم الشخصي'
                 self.fields[fieldname].widget.attrs['class'] = 'raykomfi-input'
             if fieldname == 'allow_messages':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
