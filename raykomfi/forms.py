@@ -302,42 +302,37 @@ class NewPostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('category', 'title', 'content', 'image')
+        fields = ('category', 'title', 'content', 'image_url', 'image_source')
 
     def __init__(self, *args, **kwargs):
         super(NewPostForm, self).__init__(*args, **kwargs)
 
-        for fieldname in ['category', 'title', 'content', 'image']:
+        for fieldname in ['category', 'title', 'content', 'image', 'image_url', 'image_source']:
 
             if fieldname == 'category':
-                self.fields[fieldname].label = 'تصنيف الإستفسار'
+                self.fields[fieldname].label = '* تصنيف الإستفسار'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-select w3-border  '
             if fieldname == 'title':
+                self.fields[fieldname].label = '* عنوان الإستفسار'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
-                self.fields[fieldname].label = 'عنوان الإستفسار'
             if fieldname == 'content':
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
-                self.fields[fieldname].label = 'نبذة عن الإستفسار'
-            if fieldname == 'image':
-                self.fields[fieldname].label = 'صورة'
+                self.fields[fieldname].label = ' نبذة عن الإستفسار'
+            if fieldname == 'image_url':
+                self.fields[fieldname].label = 'رابط صورة '
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
+            if fieldname == 'image_source':
+                self.fields[fieldname].label = 'مصدر الصورة (رابط الموقع الذي تعرض عليه الصورة)'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
 
-    def clean_image(self):
-        image = self.cleaned_data.get('image')
-        ALLOWED_EXT = ['jpg', 'png', 'jpeg']
-        if image:
-            filesize = image.size
-            extension = image.name.split('.')[1].lower()
+    def clean_image_source(self):
+        image_url = self.cleaned_data.get('image_url')
+        image_source = self.cleaned_data.get('image_source')
+        if image_source and not image_source:
+            raise forms.ValidationError(
+                "مصدر الصورة يجب أن لا يكون فارغا")
 
-            if filesize > 10485760:  # 10MB
-                raise forms.ValidationError(
-                    "حجم الصورة يجب ان يكون اصغر من 10 ميغابايت")
-
-            if extension not in ALLOWED_EXT:
-                raise forms.ValidationError(
-                    "ملف الصورة تالف أو نوع الملف ليس صورة")
-
-        return image
+        return image_source
 
     def clean_title(self):
         title = self.cleaned_data.get('title')

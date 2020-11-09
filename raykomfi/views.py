@@ -633,6 +633,9 @@ def send_link(request):
     else:
         return render(request, 'user/activate_account.html')
 
+def not_found_handler(request):
+    return JsonResponse({'message': ''}, status=status.HTTP_404_NOT_FOUND)
+
 @ratelimit(key='ip', rate='50/m', block=True)
 def suspicious_limit(request , exception=None):
     print('LimitedError:', 'with ip', request.META.get('X-Real-IP'))

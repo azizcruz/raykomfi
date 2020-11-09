@@ -92,8 +92,8 @@ class Post(models.Model, HitCountMixin):
         max_length=200, verbose_name='الموضوع', db_index=True)
     slug = models.CharField(
         max_length=200, db_index=True, null=True, blank=True)
-    image = ResizedImageField(
-        upload_to='post_images', verbose_name='صورة', default=None, null=True, blank=True)
+    image_url = models.CharField(verbose_name='رابط الصورة', blank=True, null=True, max_length=1000)
+    image_source = models.CharField(verbose_name='مصدر الصورة', blank=True, null=True, max_length=1000)
     content = models.TextField(verbose_name='نبذة عن الموضوع', max_length=144, blank=True, db_index=True)
     isActive = models.BooleanField(default=False, db_index=True)
     created = models.DateTimeField(auto_now_add=True)

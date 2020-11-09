@@ -198,7 +198,7 @@ class CommentsView(APIView):
                     'view': referesh_post_view_html,
                     'message': 'success'
                 }
-                if request.user.id != post.creator.id:
+                if request.user.id != post.creator.id and post.creator.get_notifications == True:
                     notify.send(request.user, recipient=post.creator , action_object=comment,  description=comment.get_noti_url(), target=comment, verb='comment')
                 return JsonResponse(output_data)
             else:
@@ -254,7 +254,7 @@ class RepliesView(APIView):
                     'view': referesh_comment_view_html,
                     'message': 'success'
                 }
-                if request.user.id != reply.user.id:
+                if request.user.id != reply.user.id and reply.user.get_notifications == True:
                     notify.send(request.user, recipient=comment.user ,action_object=reply, description=reply.get_noti_url(), target=comment, verb='reply')
                 return JsonResponse(output_data)
             else:
