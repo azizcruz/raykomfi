@@ -231,7 +231,7 @@ def post_view(request, id, slug):
         if notis: 
             notis.first().delete()
 
-    context = {'post': post, 'comment_form': comment_form, 'reply_form': reply_form, 'related_posts': related_posts, 'comments_count': comments_count, 'post_comments': post_comments, 'view_title': f'رايكم في | { post.title }'}
+    context = {'post': post, 'comment_form': comment_form, 'reply_form': reply_form, 'related_posts': related_posts, 'comments_count': comments_count, 'post_comments': post_comments, 'view_title': f'رايكم في | { post.title }', 'url_name': 'post_view'}
 
      # hitcount logic
     hit_count = get_hitcount_model().objects.get_for_object(post)

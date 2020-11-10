@@ -20,7 +20,12 @@ from hitcount.models import HitCountMixin, HitCount
 from django.contrib.contenttypes.fields import GenericRelation
 from tinymce.models import HTMLField
 from notifications.signals import notify
+from twitter import *
+from dotenv import load_dotenv
+load_dotenv()
+import os
 
+BASE_URL = 'https://raykomfi.com' if os.getenv('environment') == 'prod' else 'http://localhost:8000'
 
 
 
@@ -117,12 +122,20 @@ class Post(models.Model, HitCountMixin):
 
     def get_noti_url(self):
         return reverse('raykomfi:post-view', args=[self.id, self.slug]) + f'?read={self.id}'
+    
+    def get_twitter_url(self):
+        return BASE_URL + reverse('raykomfi:post-view', args=[self.id, self.slug])
+
 
     def save(self, *args, **kwargs):
         # When post gets accepted
         prev_post_status = Post.objects.filter(pk=self.pk)
         if len(prev_post_status) > 0:
             if prev_post_status != self.isActive and self.isActive == True:
+                # Post to twitter
+                # t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
+                # t.statuses.update(status=self.get_twitter_url(), media_ids="")
+
                 prev_post_status = prev_post_status.values('isActive').first()['isActive']
                 admin = User.objects.get(username='admin')
                 notify.send(admin, recipient=self.creator ,action_object=self, description=self.get_noti_url(), target=self, verb='post_accepted')

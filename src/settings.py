@@ -64,6 +64,9 @@ INSTALLED_APPS = [
     'notifications',
     'hitcount',
     'admin_honeypot',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
+
 ]
 
 MIDDLEWARE = [

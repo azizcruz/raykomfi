@@ -7,6 +7,20 @@
 <meta name="robots" content="noindex">
 <html dir="rtl">
 <title> {{ view_title }}</title>
+<meta name="description" property="og:description" content="منصة تجمع المشترين لمناقشة وأخذ
+ آراء أناس إشتروا نفس الشيء من قبل">
+<meta name="keywords" content="رايكم في, مارأيك, وش رايك , شو رايكم , جوالات, سيارات, منزلي, كتب ,أغذية, غسالات, كمبيوترات, مكيفات, ملابس">
+{% if url_name == 'post_view' %}
+<meta name="author" content="{{ post.creator.username }}">
+<meta property="og:url" content="{{ post.get_twitter_url }}" />
+<meta property="og:title" content="{{ post.title }}" />
+<meta property="og:image" content="{% static 'img/meta_image.png' %}" />
+<meta name="twitter:image" content="{% static 'img/meta_image.png' %}" />
+<meta name="twitter:card" content="{% static 'img/meta_image.png' %}" />
+<meta property="twitter:image:alt" content="{{ post.title }}" />
+<meta property="og:image:alt" content="{{ post.title }}" />
+<meta name="twitter:site" content="{{ post.creator.username }}" />
+{% endif %}
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
