@@ -22,7 +22,8 @@ from django.conf.urls.static import static
 import debug_toolbar
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+    path('ahlanwasahlan/', admin.site.urls),
     path('', include('raykomfi.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include('api.urls')),

@@ -63,7 +63,7 @@ INSTALLED_APPS = [
     "compressor",
     'notifications',
     'hitcount',
-    'tinymce'
+    'admin_honeypot',
 ]
 
 MIDDLEWARE = [
@@ -76,6 +76,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'csp.middleware.CSPMiddleware',
     'raykomfi.custom_middlewares.AutoLogout',
     'ratelimit.middleware.RatelimitMiddleware',
     ]
@@ -266,3 +267,24 @@ DJANGORESIZED_DEFAULT_KEEP_META = True
 # Ratelimit
 
 RATELIMIT_VIEW='raykomfi.views.suspicious_limit'
+
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+SECURE_BROWSER_XSS_FILTER = False
+SECURE_CONTENT_TYPE_NOSNIFF = False
+SECURE_SSL_REDIRECT = False
+
+# Content Security Policy
+# CSP_DEFAULT_SRC = ("'none'", )
+# CSP_STYLE_SRC = ("'self'", "fonts.googleapis.com", "'sha256-/3kWSXHts8LrwfemLzY9W0tOv5I4eLIhrf0pT8cU0WI='", "https://www.w3schools.com/w3css/4/w3.css")
+# CSP_SCRIPT_SRC = ("'self'", "ajax.googleapis.com", "www.googletagmanager.com", "www.google-analytics.com")
+# CSP_IMG_SRC = ("'self'", "data:", "www.googletagmanager.com", "www.google-analytics.com")
+# CSP_FONT_SRC = ("'self'", "fonts.gstatic.com")
+# CSP_CONNECT_SRC = ("'self'", )
+# CSP_OBJECT_SRC = ("'none'", )
+# CSP_BASE_URI = ("'none'", )
+# CSP_FRAME_ANCESTORS = ("'none'", )
+# CSP_FORM_ACTION = ("'self'", )
+# CSP_INCLUDE_NONCE_IN = ('script-src',)
+
+COMPRESS_OFFLINE = True

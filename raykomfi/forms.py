@@ -322,7 +322,7 @@ class NewPostForm(forms.ModelForm):
                 self.fields[fieldname].label = 'رابط صورة '
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'image_source':
-                self.fields[fieldname].label = 'مصدر الصورة (رابط الموقع الذي تعرض عليه الصورة)'
+                self.fields[fieldname].label = 'مصدر الصورة (رابط الموقع الذي تعرض منه الصورة "إذا كانت صورة تخصك يمكنك أن تضع رابط الصورة وسيتم التأكد منها")'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
 
     def clean_image_source(self):
