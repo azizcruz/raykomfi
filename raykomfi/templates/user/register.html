@@ -9,7 +9,18 @@
             <h3 class="w3-center">حساب جديد</h3>
             <form action="{% url 'raykomfi:user-register' %}" method='post' id="raykomfi-register-form">
                 {% csrf_token %}
-                {{ form }}
+                {% for field in form %}
+                {% if field.field.widget.input_type == 'checkbox' %}
+                <div class="w3-col">
+                {{ field }}
+                <a href="{% url 'raykomfi:usage-terms' %}" target="_blank">أتعهد بالموافقة على سياسة و شروط المنصة</a>
+                </div>
+                {% else %}
+                {{ field.errors }}
+                {{ field.label_tag }} <br />
+                {{ field }}
+                {% endif %}
+                {% endfor %}
                 <div class="col s12">
                     <button class="w3-button raykomfi-button " name="button">تسجيل</button>
                 </div>

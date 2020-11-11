@@ -66,7 +66,6 @@ INSTALLED_APPS = [
     'admin_honeypot',
     'django.contrib.sites',
     'django.contrib.sitemaps',
-
 ]
 
 MIDDLEWARE = [

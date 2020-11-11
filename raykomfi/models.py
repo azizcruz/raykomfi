@@ -60,6 +60,7 @@ class User(AbstractUser):
     verification_code_expire = models.DateTimeField(blank=True, null=True, verbose_name='تاريخ إنتهاء رمز العمليات')
     last_time_best_user = models.DateTimeField(blank=True, null=True, verbose_name='اخر مرة حصل على عضو الشهر')
     user_trust = models.FloatField(validators=[MaxValueValidator(6.0), MinValueValidator(0.0)], default=0.0, verbose_name='قوة الرأي')
+    accepted_conditions_terms = models.BooleanField(default=False)
 
 
     def get_absolute_url(self):

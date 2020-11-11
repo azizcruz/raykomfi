@@ -59,21 +59,21 @@ def categorized_posts(request, category=False):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True)[:10]
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
-    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'is_categorized': True, 'category': category, 'view_title': f'رايكم في | { category }'})
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'is_categorized': True, 'category': category, 'view_title': f'رايكم في | { category }', 'url_name': 'categorized_view'})
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def most_discussed_posts(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(count=Count('comments')).order_by('-count')
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
-    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True, 'view_title': 'رايكم في | الأكثر مناقشة'})
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True, 'view_title': 'رايكم في | الأكثر مناقشة', 'url_name': 'most_discussed_view'})
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def most_searched_posts(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).order_by("-hit_count_generic__hits")[:10]
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
-    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True, 'view_title': 'رايكم في | الأكثر بحثا'})
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True, 'view_title': 'رايكم في | الأكثر بحثا', 'url_name': 'most_searched_view'})
 
 
 @login_required
@@ -134,7 +134,7 @@ def sign_in_view(request):
             return render(request, 'user/signin.html', context={'form': form, 'view_title': f'رايكم في | تسجيل الدخول'})
     else:
         form = SigninForm(use_required_attribute=False)
-        context = {'form': form, 'view_title': f'رايكم في | تسجيل الدخول'}
+        context = {'form': form, 'view_title': f'رايكم في | تسجيل الدخول', 'url_name': 'signin_view'}
         if request.user.is_anonymous and 'next' in request.GET:
             messages.success(
                 request, 'يجب عليك تسجيل الدخول أولا', extra_tags='pale-yellow w3-border')
@@ -190,7 +190,7 @@ def sign_up_view(request):
 
     else:
         form = SignupForm(use_required_attribute=False)
-        return render(request, 'user/register.html', context={'form': form})
+        return render(request, 'user/register.html', context={'form': form, 'url_name': 'signup_view'})
 
 @login_required
 @ratelimit(key='ip', rate='50/m', block=True)
@@ -312,7 +312,7 @@ def create_post(request):
             return render(request, 'sections/create_post.html', context={'form': form, 'view_title': f'رايكم في | إستفسار جديد'})
     else:
         form = NewPostForm(use_required_attribute=False)
-        return render(request, 'sections/create_post.html', context={'form': form, 'view_title': f'رايكم في | إستفسار جديد'})
+        return render(request, 'sections/create_post.html', context={'form': form, 'view_title': f'رايكم في | إستفسار جديد', 'url_name': 'ask_people_view'})
 
 @login_required
 @ratelimit(key='ip', rate='50/m', block=True)
@@ -445,7 +445,6 @@ def confirm_new_email(request, uid, token, new_email):
     try:
         user = User.objects.get(id=uid)
         current_date_and_time = timezone.now()
-        set_trace()
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
     if user is not None and current_date_and_time < user.verification_code_expire and user.verification_code == token:
@@ -558,7 +557,6 @@ def activate(request, uid, token):
     try:
         user = User.objects.get(id=uid)
         current_date_and_time = timezone.now()
-        set_trace()
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
     if user is not None and current_date_and_time < user.verification_code_expire and user.verification_code == token:
@@ -598,40 +596,48 @@ def restore_password(request, uid, token):
 @ratelimit(key='ip', rate='50/m', block=True)
 def send_link(request):
     if request.method == 'POST':
-        token = secrets.token_hex(20)
-        current_site = get_current_site(request)
-        email = request.POST.get('email')
-        if email.find('@') == -1:
+        try:
+            token = secrets.token_hex(20)
+            current_site = get_current_site(request)
+            email = request.POST.get('email')
+            if email.find('@') == -1:
+                messages.success(
+                    request, 'أدخل بريد إلكتروني صحيح, أعد المحاولة مرة أخرى', extra_tags='pale-red w3-border')
+                return redirect('raykomfi:user-signin')
+            to_email = email
+            user = get_object_or_404(User, email=to_email)
+            if user.email_active == True:
+                return redirect('raykomfi:user-signin')
+            user.verification_code = token
+            current_date_and_time =timezone.now()
+            hours_added = timezone.timedelta(hours=1)
+            user.verification_code_expire = current_date_and_time + hours_added
+            user.save()
+            mail_subject = 'تفعيل حسابك على رايكم في'
+            from_email = 'no-reply@raykomfi.com'
+            # Send data to email template and get email template.
+            html_email_template = get_template("user/acc_activate_email.html").render(
+                {
+                    'site': SimpleLazyObject(lambda: get_current_site(request)),
+                    'user': user,
+                    'uid': user.id,
+                    'token': token
+                }
+            )
+            # send email
+            send_email(html_email_template=html_email_template, mail_subject=mail_subject, to_email=to_email, from_email=from_email, token=token)
             messages.success(
-                request, 'أدخل بريد إلكتروني صحيح, أعد المحاولة مرة أخرى', extra_tags='pale-red w3-border')
+                request, 'تم إرسال رابط التفعيل الى بريدك الإلكتروني', extra_tags='pale-green w3-border')
+            return HttpResponseRedirect(reverse('raykomfi:user-signin'))
+        except:
             return redirect('raykomfi:user-signin')
-        to_email = email
-        user = get_object_or_404(User, email=to_email)
-        user.verification_code = token
-        current_date_and_time =timezone.now()
-        hours_added = timezone.timedelta(hours=1)
-        user.verification_code_expire = current_date_and_time + hours_added
-        user.save()
-        mail_subject = 'تفعيل حسابك على رايكم في'
-        from_email = 'no-reply@raykomfi.com'
-        # Send data to email template and get email template.
-        html_email_template = get_template("user/acc_activate_email.html").render(
-            {
-                'site': SimpleLazyObject(lambda: get_current_site(request)),
-                'user': user,
-                'uid': user.id,
-                'token': token
-            }
-        )
-         # send email
-        send_email(html_email_template=html_email_template, mail_subject=mail_subject, to_email=to_email, from_email=from_email, token=token)
-        messages.success(
-            request, 'تم إرسال رابط التفعيل الى بريدك الإلكتروني', extra_tags='pale-green w3-border')
-        return HttpResponseRedirect(reverse('raykomfi:user-signin'))
         
 
     else:
         return render(request, 'user/activate_account.html')
+
+def privacy_policy_view(request):
+    return render(request, 'sections/privacy_policy.html')
 
 def not_found_handler(request):
     return JsonResponse({'message': ''}, status=status.HTTP_404_NOT_FOUND)

@@ -2,6 +2,8 @@ from django.contrib import admin
 from .models import User, Post, Message, Reply, Comment, Category
 from admin_auto_filters.filters import AutocompleteFilter
 
+
+
 class PostFilter(AutocompleteFilter):
     title = 'صاحب المنشور' # display title
     field_name = 'creator' # name of the foreign key field

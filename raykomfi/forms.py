@@ -57,14 +57,18 @@ class SignupForm(UserCreationForm):
              'bio': {
                 'maxlength-message': "تعديت الحد المسموح",
             },
+            'accepted_conditions_terms': {
+                'required-message': "يجب عليك الموافقة على السياسة والشروط لإستخدام المنصة",
+                'required': True
+            },
         }
         fields = ('username', 'password1', 'password2',
-                  'email', 'first_name', 'last_name', 'country', 'bio', )
+                  'email', 'first_name', 'last_name', 'country', 'bio', 'accepted_conditions_terms')
 
     def __init__(self, *args, **kwargs):
         super(SignupForm, self).__init__(*args, **kwargs)
 
-        for fieldname in ['username', 'first_name', 'last_name', 'country', 'bio', 'email', 'password1', 'password2']:
+        for fieldname in ['username', 'first_name', 'last_name', 'country', 'bio', 'email', 'password1', 'password2', 'accepted_conditions_terms']:
             if fieldname == 'username':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'اسم المستخدم'
@@ -99,6 +103,18 @@ class SignupForm(UserCreationForm):
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'تأكيد كلمة المرور'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
+            if fieldname == 'accepted_conditions_terms':
+                self.fields[fieldname].label = ''
+                self.fields[fieldname].widget.attrs['class'] = 'w3-check raykomfi-margin-small w3-border'
+
+    def clean_accepted_conditions_terms(self, *args, **kwargs):
+        accepted_conditions_terms = self.cleaned_data.get('accepted_conditions_terms')
+
+        if accepted_conditions_terms == False:
+            raise forms.ValidationError(
+                    "يجب عليك الموافقة على السياسة والشروط لإستخدام المنصة")
+
+        return accepted_conditions_terms
 
 @parsleyfy
 class ProfileForm(forms.ModelForm):

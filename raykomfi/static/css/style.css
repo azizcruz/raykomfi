@@ -34,6 +34,10 @@ div {
   color: #484848 !important;
 }
 
+.raykomfi-bold {
+  font-weight: 700 !important;
+}
+
 .hide-overflow {
   overflow: hidden;
 }
@@ -583,6 +587,13 @@ select:focus {
 /* Notifications Modal Styles */
 
 /* Home Style */
+
+.categorized-text {
+  padding: 8px;
+  background-color: #2196f3;
+  color: #fff !important;
+  display: inline-block;
+}
 .ray-box {
   padding: 16px 0;
   transition: background-color 0.2s ease-in-out;

@@ -7,9 +7,20 @@
 <meta name="robots" content="noindex">
 <html dir="rtl">
 <title> {{ view_title }}</title>
+{% if url_name == 'signup_view' %}
+<meta name="description" property="og:description" content="إنظم إلى مجتمع رايكم في وأبدأ بتسجيل حساب جديد">
+{% elif url_name == 'signin_view' %}
+<meta name="description" property="og:description"
+    content="تسجيل الدخول الى رايكم في للبدأ في إستفسار الناس المراد إستفسارهم عن ما تريد">
+{% elif url_name == 'categorized_view' %}
+<meta name="description" property="og:description" content="بحث عن إستفسارات حسب التصنيف {{ category }}">
+{% else %}
 <meta name="description" property="og:description" content="منصة تجمع المشترين لمناقشة وأخذ
  آراء أناس إشتروا نفس الشيء من قبل">
-<meta name="keywords" content="رايكم في, مارأيك, وش رايك , شو رايكم , جوالات, سيارات, منزلي, كتب ,أغذية, غسالات, كمبيوترات, مكيفات, ملابس">
+{% endif %}
+
+<meta name="keywords"
+    content="رايكم في, مارايكم, وش رايكم في , شو رايكم في, ايش رايكم في, جوالات, سيارات, منزلي, كتب ,أغذية, غسالات, كمبيوترات, مكيفات, ملابس">
 {% if url_name == 'post_view' %}
 <meta name="author" content="{{ post.creator.username }}">
 <meta property="og:url" content="{{ post.get_twitter_url }}" />
@@ -92,7 +103,7 @@
         </div>
     </div>
     <nav class="w3-sidebar w3-bar-block w3-collapse w3-card" id="mySidebar">
-        <a href="/"><img src="{% static 'img/raykomfi.png' %}" class="logo"></a>
+        <a href="/"><img src="{% static 'img/logo.png' %}" class="logo" alt="شعار رايكم في"></a>
         <a class="w3-bar-item w3-large" href="#">
             <input type="hidden" name="" id="csrf_token" value="{{ csrf_token }}">
             {% if user.is_authenticated %}
@@ -145,13 +156,13 @@
                     <a href="https://twitter.com/raykomfi" target="_blank" title="تويتر رايكم في"><i
                             class="fa fa-twitter"></i></a>
                 </div>
-                <div>
+                <!-- <div>
                     <a href=""><i class="fa fa-instagram" title="انستغرام رايكم في"></i></a>
-                </div>
+                </div> -->
             </div>
             <div class="raykomfi-rights">
-                <div class="center">جميع الحقوق محفوظة لصاحب الموقع</div>
-                <div class="center"><a href="">سياسة و شروط الموقع</a></div>
+                <div class="center w3-small">جميع الحقوق محفوظة لصاحب الموقع</div>
+                <div class="center w3-small"><a href="{% url 'raykomfi:usage-terms' %}">سياسة و شروط المنصة</a></div>
             </div>
     </nav>
 
@@ -188,15 +199,14 @@
 
         <div class="cookie-message">
             <p class="center">
-                عندما يقوم شخص ما بزيارة موقعنا على الويب، نستخدم خدمة طرف ثالث لجمع معلومات قياسية
+                عندما يقوم شخص ما بزيارة موقعنا على الويب، نستخدم ملفات تعريف الارتباط على الويب و خدمة طرف ثالث لتحسين
+                تجربة المستخدم و لجمع معلومات قياسية
                 عن سجل الإنترنت وتفاصيل أنماط سلوك الزائر. نحن نفعل ذلك للسماح
                 لنا بتتبع عدد الزوار إلى أجزاء مختلفة من المواقع وفهم كيفية استخدام موقعنا على الانترنت. نحن لا نقوم بأي
                 محاولة لمعرفة هويات أو طبيعة أولئك الذين يزورون موقعنا. لن نشارك معلوماتك مع أي منظمات أخرى لأغراض
                 التسويق أو أبحاث السوق أو الأغراض التجارية، ولا نقوم بتمرير بياناتك إلى مواقع ويب أخرى.
             </p>
-
-            <div class="cookie-close-button center">أوافق</div>
-            <div class="cookie-close-button center" id="i-dont-want-cookies">أرفض</div>
+            <div class="cookie-close-button center">أتفهم ذلك</div>
         </div>
     </div>
     {% compress js %}

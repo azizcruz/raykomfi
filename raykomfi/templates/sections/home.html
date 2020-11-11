@@ -122,7 +122,6 @@
                 <button class="w3-button w3-center z-depth-2"><i class="fa fa-plus" aria-hidden="true"></i>
                 </button>
             </a>
-            </a>
         </div>
 
         {% else %}
@@ -130,6 +129,9 @@
             <p class="w3-center">فعل حسابك للإستفسار الناس عن ما تريد الشراء</p>
         </div>
         {% endif %}
+        {% endif %}
+        {% if url_name == 'categorized_view' %}
+        <div class="categorized-text">التصنيف {{ category }}</div>
         {% endif %}
         <div id="raykomfi-posts">
             {% for post in posts %}
