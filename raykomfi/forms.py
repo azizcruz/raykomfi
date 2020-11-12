@@ -24,6 +24,8 @@ class SignupForm(UserCreationForm):
     last_name = forms.CharField(required=False, widget=forms.TextInput())
     country = forms.CharField(required=False,
                               widget=forms.HiddenInput())
+    continent = forms.CharField(required=False,
+                              widget=forms.HiddenInput())
     bio = forms.CharField(required=False, max_length=144,
                           widget=forms.Textarea())
     email = forms.EmailField(label='', validators=[validate_email], widget=forms.TextInput(), error_messages={
@@ -63,12 +65,12 @@ class SignupForm(UserCreationForm):
             },
         }
         fields = ('username', 'password1', 'password2',
-                  'email', 'first_name', 'last_name', 'country', 'bio', 'accepted_conditions_terms')
+                  'email', 'first_name', 'last_name', 'country', 'continent', 'bio', 'accepted_conditions_terms')
 
     def __init__(self, *args, **kwargs):
         super(SignupForm, self).__init__(*args, **kwargs)
 
-        for fieldname in ['username', 'first_name', 'last_name', 'country', 'bio', 'email', 'password1', 'password2', 'accepted_conditions_terms']:
+        for fieldname in ['username', 'first_name', 'last_name', 'country', 'continent', 'bio', 'email', 'password1', 'password2', 'accepted_conditions_terms']:
             if fieldname == 'username':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'اسم المستخدم'
@@ -83,8 +85,10 @@ class SignupForm(UserCreationForm):
                 self.fields[fieldname].label = 'الاسم الأخير'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'country':
-                self.fields[fieldname].widget.attrs['placeholder'] = ''
-                self.fields[fieldname].label = 'الدولة'
+                self.fields[fieldname].label = 'c'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
+            if fieldname == 'continent':
+                self.fields[fieldname].label = 'c'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'email':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
@@ -115,6 +119,15 @@ class SignupForm(UserCreationForm):
                     "يجب عليك الموافقة على السياسة والشروط لإستخدام المنصة")
 
         return accepted_conditions_terms
+
+    # def clean_continent(self, *args, **kwargs):
+    #     continent = self.cleaned_data.get('continent')
+
+    #     if continent == 'Europe':
+    #         raise forms.ValidationError(
+    #                 "لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في المنصة")
+
+    #     return continent
 
 @parsleyfy
 class ProfileForm(forms.ModelForm):

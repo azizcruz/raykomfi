@@ -289,4 +289,4 @@ SECURE_SSL_REDIRECT = False
 # CSP_FORM_ACTION = ("'self'", )
 # CSP_INCLUDE_NONCE_IN = ('script-src',)
 
-COMPRESS_OFFLINE = True
+# COMPRESS_OFFLINE = True

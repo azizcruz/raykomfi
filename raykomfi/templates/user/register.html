@@ -13,12 +13,14 @@
                 {% if field.field.widget.input_type == 'checkbox' %}
                 <div class="w3-col">
                 {{ field }}
-                <a href="{% url 'raykomfi:usage-terms' %}" target="_blank">أتعهد بالموافقة على سياسة و شروط المنصة</a>
+                <a href="{% url 'raykomfi:usage-terms' %}" target="_blank">أوافق على سياسات و شروط المنصة</a>
                 </div>
                 {% else %}
-                {{ field.errors }}
-                {{ field.label_tag }} <br />
+                {% if field.label != 'c' %}
+                    {{ field.label_tag }} <br />
+                {% endif %}
                 {{ field }}
+                {{ field.errors }}
                 {% endif %}
                 {% endfor %}
                 <div class="col s12">

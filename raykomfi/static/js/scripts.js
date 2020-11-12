@@ -129,7 +129,10 @@ $(".lazy-img").Lazy({
 });
 
 // Get country
-if (!sessionStorage.getItem("country")) {
+if (
+  !sessionStorage.getItem("country") &&
+  !sessionStorage.getItem("continent")
+) {
   let options = {
     method: "GET",
     hostname: "freegeoip.app",
@@ -143,16 +146,59 @@ if (!sessionStorage.getItem("country")) {
   axios
     .get("https://freegeoip.app/json/")
     .then((data) => {
+      console.log(data);
       sessionStorage.setItem("country", data.data.country_name);
+      sessionStorage.setItem("continent", data.data.time_zone.split("/")[0]);
     })
     .catch((err) => {
       console.log(err);
     });
 }
 
-let countryInput = $("#id_country");
-if (countryInput) {
+var countryInput = $("#id_country");
+var continentInput = $("#id_continent");
+var registerForm = $("#raykomfi-register-form");
+var signinForm = $("#signin-form");
+function createCookie(name,value,days) {
+  if (days) {
+      var date = new Date();
+      date.setTime(date.getTime()+(days*24*60*60*1000));
+      var expires = "; expires="+date.toGMTString();
+  }
+  else var expires = "";
+  document.cookie = name+"="+value+expires+"; path=/";
+}
+function eraseCookie(name) {
+  createCookie(name, "", -1);
+}
+if (countryInput && continentInput) {
   countryInput.val(sessionStorage.getItem("country"));
+  continentInput.val(sessionStorage.getItem("continent"));
+  // if (registerForm[0] && sessionStorage.getItem("continent") == "Europe") {
+    // var len = registerForm[0].length;
+    // for (var i = 0; i < len; ++i) {
+    //   registerForm[0][i].readOnly = true;
+    // }
+    // registerForm.append(
+    //   '<p class="red white-text center">لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في المنصة</p>'
+    // );
+  // }
+
+  // if (signinForm[0] && sessionStorage.getItem("continent") == "Europe") {
+    // var len = signinForm[0].length;
+    // for (var i = 0; i < len; ++i) {
+    //   signinForm[0][i].readOnly = true;
+    // }
+    // signinForm.append(
+    //   '<p class="red white-text center">لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في المنصة</p>'
+    // );
+  // }
+
+  // if (sessionStorage.getItem("continent") == "Europe") { 
+  //   var cookies = document.cookie.split(";");
+  //   for (var i = 0; i < cookies.length; i++)
+  //     eraseCookie(cookies[i].split("=")[0]);
+  // }
 }
 
 // notifications feeds
@@ -306,7 +352,6 @@ if (postTitle.length > 0) {
     });
   }
 }
-
 
 // Opinion power starts algorithm
 generateStars();

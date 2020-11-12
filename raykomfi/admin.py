@@ -22,8 +22,8 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ("category", "created", "isActive", PostFilter)
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email')
-    search_fields = ['email']
+    list_display = ('username', 'email', 'continent')
+    search_fields = ['email', 'continent']
     list_filter = ("email_active", "stay_logged_in", "isBlocked")
 
 class MessageAdmin(admin.ModelAdmin):

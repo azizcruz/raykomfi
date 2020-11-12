@@ -40,6 +40,7 @@ from .background_tasks import send_email, send_notify
 from ratelimit.decorators import ratelimit
 from django.http import JsonResponse
 from rest_framework import status
+from random import randint
 
 
 
@@ -198,10 +199,15 @@ def delete_user(request, id):
     user = User.objects.get(id=id)
     question = request.GET['question']
     if question != 'true':
+        rand_num = randint(100000, 999999)
         user.is_active = False
+        user.first_name = ""
+        user.last_name = ""
+        user.email = f"{rand_num}@delete_user.com"
+        user.username = f"{rand_num}_deleted_user"
         user.save()
         messages.success(
-                request, 'تم حذف حسابك, لكن إستفساراتك, تعليقاتك و ردودك ستبقى لكن بدون إسمك الشخصي, في حال قررت إسترجاع حسابك يرجى التواصل مع الدعم support@raykomfi.com', extra_tags='pale-green w3-border')
+                request, 'تم حذف حسابك, لكن إستفساراتك, تعليقاتك و ردودك ستبقى لكن بدون إسمك الشخصي.', extra_tags='pale-green w3-border')
         return redirect('raykomfi:user-signin')
     else:
         return render(request, 'sections/are_you_sure.html')
