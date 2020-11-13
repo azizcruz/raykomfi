@@ -24,6 +24,9 @@ from twitter import *
 from dotenv import load_dotenv
 load_dotenv()
 import os
+import pytz
+
+utc=pytz.UTC
 
 BASE_URL = 'https://raykomfi.com' if os.getenv('environment') == 'prod' else 'http://localhost:8000'
 
@@ -66,6 +69,20 @@ class User(AbstractUser):
 
     def get_absolute_url(self):
         return reverse('raykomfi:user-profile', args=[self.id])
+
+    def online(self):
+        if self.last_login:
+            now = datetime.datetime.now()
+            last_seen = cache.get(f'seen_{self.username}')
+            if not last_seen:
+                return False
+
+            if last_seen.replace(microsecond = 0).replace(tzinfo=None) == now.replace(microsecond = 0):
+                return True
+            else:
+                return False
+        else:
+            return False 
 
 class Category(models.Model):
 

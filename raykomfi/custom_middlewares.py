@@ -31,3 +31,14 @@ class AutoLogout(object):
             request.session['last_touch'] = datetime.now().isoformat()
 
         return self.get_response(request)
+
+class ActiveUserMiddleware:             
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        current_user = request.user
+        if request.user.is_authenticated:
+            now = datetime.now()
+            cache.set('seen_%s' % (current_user.username), now)
+        return self.get_response(request)

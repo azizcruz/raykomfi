@@ -154,7 +154,7 @@
                     <div class="w3-col s10 m11 l11" id="comment-id-{{comment.id}}">
                         <div class="comment-side">
                             {% if comment.user and reply.user.is_active != False %}
-                            <a href="{% url 'raykomfi:user-profile' id=comment.post.creator.id %}" class="writer-name">
+                            <a href="{% url 'raykomfi:user-profile' id=comment.user.id %}" class="writer-name">
                                 <div class="name">
                                     <i class="fa fa-user" aria-hidden="true"></i>
                                     {{comment.user.username}}

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block content %}
 <div class="w3-row w3-white raykomfi-main-padding  raykomfi-max-width z-depth-1 user-profile">
@@ -6,7 +7,12 @@
     <div class="w3-col s12 m6 l6">
         <div class="w3-center">
             <i class="fa fa-user-circle-o large-font profile-icon" aria-hidden="true"></i>
-            <h1 class="w3-xxxlarge">{{user.username}}</h1>
+            <h2 class=""><br>{{user.username}}</h2>
+            {% if user.online %}
+            <div><i class="fa fa-circle green-text w3-medium" aria-hidden="true"></i> متصل حاليا</div>
+            {% else %}
+            <div> {{ user.last_signin }} آخر ظهور</div>
+            {% endif %}
             <!-- <h4 class="w3-xlarge">رمز العضو <br> {{ user.uuid }}</h4> -->
             <h4 class="w3-xlarge">قوة آرائي<br></h4>
             <div class="opinion-power">
@@ -55,8 +61,15 @@
         <div class="w3-center">
             <i class="fa fa-user-circle-o large-font profile-icon" aria-hidden="true"></i>
             <h1 class="w3-xxxlarge">{{profile.username}}</h1>
-            <h3 class="w3-xlarge">رمز العضو <br> {{ profile.uuid }}</h3>
-            <div class="card-panel white raykomfi-main-color">{{ profile.bio }}</div>
+            {% if profile.online %}
+            <div><i class="fa fa-circle green-text w3-medium" aria-hidden="true"></i> متصل حاليا</div>
+            {% else %}
+            <div class="raykomfi-main-background-color w3-padding white-text"> آخر ظهور | <span class='created-time white-text'>{{profile.last_login | naturaltime}}</span></div>
+            {% endif %}
+            <!-- <h3 class="w3-xlarge">رمز العضو <br> {{ profile.uuid }}</h3> -->
+            {% if profile.bio %}
+            <div class="card-panel blue white-text raykomfi-main-color center">{{ profile.bio }}</div>
+            {% endif %}
         </div>
     </div>
     <div class="w3-col s12 m6 l6 profile-view-data">
@@ -68,7 +81,7 @@
                 {{ profile.last_name }} {% endif %}</p>
             <hr>
             <p><span class="title">قوة الرأي</span><span class="opinion-power">{{profile.user_trust}}</span></p>
-            {% if user.email_active %}
+            {% if user.email_active and profile.allow_messages == True %}
             <a href="{% url 'raykomfi:new-message' code=profile.uuid %}" class="w3-button raykomfi-button ">
                 إرسال رسالة
             </a>
@@ -77,6 +90,7 @@
         <br>
         <h3>إستفسارات {{profile.username}}</h3>
         <div class="user-posts-wrapper">
+            {% if profile.posts.all %}
             {% for post in profile.posts.all %}
             <a href="{{ post.get_absolute_url }}">
                 <div class="z-depth-1 raykomfi-main-background-color white-text">
@@ -84,6 +98,9 @@
                 </div>
             </a>
             {% endfor %}
+            {% else %}
+            <div class="center">لا يوجد إستفسارات لهذا العضو</div>
+            {% endif %}
         </div>
     </div>
     {% endif %}
