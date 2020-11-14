@@ -6,3 +6,5 @@ env
 media
 node_modules
 .env
+CACHE
+cache
