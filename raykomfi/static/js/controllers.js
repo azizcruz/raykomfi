@@ -403,3 +403,37 @@ $(document).on("submit", "form.reportForm", function (e) {
       });
   }
 });
+
+// Delete Notifications
+$(document).on("click", "#delete-all-notis", function (e) {
+    axios({
+      method: "DELETE",
+      url: "/api/notifications/delete",
+      headers: {
+        "X-CSRFTOKEN": Cookies.get("csrftoken"),
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        let deleteBtn = $("#delete-all-notis");
+        let deleteBtnVal = deleteBtn.text()
+        deleteBtn.attr("disabled", true);
+        deleteBtn.text(response.data.message);
+        $(".live_notify_list").html("<div>لا يوجد لديك إشعارات حاليا</div>")
+        setTimeout(() => {
+          deleteBtn.attr("disabled", false);
+          deleteBtn.text(deleteBtnVal);
+        }, 2000);
+      })
+      .catch((err) => {
+        if (
+          err.response.status === 403 &&
+          err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+        ) {
+          custom_alert(
+            "محاولات متكررة, يرجى المحاولة لاحقا",
+            "<i class='fa fa-warning'></i>"
+          );
+        }
+      });
+});

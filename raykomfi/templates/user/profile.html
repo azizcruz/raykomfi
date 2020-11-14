@@ -64,7 +64,7 @@
             {% if profile.online %}
             <div><i class="fa fa-circle green-text w3-medium" aria-hidden="true"></i> متصل حاليا</div>
             {% else %}
-            <div class="raykomfi-main-background-color w3-padding white-text"> آخر ظهور | <span class='created-time white-text'>{{profile.last_login | naturaltime}}</span></div>
+            <div class="raykomfi-main-background-color w3-padding white-text raykomfi-inline-block"> آخر ظهور | <span class='created-time white-text'>{{profile.last_login | naturaltime}}</span></div>
             {% endif %}
             <!-- <h3 class="w3-xlarge">رمز العضو <br> {{ profile.uuid }}</h3> -->
             {% if profile.bio %}

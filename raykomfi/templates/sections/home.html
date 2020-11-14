@@ -2,6 +2,7 @@
 {% load thumbnail %}
 {% load humanize %}
 {% load hitcount_tags %}
+{% load static %}
 
 
 {% block content %}
@@ -31,6 +32,9 @@
         </div>
     </div>
     <div class="w3-col s12 m8 l6 ray ">
+        <div class="w3-row center w3-hide-large w3-hide-medium ">
+            <a href="/"><img src="{% static 'img/logo.png' %}" class="logo logo-mobile" alt="شعار رايكم في"></a>
+        </div>
         <div class="w3-row">
             <div class="w3-bar w3-white  ray-order z-depth-1">
                 <div class="w3-bar-item  w3-right"> <a href="/" class="order-btn"><button

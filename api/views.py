@@ -26,6 +26,7 @@ from django.core.cache import cache
 from notifications.signals import notify
 from django.middleware.csrf import get_token
 from raykomfi.background_tasks import send_notify
+from notifications.models import Notification
 
 
 
@@ -464,3 +465,15 @@ class ReportView(APIView):
             report = Report.objects.create(user=request.user, content=serializer.validated_data['content'], topic=serializer.validated_data['topic'], reported_url=serializer.validated_data['reported_url'])
             notify.send(request.user, recipient=admin ,action_object=report, description=serializer.validated_data['reported_url'], target=report, verb='report')
             return JsonResponse({'message': 'تم الإبلاغ'})
+
+
+class NotificationView(APIView):
+    '''
+    Notification View
+    '''
+    permission_classes = [permissions.IsAuthenticated]
+
+    @method_decorator(ratelimit(key='ip', rate='5/m', block=True))
+    def delete(self, request):
+        Notification.objects.filter(recipient=request.user).delete()
+        return JsonResponse({'message': 'تم الحذف'})

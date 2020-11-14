@@ -36,7 +36,7 @@
             </form>
             {% if user.is_authenticated %}
             <button class="btn red raykomfi-report-btn comment-action-btn"
-                onclick="document.getElementById('reportReply').style.display='block'">إبلاغ</button>
+                onclick="document.getElementById('reportComment').style.display='block'">إبلاغ</button>
             {% if comment.user.id == user.id %}
             <button class="btn green raykomfi-report-btn comment-action-btn edit-comment-btn"
                 data-comment-id="{{ comment.id }}" data-content="{{comment.content}}">تعديل </button>

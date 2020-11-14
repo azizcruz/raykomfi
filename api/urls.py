@@ -22,5 +22,6 @@ urlpatterns = [
     path('comments/search', views.SearchCommentsView.as_view()),
     path('post/image', views.UploadImageView.as_view()),
     path('report/', views.ReportView.as_view()),
+    path('notifications/delete', views.NotificationView.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
