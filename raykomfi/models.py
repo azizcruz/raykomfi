@@ -28,7 +28,7 @@ import pytz
 
 utc=pytz.UTC
 
-BASE_URL = 'https://raykomfi.com' if os.getenv('environment') == 'prod' else 'http://localhost:8000'
+BASE_URL = 'https://azizlioua111.pythonanywhere.com' if os.getenv('environment') == 'prod' else 'http://localhost:8000'
 
 
 
