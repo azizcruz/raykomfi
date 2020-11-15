@@ -26,8 +26,13 @@
 <meta property="og:url" content="{{ post.get_twitter_url }}" />
 <meta property="og:title" content="{{ post.title }}" />
 <meta property="og:image" content="{% static 'img/meta_image.png' %}" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@raykomfi" />
+<meta property="twitter:title" content="{{ post.title }}" />
+{% post.content %}
+<meta name="twitter:description" content="{{ post.content }}" />
+{% endif %}
 <meta name="twitter:image" content="{% static 'img/meta_image.png' %}" />
-<meta name="twitter:card" content="{% static 'img/meta_image.png' %}" />
 <meta property="twitter:image:alt" content="{{ post.title }}" />
 <meta property="og:image:alt" content="{{ post.title }}" />
 <meta name="twitter:site" content="{{ post.creator.username }}" />
