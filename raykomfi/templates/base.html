@@ -29,7 +29,7 @@
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@raykomfi" />
 <meta property="twitter:title" content="{{ post.title }}" />
-{% post.content %}
+{% if post.content %}
 <meta name="twitter:description" content="{{ post.content }}" />
 {% endif %}
 <meta name="twitter:image" content="{% static 'img/meta_image.png' %}" />
