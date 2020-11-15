@@ -1,5 +1,5 @@
 // Default base url for axios
-axios.defaults.baseURL = "http://localhost:8000";
+// axios.defaults.baseURL = "http://localhost:8000";
 
 // Open and close the sidebar on medium and small screens
 function w3_open() {
