@@ -33,7 +33,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.106']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'azizlioua111.pythonanywhere.com']
 
 
 # Application definition
@@ -178,14 +178,13 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 
 STATIC_URL = '/static/'
-STATIC_ROOT = 'raykomfi/static/'
+STATIC_ROOT = os.path.dirname(__file__) + '/static/'
 
 COMPRESS_ENABLED = True
 COMPRESS_ROOT = STATIC_ROOT
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    '/var/www/static/',
 ]
 
 STATICFILES_FINDERS = (
@@ -253,14 +252,15 @@ REST_FRAMEWORK = {
 # Cors settings
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
+    "https://azizlioua111.pythonanywhere.com"
 ]
 
 
-DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-GS_BUCKET_NAME = os.getenv("GS_BUCKET_NAME")
-GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
-    json.loads(os.getenv("GS_CREDENTIALS"))
-)
+# DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+# GS_BUCKET_NAME = os.getenv("GS_BUCKET_NAME")
+# GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
+#     json.loads(os.getenv("GS_CREDENTIALS"))
+# )
 
 # Image resize
 DJANGORESIZED_DEFAULT_SIZE = [900, 600]
