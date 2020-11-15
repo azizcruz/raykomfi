@@ -20,6 +20,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 from raykomfi.sitemaps import PostSitemap
+from dotenv import load_dotenv
+load_dotenv()
+import os
+
 
 
 import debug_toolbar
@@ -32,7 +36,7 @@ urlpatterns = [
     path('sitemap.xml/', sitemap, {'sitemaps': sitemaps},
 			name='django.contrib.sitemaps.views.sitemap'),
     path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
-    path('ahlanwasahlan/', admin.site.urls),
+    path(os.getenv("ADMIN_URL"), admin.site.urls),
     path('', include('raykomfi.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include('api.urls')),

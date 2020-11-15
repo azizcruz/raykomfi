@@ -34,7 +34,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'azizlioua111.pythonanywhere.com']
-
+print(os.getenv("ADMIN_URL"))
 
 # Application definition
 
@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debug_toolbar',
+    # 'debug_toolbar',
     'django.contrib.humanize',
     'raykomfi',
     'api',

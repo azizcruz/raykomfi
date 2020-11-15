@@ -57,5 +57,5 @@ urlpatterns = [
     path('user/messages/<int:user_id>/<int:message_id>', views.messages_view, name='get-message'),
     path('user/messages/new/<uuid:code>', views.new_message_view, name='new-message'),
 
-    path('/usage-terms/', views.privacy_policy_view, name='usage-terms')
+    path('usage-terms/', views.privacy_policy_view, name='usage-terms')
 ]
