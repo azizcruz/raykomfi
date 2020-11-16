@@ -113,7 +113,7 @@
         </div>
         {% endif %}
         {% if not user.is_authenticated %}
-        <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
+        <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper register-message">
             <p class="w3-center"><a href="{% url 'raykomfi:user-register' %}" class="w3-text-blue">سجل حساب جديد</a> أو
                 <a href="{% url 'raykomfi:user-signin' %}" class="w3-text-blue">سجل الدخول</a> لإستفسار الناس عن ما تريد
                 الشراء</p>

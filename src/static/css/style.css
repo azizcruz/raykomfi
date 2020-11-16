@@ -393,10 +393,14 @@ footer {
   margin-top: 10px;
 }
 
-
 .message-wrapper {
-  margin-top: 0px !important;
+  margin-top: 0px;
 }
+
+.register-message {
+  margin-top: 16px;
+}
+
 .message-wrapper span.w3-button:hover {
   background-color: transparent !important;
 }
