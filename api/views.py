@@ -27,6 +27,8 @@ from notifications.signals import notify
 from django.middleware.csrf import get_token
 from raykomfi.background_tasks import send_notify
 from notifications.models import Notification
+from dotenv import load_dotenv
+load_dotenv()
 
 
 
@@ -139,39 +141,41 @@ class BestUsers(APIView):
     def get(self, request, format=None):
         today_date = timezone.now()
         current_best_users = cache.get('best_users')
-        if current_best_users and current_best_users['last_time_checked'] + datetime.timedelta(days=32) < today_date:
+        if current_best_users and current_best_users['last_time_checked'] + datetime.timedelta(days=30) < today_date:
             return Response(current_best_users['best_users'])
         else:
-            best_users = User.objects.filter(
-                my_comments__created__lte=timezone.now(),
-                my_comments__created__gt=timezone.now()-datetime.timedelta(days=30),
-                ).annotate(Sum('my_comments__votes')).order_by('-my_comments__votes__sum')[:10]
+            if datetime.datetime.today().day == 1:
+                best_users = User.objects.filter(
+                    my_comments__created__lte=timezone.now(),
+                    my_comments__created__gt=timezone.now()-datetime.timedelta(days=30),
+                    ).annotate(Sum('my_comments__votes')).order_by('-my_comments__votes__sum')[:10]
 
-            users_list = {'best_users': [], 'last_time_checked': today_date}
-            obj = {}
-            for rank, user in enumerate(best_users):
-                if user.last_time_best_user == None or user.my_comments__votes__sum > 0.0:
-                    if rank + 1 in [1, 2]:
-                        if (user.user_trust == 6.0 and user.user_trust > -1.0) and (user.last_time_best_user + datetime.timedelta(days=32) < today_date) or user.last_time_best_user == None:
-                            if user.user_trust == 5.5:
-                                user.user_trust = 6.0
-                            else:
-
-                                user.user_trust += 1.0
-                            user.last_time_best_user = today_date
-                    else:
-                        if (user.user_trust < 7.0 and user.user_trust > -1.0) and (user.last_time_best_user + datetime.timedelta(days=32) < today_date) or user.last_time_best_user == None:
-                            user.user_trust += 0.5
-                            user.last_time_best_user = today_date
-                    user.save()
-                    obj['username'] = user.username
-                    obj['id'] = user.id
-                    obj['my_comments__votes__sum'] = user.my_comments__votes__sum
-                    obj['last_time_best_user'] = user.last_time_best_user
-                    users_list['best_users'].append(obj)
-                    obj = {}
-            cache.set('best_users', users_list)
-            return Response(users_list['best_users'])
+                users_list = {'best_users': [], 'last_time_checked': today_date}
+                obj = {}
+                for rank, user in enumerate(best_users):
+                    if user.last_time_best_user == None or user.my_comments__votes__sum > 0.0:
+                        if rank + 1 in [1, 2]:
+                            if (user.user_trust == 6.0 and user.user_trust > -1.0) and (user.last_time_best_user + datetime.timedelta(days=30) < today_date) or user.last_time_best_user == None:
+                                if user.user_trust == 5.5:
+                                    user.user_trust = 6.0
+                                else:
+                                    user.user_trust += 1.0
+                                user.last_time_best_user = today_date
+                        else:
+                            if (user.user_trust < 7.0 and user.user_trust > -1.0) and (user.last_time_best_user + datetime.timedelta(days=30) < today_date) or user.last_time_best_user == None:
+                                user.user_trust += 0.5
+                                user.last_time_best_user = today_date
+                        user.save()
+                        obj['username'] = user.username
+                        obj['id'] = user.id
+                        obj['my_comments__votes__sum'] = user.my_comments__votes__sum
+                        obj['last_time_best_user'] = user.last_time_best_user
+                        users_list['best_users'].append(obj)
+                        obj = {}
+                cache.set('best_users', users_list)
+                return Response(users_list['best_users'])
+            else:
+                return Response({'last_time_checked': '', 'best_users': []})
 
 
 class CommentsView(APIView):
@@ -461,7 +465,7 @@ class ReportView(APIView):
     def post(self, request):
         serializer = serializers.ReportSerializer(data=request.data)
         if serializer.is_valid():
-            admin = User.objects.get(username="admin")
+            admin = User.objects.get(email=os.getenv('ADMIN_EMAIL'))
             report = Report.objects.create(user=request.user, content=serializer.validated_data['content'], topic=serializer.validated_data['topic'], reported_url=serializer.validated_data['reported_url'])
             notify.send(request.user, recipient=admin ,action_object=report, description=serializer.validated_data['reported_url'], target=report, verb='report')
             return JsonResponse({'message': 'تم الإبلاغ'})

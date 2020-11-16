@@ -393,6 +393,10 @@ footer {
   margin-top: 10px;
 }
 
+
+.message-wrapper {
+  margin-top: 0px !important;
+}
 .message-wrapper span.w3-button:hover {
   background-color: transparent !important;
 }

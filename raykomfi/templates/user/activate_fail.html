@@ -6,7 +6,7 @@
     <div class="row raykomfi-main-padding  raykomfi-max-width">
         <div class="w3-col s12 m6 l8">&nbsp;</div>
         <div class="w3-col s12 m6 l4">
-            <p class="w3-center">رابط منتهي الصلاحية, إضغط لطلب رابط جديد</p>
+            <p class="w3-center w3-pannel message-wrapper red white-text">رابط منتهي الصلاحية, إضغط لطلب رابط جديد</p>
             <form action="{% url 'raykomfi:user-send-link' %}" method='post' id="failedActivationForm">
                 {% csrf_token %}
                 <label for="">البريد الإلكتروني</label>
