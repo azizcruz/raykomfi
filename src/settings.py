@@ -34,7 +34,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.getenv("environment") == 'development' else False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'azizlioua111.pythonanywhere.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'azizlioua111.pythonanywhere.com', 'www.raykomfi.com']
 
 # Application definition
 
@@ -251,7 +251,7 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
     "https://azizlioua111.pythonanywhere.com",
-    "https://raykomfi.com"
+    "https://www.raykomfi.com"
 ]
 
 
@@ -278,16 +278,17 @@ if os.getenv('environment') == 'prod':
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_SSL_REDIRECT = True
     CSP_DEFAULT_SRC = ("'none'", )
-    CSP_STYLE_SRC = ("'self'", "fonts.googleapis.com", "'sha256-/3kWSXHts8LrwfemLzY9W0tOv5I4eLIhrf0pT8cU0WI='", "https://www.w3schools.com/w3css/4/w3.css")
-    CSP_SCRIPT_SRC = ("'self'", "ajax.googleapis.com", "www.googletagmanager.com", "www.google-analytics.com")
-    CSP_IMG_SRC = ("'self'", "data:", "www.googletagmanager.com", "www.google-analytics.com")
-    CSP_FONT_SRC = ("'self'", "fonts.gstatic.com")
+    CSP_STYLE_SRC = ("'self'",)
+    CSP_SCRIPT_SRC = ("'self'",)
+    CSP_IMG_SRC = ("'self'", "data:",)
+    CSP_FONT_SRC = ("'self'",)
     CSP_CONNECT_SRC = ("'self'", )
     CSP_OBJECT_SRC = ("'none'", )
     CSP_BASE_URI = ("'none'", )
     CSP_FRAME_ANCESTORS = ("'none'", )
     CSP_FORM_ACTION = ("'self'", )
     CSP_INCLUDE_NONCE_IN = ('script-src',)
+
 
 # Number of seconds of inactivity before a user is marked offline
 USER_ONLINE_TIMEOUT = 300
