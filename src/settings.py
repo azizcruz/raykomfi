@@ -183,7 +183,8 @@ COMPRESS_ENABLED = True
 COMPRESS_ROOT = STATIC_ROOT
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    BASE_DIR / "static",
+    '/var/www/static/',
 ]
 
 STATICFILES_FINDERS = (
