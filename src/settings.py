@@ -17,7 +17,8 @@ from google.oauth2 import service_account
 from dotenv import load_dotenv
 import json
 load_dotenv()
-
+import mimetypes
+mimetypes.add_type("text/css", ".css", True)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
