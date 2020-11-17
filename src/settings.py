@@ -31,7 +31,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True if os.getenv("environment") == 'development' else False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'azizlioua111.pythonanywhere.com']
 
@@ -251,7 +251,8 @@ REST_FRAMEWORK = {
 # Cors settings
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
-    "https://azizlioua111.pythonanywhere.com"
+    "https://azizlioua111.pythonanywhere.com",
+    "https://raykomfi.com"
 ]
 
 
@@ -270,26 +271,25 @@ DJANGORESIZED_DEFAULT_KEEP_META = True
 
 RATELIMIT_VIEW='raykomfi.views.suspicious_limit'
 
-CSRF_COOKIE_SECURE = False
-SESSION_COOKIE_SECURE = False
-SECURE_BROWSER_XSS_FILTER = False
-SECURE_CONTENT_TYPE_NOSNIFF = False
-SECURE_SSL_REDIRECT = False
-
 # Content Security Policy
-# CSP_DEFAULT_SRC = ("'none'", )
-# CSP_STYLE_SRC = ("'self'", "fonts.googleapis.com", "'sha256-/3kWSXHts8LrwfemLzY9W0tOv5I4eLIhrf0pT8cU0WI='", "https://www.w3schools.com/w3css/4/w3.css")
-# CSP_SCRIPT_SRC = ("'self'", "ajax.googleapis.com", "www.googletagmanager.com", "www.google-analytics.com")
-# CSP_IMG_SRC = ("'self'", "data:", "www.googletagmanager.com", "www.google-analytics.com")
-# CSP_FONT_SRC = ("'self'", "fonts.gstatic.com")
-# CSP_CONNECT_SRC = ("'self'", )
-# CSP_OBJECT_SRC = ("'none'", )
-# CSP_BASE_URI = ("'none'", )
-# CSP_FRAME_ANCESTORS = ("'none'", )
-# CSP_FORM_ACTION = ("'self'", )
-# CSP_INCLUDE_NONCE_IN = ('script-src',)
-
-# COMPRESS_OFFLINE = True
+if os.getenv('environment') == 'prod':
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_SSL_REDIRECT = True
+    CSP_DEFAULT_SRC = ("'none'", )
+    CSP_STYLE_SRC = ("'self'", "fonts.googleapis.com", "'sha256-/3kWSXHts8LrwfemLzY9W0tOv5I4eLIhrf0pT8cU0WI='", "https://www.w3schools.com/w3css/4/w3.css")
+    CSP_SCRIPT_SRC = ("'self'", "ajax.googleapis.com", "www.googletagmanager.com", "www.google-analytics.com")
+    CSP_IMG_SRC = ("'self'", "data:", "www.googletagmanager.com", "www.google-analytics.com")
+    CSP_FONT_SRC = ("'self'", "fonts.gstatic.com")
+    CSP_CONNECT_SRC = ("'self'", )
+    CSP_OBJECT_SRC = ("'none'", )
+    CSP_BASE_URI = ("'none'", )
+    CSP_FRAME_ANCESTORS = ("'none'", )
+    CSP_FORM_ACTION = ("'self'", )
+    CSP_INCLUDE_NONCE_IN = ('script-src',)
+    COMPRESS_OFFLINE = True
 
 # Number of seconds of inactivity before a user is marked offline
 USER_ONLINE_TIMEOUT = 300
