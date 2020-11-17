@@ -289,7 +289,6 @@ if os.getenv('environment') == 'prod':
     CSP_FRAME_ANCESTORS = ("'none'", )
     CSP_FORM_ACTION = ("'self'", )
     CSP_INCLUDE_NONCE_IN = ('script-src',)
-    COMPRESS_OFFLINE = True
 
 # Number of seconds of inactivity before a user is marked offline
 USER_ONLINE_TIMEOUT = 300
