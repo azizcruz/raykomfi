@@ -184,7 +184,6 @@ COMPRESS_ROOT = STATIC_ROOT
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    '/var/www/static/',
 ]
 
 STATICFILES_FINDERS = (
