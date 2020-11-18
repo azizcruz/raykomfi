@@ -129,7 +129,7 @@ def sign_in_view(request):
                         return HttpResponseRedirect(reverse('raykomfi:raykomfi-home'))
             else:
                 messages.success(
-                    request, 'اسم المستخدم أو كلمة المرور خاطئة', extra_tags='pale-red w3-border')
+                    request, 'البريد إلكتروني أو كلمة المرور خاطئة', extra_tags='pale-red w3-border')
                 return render(request, 'user/signin.html', context={'form': form, 'view_title': f'رايكم في | تسجيل الدخول'})
         else:
             return render(request, 'user/signin.html', context={'form': form, 'view_title': f'رايكم في | تسجيل الدخول'})
@@ -613,6 +613,8 @@ def send_link(request):
             to_email = email
             user = get_object_or_404(User, email=to_email)
             if user.email_active == True:
+                messages.success(
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
                 return redirect('raykomfi:user-signin')
             user.verification_code = token
             current_date_and_time =timezone.now()
