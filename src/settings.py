@@ -298,3 +298,20 @@ USER_ONLINE_TIMEOUT = 300
 USER_LASTSEEN_TIMEOUT = 60 * 60 * 24 * 7
 
 SITE_ID=os.getenv('SITE_ID')
+
+LOGGING = {                                                                                                                 
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'logfile': {
+            'class': 'logging.FileHandler',
+            'filename': 'server.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['logfile'],
+        },
+    },
+}
+
