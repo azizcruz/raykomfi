@@ -180,7 +180,7 @@ if (countryInput && continentInput) {
     //   registerForm[0][i].readOnly = true;
     // }
     // registerForm.append(
-    //   '<p class="red white-text center">لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في المنصة</p>'
+    //   '<p class="red white-text center">لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في الموقع</p>'
     // );
   // }
 
@@ -190,7 +190,7 @@ if (countryInput && continentInput) {
     //   signinForm[0][i].readOnly = true;
     // }
     // signinForm.append(
-    //   '<p class="red white-text center">لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في المنصة</p>'
+    //   '<p class="red white-text center">لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في الموقع</p>'
     // );
   // }
 

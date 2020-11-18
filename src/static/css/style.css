@@ -1065,7 +1065,7 @@ input ~ .parsley-errors-list.filled {
   max-height: 500px;
   min-width: 100%;
   max-width: 400px;
-  overflow-y: scroll;
+  word-break: break-all;
 }
 
 .message-view-preview {

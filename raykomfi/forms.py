@@ -60,7 +60,7 @@ class SignupForm(UserCreationForm):
                 'maxlength-message': "تعديت الحد المسموح",
             },
             'accepted_conditions_terms': {
-                'required-message': "يجب عليك الموافقة على السياسة والشروط لإستخدام المنصة",
+                'required-message': "يجب عليك الموافقة على السياسة والشروط لإستخدام الموقع",
                 'required': True
             },
         }
@@ -116,7 +116,7 @@ class SignupForm(UserCreationForm):
 
         if accepted_conditions_terms == False:
             raise forms.ValidationError(
-                    "يجب عليك الموافقة على السياسة والشروط لإستخدام المنصة")
+                    "يجب عليك الموافقة على السياسة والشروط لإستخدام الموقع")
 
         return accepted_conditions_terms
 
@@ -125,7 +125,7 @@ class SignupForm(UserCreationForm):
 
     #     if continent == 'Europe':
     #         raise forms.ValidationError(
-    #                 "لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في المنصة")
+    #                 "لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في الموقع")
 
     #     return continent
 

@@ -41,7 +41,7 @@ from ratelimit.decorators import ratelimit
 from django.http import JsonResponse
 from rest_framework import status
 from random import randint
-
+import os
 
 
 
@@ -731,7 +731,6 @@ def send_link(request):
     if request.method == 'POST':
         try:
             token = secrets.token_hex(20)
-            current_site = get_current_site(request)
             email = request.POST.get('email')
             if email.find('@') == -1:
                 messages.success(
