@@ -106,7 +106,7 @@ def profile_view(request, id):
                                 use_required_attribute=False)
                 return render(request, 'user/profile.html', {'form': form, 'view_title': f'رايكم في | { request.user.username }'})
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ",e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -154,7 +154,7 @@ def sign_in_view(request):
                 return redirect('/')
             return render(request, 'user/signin.html', context=context)
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ",e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -167,7 +167,7 @@ def user_logout(request):
             request, 'تم تسجيل الخروج', extra_tags='pale-green w3-border')
         return HttpResponseRedirect('/user/signin/')
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -213,7 +213,7 @@ def sign_up_view(request):
             form = SignupForm(use_required_attribute=False)
             return render(request, 'user/register.html', context={'form': form, 'url_name': 'signup_view'})
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -238,7 +238,7 @@ def delete_user(request, id):
         else:
             return render(request, 'sections/are_you_sure.html')
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -284,7 +284,7 @@ def post_view(request, id, slug):
 
         return render(request, 'sections/post_view.html', context=context)
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -298,7 +298,7 @@ def my_posts_view(request, user_id):
         count = Post.objects.prefetch_related('creator', 'category', 'comments').filter(creator__id=user_id).count()
         return render(request, 'sections/user_posts.html', context={'posts': posts, 'count_posts': count, 'view_title': f'رايكم في | إستفساراتي'})
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -311,7 +311,7 @@ def my_comments_view(request, user_id):
         count = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id).count()
         return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count, 'view_title': f'رايكم في | آرائي'})
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -324,7 +324,7 @@ def my_comments_most_replied_view(request, user_id):
         count = 0
         return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count, 'view_title': f'رايكم في | آرائي الأكثر ردا'})
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -337,7 +337,7 @@ def my_comments_most_voted_view(request, user_id):
         count = 0
         return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count, 'view_title': f'رايكم في | آرائي الأكثر تصويتا'})
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -364,7 +364,7 @@ def post_edit(request, id, slug):
             form = NewPostForm(instance=instance, use_required_attribute=False)
             return render(request, 'sections/edit_post.html', context={'form': form, 'post': post, 'view_title': f'رايكم في | {post.title}'})
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -388,7 +388,7 @@ def create_post(request):
             form = NewPostForm(use_required_attribute=False)
             return render(request, 'sections/create_post.html', context={'form': form, 'view_title': f'رايكم في | إستفسار جديد', 'url_name': 'ask_people_view'})
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -417,7 +417,7 @@ def change_password_view(request):
                 'form': form, 'view_title': f'رايكم في | تغيير كلمة المرور'
             })
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -449,7 +449,7 @@ def restore_password_view(request):
             else:
                 return redirect('raykomfi:user-signin')
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -492,7 +492,7 @@ def forgot_password_view(request):
             form = CustomPasswordResetForm(use_required_attribute=False)
             return render(request, 'user/forgot_password.html', context={'form': form, 'view_title': f'رايكم في | نسيت كلمة المرور'})
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -537,7 +537,7 @@ def change_email_view(request):
             form = ChangeEmailForm(use_required_attribute=False, request=request)
             return render(request, 'user/change_email.html', context={'form': form, 'view_title': f'رايكم في | تغيير البريد الإلكتروني'})
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -577,7 +577,7 @@ def messages_view(request, user_id, message_id=0):
             user_messages = Message.objects.filter(receiver__exact=user_id)
             return render(request, 'sections/messages.html', {'user_messages': user_messages, 'view_title': f'رايكم في | الرسائل'})
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -603,7 +603,7 @@ def new_message_view(request, code):
             form = MessageForm(use_required_attribute=False)
             return render(request, 'sections/new_message.html', context={'form': form, 'receiver': receiver, 'view_title': f'رايكم في | رسالة جديدة'})
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -626,7 +626,7 @@ def add_comment(request, post_id):
         else:
             return render(request, 'sections/post_view.html', {'post': post, 'comment_form': comment_form})
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -660,7 +660,7 @@ def comment_vote(request, comment_id):
 
         return redirect(comment.post.get_absolute_url())
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -681,7 +681,7 @@ def add_reply(request, post_id, comment_id):
         else:
             return render(request, 'sections/post_view.html', {'post': post, 'comment_form': comment_form, 'reply_form': reply_form})
     except Exception as e:
-        print(e)
+        print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
@@ -765,7 +765,7 @@ def send_link(request):
                 request, 'تم إرسال رابط التفعيل الى بريدك الإلكتروني', extra_tags='pale-green w3-border')
             return HttpResponseRedirect(reverse('raykomfi:user-signin'))
         except Exception as e:
-            print(e)
+            print("Exception ========>>>>>>>>> ", e)
             messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
             return redirect('raykomfi:user-signin')
