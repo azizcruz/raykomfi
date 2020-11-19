@@ -40,10 +40,13 @@
                 </label>
                 {{ field.label }}
             </div>
-            {% elif field.name == 'email' %}
+            {% elif field.name == 'bio' %} <br />
             {{ field.errors }}
             {{ field.label_tag }} <br />
             {{ field }}
+            <br>
+            <div for="">البريد الإلكتروني</div>
+            <div class="w3-border w3-padding"> {{ user.email }}</div>
             <a href="{% url 'raykomfi:user-change-email' %}" class="w3-button raykomfi-button z-depth-1">تغيير البريد
                 الإلكتروني</a>
             <br>

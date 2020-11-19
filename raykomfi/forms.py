@@ -138,10 +138,6 @@ class ProfileForm(forms.ModelForm):
         label='', required=False, widget=forms.TextInput())
     bio = forms.CharField(label='', required=False,
                           max_length=144, widget=forms.Textarea())
-    email = forms.EmailField(label='', validators=[validate_email], widget=forms.TextInput(), error_messages={
-        'unique': _("البريد الإلكتروني موجود مسبقا"),
-        'invalid': _("بريد إلكتروني غير صالح"),
-    })
 
 
     class Meta:
@@ -157,7 +153,7 @@ class ProfileForm(forms.ModelForm):
                 'maxlength-message': "تعديت الحد المسموح",
             },
         }
-        fields = ('username', 'email', 'first_name',
+        fields = ('username', 'first_name',
                   'last_name', 'bio', 'stay_logged_in', 'get_notifications', 'hide_name', 'allow_messages')
 
     def __init__(self, *args, **kwargs):
@@ -176,10 +172,6 @@ class ProfileForm(forms.ModelForm):
             if fieldname == 'last_name':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].label = 'الاسم الأخير'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
-            if fieldname == 'email':
-                self.fields[fieldname].widget.attrs['placeholder'] = ''
-                self.fields[fieldname].label = 'الايميل'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'bio':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''

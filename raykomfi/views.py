@@ -90,7 +90,6 @@ def profile_view(request, id):
                 request.user.first_name = form.cleaned_data['first_name']
                 request.user.last_name = form.cleaned_data['last_name']
                 request.user.bio = form.cleaned_data['bio']
-                request.user.email = form.cleaned_data['email']
                 request.user.save()
                 messages.success(
                     request, 'تم الحفظ بنجاح', extra_tags='pale-green w3-border')
@@ -137,7 +136,8 @@ def sign_in_view(request):
                             return HttpResponseRedirect(reverse('raykomfi:raykomfi-home'))
                 else:
                     messages.success(
-                        request, 'البريد إلكتروني أو كلمة المرور خاطئة', extra_tags='pale-red w3-border')
+                        request, 'البريد الإكتروني أو كلمة المرور خاطئة', extra_tags='pale-red w3-border')
+                    form = SigninForm(use_required_attribute=False)
                     return render(request, 'user/signin.html', context={'form': form, 'view_title': f'رايكم في | تسجيل الدخول'})
             else:
                 return render(request, 'user/signin.html', context={'form': form, 'view_title': f'رايكم في | تسجيل الدخول'})
@@ -530,7 +530,7 @@ def change_email_view(request):
                 messages.success(
                     request, 'تم إرسال رابط  تأكيد البريد الإلكتروني إلى بريدك الإلكتروني الجديد', extra_tags='pale-green w3-border')
 
-                return HttpResponseRedirect('/user/signin')
+                return HttpResponseRedirect('/')
             else:
                 return render(request, 'user/change_email.html', context={'form': form, 'view_title': f'رايكم في | تغيير البريد الإلكتروني'})
         else:
