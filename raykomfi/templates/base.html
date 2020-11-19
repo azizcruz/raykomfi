@@ -4,7 +4,7 @@
 {% load compress %}
 
 <!DOCTYPE html>
-<html dir="rtl">
+<html dir="rtl" lang="ar">
 <title> {{ view_title }}</title>
 {% if url_name == 'signup_view' %}
 <meta name="description" property="og:description" content="إنظم إلى مجتمع رايكم في وأبدأ بتسجيل حساب جديد">
@@ -29,7 +29,8 @@
 <meta name="og:description" content="موقع تجمع المشترين لمناقشة وأخذ
 آراء أناس إشتروا نفس الشيء من قبل" />
 {% endif %}
-<meta property="og:image" content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
+<meta property="og:image"
+    content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
 <meta property="og:url" content="{{ post.get_twitter_url }}" />
 <meta property="twitter:title" content="{{ post.title }}" />
 {% if post.content %}
@@ -38,7 +39,8 @@
 <meta name="twitter:description" content="موقع تجمع المشترين لمناقشة وأخذ
 آراء أناس إشتروا نفس الشيء من قبل" />
 {% endif %}
-<meta name="twitter:image" content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
+<meta name="twitter:image"
+    content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content="@raykomfi">
 {% endif %}
@@ -164,8 +166,10 @@
             <div class="">
                 <div class="center w3-small"><span class="raykomfi-bold">للتواصل</span></div>
                 <div class="center w3-small"> <a href="mailto:info@raykomfi.com" class="">info@raykomfi.com</a></div>
-                <div class="center w3-small w3-margin-top"><span class="raykomfi-bold">للتبيلغ عن المشاكل في الموقع</span></div>
-                <div class="center w3-small"> <a href="mailto:support@raykomfi.com" class="">support@raykomfi.com</a></div>
+                <div class="center w3-small w3-margin-top"><span class="raykomfi-bold">للتبيلغ عن المشاكل في
+                        الموقع</span></div>
+                <div class="center w3-small"> <a href="mailto:support@raykomfi.com" class="">support@raykomfi.com</a>
+                </div>
             </div>
             <div class="raykomfi-social-media">
                 <div>
@@ -193,8 +197,10 @@
     <div class="w3-main raykomfi-main">
 
         <div id="myTop" class="w3-container w3-top w3-theme raykomfi-theme w3-large w3-row">
-            <i class="fa fa-bars w3-button w3-teal raykomfi-theme w3-hide-large w3-xxlarge remove-button-hover" onclick="w3_open()"></i>
-            <a href="/"><i class="fa fa-home w3-button w3-teal white-text raykomfi-theme w3-hide-large w3-xxlarge remove-button-hover"></i></a>
+            <i class="fa fa-bars w3-button w3-teal raykomfi-theme w3-hide-large w3-xxlarge remove-button-hover"
+                onclick="w3_open()"></i>
+            <a href="/"><i
+                    class="fa fa-home w3-button w3-teal white-text raykomfi-theme w3-hide-large w3-xxlarge remove-button-hover"></i></a>
         </div>
 
         <header class="w3-container w3-theme raykomfi-theme w3-hide-small w3-hide-medium w3-hide">
