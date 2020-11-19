@@ -23,8 +23,8 @@ window.onscroll = function () {
 // To be used for making AJAX requests in script.js
 window.CSRF_TOKEN = document.getElementById("csrf_token").innerHTML;
 
-let myTop = document.getElementById("myTop");
-let myIntro = document.getElementById("myIntro");
+var myTop = document.getElementById("myTop");
+var myIntro = document.getElementById("myIntro");
 
 if (myTop && myIntro) {
   function myFunction() {
@@ -114,8 +114,8 @@ $(document)
 
 // New message preview
 $("#new-message-content").on("keyup", (e) => {
-  let content = e.target.value;
-  let converter = new showdown.Converter();
+  var content = e.target.value;
+  var converter = new showdown.Converter();
   content = converter.makeHtml(content);
   $("#message-preview").html(content);
 });
@@ -133,7 +133,7 @@ if (
   !sessionStorage.getItem("country") &&
   !sessionStorage.getItem("continent")
 ) {
-  let options = {
+  var options = {
     method: "GET",
     hostname: "freegeoip.app",
     port: null,
@@ -278,8 +278,8 @@ function fill_notification_list_override(data) {
   }
 }
 
-let noti_btn = $(".noti-modal");
-let close_noti = $(".close-noti");
+var noti_btn = $(".noti-modal");
+var close_noti = $(".close-noti");
 
 noti_btn.on("click", () => {
   $(".noti-modal__overlay").show();
@@ -335,17 +335,17 @@ $("#search-btn").on("click", () => {
 fixTime();
 
 // Force Raykomfi in the beginning
-let postTitle = $("#create-post-form #id_title");
+var postTitle = $("#create-post-form #id_title");
 if (postTitle.length > 0) {
   if (postTitle.val().length < 1) {
     postTitle.val("رايكم في ");
     postTitle.on("keydown", (e) => {
-      let currentVal = e.target.value;
+      var currentVal = e.target.value;
       if (currentVal.length <= 9) {
         e.target.value = "رايكم في ";
       }
 
-      let count = (currentVal.match(/رايكم في/g) || []).length;
+      var count = (currentVal.match(/رايكم في/g) || []).length;
       if (count > 1) {
         postTitle.val("رايكم في");
       }
@@ -358,7 +358,7 @@ generateStars();
 
 // Highlight of the to div box
 if (window.location.hash) {
-  let anchor = $(window.location.hash);
+  var anchor = $(window.location.hash);
   $("html,body").animate({ scrollTop: anchor.offset().top - 50 }, "slow");
   setTimeout(() => {
     anchor
@@ -425,9 +425,9 @@ $("#i-dont-want-cookies").on("click", () => {
 
 // Edit comment
 $(document).on("click", ".edit-comment-btn", (e) => {
-  let commentContent = e.target.dataset.content;
-  let commentId = e.target.dataset.commentId;
-  let closestEditCommentForm = $(".edit-comment-btn")
+  var commentContent = e.target.dataset.content;
+  var commentId = e.target.dataset.commentId;
+  var closestEditCommentForm = $(".edit-comment-btn")
     .parent()
     .find(".editCommentForm-" + commentId);
   closestEditCommentForm[0][1].value = commentContent;
@@ -438,8 +438,8 @@ $(document).on("click", ".edit-comment-btn", (e) => {
 
 $(document).on("click", ".close-comment-edit-form", (e) => {
   e.preventDefault();
-  let commentId = e.target.dataset.commentId;
-  let closestEditCommentForm = $(".close-comment-edit-form")
+  var commentId = e.target.dataset.commentId;
+  var closestEditCommentForm = $(".close-comment-edit-form")
     .parent()
     .parent()
     .find(".editCommentForm-" + commentId);
@@ -451,9 +451,9 @@ $(document).on("click", ".close-comment-edit-form", (e) => {
 
 // Edit Reply
 $(document).on("click", ".edit-reply-btn", (e) => {
-  let replyContent = e.target.dataset.content;
-  let replyId = e.target.dataset.replyId;
-  let closestEditReplyForm = $(".edit-reply-btn")
+  var replyContent = e.target.dataset.content;
+  var replyId = e.target.dataset.replyId;
+  var closestEditReplyForm = $(".edit-reply-btn")
     .parent()
     .find(".editReplyForm-" + replyId);
   closestEditReplyForm[0][1].value = replyContent;
@@ -464,8 +464,8 @@ $(document).on("click", ".edit-reply-btn", (e) => {
 
 $(document).on("click", ".close-reply-edit-form", (e) => {
   e.preventDefault();
-  let replyId = e.target.dataset.replyId;
-  let closestEditReplyForm = $(".close-reply-edit-form")
+  var replyId = e.target.dataset.replyId;
+  var closestEditReplyForm = $(".close-reply-edit-form")
     .parent()
     .parent()
     .find(".editReplyForm-" + replyId);
