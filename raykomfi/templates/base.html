@@ -59,7 +59,14 @@
     <link rel="stylesheet" href="{% static 'css/cookiebar.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css'  %}">
     {% endcompress %}
-
+    <noscript>
+        <div class="container">
+            <div class="card-panel red white-text center">
+                <span>لإستخدام هذا الموقع, يرجى إعادة تفعيل الجافاسكربت في متصفحك
+                </span>
+            </div>
+        </div>
+    </noscript>
 </head>
 
 <body>
@@ -97,14 +104,6 @@
     {% endif %}
     <!--End of Notifications Modal -->
     <div id="overlay" class="w3-display-container">
-        <noscript>
-            <div class="container">
-                <div class="card-panel red white-text center">
-                    <span>لإستخدام هذا الموقع, يرجى إعادة تفعيل الجافاسكربت في متصفحك
-                    </span>
-                </div>
-            </div>
-        </noscript>
         <div class="w3-display-middle">
             <div class="sk-cube-grid">
                 <div class="sk-cube sk-cube1"></div>
