@@ -563,26 +563,26 @@ def confirm_new_email(request, uid, token, new_email):
                 request, 'رابط غير صالح, أعد المحاولة', extra_tags='pale-red w3-border')
         return redirect('raykomfi:user-signin')
 
-@ login_required
+@login_required
 @ratelimit(key='ip', rate='50/m', block=True)
 def messages_view(request, user_id, message_id=0):
     try:
         if request.method == 'POST':
+            user_messages = Message.objects.filter(receiver__id__exact=user_id)
+            return render(request, 'sections/messages.html', {'user_messages': user_messages, 'view_title': f'رايكم في | الرسائل'})
+        else:
             message = get_object_or_404(Message, id=message_id)
             message.is_read = True
             message.save()
             user_messages = Message.objects.filter(receiver__exact=user_id)
             return render(request, 'sections/messages.html', {'user_messages': user_messages, 'fetched_message': message, 'view_title': f'رايكم في | الرسائل'})
-        else:
-            user_messages = Message.objects.filter(receiver__exact=user_id)
-            return render(request, 'sections/messages.html', {'user_messages': user_messages, 'view_title': f'رايكم في | الرسائل'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
         return redirect('raykomfi:raykomfi-home')
         
-@ login_required
+@login_required
 @ratelimit(key='ip', rate='50/m', block=True)
 def new_message_view(request, code):
     try:

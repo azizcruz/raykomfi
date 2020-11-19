@@ -340,6 +340,7 @@ class GetMessageView(APIView):
     '''
     permission_classes = [permissions.IsAuthenticated]
 
+    @method_decorator(ratelimit(key='ip', rate='10/m', block=True))
     def post(self, request):
         serializer = serializers.GetMessageSerializer(data=request.data)
         if serializer.is_valid():
