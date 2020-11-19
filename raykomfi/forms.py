@@ -338,7 +338,7 @@ class NewPostForm(forms.ModelForm):
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'content':
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
-                self.fields[fieldname].label = ' نبذة عن الإستفسار'
+                self.fields[fieldname].label = ' نبذة عن الإستفسار (يسمح 400 حرف)'
             if fieldname == 'image_url':
                 self.fields[fieldname].label = 'رابط صورة '
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
