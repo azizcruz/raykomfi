@@ -5,58 +5,62 @@
 
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
-<title> {{ view_title }}</title>
-{% if url_name == 'signup_view' %}
-<meta name="description" property="og:description" content="إنظم إلى مجتمع رايكم في وأبدأ بتسجيل حساب جديد">
-{% elif url_name == 'signin_view' %}
-<meta name="description" property="og:description"
-    content="تسجيل الدخول الى رايكم في للبدأ في إستفسار الناس المراد إستفسارهم عن ما تريد">
-{% elif url_name == 'categorized_view' %}
-<meta name="description" property="og:description" content="بحث عن إستفسارات حسب التصنيف {{ category }}">
-{% else %}
-<meta name="description" property="og:description" content="موقع تجمع المشترين لمناقشة وأخذ
- آراء أناس إشتروا نفس الشيء من قبل">
-{% endif %}
 
-<meta name="keywords"
-    content="رايكم في, مارايكم, وش رايكم في , شو رايكم في, ايش رايكم في, جوالات, سيارات, منزلي, كتب ,أغذية, غسالات, كمبيوترات, مكيفات, ملابس">
-{% if url_name == 'post_view' %}
-<meta name="author" content="{{ post.creator.username }}">
-<meta property="og:title" content="{{ post.title }}" />
-{% if post.content %}
-<meta name="og:description" content="{{ post.content }}" />
-{% else %}
-<meta name="og:description" content="موقع تجمع المشترين لمناقشة وأخذ
-آراء أناس إشتروا نفس الشيء من قبل" />
-{% endif %}
-<meta property="og:image"
-    content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
-<meta property="og:url" content="{{ post.get_twitter_url }}" />
-<meta property="twitter:title" content="{{ post.title }}" />
-{% if post.content %}
-<meta name="twitter:description" content="{{ post.content }}" />
-{% else %}
-<meta name="twitter:description" content="موقع تجمع المشترين لمناقشة وأخذ
-آراء أناس إشتروا نفس الشيء من قبل" />
-{% endif %}
-<meta name="twitter:image"
-    content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:site" content="@raykomfi">
-{% endif %}
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-{% compress css %}
-<link rel="stylesheet" href="{% static 'css/w3.css'  %}">
-<link rel="stylesheet" href="{% static 'css/w3-colors-flat.css'  %}">
-<link rel="stylesheet" href="{% static 'css/w3-theme-teal.css'  %}">
-<link rel="stylesheet" href="{% static 'css/custom_materialize.css'  %}">
-<link rel="stylesheet" href="{% static 'css/cookiebar.min.css' %}">
-<link rel="stylesheet" href="{% static 'css/style.css'  %}">
-{% endcompress %}
+<head>
+    <title> {{ view_title }}</title>
+    {% if url_name == 'signup_view' %}
+    <meta name="description" property="og:description" content="إنظم إلى مجتمع رايكم في وأبدأ بتسجيل حساب جديد">
+    {% elif url_name == 'signin_view' %}
+    <meta name="description" property="og:description"
+        content="تسجيل الدخول الى رايكم في للبدأ في إستفسار الناس المراد إستفسارهم عن ما تريد">
+    {% elif url_name == 'categorized_view' %}
+    <meta name="description" property="og:description" content="بحث عن إستفسارات حسب التصنيف {{ category }}">
+    {% else %}
+    <meta name="description" property="og:description" content="موقع تجمع المشترين لمناقشة وأخذ
+         آراء أناس إشتروا نفس الشيء من قبل">
+    {% endif %}
+
+    <meta name="keywords"
+        content="رايكم في, مارايكم, وش رايكم في , شو رايكم في, ايش رايكم في, جوالات, سيارات, منزلي, كتب ,أغذية, غسالات, كمبيوترات, مكيفات, ملابس">
+    {% if url_name == 'post_view' %}
+    <meta name="author" content="{{ post.creator.username }}">
+    <meta property="og:title" content="{{ post.title }}" />
+    {% if post.content %}
+    <meta name="og:description" content="{{ post.content }}" />
+    {% else %}
+    <meta name="og:description" content="موقع تجمع المشترين لمناقشة وأخذ
+        آراء أناس إشتروا نفس الشيء من قبل" />
+    {% endif %}
+    <meta property="og:image"
+        content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
+    <meta property="og:url" content="{{ post.get_twitter_url }}" />
+    <meta property="twitter:title" content="{{ post.title }}" />
+    {% if post.content %}
+    <meta name="twitter:description" content="{{ post.content }}" />
+    {% else %}
+    <meta name="twitter:description" content="موقع تجمع المشترين لمناقشة وأخذ
+        آراء أناس إشتروا نفس الشيء من قبل" />
+    {% endif %}
+    <meta name="twitter:image"
+        content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@raykomfi">
+    {% endif %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'css/w3.css'  %}">
+    <link rel="stylesheet" href="{% static 'css/w3-colors-flat.css'  %}">
+    <link rel="stylesheet" href="{% static 'css/w3-theme-teal.css'  %}">
+    <link rel="stylesheet" href="{% static 'css/custom_materialize.css'  %}">
+    <link rel="stylesheet" href="{% static 'css/cookiebar.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css'  %}">
+    {% endcompress %}
+
+</head>
 
 <body>
     <!-- Alert Modal -->
