@@ -120,14 +120,14 @@ class SignupForm(UserCreationForm):
 
         return accepted_conditions_terms
 
-    # def clean_continent(self, *args, **kwargs):
-    #     continent = self.cleaned_data.get('continent')
+    def clean_continent(self, *args, **kwargs):
+        continent = self.cleaned_data.get('continent')
 
-    #     if continent == 'Europe':
-    #         raise forms.ValidationError(
-    #                 "لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في الموقع")
+        if continent == 'Europe':
+            raise forms.ValidationError(
+                    "لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في الموقع")
 
-    #     return continent
+        return continent
 
 @parsleyfy
 class ProfileForm(forms.ModelForm):
