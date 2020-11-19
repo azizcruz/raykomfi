@@ -153,7 +153,7 @@ class Post(models.Model, HitCountMixin):
             if prev_post_status != self.isActive and self.isActive == True:
                 # Post to twitter
                 t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
-                t.statuses.update(status=self.get_twitter_url(), media_ids="")
+                t.statuses.update(status=f'{self.title} \n {self.get_twitter_url()}', media_ids="")
 
                 prev_post_status = prev_post_status.values('isActive').first()['isActive']
                 admin = User.objects.get(email=os.getenv('ADMIN_EMAIL'))
