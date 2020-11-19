@@ -25,17 +25,14 @@
 <meta property="og:url" content="{{ post.get_twitter_url }}" />
 <meta property="og:title" content="{{ post.title }}" />
 <meta property="og:image" content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
+<meta property="og:image:alt" content="{{ post.title }}" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@raykomfi" />
 <meta property="twitter:title" content="{{ post.title }}" />
-{% if post.content %}
 <meta name="twitter:description" content="{{ post.content }}" />
-{% else %}
 <meta name="twitter:description" content="{{ post.title }}" />
-{% endif %}
-<meta name="twitter:image:src" content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
+<meta name="twitter:image" content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
 <meta property="twitter:image:alt" content="{{ post.title }}" />
-<meta property="og:image:alt" content="{{ post.title }}" />
 <meta name="twitter:site" content="{{ post.creator.username }}" />
 {% endif %}
 <meta name="viewport" content="width=device-width, initial-scale=1">
