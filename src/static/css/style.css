@@ -993,6 +993,7 @@ input ~ .parsley-errors-list.filled {
 
 .user-profile {
   padding: 15px !important;
+  word-break: break-all;
 }
 .another-user-profile {
   padding: 15px;
