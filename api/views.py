@@ -41,6 +41,7 @@ class LazyPostsView(APIView):
 
     queryset = Post.objects.all()
     permission_classes = [permissions.AllowAny]
+    authentication_classes = ()
 
     @method_decorator(ratelimit(key='ip', rate='100/m', block=True))
     def post(self, request, format=None):
@@ -86,6 +87,7 @@ class LazyCommentsView(APIView):
 
     queryset = Comment.objects.prefetch_related('comments__replies').all()
     permission_classes = [permissions.AllowAny]
+    authentication_classes = ()
 
     @method_decorator(ratelimit(key='ip', rate='100/m', block=True))
     def post(self, request, format=None):
