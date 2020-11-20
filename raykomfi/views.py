@@ -257,9 +257,9 @@ def post_view(request, id, slug):
                 slug__exact=slug)).first()
         rand_ids = Post.objects.select_related('creator', 'category').filter(category=post.category).values_list('id', flat=True)
         related_posts = []
-        if len(rand_ids) > 7:
+        if len(rand_ids) > 6:
             rand_ids = list(rand_ids)
-            rand_ids = sample(rand_ids, 7)
+            rand_ids = sample(rand_ids, 6)
             related_posts = Post.objects.select_related('creator', 'category').filter(id__in=rand_ids)
         comment_form = CommentForm()
         reply_form = ReplyForm()
