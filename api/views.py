@@ -50,11 +50,11 @@ class LazyPostsView(APIView):
         user_id = request.POST.get('user_id')
         posts = None
         if user_id != 'false':
-            posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(creator__id=int(user_id), isActive=True).order_by('comments__created')
+            posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(creator__id=int(user_id), isActive=True).order_by('-comments__created')
         elif category != 'false':
-            posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True).order_by('comments__created')
+            posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True).order_by('-comments__created')
         else:
-            posts = Post.objects.select_related('creator', 'category', 'comments').filter(isActive=True).order_by('comments__created')
+            posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).order_by('-comments__created')
         # use Django's pagination
         # https://docs.djangoproject.com/en/dev/topics/pagination/
         results_per_page = 8

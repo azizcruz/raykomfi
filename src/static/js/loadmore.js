@@ -47,6 +47,7 @@
         page: page,
         post_id: post_id,
         user_id: user_id,
+        csrfmiddlewaretoken: Cookies.get("csrftoken"), // from index.html
       },
       success: function (data) {
         // if there are still more pages to load,
