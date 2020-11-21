@@ -157,7 +157,7 @@
                     <h3>{{post.title |truncatechars:100}}</h3>
                     {% if post.image_url and post.image_source %}
                     <div class="ray-image-section">
-                        <img src="{{ post.image_url }}" alt="{{post.title}}"
+                        <img src="" alt="{{post.title}}" data-src="{{ post.image_url }}"
                             class="lazy-img w3-round-large">
                         <div>
                             <a href="{{ post.image_source }}" target="_blank">مصدر الصورة</a>
@@ -196,7 +196,7 @@
         {% else %}
         {% if is_categorized == True %}
         <div class="lazy-load-linkwrapper w3-center">
-            <a id="lazyLoadLink" class="w3-padding raykomfi-button z-depth-1" href="javascript:void(0);"
+            <a id="lazyLoadLink" class="w3-border w3-padding raykomfi-button z-depth-1" href="javascript:void(0);"
                 data-page="2" data-category="{{category}}">عرض المزيد</a>
         </div>
         {% else %}
