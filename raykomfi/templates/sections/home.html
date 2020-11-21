@@ -157,7 +157,7 @@
                     <h3>{{post.title |truncatechars:100}}</h3>
                     {% if post.image_url and post.image_source %}
                     <div class="ray-image-section">
-                        <img src="" alt="{{post.title}}" data-src="{{ post.image_url }}"
+                        <img src="{{ post.image_url }}" alt="{{post.title}}"
                             class="lazy-img w3-round-large">
                         <div>
                             <a href="{{ post.image_source }}" target="_blank">مصدر الصورة</a>
