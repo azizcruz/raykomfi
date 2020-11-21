@@ -57,9 +57,9 @@ def index(request):
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def categorized_posts(request, category=False):
-    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True)[:10]
+    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True)[:8]
     categories = Category.objects.all()
-    latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
+    latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:10]
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'is_categorized': True, 'category': category, 'view_title': f'رايكم في | { category }', 'url_name': 'categorized_view'})
 
 
@@ -67,7 +67,7 @@ def categorized_posts(request, category=False):
 def most_discussed_posts(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(count=Count('comments')).order_by('-count')
     categories = Category.objects.all()
-    latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
+    latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:10]
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True, 'view_title': 'رايكم في | الأكثر مناقشة', 'url_name': 'most_discussed_view'})
 
 
