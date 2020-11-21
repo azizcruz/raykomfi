@@ -57,7 +57,7 @@ class LazyPostsView(APIView):
             posts = Post.objects.select_related('creator', 'category').filter(isActive=True)
         # use Django's pagination
         # https://docs.djangoproject.com/en/dev/topics/pagination/
-        results_per_page = 10
+        results_per_page = 7
         paginator = Paginator(posts, results_per_page)
         try:
             posts = paginator.page(page)
