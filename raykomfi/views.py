@@ -50,7 +50,7 @@ from pdb import set_trace
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def index(request):
-    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True)[:10]
+    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True)[:8]
     latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').all().order_by('-created')[:10]
     categories = Category.objects.all()
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'view_title': 'رايكم في'})
