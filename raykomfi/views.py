@@ -57,7 +57,7 @@ def index(request):
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def categorized_posts(request, category=False):
-    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True)[:8]
+    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True)[:6]
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:10]
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'is_categorized': True, 'category': category, 'view_title': f'رايكم في | { category }', 'url_name': 'categorized_view'})
