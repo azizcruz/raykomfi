@@ -16,7 +16,7 @@
     {% elif url_name == 'categorized_view' %}
     <meta name="description" property="og:description" content="بحث عن إستفسارات حسب التصنيف {{ category }}">
     {% else %}
-    <meta name="description" property="og:description" content="موقع تجمع المشترين لمناقشة وأخذ
+    <meta name="description" property="og:description" content="منصة تجمع المشترين لمناقشة وأخذ
          آراء أناس إشتروا نفس الشيء من قبل">
     {% endif %}
 
@@ -28,7 +28,7 @@
     {% if post.content %}
     <meta name="og:description" content="{{ post.content }}" />
     {% else %}
-    <meta name="og:description" content="موقع تجمع المشترين لمناقشة وأخذ
+    <meta name="og:description" content="منصة تجمع المشترين لمناقشة وأخذ
         آراء أناس إشتروا نفس الشيء من قبل" />
     {% endif %}
     <meta property="og:image"
@@ -38,7 +38,7 @@
     {% if post.content %}
     <meta name="twitter:description" content="{{ post.content }}" />
     {% else %}
-    <meta name="twitter:description" content="موقع تجمع المشترين لمناقشة وأخذ
+    <meta name="twitter:description" content="منصة تجمع المشترين لمناقشة وأخذ
         آراء أناس إشتروا نفس الشيء من قبل" />
     {% endif %}
     <meta name="twitter:image"
@@ -62,7 +62,7 @@
     <noscript>
         <div class="container">
             <div class="card-panel red white-text center">
-                <span>لإستخدام هذا الموقع, يرجى إعادة تفعيل الجافاسكربت في متصفحك
+                <span>لإستخدام هذا المنصة, يرجى إعادة تفعيل الجافاسكربت في متصفحك
                 </span>
             </div>
         </div>
@@ -170,7 +170,7 @@
                 <div class="center w3-small"><span class="raykomfi-bold">للتواصل</span></div>
                 <div class="center w3-small"> <a href="mailto:info@raykomfi.com" class="">info@raykomfi.com</a></div>
                 <div class="center w3-small w3-margin-top"><span class="raykomfi-bold">للتبيلغ عن المشاكل في
-                        الموقع</span></div>
+                        المنصة</span></div>
                 <div class="center w3-small"> <a href="mailto:support@raykomfi.com" class="">support@raykomfi.com</a>
                 </div>
             </div>
@@ -188,8 +188,8 @@
                 </div> -->
             </div>
             <div class="raykomfi-rights">
-                <div class="center w3-small">جميع الحقوق محفوظة لصاحب الموقع</div>
-                <div class="center w3-small"><a href="{% url 'raykomfi:usage-terms' %}">سياسات و شروط إستخدام الموقع</a>
+                <div class="center w3-small">جميع الحقوق محفوظة لصاحب المنصة</div>
+                <div class="center w3-small"><a href="{% url 'raykomfi:usage-terms' %}">سياسات و شروط إستخدام المنصة</a>
                 </div>
             </div>
     </nav>
@@ -230,11 +230,11 @@
 
         <div class="cookie-message">
             <p class="center">
-                عندما يقوم شخص ما بزيارة موقعنا على الويب، نستخدم ملفات تعريف الارتباط على الويب و خدمة طرف ثالث لتحسين
+                عندما يقوم شخص ما بزيارة منصةنا على الويب، نستخدم ملفات تعريف الارتباط على الويب و خدمة طرف ثالث لتحسين
                 تجربة المستخدم و لجمع معلومات قياسية
                 عن سجل الإنترنت وتفاصيل أنماط سلوك الزائر. نحن نفعل ذلك للسماح
-                لنا بتتبع عدد الزوار إلى أجزاء مختلفة من المواقع وفهم كيفية استخدام موقعنا على الانترنت. نحن لا نقوم بأي
-                محاولة لمعرفة هويات أو طبيعة أولئك الذين يزورون موقعنا. لن نشارك معلوماتك مع أي منظمات أخرى لأغراض
+                لنا بتتبع عدد الزوار إلى أجزاء مختلفة من المواقع وفهم كيفية استخدام منصةنا على الانترنت. نحن لا نقوم بأي
+                محاولة لمعرفة هويات أو طبيعة أولئك الذين يزورون منصةنا. لن نشارك معلوماتك مع أي منظمات أخرى لأغراض
                 التسويق أو أبحاث السوق أو الأغراض التجارية، ولا نقوم بتمرير بياناتك إلى مواقع ويب أخرى.
             </p>
             <div class="cookie-close-button center">أتفهم ذلك</div>

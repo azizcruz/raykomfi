@@ -53,32 +53,43 @@ from pdb import set_trace
 @ratelimit(key='ip', rate='50/m', block=True)
 def index(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')[:8]
+    count = posts.count()
     latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').all().order_by('-created')[:10]
     categories = Category.objects.all()
-    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'view_title': 'رايكم في'})
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'view_title': 'رايكم في', 'count': count})
+
+def latest_posts(request):
+    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).order_by('-created')
+    count = posts.count()
+    latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').all().order_by('-created')[:10]
+    categories = Category.objects.all()
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'view_title': 'رايكم في', 'count': count})
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def categorized_posts(request, category=False):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')[:6]
+    count_categoized = posts.count()
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:10]
-    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'is_categorized': True, 'category': category, 'view_title': f'رايكم في | { category }', 'url_name': 'categorized_view'})
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'is_categorized': True, 'category': category, 'view_title': f'رايكم في | { category }', 'url_name': 'categorized_view', 'count_categorized': count_categoized})
 
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def most_discussed_posts(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(count=Count('comments')).order_by('-count')
+    count = posts.count()
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:10]
-    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True, 'view_title': 'رايكم في | الأكثر مناقشة', 'url_name': 'most_discussed_view'})
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True, 'view_title': 'رايكم في | الأكثر مناقشة', 'url_name': 'most_discussed_view', 'count': count})
 
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def most_searched_posts(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).order_by("-hit_count_generic__hits")[:10]
+    count = posts.count()
     categories = Category.objects.all()
-    latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:7]
-    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True, 'view_title': 'رايكم في | الأكثر بحثا', 'url_name': 'most_searched_view'})
+    latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:10]
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True, 'view_title': 'رايكم في | الأكثر بحثا', 'url_name': 'most_searched_view', 'count': count})
 
 @login_required
 @ratelimit(key='ip', rate='10/m', block=True)
@@ -705,7 +716,7 @@ def activate(request, uid, token):
         user.save()
         logout(request)
         messages.success(
-            request, 'تم تفعيل حسابك, يمكنك الان استخدام الموقع', extra_tags='pale-green w3-border')
+            request, 'تم تفعيل حسابك, يمكنك الان استخدام المنصة', extra_tags='pale-green w3-border')
         return redirect('raykomfi:user-signin')
     else:
         return render(request, 'user/activate_fail.html')

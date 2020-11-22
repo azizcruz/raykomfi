@@ -60,7 +60,7 @@ class SignupForm(UserCreationForm):
                 'maxlength-message': "تعديت الحد المسموح",
             },
             'accepted_conditions_terms': {
-                'required-message': "يجب عليك الموافقة على السياسة والشروط لإستخدام الموقع",
+                'required-message': "يجب عليك الموافقة على السياسة والشروط لإستخدام المنصة",
                 'required': True
             },
         }
@@ -116,7 +116,7 @@ class SignupForm(UserCreationForm):
 
         if accepted_conditions_terms == False:
             raise forms.ValidationError(
-                    "يجب عليك الموافقة على السياسة والشروط لإستخدام الموقع")
+                    "يجب عليك الموافقة على السياسة والشروط لإستخدام المنصة")
 
         return accepted_conditions_terms
 
@@ -125,7 +125,7 @@ class SignupForm(UserCreationForm):
 
         if continent == 'Europe':
             raise forms.ValidationError(
-                    "لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في الموقع")
+                    "لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في المنصة")
 
         return continent
 
@@ -343,7 +343,7 @@ class NewPostForm(forms.ModelForm):
                 self.fields[fieldname].label = 'رابط صورة '
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'image_source':
-                self.fields[fieldname].label = 'مصدر الصورة (رابط الموقع الذي تعرض منه الصورة "إذا كانت صورة تخصك يمكنك أن تضع رابط الصورة وسيتم التأكد منها")'
+                self.fields[fieldname].label = 'مصدر الصورة (رابط المنصة الذي تعرض منه الصورة "إذا كانت صورة تخصك يمكنك أن تضع رابط الصورة وسيتم التأكد منها")'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
 
     def clean_image_source(self):

@@ -49,6 +49,7 @@ urlpatterns = [
      path('user/most-voted-comments/<int:user_id>',
          views.my_comments_most_voted_view, name='most-voted-comments'), 
 
+    path('posts/latest', views.latest_posts, name='latest-posts'),
     path('posts/most-discussed', views.most_discussed_posts, name='most-discussed-posts'),
     path('posts/most-searched', views.most_searched_posts, name='most-searched-posts'),
     path('posts/<str:category>', views.categorized_posts, name='filtered-posts'),

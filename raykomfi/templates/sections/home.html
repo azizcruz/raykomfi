@@ -37,7 +37,7 @@
         </div>
         <div class="w3-row">
             <div class="w3-bar w3-white  ray-order z-depth-1">
-                <div class="w3-bar-item  w3-right"> <a href="/" class="order-btn"><button
+                <div class="w3-bar-item  w3-right"> <a href="{% url 'raykomfi:latest-posts' %}" class="order-btn"><button
                             class="w3-button  raykomfi-main-background-color z-depth-1"><i
                                 class="fa fa-sort-amount-desc" aria-hidden="true"></i>
                             الأحدث</button></a></div>
@@ -61,10 +61,12 @@
                     </div>
 
                 </div>
+                {% if url_name != 'categorized_view' %}
                 <div class="w3-bar-item w3-right">
                     <button class="w3-button  raykomfi-main-background-color order-btn" id="search-btn">
                         <i class="fa fa-search"></i> بحث </button>
                 </div>
+                {% endif %}
             </div>
         </div>
         <div class="w3-row" id="search-field-wrapper">
@@ -138,6 +140,7 @@
         <div class="categorized-text">التصنيف {{ category }}</div>
         {% endif %}
         <div id="raykomfi-posts">
+            {% if count > 0 or count_categorized > 0%}
             {% for post in posts %}
             <div class="w3-padding ray-box  z-depth-1">
                 {% if post.creator and post.creator.is_active != False %}
@@ -182,6 +185,9 @@
                 </a>
             </div>
             {% endfor %}
+            {% else %}
+            <p class="center">لا يوجد نتائج حاليا, كن أول من يستفسر</p>
+            {% endif %}
         </div>
         <div class="sk-chase" id="sk-chase">
             <div class="sk-chase-dot"></div>
@@ -191,7 +197,7 @@
             <div class="sk-chase-dot"></div>
             <div class="sk-chase-dot"></div>
         </div>
-        {% if hide_load_more == True %}
+        {% if hide_load_more == True or count < 8 or count_categorized < 6 %}
 
         {% else %}
         {% if is_categorized == True %}
