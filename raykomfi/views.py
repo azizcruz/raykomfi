@@ -581,14 +581,21 @@ def confirm_new_email(request, uid, token, new_email):
 def messages_view(request, user_id, message_id=0):
     try:
         if request.method == 'POST':
-            user_messages = Message.objects.filter(receiver__id__exact=user_id)
-            return render(request, 'sections/messages.html', {'user_messages': user_messages, 'view_title': f'رايكم في | الرسائل'})
-        else:
             message = get_object_or_404(Message, id=message_id)
             message.is_read = True
             message.save()
             user_messages = Message.objects.filter(receiver__exact=user_id)
             return render(request, 'sections/messages.html', {'user_messages': user_messages, 'fetched_message': message, 'view_title': f'رايكم في | الرسائل'})
+        else:
+            if message_id != 0:
+                message = get_object_or_404(Message, id=message_id)
+                message.is_read = True
+                message.save()
+                user_messages = Message.objects.filter(receiver__exact=user_id)
+                Notification.objects.filter(description=request.path).first().delete()
+                return render(request, 'sections/messages.html', {'user_messages': user_messages, 'fetched_message': message, 'view_title': f'رايكم في | الرسائل'})
+            user_messages = Message.objects.filter(receiver__id__exact=user_id)
+            return render(request, 'sections/messages.html', {'user_messages': user_messages, 'view_title': f'رايكم في | الرسائل'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
