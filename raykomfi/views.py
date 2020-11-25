@@ -266,8 +266,7 @@ def post_view(request, id, slug):
         else:
             post_comments = Comment.objects.filter(post__id=id)
         
-        post = Post.objects.select_related('creator', 'category').filter(Q(id__exact=id) & Q(
-                slug__exact=slug)).first()
+        post = Post.objects.select_related('creator', 'category').filter(Q(id__exact=id)).first()
         rand_ids = Post.objects.select_related('creator', 'category').filter(category=post.category).values_list('id', flat=True)
         related_posts = []
         if len(rand_ids) > 6:
