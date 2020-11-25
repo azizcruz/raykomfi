@@ -215,7 +215,7 @@ def sign_up_view(request):
                 # send email
                 send_email(html_email_template=html_email_template, mail_subject=mail_subject, to_email=to_email, from_email=from_email, token=token)
                 messages.success(
-                    request, 'تم انشاء الحساب, يرجى مراجعة بريدك الالكتروني, سوف تجد رسالة فيها رابط التفعيل لتفعيل حسابك', extra_tags='pale-green w3-border')
+                    request, 'تم انشاء الحساب, يرجى مراجعة بريدك الالكتروني لتفعيل حسابك', extra_tags='pale-green w3-border')
 
                 return HttpResponseRedirect('/user/signin')
 

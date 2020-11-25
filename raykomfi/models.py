@@ -148,19 +148,26 @@ class Post(models.Model, HitCountMixin):
 
     def save(self, *args, **kwargs):
         # When post gets accepted
-        prev_post_status = Post.objects.filter(pk=self.pk)
-        if len(prev_post_status) > 0:
-            if prev_post_status != self.isActive and self.isActive == True:
-                # Post to twitter
-                t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
-                t.statuses.update(status=f'{self.title} \n {self.get_twitter_url()}', media_ids="")
+        try:
+            prev_post_status = Post.objects.filter(pk=self.pk)
+            if len(prev_post_status) > 0:
+                if prev_post_status != self.isActive and self.isActive == True:
+                    # Post to twitter
+                    t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
+                    t.statuses.update(status=f'{self.title} \n {self.get_twitter_url()}', media_ids="")
 
-                prev_post_status = prev_post_status.values('isActive').first()['isActive']
-                admin = User.objects.get(email=os.getenv('ADMIN_EMAIL'))
-                notify.send(admin, recipient=self.creator ,action_object=self, description=self.get_noti_url(), target=self, verb='post_accepted')
-        # Generate slug
-        self.slug = slugify(self.title)
-        super(Post, self).save(*args, **kwargs)
+                    prev_post_status = prev_post_status.values('isActive').first()['isActive']
+                    admin = User.objects.get(email=os.getenv('ADMIN_EMAIL'))
+                    notify.send(admin, recipient=self.creator ,action_object=self, description=self.get_noti_url(), target=self, verb='post_accepted')
+                    
+             # Generate slug
+            self.slug = slugify(self.title)
+            super(Post, self).save(*args, **kwargs)
+        except:
+            # Generate slug
+            self.slug = slugify(self.title)
+            super(Post, self).save(*args, **kwargs)
+        
 
 class Comment(models.Model):
 
