@@ -171,37 +171,37 @@ function createCookie(name,value,days) {
 function eraseCookie(name) {
   createCookie(name, "", -1);
 }
-// if (countryInput && continentInput) {
-//   countryInput.val(sessionStorage.getItem("country"));
-//   continentInput.val(sessionStorage.getItem("continent"));
-//   if (registerForm[0] && sessionStorage.getItem("continent") == "Europe") {
-//     var len = registerForm[0].length;
-//     for (var i = 0; i < len; ++i) {
-//       registerForm[0][i].readOnly = true;
-//     }
-//     registerForm.append(
-//       '<p class="red white-text center">لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في المنصة</p>'
-//     );
-//   }
+if (countryInput && continentInput) {
+  countryInput.val(sessionStorage.getItem("country"));
+  continentInput.val(sessionStorage.getItem("continent"));
+  if (registerForm[0] && sessionStorage.getItem("continent") == "Europe") {
+    var len = registerForm[0].length;
+    for (var i = 0; i < len; ++i) {
+      registerForm[0][i].readOnly = true;
+    }
+    registerForm.append(
+      '<p class="red white-text center">لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في المنصة</p>'
+    );
+  }
 
-//   if (signinForm[0] && sessionStorage.getItem("continent") == "Europe") {
-//     var len = signinForm[0].length;
-//     for (var i = 0; i < len; ++i) {
-//       signinForm[0][i].readOnly = true;
-//     }
-//     signinForm.append(
-//       '<p class="red white-text center">لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في المنصة</p>'
-//     );
-//   }
+  if (signinForm[0] && sessionStorage.getItem("continent") == "Europe") {
+    var len = signinForm[0].length;
+    for (var i = 0; i < len; ++i) {
+      signinForm[0][i].readOnly = true;
+    }
+    signinForm.append(
+      '<p class="red white-text center">لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في المنصة</p>'
+    );
+  }
 
-//   if (sessionStorage.getItem("continent") == "Europe") { 
-//     var cookies = document.cookie.split(";");
-//     for (var i = 0; i < cookies.length; i++)
-//     if(cookies[i].split("=")[0].trim() !== 'csrftoken') {
-//       eraseCookie(cookies[i].split("=")[0]);
-//     }
-//   }
-// }
+  if (sessionStorage.getItem("continent") == "Europe") { 
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++)
+    if(cookies[i].split("=")[0].trim() !== 'csrftoken') {
+      eraseCookie(cookies[i].split("=")[0]);
+    }
+  }
+}
 
 // notifications feeds
 function fill_notification_badge_override(data) {
