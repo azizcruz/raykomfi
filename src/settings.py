@@ -255,11 +255,11 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
-# DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-# GS_BUCKET_NAME = os.getenv("GS_BUCKET_NAME")
-# GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
-#     json.loads(os.getenv("GS_CREDENTIALS"))
-# )
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+GS_BUCKET_NAME = os.getenv("GS_BUCKET_NAME")
+GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
+    json.loads(os.getenv("GS_CREDENTIALS"))
+)
 
 # Image resize
 DJANGORESIZED_DEFAULT_SIZE = [900, 600]

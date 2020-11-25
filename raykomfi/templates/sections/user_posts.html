@@ -48,14 +48,15 @@
         {% endif %}
         <a href="{{post.get_absolute_url}}">
           <h3>{{post.title |truncatechars:100}}</h3>
-          {% if post.image_url and post.image_source %}
+          {% if post.image and post.image_source %}
           <div class="ray-image-section">
-            <img src="" alt="{{post.title}}" data-src="{{ post.image_url }}" class="lazy-img ">
+            <img src="" alt="{{post.title}}" data-src="{{ post.image.url }}" class="lazy-img ">
             <div>
               <a href="{{ post.image_source }}" target="_blank">مصدر الصورة</a>
             </div>
           </div>
           {% endif %}
+          
           <br>
           <div>
             <a href="{% url 'raykomfi:post-edit' id=post.id slug=post.slug  %}"

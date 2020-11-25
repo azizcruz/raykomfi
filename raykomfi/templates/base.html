@@ -204,6 +204,10 @@
                 onclick="w3_open()"></i>
             <a href="/"><i
                     class="fa fa-home w3-button w3-teal white-text raykomfi-theme w3-hide-large w3-xxlarge remove-button-hover"></i></a>
+            {% if user.is_authenticated == False %}
+            <a href="{% url 'raykomfi:user-register' %}"><i
+                class="fa fa-user-plus w3-button w3-teal white-text raykomfi-theme w3-hide-large w3-xxlarge remove-button-hover"></i></a>
+            {% endif %}
         </div>
 
         <header class="w3-container w3-theme raykomfi-theme w3-hide-small w3-hide-medium w3-hide">

@@ -52,10 +52,10 @@
                 {% endif %}
             </div>
             <div class="w3-mobile">
-                {% if post.image_url and post.image_source %}
+                {% if post.image and post.image_source %}
 
                 <!-- Trigger the Modal -->
-                <img id="raykomfi-myImg" src="" alt="{{post.title}}" data-src="{{ post.image_url }}" class="lazy-img ">
+                <img id="raykomfi-myImg" src="" alt="{{post.title}}" data-src="{{ post.image.url }}" class="lazy-img ">
 
                 <!-- The Modal -->
                 <div id="raykomfi-myModal" class="raykomfi-modal">

@@ -116,7 +116,8 @@ class Post(models.Model, HitCountMixin):
         max_length=200, verbose_name='الموضوع', db_index=True)
     slug = models.CharField(
         max_length=200, db_index=True, null=True, blank=True)
-    image_url = models.CharField(verbose_name='رابط الصورة', blank=True, null=True, max_length=1000)
+    image = ResizedImageField(
+        upload_to='post_images', verbose_name='صورة', default=None, null=True, blank=True)
     image_source = models.CharField(verbose_name='مصدر الصورة', blank=True, null=True, max_length=1000)
     content = models.TextField(verbose_name='نبذة عن الموضوع', max_length=400, blank=True, db_index=True)
     isActive = models.BooleanField(default=False, db_index=True)
@@ -151,7 +152,7 @@ class Post(models.Model, HitCountMixin):
         try:
             prev_post_status = Post.objects.filter(pk=self.pk)
             if len(prev_post_status) > 0:
-                if prev_post_status != self.isActive and self.isActive == True:
+                if prev_post_status != self.isActive and self.isActive == True and os.getenv('environment') == 'prod':
                     # Post to twitter
                     t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
                     t.statuses.update(status=f'{self.title} \n {self.get_twitter_url()}', media_ids="")

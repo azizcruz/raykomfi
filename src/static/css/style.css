@@ -755,6 +755,7 @@ select:focus {
   word-break: break-word;
   background-color: #fff;
   padding-top: 20px !important;
+  padding-bottom: 20px !important;
 }
 
 .comment-reply-side {

@@ -37,8 +37,8 @@
         </div>
         <div class="w3-row">
             <div class="w3-bar w3-white  ray-order z-depth-1">
-                <div class="w3-bar-item  w3-right"> <a href="{% url 'raykomfi:latest-posts' %}" class="order-btn"><button
-                            class="w3-button  raykomfi-main-background-color z-depth-1"><i
+                <div class="w3-bar-item  w3-right"> <a href="{% url 'raykomfi:latest-posts' %}"
+                        class="order-btn"><button class="w3-button  raykomfi-main-background-color z-depth-1"><i
                                 class="fa fa-sort-amount-desc" aria-hidden="true"></i>
                             الأحدث</button></a></div>
                 <div class="w3-bar-item  w3-right"><a href="{% url 'raykomfi:most-discussed-posts' %}"
@@ -158,9 +158,9 @@
                 {% endif %}
                 <a href="{{post.get_absolute_url}}">
                     <h3>{{post.title |truncatechars:100}}</h3>
-                    {% if post.image_url and post.image_source %}
+                    {% if post.image and post.image_source %}
                     <div class="ray-image-section">
-                        <img src="" alt="{{post.title}}" data-src="{{ post.image_url }}"
+                        <img src="" alt="{{post.title}}" data-src="{{ post.image.url }}"
                             class="lazy-img w3-round-large">
                         <div>
                             <a href="{{ post.image_source }}" target="_blank">مصدر الصورة</a>

@@ -323,12 +323,12 @@ class NewPostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('category', 'title', 'content', 'image_url', 'image_source')
+        fields = ('category', 'title', 'content', 'image', 'image_source')
 
     def __init__(self, *args, **kwargs):
         super(NewPostForm, self).__init__(*args, **kwargs)
 
-        for fieldname in ['category', 'title', 'content', 'image', 'image_url', 'image_source']:
+        for fieldname in ['category', 'title', 'content', 'image', 'image_source']:
 
             if fieldname == 'category':
                 self.fields[fieldname].label = '* تصنيف الإستفسار'
@@ -339,19 +339,22 @@ class NewPostForm(forms.ModelForm):
             if fieldname == 'content':
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
                 self.fields[fieldname].label = ' نبذة عن الإستفسار (يسمح 400 حرف)'
-            if fieldname == 'image_url':
-                self.fields[fieldname].label = 'رابط صورة '
+            if fieldname == 'image':
+                self.fields[fieldname].label = 'صورة إن وجدت'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'image_source':
-                self.fields[fieldname].label = 'مصدر الصورة (رابط المنصة الذي تعرض منه الصورة "إذا كانت صورة تخصك يمكنك أن تضع رابط الصورة وسيتم التأكد منها")'
+                self.fields[fieldname].label = 'مصدر الصورة (رابط الموقع الذي أخذت منه الصورة "إذا كانت صورة تخصك يمكنك وضع أي رابط وسيتم التأكد منها")'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
 
     def clean_image_source(self):
-        image_url = self.cleaned_data.get('image_url')
+        image = self.cleaned_data.get('image')
         image_source = self.cleaned_data.get('image_source')
-        if image_source and not image_source:
+        if image and not image_source:
             raise forms.ValidationError(
                 "مصدر الصورة يجب أن لا يكون فارغا")
+
+        if image_source:
+            pass
 
         return image_source
 

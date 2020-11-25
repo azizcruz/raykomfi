@@ -366,7 +366,9 @@ def post_edit(request, id, slug):
             form = NewPostForm(request.POST or None, request.FILES or None, instance=instance,
                             use_required_attribute=False)
             if form.is_valid():
-                form.save()
+                obj = form.save(commit=False)
+                obj.isActive = False
+                obj.save()
                 instance = get_object_or_404(Post, id=id)
                 return render(request, 'sections/post_view.html', context={'form': form, 'post': instance, 'view_title': f'رايكم في | {instance.title}'})
             else:

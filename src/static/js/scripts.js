@@ -337,21 +337,28 @@ $("#search-btn").on("click", () => {
 fixTime();
 
 // Force Raykomfi in the beginning
-var postTitle = $("#create-post-form #id_title");
-if (postTitle.length > 0) {
-  if (postTitle.val().length < 1) {
-    postTitle.val("رايكم في ");
-    postTitle.on("keydown", (e) => {
-      var currentVal = e.target.value;
-      if (currentVal.length <= 9) {
-        e.target.value = "رايكم في ";
-      }
+var postCreateTitle = $("#create-post-form #id_title");
+var postEditTitle = $("#edit-post-form #id_title");
 
-      var count = (currentVal.match(/رايكم في/g) || []).length;
-      if (count > 1) {
-        postTitle.val("رايكم في");
-      }
-    });
+
+if (postCreateTitle.length > 0 || postEditTitle.length > 0) {
+  var postTitle = postCreateTitle.length > 0 ? postCreateTitle : false;
+  if(postTitle === false) {
+    postTitle = postEditTitle.length > 0 ? postEditTitle : false;
+  }
+
+  if(postTitle !== false) {
+      postTitle.on("keydown", (e) => {
+        var currentVal = e.target.value;
+        if (currentVal.length <= 9) {
+          e.target.value = "رايكم في ";
+        }
+  
+        var count = (currentVal.match(/رايكم في/g) || []).length;
+        if (count > 1) {
+          postTitle.val("رايكم في ");
+        }
+      });
   }
 }
 

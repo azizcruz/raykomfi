@@ -139,7 +139,7 @@ class BestUsers(APIView):
     queryset = Comment.objects.all()
     permission_classes = [permissions.IsAuthenticated]
 
-    @method_decorator(ratelimit(key='ip', rate='10/m', block=True))
+    @method_decorator(ratelimit(key='ip', rate='30/m', block=True))
     def get(self, request, format=None):
         today_date = timezone.now()
         current_best_users = cache.get('best_users')
