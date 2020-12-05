@@ -11,8 +11,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8MZHD8XD84"></script>
     <script>
-        if (Cookies.get('cookiebar') === 'hide') {
-            console.log('ayiy')
+        if (Cookies.get('cookiebar') === 'hide' && Cookies.get('googleanalytics') != 'false') {
             window.dataLayer = window.dataLayer || [];
             function gtag() { dataLayer.push(arguments); }
             gtag('js', new Date());
@@ -256,6 +255,7 @@
                 التسويق أو أبحاث السوق أو الأغراض التجارية، ولا نقوم بتمرير بياناتك إلى مواقع ويب أخرى.
             </p>
             <div class="cookie-close-button center">أتفهم ذلك</div>
+            <div class="cookie-close-button center without-third-party">أتفهم ذلك, لكن بدون خدمة طرف ثالث</div>
         </div>
     </div>
     {% compress js %}

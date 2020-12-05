@@ -200,8 +200,9 @@ h4 {
 .cookie-close-button {
   background-color: #186bae;
   color: #fff !important;
-  width: 200px;
-  margin: 10px auto;
+  width: 100px;
+  margin: 5px auto;
+  font-size: 10px;
   cursor: pointer;
 }
 .raykomfi-post-url-box {
