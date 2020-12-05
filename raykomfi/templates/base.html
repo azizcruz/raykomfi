@@ -9,14 +9,14 @@
 <head>
     <title> {{ view_title }}</title>
     {% if url_name == 'signup_view' %}
-    <meta name="description" property="og:description" content="إنظم إلى مجتمع رايكم في وأبدأ بتسجيل حساب جديد">
+    <meta name="description" property="description" content="إنظم إلى مجتمع رايكم في وأبدأ بتسجيل حساب جديد">
     {% elif url_name == 'signin_view' %}
-    <meta name="description" property="og:description"
+    <meta name="description" property="description"
         content="تسجيل الدخول الى رايكم في للبدأ في إستفسار الناس المراد إستفسارهم عن ما تريد">
     {% elif url_name == 'categorized_view' %}
-    <meta name="description" property="og:description" content="بحث عن إستفسارات حسب التصنيف {{ category }}">
+    <meta name="description" property="description" content="بحث عن إستفسارات حسب التصنيف {{ category }}">
     {% else %}
-    <meta name="description" property="og:description" content="منصة تجمع المشترين لمناقشة وأخذ
+    <meta name="description" property="description" content="منصة تجمع المشترين لمناقشة وأخذ
          آراء أناس إشتروا نفس الشيء من قبل">
     {% endif %}
 
