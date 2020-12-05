@@ -157,14 +157,14 @@ class BestUsers(APIView):
                 for rank, user in enumerate(best_users):
                     if user.last_time_best_user == None or user.my_comments__votes__sum > 0.0:
                         if rank + 1 in [1, 2]:
-                            if ((user.user_trust != 6.0 and user.user_trust > -1.0) and (user.last_time_best_user + datetime.timedelta(days=30) > today_date)) or user.last_time_best_user == None:
+                            if user.last_time_best_user == None or ((user.user_trust != 6.0 and user.user_trust > -1.0) and (user.last_time_best_user + datetime.timedelta(days=30) > today_date)):
                                 if user.user_trust == 5.5:
                                     user.user_trust = 6.0
                                 else:
                                     user.user_trust += 1.0
                                 user.last_time_best_user = today_date
                         else:
-                            if ((user.user_trust != 6.0 and user.user_trust > -1.0) and (user.last_time_best_user + datetime.timedelta(days=30) > today_date)) or user.last_time_best_user == None:
+                            if user.last_time_best_user == None or ((user.user_trust != 6.0 and user.user_trust > -1.0) and (user.last_time_best_user + datetime.timedelta(days=30) > today_date)):
                                 user.user_trust += 0.5
                                 user.last_time_best_user = today_date
                         user.save()
