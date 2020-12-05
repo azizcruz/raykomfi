@@ -18,9 +18,11 @@ if (bestUserWrapper) {
       if (users.length > 0) {
         for (let i = 0; i < users.length; i++) {
           let user = users[i];
-          displayHtml += `<li><a href="/user/profile/${user.id}/"><strong>${user.username}</strong></a> بـ <span> <span
+          if (user.user.my_comments__votes__sum > 0) {
+            displayHtml += `<li><a href="/user/profile/${user.id}/"><strong>${user.username}</strong></a> بـ <span> <span
         class="agreed-number">${user.my_comments__votes__sum}</span> عضو متفق مع
     آرائه</span> </li>`;
+          }
         }
       } else {
         displayHtml = `<p class="center">لم يتم إختيار الأعضاء بعد </p>`;
