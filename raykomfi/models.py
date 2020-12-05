@@ -77,12 +77,20 @@ class User(AbstractUser):
             if not last_seen:
                 return False
 
-            if last_seen.replace(microsecond = 0).replace(tzinfo=None) == now.replace(microsecond = 0):
+            if last_seen.replace(microsecond = 0).replace(tzinfo=None) > now.replace(microsecond = 0) - datetime.timedelta(seconds=38):
                 return True
             else:
                 return False
         else:
             return False 
+    
+    def last_seen(self):
+        last_seen = cache.get(f'seen_{self.username}')
+
+        if last_seen:
+            return last_seen
+        else:
+            False
 
 class Category(models.Model):
 
@@ -203,7 +211,7 @@ class Comment(models.Model):
         return reverse('raykomfi:post-view', args=[self.post.id, self.post.slug]) + f'?all_comments=true' + f'#comment-id-{self.id}'
 
     def get_noti_url(self):
-        return reverse('raykomfi:post-view', args=[self.post.id, self.post.slug]) + f'?all_comments=true' + f'#comment-id-{self.id}'
+        return reverse('raykomfi:post-view', args=[self.post.id, self.post.slug]) + f'?all_comments=true' + f'&read={self.id}' + f'#comment-id-{self.id}'
 
 
 
@@ -232,7 +240,7 @@ class Reply(models.Model):
         return reverse('raykomfi:post-view', args=[self.comment.post.id, self.comment.post.slug]) + f'#to-{self.id}'
     
     def get_noti_url(self):
-        return reverse('raykomfi:post-view', args=[self.comment.post.id, self.comment.post.slug])+ f'?all_comments=true' + f'?read={self.id}' + f'#to-{self.id}'
+        return reverse('raykomfi:post-view', args=[self.comment.post.id, self.comment.post.slug])+ f'?all_comments=true' + f'&read={self.id}' + f'#to-{self.id}'
 
 
 class Message(models.Model):

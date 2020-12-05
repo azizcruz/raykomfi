@@ -144,12 +144,11 @@ class BestUsers(APIView):
         today_date = timezone.now()
         current_best_users = cache.get('best_users')
         if current_best_users and current_best_users['last_time_checked'] + datetime.timedelta(days=30) > today_date:
-            set_trace()
             return Response(current_best_users['best_users'])
         else:
             if datetime.datetime.today().day == 5 or current_best_users == None:
                 best_users = User.objects.filter(
-                    my_comments__created__lte=timezone.now(),
+                    my_comments__created__lte=timezone.now()-datetime.timedelta(days=1),
                     my_comments__created__gt=timezone.now()-datetime.timedelta(days=30),
                     ).annotate(Sum('my_comments__votes')).order_by('-my_comments__votes__sum')[:10]
 
@@ -262,7 +261,7 @@ class RepliesView(APIView):
                     'view': referesh_comment_view_html,
                     'message': 'success'
                 }
-                if request.user.id != reply.user.id and reply.user.get_notifications == True:
+                if request.user.id != comment.user.id and reply.user.get_notifications == True:
                     notify.send(request.user, recipient=comment.user ,action_object=reply, description=reply.get_noti_url(), target=comment, verb='reply')
                 return JsonResponse(output_data)
             else:
