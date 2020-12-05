@@ -58,6 +58,8 @@
     <link rel="stylesheet" href="{% static 'css/custom_materialize.css'  %}">
     <link rel="stylesheet" href="{% static 'css/cookiebar.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css'  %}">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8MZHD8XD84"></script>
     {% endcompress %}
     <noscript>
         <div class="container">
@@ -176,8 +178,8 @@
             </div>
             <div class="raykomfi-social-media">
                 <div>
-                    <a href="https://web.facebook.com/%D8%B1%D8%A7%D9%8A%D9%83%D9%85-%D9%81%D9%8A-103911041583356" target="_blank" title="فيسبوك رايكم في"><i
-                            class="fa fa-facebook"></i></a>
+                    <a href="https://web.facebook.com/%D8%B1%D8%A7%D9%8A%D9%83%D9%85-%D9%81%D9%8A-103911041583356"
+                        target="_blank" title="فيسبوك رايكم في"><i class="fa fa-facebook"></i></a>
                 </div>
                 <div>
                     <a href="https://twitter.com/raykomfi" target="_blank" title="تويتر رايكم في"><i
@@ -206,7 +208,7 @@
                     class="fa fa-home w3-button w3-teal white-text raykomfi-theme w3-hide-large w3-xxlarge remove-button-hover"></i></a>
             {% if user.is_authenticated == False %}
             <a href="{% url 'raykomfi:user-register' %}"><i
-                class="fa fa-user-plus w3-button w3-teal white-text raykomfi-theme w3-hide-large w3-xxlarge remove-button-hover"></i></a>
+                    class="fa fa-user-plus w3-button w3-teal white-text raykomfi-theme w3-hide-large w3-xxlarge remove-button-hover"></i></a>
             {% endif %}
         </div>
 
