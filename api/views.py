@@ -143,10 +143,11 @@ class BestUsers(APIView):
     def get(self, request, format=None):
         today_date = timezone.now()
         current_best_users = cache.get('best_users')
-        if current_best_users and current_best_users['last_time_checked'] + datetime.timedelta(days=30) < today_date:
+        if current_best_users and current_best_users['last_time_checked'] + datetime.timedelta(days=30) > today_date:
+            set_trace()
             return Response(current_best_users['best_users'])
         else:
-            if datetime.datetime.today().day == 1:
+            if datetime.datetime.today().day == 5 or current_best_users == None:
                 best_users = User.objects.filter(
                     my_comments__created__lte=timezone.now(),
                     my_comments__created__gt=timezone.now()-datetime.timedelta(days=30),
@@ -157,14 +158,14 @@ class BestUsers(APIView):
                 for rank, user in enumerate(best_users):
                     if user.last_time_best_user == None or user.my_comments__votes__sum > 0.0:
                         if rank + 1 in [1, 2]:
-                            if (user.user_trust == 6.0 and user.user_trust > -1.0) and (user.last_time_best_user + datetime.timedelta(days=30) < today_date) or user.last_time_best_user == None:
+                            if ((user.user_trust != 6.0 and user.user_trust > -1.0) and (user.last_time_best_user + datetime.timedelta(days=30) > today_date)) or user.last_time_best_user == None:
                                 if user.user_trust == 5.5:
                                     user.user_trust = 6.0
                                 else:
                                     user.user_trust += 1.0
                                 user.last_time_best_user = today_date
                         else:
-                            if (user.user_trust < 7.0 and user.user_trust > -1.0) and (user.last_time_best_user + datetime.timedelta(days=30) < today_date) or user.last_time_best_user == None:
+                            if ((user.user_trust != 6.0 and user.user_trust > -1.0) and (user.last_time_best_user + datetime.timedelta(days=30) > today_date)) or user.last_time_best_user == None:
                                 user.user_trust += 0.5
                                 user.last_time_best_user = today_date
                         user.save()

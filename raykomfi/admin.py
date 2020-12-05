@@ -23,7 +23,7 @@ class PostAdmin(admin.ModelAdmin):
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'continent')
-    search_fields = ['email', 'continent']
+    search_fields = ['username','email' , 'continent']
     list_filter = ("email_active", "stay_logged_in", "isBlocked")
 
 class MessageAdmin(admin.ModelAdmin):

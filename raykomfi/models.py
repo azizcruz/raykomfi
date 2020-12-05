@@ -150,7 +150,7 @@ class Post(models.Model, HitCountMixin):
     def save(self, *args, **kwargs):
         # When post gets accepted
         try:
-            prev_post_status = Post.objects.filter(pk=self.pk)
+            prev_post_status = Post.objects.filter(pk=self.pk).first()
             if len(prev_post_status) > 0:
                 if prev_post_status != self.isActive and self.isActive == True and os.getenv('environment') == 'prod':
                     # Post to twitter
