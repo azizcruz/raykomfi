@@ -7,6 +7,20 @@
 <html dir="rtl" lang="ar">
 
 <head>
+    <script src="{% static 'js/cookie.min.js' %}"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8MZHD8XD84"></script>
+    <script>
+        if (Cookies.get('cookiebar') === 'hide') {
+            console.log('ayiy')
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+
+            gtag('config', 'G-8MZHD8XD84');
+        }
+
+    </script>
     <title> {{ view_title }}</title>
     {% if url_name == 'signup_view' %}
     <meta name="description" property="description" content="إنظم إلى مجتمع رايكم في وأبدأ بتسجيل حساب جديد">
@@ -58,8 +72,6 @@
     <link rel="stylesheet" href="{% static 'css/custom_materialize.css'  %}">
     <link rel="stylesheet" href="{% static 'css/cookiebar.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css'  %}">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8MZHD8XD84"></script>
     {% endcompress %}
     <noscript>
         <div class="container">
@@ -249,7 +261,6 @@
     {% compress js %}
     <script src="{% static 'js/jquery.min.3.1.1.js' %}"></script>
     <script src="{% static 'js/parsley.min.js' %}"></script>
-    <script src="{% static 'js/cookie.min.js' %}"></script>
     <script src="{% static 'js/axios.min.js' %}"></script>
     <script src="{% static 'js/moment.min.js' %}"></script>
     <script src="{% static 'js/ar-dz.min.js' %}"></script>

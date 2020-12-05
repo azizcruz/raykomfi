@@ -19,15 +19,6 @@ window.onscroll = function () {
   }
 };
 
-// Allowing Google Analytics
-if(Cookies.get('cookiebar') === 'hide') {
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-8MZHD8XD84');
-}
-
 // A CSRF token is required when making post requests in Django
 // To be used for making AJAX requests in script.js
 window.CSRF_TOKEN = document.getElementById("csrf_token").innerHTML;
