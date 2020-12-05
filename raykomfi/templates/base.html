@@ -22,15 +22,69 @@
     </script>
     <title> {{ view_title }}</title>
     {% if url_name == 'signup_view' %}
-    <meta name="description" property="description" content="إنظم إلى مجتمع رايكم في وأبدأ بتسجيل حساب جديد">
+    <meta name="description" property="description" content="إنضم إلى مجتمع رايكم في وأبدأ بتسجيل حساب جديد">
+    <meta name="author" content="{{ post.creator.username }}">
+    <meta property="og:title" content="منصة رايكم في" />
+    <meta name="og:description" content="إنضم إلى مجتمع رايكم في وأبدأ بتسجيل حساب جديد" />
+    <meta property="og:image"
+        content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
+    <meta property="og:url" content="https://www.raykomfi.com" />
+    <meta property="twitter:title" content="منصة رايكم في" />
+    <meta name="twitter:description" content="منصة تجمع المشترين لمناقشة وأخذ
+        آراء أناس إشتروا نفس الشيء من قبل" />
+    <meta name="twitter:image"
+        content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@raykomfi">
     {% elif url_name == 'signin_view' %}
     <meta name="description" property="description"
-        content="تسجيل الدخول الى رايكم في للبدأ في إستفسار الناس المراد إستفسارهم عن ما تريد">
+        content="تسجيل الدخول الى رايكم في للبدأ في إستفسار الناس عن ما تريد">
+        <meta name="author" content="{{ post.creator.username }}">
+        <meta property="og:title" content="منصة رايكم في" />
+        <meta name="og:description" content="تسجيل الدخول الى رايكم في للبدأ في إستفسار الناس عن ما تريد" />
+        <meta property="og:image"
+            content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
+        <meta property="og:url" content="https://www.raykomfi.com" />
+        <meta property="twitter:title" content="منصة رايكم في" />
+        <meta name="twitter:description" content="منصة تجمع المشترين لمناقشة وأخذ
+            آراء أناس إشتروا نفس الشيء من قبل" />
+        <meta name="twitter:image"
+            content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@raykomfi">
     {% elif url_name == 'categorized_view' %}
     <meta name="description" property="description" content="بحث عن إستفسارات حسب التصنيف {{ category }}">
+        <meta name="author" content="{{ post.creator.username }}">
+        <meta property="og:title" content="منصة رايكم في" />
+        <meta name="og:description" content="بحث عن إستفسارات حسب التصنيف {{ category }}" />
+        <meta property="og:image"
+            content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
+        <meta property="og:url" content="https://www.raykomfi.com" />
+        <meta property="twitter:title" content="منصة رايكم في" />
+        <meta name="twitter:description" content="بحث عن إستفسارات حسب التصنيف {{ category }}" />
+        <meta name="twitter:image"
+            content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@raykomfi">
     {% else %}
     <meta name="description" property="description" content="منصة تجمع المشترين لمناقشة وأخذ
          آراء أناس إشتروا نفس الشيء من قبل">
+         <meta name="description" property="description"
+         content="منصة تجمع المشترين لمناقشة وأخذ
+         آراء أناس إشتروا نفس الشيء من قبل">
+         <meta property="og:title" content="منصة رايكم في" />
+         <meta name="og:description" content="منصة تجمع المشترين لمناقشة وأخذ
+         آراء أناس إشتروا نفس الشيء من قبل" />
+         <meta property="og:image"
+             content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
+         <meta property="og:url" content="https://www.raykomfi.com" />
+         <meta property="twitter:title" content="منصة رايكم في" />
+         <meta name="twitter:description" content="منصة تجمع المشترين لمناقشة وأخذ
+             آراء أناس إشتروا نفس الشيء من قبل" />
+         <meta name="twitter:image"
+             content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
+         <meta name="twitter:card" content="summary" />
+         <meta name="twitter:site" content="@raykomfi">
     {% endif %}
 
     <meta name="keywords"
