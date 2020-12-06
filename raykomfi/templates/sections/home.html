@@ -19,7 +19,7 @@
                 <a href="{% url 'raykomfi:user-profile' id=comment.user.id %}"><span><i class="fa fa-user"
                             aria-hidden="true"></i> {{comment.user}}</span></a>
                 {% else %}
-                <span><i class="fa fa-user" aria-hidden="true"></i> عضو لم يعد موجود</span>
+                <span><i class="fa fa-user" aria-hidden="true"></i> مجهول</span>
                 {% endif %}
                 <p>{{ comment.content }}</p>
                 <div class="">
@@ -120,11 +120,14 @@
                 <a href="{% url 'raykomfi:user-signin' %}" class="w3-text-blue">سجل الدخول</a> لإستفسار الناس عن ما تريد
                 الشراء</p>
         </div>
+        <div class="w3-display-container w3-panel center">
+            <p class="w3-center btn raykomfi-main-background-color"><a href="{% url 'raykomfi:post-new-withnoregistration' %}" class="white-text"> إستفسار بدون تسجيل </a> </p>
+        </div>
         {% else %}
         {% if user.email_active %}
 
         <div class="new-post-side">
-            <a href="{% url 'raykomfi:post-new' %}" title="اضافة منشور جديد">
+            <a href="{% url 'raykomfi:post-new' %}" title="اضافة إستفسار جديد">
                 <button class="w3-button w3-center z-depth-2"><i class="fa fa-plus" aria-hidden="true"></i>
                 </button>
             </a>
@@ -153,7 +156,7 @@
                 {% else %}
                 <span class="poster-name">
                     <i class="fa fa-user" aria-hidden="true"></i>
-                    عضو لم يعد موجود
+                    مجهول
                 </span>
                 {% endif %}
                 <a href="{{post.get_absolute_url}}">
@@ -224,7 +227,7 @@
                 <a href="{% url 'raykomfi:user-profile' id=comment.user.id %}"><span><i class="fa fa-user"
                             aria-hidden="true"></i> {{comment.user}}</span></a>
                 {% else %}
-                <span><i class="fa fa-user" aria-hidden="true"></i> عضو لم يعد موجود</span>
+                <span><i class="fa fa-user" aria-hidden="true"></i> مجهول</span>
                 {% endif %}
                 <p>{{ comment.content }}</p>
                 <div class="">

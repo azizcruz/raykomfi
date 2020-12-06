@@ -13,6 +13,7 @@ urlpatterns = [
     path('lazy-posts/', views.LazyPostsView.as_view()),
     path('lazy-comments/', views.LazyCommentsView.as_view()),
     path('comment/add', views.CommentsView.as_view()),
+    path('comment/add/no-registeration', views.NoRegisterCommentsView.as_view()),
     path('comment/edit', views.CommentsView.as_view()),
     path('reply/add', views.RepliesView.as_view()),
     path('reply/edit', views.RepliesView.as_view()),

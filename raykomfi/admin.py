@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Post, Message, Reply, Comment, Category
+from .models import User, Post, Message, Reply, Comment, Category, NoRegistrationCode
 from admin_auto_filters.filters import AutocompleteFilter
 
 
@@ -26,6 +26,11 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ['username','email' , 'continent']
     list_filter = ("email_active", "stay_logged_in", "isBlocked")
 
+class NoRegistrationCodeAdmin(admin.ModelAdmin):
+    list_display = ('email', 'continent')
+    search_fields = ['email' , 'continent']
+    list_filter = ('continent',)
+
 class MessageAdmin(admin.ModelAdmin):
     list_display = ('user', 'receiver', 'title')
     search_fields = ['title', 'content']
@@ -50,3 +55,4 @@ admin.site.register(Message, MessageAdmin)
 admin.site.register(Reply, ReplyAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Category)
+admin.site.register(NoRegistrationCode, NoRegistrationCodeAdmin)

@@ -18,7 +18,7 @@
                                 {{related_post.creator}}
                             </span>
                             {% else %}
-                            <span class="w3-round-small w3-right">عضو لم يعد مسجل</span>
+                            <span class="w3-round-small w3-right">مجهول</span>
                             {% endif %}
 
                             &nbsp; <span class="raykomfi-color">{{related_post.title}}</span></a>
@@ -41,7 +41,7 @@
                 {% else %}
                 <h6>
                     <i class="fa fa-user" aria-hidden="true"></i>
-                    عضو لم يعد مسجل
+                    مجهول
                 </h6>
                 {% endif %}
             </div>
@@ -120,10 +120,14 @@
                 </div>
                 <!-- The Post Report Modal -->
                 {% endif %}
-                {% if post.isActive == True %}
+                {% if post.isActive == True or user.is_staff  %}
                 <div class="w3-dropdown-click raykomfi-dropdown-click">
                     <button id="share-btn"
                         class="btn raykomfi-main-background-color raykomfi-report-btn">مشاركة</button>
+                    {% if user.is_staff %}
+                        <a href="{% url 'raykomfi:post-edit' id=post.id slug=post.slug  %}"
+                            class="raykomfi-report-btn green btn">تعديل</a>
+                    {% endif %}
                     <div id="share-dropdown" class="w3-dropdown-content raykomfi-share-dropdown w3-bar-block z-depth-1">
                         <a href="https://twitter.com/intent/tweet?text={{request.build_absolute_uri}}"
                             class="w3-bar-item w3-button center" target="_blank">على
@@ -166,7 +170,7 @@
                             {% else %}
                             <div class="name">
                                 <i class="fa fa-user" aria-hidden="true"></i>
-                                عضو لم يعد مسجل
+                                مجهول
                             </div>
                             {% endif %}
                             <small><i class="fa fa-clock-o" aria-hidden="true"></i><span
@@ -185,7 +189,7 @@
                             {% if user.is_authenticated %}
                             <button class="btn red raykomfi-report-btn comment-action-btn"
                                 onclick="document.getElementById('reportComment').style.display='block'">إبلاغ</button>
-                            {% if comment.user.id == user.id %}
+                            {% if comment.user.id == user.id or user.is_staff %}
                             <button class="btn green raykomfi-report-btn comment-action-btn edit-comment-btn"
                                 data-comment-id="{{ comment.id }}" data-content="{{comment.content}}">تعديل </button>
                             {% endif %}
@@ -251,7 +255,7 @@
                                 </a>
                                 {% else %}
                                 <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
-                                    عضو لم يعد مسجل
+                                    مجهول
                                 </div>
                                 {% endif %}
                                 <small><i class="fa fa-clock-o" aria-hidden="true"></i><span class="created-time">
@@ -270,7 +274,7 @@
                                 {% if user.is_authenticated %}
                                 <button class="btn red raykomfi-report-btn reply-action-btn"
                                     onclick="document.getElementById('reportReply').style.display='block'">إبلاغ</button>
-                                {% if reply.user.id == user.id %}
+                                {% if reply.user.id == user.id or user.is_staff %}
                                 <button class="btn green raykomfi-report-btn reply-action-btn edit-reply-btn"
                                     data-reply-id="{{ reply.id }}" data-content="{{reply.content}}">تعديل
                                 </button>
@@ -387,7 +391,28 @@
             <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
                 <p class="w3-center"><a href="{% url 'raykomfi:user-register' %}" class="w3-text-blue">سجل حساب
                         جديد</a> أو <a href="{% url 'raykomfi:user-signin' %}" class="w3-text-blue">سجل الدخول</a>
-                    للمشاركة في التعليقات</p>
+                    للمشاركة في الآراء</p>
+            </div>
+
+            <div class="w3-display-container w3-panel">
+                <div class="center">
+                    <button class="btn raykomfi-main-background-color" id="add-comment-no-register">إضافة رأي بدون تسجيل</button>
+                </div>
+                <br>
+                <form class="commentNoRegisterForm" data-post-id="{{post.id}}">
+                    {% csrf_token %}
+                    <textarea cols="40" rows="10" class="w3-input w3-border"></textarea>
+                    <div class="w3-margin"></div>
+                    <label for="code">رمز المشاركة</label>
+                    <input type="text" class="w3-input w3-border" name="code" id="code">
+                    <div class="col s12">
+                        <button class='w3-button raykomfi-button z-depth-1'>
+                            إضافة رأي</button>
+                    </div>
+                    <div id="noRegisterCommentError" class="red-text w3-margin-top">
+                        
+                    </div>
+                </form>
             </div>
 
             {% else %}
@@ -405,7 +430,7 @@
             </div>
             {% else %}
             <div class="w3-display-container w3-panel w3-border message-wrapper w3-pale-yellow">
-                <p class="w3-center">فعل حسابك للمشاركة في التعليقات</p>
+                <p class="w3-center">فعل حسابك للمشاركة في الآراء</p>
             </div>
 
             {% endif %}
@@ -427,7 +452,7 @@
                             {{related_post.creator}}
                         </span>
                         {% else %}
-                        <span class="w3-round-small w3-right">عضو لم يعد مسجل</span>
+                        <span class="w3-round-small w3-right">مجهول</span>
                         {% endif %}
 
                         &nbsp; <span class="raykomfi-color">{{related_post.title}}</span></a>

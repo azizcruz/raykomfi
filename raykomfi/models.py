@@ -117,7 +117,7 @@ class Category(models.Model):
 
 class Post(models.Model, HitCountMixin):
     creator = models.ForeignKey(
-        User, related_name='posts', verbose_name='الكاتب',  on_delete=models.SET_DEFAULT, default=None, null=True, db_index=True)
+        User, related_name='posts', verbose_name='الكاتب',  on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_index=True)
     category = models.ForeignKey(
         Category, verbose_name='التصنيف', null=True, on_delete=models.SET_DEFAULT, default=None, db_index=True)
     title = models.CharField(
@@ -181,7 +181,7 @@ class Post(models.Model, HitCountMixin):
 class Comment(models.Model):
 
     user = models.ForeignKey(
-        User, related_name='my_comments', verbose_name='صاحب النعليق', on_delete=models.SET_DEFAULT, default=None, null=True, db_index=True)
+        User, related_name='my_comments', verbose_name='صاحب النعليق', on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_index=True)
     post = models.ForeignKey(
         Post, related_name='comments', verbose_name='المنشور', on_delete=models.CASCADE)
     content = models.TextField(verbose_name='التعليق', db_index=True)
@@ -218,7 +218,7 @@ class Comment(models.Model):
 class Reply(models.Model):
 
     user = models.ForeignKey(
-        User, related_name='my_replies', verbose_name='صاحب النعليق', on_delete=models.SET_DEFAULT, default=None, null=True, db_index=True)
+        User, related_name='my_replies', verbose_name='صاحب النعليق', on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_index=True)
     comment = models.ForeignKey(
         Comment, related_name='replies', verbose_name='التعليق', on_delete=models.CASCADE, db_index=True)
     content = models.TextField()
@@ -287,3 +287,19 @@ class Report(models.Model):
 
     def __str__(self):
         return self.content
+
+class NoRegistrationCode(models.Model):
+    fakeUser = models.ForeignKey(User, related_name='fake_user', on_delete=models.SET_DEFAULT, default=None, null=True, blank=True)
+    email = models.EmailField(unique=True, verbose_name='بريد الإلكتروني', null=True, blank=True)
+    code = models.CharField(unique=True, max_length=150)
+    accepted_conditions_terms = models.BooleanField(default=False)
+    continent = models.CharField(max_length=155, default='')
+    created = models.DateTimeField(auto_now_add=True, verbose_name='وقت اضافة الرمز', db_index=True)
+
+    class Meta:
+        ordering = ('-created',)
+        verbose_name = "عضو بدون تسجيل"
+        verbose_name_plural = "أعضاء بدون تسجيل"
+
+    def __str__(self):
+        return self.email

@@ -13,6 +13,8 @@ urlpatterns = [
     path('user/signin/', views.sign_in_view, name='user-signin'),
     path('user/signout/', views.user_logout, name='user-signout'),
     path('user/register/', views.sign_up_view, name='user-register'),
+    path('user/actions/code', views.sign_up_with_no_registration_view, name='user-register-withnosignup'),
+    path('user/actions/forgot-code', views.forgot_no_registration_code, name='user-actions-forgot-code'),
     path('user/delete/<int:id>/', views.delete_user, name='user-delete'),
     path('user/change-password/', views.change_password_view,
          name='user-change-password'),
@@ -35,6 +37,7 @@ urlpatterns = [
 
     # Post routes
     path('post/new', views.create_post, name='post-new'),
+    path('post/new/no-registration', views.create_post_with_no_registration, name='post-new-withnoregistration'),
     path('post/details/<int:id>/<str:slug>',
          views.post_view, name='post-view'),
     path('post/edit/<int:id>/<str:slug>', views.post_edit, name='post-edit'),

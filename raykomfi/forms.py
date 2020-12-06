@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Post, Comment, Message, Reply
+from .models import User, Post, Comment, Message, Reply, NoRegistrationCode
 from django_countries.fields import CountryField
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email, MinLengthValidator, MaxLengthValidator
@@ -92,7 +92,7 @@ class SignupForm(UserCreationForm):
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'email':
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
-                self.fields[fieldname].label = 'الايميل'
+                self.fields[fieldname].label = 'البريد الإلكتروني'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'bio':
                 self.fields[fieldname].widget.attrs['placeholder'] = 'مسموح فقط 144 حرف'
@@ -128,6 +128,60 @@ class SignupForm(UserCreationForm):
                     "لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في المنصة")
 
         return continent
+
+@parsleyfy
+class SignupWithNoRegistrationForm(forms.ModelForm):
+    email = forms.EmailField(label='', validators=[validate_email], widget=forms.TextInput(), error_messages={
+        'unique': _("البريد الإلكتروني موجود مسبقا"),
+        'invalid': _("بريد إلكتروني غير صالح"),
+
+    })
+    continent = forms.CharField(widget=forms.HiddenInput())
+
+    class Meta:
+        model = NoRegistrationCode
+        parsley_extras = {
+            'accepted_conditions_terms': {
+                'required-message': "يجب عليك الموافقة على السياسة والشروط لإستخدام المنصة",
+                'required': True
+            },
+        }
+        fields = ('email','continent', 'accepted_conditions_terms')
+
+    def __init__(self, *args, **kwargs):
+        super(SignupWithNoRegistrationForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['email', 'continent', 'accepted_conditions_terms']:
+            if fieldname == 'continent':
+                self.fields[fieldname].label = 'c'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
+            if fieldname == 'email':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'البريد الإلكتروني'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
+            if fieldname == 'accepted_conditions_terms':
+                self.fields[fieldname].label = ''
+                self.fields[fieldname].widget.attrs['class'] = 'w3-check raykomfi-margin-small w3-border'
+
+@parsleyfy
+class ForgotNoRegistrationCodeForm(forms.Form):
+    email = forms.EmailField(label='', validators=[validate_email], widget=forms.TextInput(), error_messages={
+        'invalid': _("بريد إلكتروني غير صالح"),
+
+    })
+
+    class Meta:
+        model = NoRegistrationCode
+        fields = ('email',)
+
+    def __init__(self, *args, **kwargs):
+        super(ForgotNoRegistrationCodeForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['email']:
+            if fieldname == 'email':
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].label = 'البريد الإلكتروني'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
 
 @parsleyfy
 class ProfileForm(forms.ModelForm):
@@ -370,6 +424,77 @@ class NewPostForm(forms.ModelForm):
                     "إستفسر عن شيء حقيقي")
 
         return title
+
+@parsleyfy
+class NewPostWithNoRegistrationForm(forms.ModelForm):
+    code = forms.CharField()
+
+    class Meta:
+        model = Post
+        fields = ('category', 'title', 'content', 'image', 'image_source', 'code')
+
+    def __init__(self, *args, **kwargs):
+        super(NewPostWithNoRegistrationForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['category', 'title', 'content', 'image', 'image_source', 'code']:
+
+            if fieldname == 'category':
+                self.fields[fieldname].label = '* تصنيف الإستفسار'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-select w3-border  '
+            if fieldname == 'title':
+                self.fields[fieldname].label = '* عنوان الإستفسار'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
+            if fieldname == 'content':
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
+                self.fields[fieldname].label = ' نبذة عن الإستفسار (يسمح 400 حرف)'
+            if fieldname == 'image':
+                self.fields[fieldname].label = 'صورة إن وجدت'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
+            if fieldname == 'image_source':
+                self.fields[fieldname].label = 'مصدر الصورة (رابط الموقع الذي أخذت منه الصورة "إذا كانت صورة تخصك يمكنك وضع أي رابط وسيتم التأكد منها")'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
+            if fieldname == 'code':
+                self.fields[fieldname].label = 'رمز المشاركة بدون تسجيل'
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
+
+    def clean_image_source(self):
+        image = self.cleaned_data.get('image')
+        image_source = self.cleaned_data.get('image_source')
+        if image and not image_source:
+            raise forms.ValidationError(
+                "مصدر الصورة يجب أن لا يكون فارغا")
+
+        if image_source:
+            pass
+
+        return image_source
+
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        ALLOWED_EXT = ['jpg', 'png', 'jpeg']
+        if title.find('رايكم في') == -1:
+            raise forms.ValidationError(
+                    "يجب أن يبدأ عنوان الإستفسار بعبارة رايكم في")
+
+        if len(title) - 15 < 0 :
+            raise forms.ValidationError(
+                    "إستفسر عن شيء حقيقي")
+
+        return title
+    
+    def clean_code(self):
+        code = self.cleaned_data.get('code')
+
+        if code == '':
+             raise forms.ValidationError(
+                    "يرجى إضافة رمز المشاركة بدون تسجيل")
+                    
+        if not NoRegistrationCode.objects.filter(code=code).exists():
+            raise forms.ValidationError(
+                    "رمز المشاركة غير صحيح")
+
+
+        return code
 
 @parsleyfy
 class CustomChangePasswordForm(PasswordChangeForm):

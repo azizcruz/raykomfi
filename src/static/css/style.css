@@ -60,6 +60,10 @@ div {
   overflow: hidden;
 }
 
+.raykomfi-display-block {
+  display: block !important;
+}
+
 noscript span {
   color: #fff !important;
 }
@@ -190,6 +194,21 @@ h4 {
 }
 .raykomfi-share-dropdown a {
   text-align: center !important;
+}
+
+.no-register-button {
+  padding: 16px 16px 16px 45px !important;
+}
+
+.no-register-button:hover {
+  background-color: #4caf50 !important;
+  color: #FFF !important;
+}
+
+.raykomfi-list {
+  margin: 0 !important;
+  padding: 0 15px 0 0 !important;
+  list-style: circle;
 }
 
 .cookie-message {
@@ -816,6 +835,10 @@ select:focus {
 .closest-edit-reply-form {
   display: none;
   margin-top: 20px;
+}
+
+.commentNoRegisterForm {
+  display: none;
 }
 
 /* Post View Style */

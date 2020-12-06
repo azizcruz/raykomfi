@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from raykomfi.models import Comment, User, Post, Reply, Message, Report
+from raykomfi.models import Comment, User, Post, Reply, Message, Report, NoRegistrationCode
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -180,6 +180,69 @@ class BestUsers(APIView):
                 return Response({'last_time_checked': '', 'best_users': []})
 
 
+class NoRegisterCommentsView(APIView):
+    '''
+    Add no register comment
+    '''
+    permission_classes = [permissions.AllowAny]
+
+    @method_decorator(ratelimit(key='ip', rate='2/m', block=True))
+    def post(self, request):
+        serializer = serializers.NoRegisterCommentAddSerializer(data=request.data)
+        if serializer.is_valid():
+            if not NoRegistrationCode.objects.filter(code=serializer.data['code']).exists():
+                return Response({'message': 'رمز مشاركة غير صحيح'}, status=status.HTTP_400_BAD_REQUEST)
+            post = Post.objects.select_related('creator', 'category').filter(id__exact=serializer.data['post_id']).first()
+            
+            if post:
+                comment = Comment.objects.create(
+                content=serializer.data['content'], user=None, post=post)
+                comment = Comment.objects.select_related('user', 'post').filter(id=comment.id).first()
+                csrf_token = get_token(request)
+                csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
+                referesh_post_view_html = loader.render_to_string(
+                'referesh_post_view.html',
+                {'post': comment.post, 'user': None, 'csrf_token': csrf_token})
+
+                output_data = {
+                    'view': referesh_post_view_html,
+                    'message': 'success'
+                }
+                anonymousUser = User.objects.filter(email='anonymous@anonymous.com').first()
+                if post.creator == None:
+                    post.creator = anonymousUser
+                if request.user.id != post.creator.id and post.creator.get_notifications == True:
+                    notify.send(anonymousUser, recipient=post.creator , action_object=comment,  description=comment.get_noti_url(), target=comment, verb='comment')
+                return JsonResponse(output_data)
+            else:
+                return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+    @method_decorator(ratelimit(key='ip', rate='2/m', block=True))
+    def put(self, request):
+        serializer = serializers.NoRegisterCommentEditSerializer(data=request.data)
+        if serializer.is_valid():
+            comment = Comment.objects.select_related('user').filter(id__exact=serializer.data['comment_id'])
+            if comment:
+                comment.update(content=serializer.data['content'])
+                comment = Comment.objects.select_related('user', 'post').filter(id=comment[0].id).first()
+                csrf_token = get_token(request)
+                csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
+                referesh_comment_view_html = loader.render_to_string(
+                'referesh_comment_view.html',
+                {'comment': comment, 'user': None, 'csrf_token': csrf_token})
+
+                output_data = {
+                    'view': referesh_comment_view_html,
+                    'message': 'success'
+                }
+                return JsonResponse(output_data)
+            else:
+                return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
 class CommentsView(APIView):
     '''
     Add comment
@@ -261,6 +324,9 @@ class RepliesView(APIView):
                     'view': referesh_comment_view_html,
                     'message': 'success'
                 }
+                anonymousUser = User.objects.filter(email='anonymous@anonymous.com').first()
+                if comment.user == None:
+                    comment.user = anonymousUser
                 if request.user.id != comment.user.id and reply.user.get_notifications == True:
                     notify.send(request.user, recipient=comment.user ,action_object=reply, description=reply.get_noti_url(), target=comment, verb='reply')
                 return JsonResponse(output_data)

@@ -127,6 +127,55 @@ $(document).on("submit", "form.commentForm", function (e) {
   }
 });
 
+// Add comment no registration
+$(document).on("submit", "form.commentNoRegisterForm", function (e) {
+  e.preventDefault();
+  let content = e.target[1].value;
+  let code = e.target[2].value;
+  let { postId } = e.target.dataset;
+  if (content && code) {
+    axios({
+      method: "POST",
+      url: "/api/comment/add/no-registeration",
+      headers: {
+        "X-CSRFTOKEN": Cookies.get("csrftoken"),
+        "Content-Type": "application/json",
+      },
+      data: { content: content, post_id: postId, code: code },
+    })
+      .then((response) => {
+        let view_html = response.data.view;
+        let post_wrapper = document.getElementById("posts-wrapper");
+        post_wrapper.innerHTML = view_html;
+        $("#lazyLoadLinkComments").hide();
+        e.target[1].value = "";
+        fixTime();
+        generateStars();
+      })
+      .catch((err) => {
+        if (
+          err.response.status === 403 &&
+          err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+        ) {
+          custom_alert(
+            "محاولات متكررة, يرجى المحاولة لاحقا",
+            "<i class='fa fa-warning'></i>"
+          );
+        }
+
+        if (
+          err.response.status === 400
+        ) {
+          $('#noRegisterCommentError').html(err.response.data.message)
+          setTimeout(() => {
+            $('#noRegisterCommentError').html('')
+          }, 1500)
+        }
+  
+      });
+  }
+});
+
 // Edit comment
 $(document).on("submit", "form.closest-edit-comment-form", function (e) {
   e.preventDefault();
@@ -406,34 +455,34 @@ $(document).on("submit", "form.reportForm", function (e) {
 
 // Delete Notifications
 $(document).on("click", "#delete-all-notis", function (e) {
-    axios({
-      method: "DELETE",
-      url: "/api/notifications/delete",
-      headers: {
-        "X-CSRFTOKEN": Cookies.get("csrftoken"),
-        "Content-Type": "application/json",
-      },
+  axios({
+    method: "DELETE",
+    url: "/api/notifications/delete",
+    headers: {
+      "X-CSRFTOKEN": Cookies.get("csrftoken"),
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      let deleteBtn = $("#delete-all-notis");
+      let deleteBtnVal = deleteBtn.text();
+      deleteBtn.attr("disabled", true);
+      deleteBtn.text(response.data.message);
+      $(".live_notify_list").html("<div>لا يوجد لديك إشعارات حاليا</div>");
+      setTimeout(() => {
+        deleteBtn.attr("disabled", false);
+        deleteBtn.text(deleteBtnVal);
+      }, 2000);
     })
-      .then((response) => {
-        let deleteBtn = $("#delete-all-notis");
-        let deleteBtnVal = deleteBtn.text()
-        deleteBtn.attr("disabled", true);
-        deleteBtn.text(response.data.message);
-        $(".live_notify_list").html("<div>لا يوجد لديك إشعارات حاليا</div>")
-        setTimeout(() => {
-          deleteBtn.attr("disabled", false);
-          deleteBtn.text(deleteBtnVal);
-        }, 2000);
-      })
-      .catch((err) => {
-        if (
-          err.response.status === 403 &&
-          err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
-        ) {
-          custom_alert(
-            "محاولات متكررة, يرجى المحاولة لاحقا",
-            "<i class='fa fa-warning'></i>"
-          );
-        }
-      });
+    .catch((err) => {
+      if (
+        err.response.status === 403 &&
+        err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+      ) {
+        custom_alert(
+          "محاولات متكررة, يرجى المحاولة لاحقا",
+          "<i class='fa fa-warning'></i>"
+        );
+      }
+    });
 });

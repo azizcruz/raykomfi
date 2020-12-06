@@ -164,6 +164,7 @@ var countryInput = $("#id_country");
 var continentInput = $("#id_continent");
 var registerForm = $("#raykomfi-register-form");
 var signinForm = $("#signin-form");
+var registerWithNoSignUpForm = $("#register-with-no-sign-up-form");
 function createCookie(name,value,days) {
   if (days) {
       var date = new Date();
@@ -195,6 +196,16 @@ if (countryInput && continentInput) {
       signinForm[0][i].readOnly = true;
     }
     signinForm.append(
+      '<p class="red white-text center">لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في المنصة</p>'
+    );
+  }
+
+  if (registerWithNoSignUpForm[0] && sessionStorage.getItem("continent") == "Europe") {
+    var len = registerWithNoSignUpForm[0].length;
+    for (var i = 0; i < len; ++i) {
+      registerWithNoSignUpForm[0][i].readOnly = true;
+    }
+    registerWithNoSignUpForm.append(
       '<p class="red white-text center">لا يسمح بالزوار من الإتحاد الأوروبي بالتسجيل في المنصة</p>'
     );
   }
@@ -346,12 +357,16 @@ fixTime();
 // Force Raykomfi in the beginning
 var postCreateTitle = $("#create-post-form #id_title");
 var postEditTitle = $("#edit-post-form #id_title");
+var postCreateNoRegistrationTitle = $('#create-post-with-no-registration-form #id_title')
 
 
-if (postCreateTitle.length > 0 || postEditTitle.length > 0) {
+if (postCreateTitle.length > 0 || postEditTitle.length > 0 || postCreateNoRegistrationTitle.length > 0) {
   var postTitle = postCreateTitle.length > 0 ? postCreateTitle : false;
   if(postTitle === false) {
     postTitle = postEditTitle.length > 0 ? postEditTitle : false;
+  }
+  if(postTitle === false) {
+    postTitle = postCreateNoRegistrationTitle.length > 0 ? postCreateNoRegistrationTitle : false
   }
 
   if(postTitle !== false) {
@@ -490,3 +505,8 @@ $(document).on("click", ".close-reply-edit-form", (e) => {
   closestEditReplyForm.parent().find(".reply").show();
   closestEditReplyForm.parent().find(".reply-action-btn").show();
 });
+
+// Toggle comment without registration
+$('#add-comment-no-register').on('click', () => {
+  $(".commentNoRegisterForm").toggleClass('raykomfi-display-block')
+})

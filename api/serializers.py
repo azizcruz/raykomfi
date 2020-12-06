@@ -29,6 +29,20 @@ class CommentAddSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['content', 'post_id']
+
+class NoRegisterCommentAddSerializer(serializers.ModelSerializer):
+    post_id = serializers.IntegerField()
+    code = serializers.CharField()
+    class Meta:
+        model = Comment
+        fields = ['content', 'post_id', 'code']
+
+class NoRegisterCommentEditSerializer(serializers.ModelSerializer):
+    comment_id = serializers.IntegerField()
+    code = serializers.CharField()
+    class Meta:
+        model = Comment
+        fields = ['content', 'comment_id', 'code']
     
 class CommentEditSerializer(serializers.ModelSerializer):
     comment_id = serializers.IntegerField()
