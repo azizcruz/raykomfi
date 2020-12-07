@@ -13,12 +13,15 @@
     </script>
     <script>
         if (Cookies.get('cookiebar') === 'hide' && Cookies.get('googleanalytics') != 'false') {
+            console.log('yes')
             window.dataLayer = window.dataLayer || [];
             function gtag() { dataLayer.push(arguments); }
             gtag('js', new Date());
         }
 
-        gtag('config', 'UA-184849250-1');
+        if (Cookies.get('cookiebar') === 'hide' && Cookies.get('googleanalytics') != 'false') {
+            gtag('config', 'UA-184849250-1');
+        }
     </script>
     <title> {{ view_title }}</title>
     {% if url_name == 'signup_view' %}
