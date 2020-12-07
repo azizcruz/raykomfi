@@ -9,16 +9,19 @@
 <head>
     <script src="{% static 'js/cookie.min.js' %}"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8MZHD8XD84"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-184849250-1">
+    </script>
     <script>
         if (Cookies.get('cookiebar') === 'hide' && Cookies.get('googleanalytics') != 'false') {
             window.dataLayer = window.dataLayer || [];
             function gtag() { dataLayer.push(arguments); }
             gtag('js', new Date());
-
-            gtag('config', 'G-8MZHD8XD84');
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
         }
 
+        gtag('config', 'UA-184849250-1');
     </script>
     <title> {{ view_title }}</title>
     {% if url_name == 'signup_view' %}
@@ -228,7 +231,9 @@
                     class="fa fa-user-plus" aria-hidden="true"></i></a>
             <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-signin' %}">تسجيل دخول &nbsp;<i
                     class="fa fa-sign-in" aria-hidden="true"></i></a>
-            <a class="w3-bar-item w3-button green white-text no-register-button" href="{% url 'raykomfi:user-register-withnosignup' %}">طلب رمز المشاركة &nbsp;<i class="fa fa-bolt" aria-hidden="true"></i></a>
+            <a class="w3-bar-item w3-button green white-text no-register-button"
+                href="{% url 'raykomfi:user-register-withnosignup' %}">طلب رمز المشاركة &nbsp;<i class="fa fa-bolt"
+                    aria-hidden="true"></i></a>
 
             {% endif %}
             {% endwith %}
