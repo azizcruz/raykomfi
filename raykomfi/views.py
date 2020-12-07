@@ -907,6 +907,9 @@ def send_link(request):
 def privacy_policy_view(request):
     return render(request, 'sections/privacy_policy.html')
 
+def about_view(request):
+    return render(request, 'sections/about.html')
+
 def not_found_handler(request):
     return JsonResponse({'message': ''}, status=status.HTTP_404_NOT_FOUND)
 
