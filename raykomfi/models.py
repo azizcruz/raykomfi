@@ -167,7 +167,6 @@ class Post(models.Model, HitCountMixin):
                 except:
                     pass
 
-                prev_post_status = prev_post_status.values('isActive').first()['isActive']
                 admin = User.objects.get(email=os.getenv('ADMIN_EMAIL'))
                 notify.send(admin, recipient=self.creator ,action_object=self, description=self.get_noti_url(), target=self, verb='post_accepted')
                 
