@@ -24,9 +24,9 @@
         }
     </script>
     <title> {{ view_title }}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     {% if url_name == 'signup_view' %}
-    <meta name="description" property="description" content="إنضم إلى مجتمع رايكم في وأبدأ بتسجيل حساب جديد">
-    <meta name="author" content="{{ post.creator.username }}">
+    <meta name="description" content="إنضم إلى مجتمع رايكم في وأبدأ بتسجيل حساب جديد">
     <meta property="og:title" content="منصة رايكم في" />
     <meta name="og:description" content="إنضم إلى مجتمع رايكم في وأبدأ بتسجيل حساب جديد" />
     <meta property="og:image"
@@ -40,9 +40,7 @@
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@raykomfi">
     {% elif url_name == 'signin_view' %}
-    <meta name="description" property="description"
-        content="تسجيل الدخول الى رايكم في للبدأ في إستفسار الناس عن ما تريد">
-    <meta name="author" content="{{ post.creator.username }}">
+    <meta name="description" content="تسجيل الدخول الى رايكم في للبدأ في إستفسار الناس عن ما تريد">
     <meta property="og:title" content="منصة رايكم في" />
     <meta name="og:description" content="تسجيل الدخول الى رايكم في للبدأ في إستفسار الناس عن ما تريد" />
     <meta property="og:image"
@@ -56,8 +54,7 @@
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@raykomfi">
     {% elif url_name == 'categorized_view' %}
-    <meta name="description" property="description" content="بحث عن إستفسارات حسب التصنيف {{ category }}">
-    <meta name="author" content="{{ post.creator.username }}">
+    <meta name="description" content="بحث عن إستفسارات حسب التصنيف {{ category }}">
     <meta property="og:title" content="منصة رايكم في" />
     <meta name="og:description" content="بحث عن إستفسارات حسب التصنيف {{ category }}" />
     <meta property="og:image"
@@ -70,7 +67,7 @@
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@raykomfi">
     {% else %}
-    <meta name="description" property="description" content="منصة تجمع المشترين لمناقشة وأخذ
+    <meta name="description" content="منصة تجمع المشترين لمناقشة وأخذ
          آراء أناس إشتروا نفس الشيء من قبل">
     <meta property="og:title" content="منصة رايكم في" />
     <meta name="og:description" content="منصة تجمع المشترين لمناقشة وأخذ
@@ -87,8 +84,14 @@
     <meta name="twitter:site" content="@raykomfi">
     {% endif %}
 
+    {% if url_name == 'profile_view' or url_name == 'message_view' %}
+    <meta name="robots" content="noindex, nofollow">
+    {% endif %}
+
+    <link rel="canonical" href="http://raykomfi.com/" />
     <meta name="keywords" content="
     رايكم في ,
+    رايكم في بالانجليزي ,
     منصة رايكم في ,
      شو رايكم,
     ما رأيك بي ,
@@ -108,7 +111,6 @@
     ’ مساعدة من الناس
 ">
     {% if url_name == 'post_view' %}
-    <meta name="author" content="{{ post.creator.username }}">
     <meta property="og:title" content="{{ post.title }}" />
     {% if post.content %}
     <meta name="og:description" content="{{ post.content }}" />
@@ -322,14 +324,14 @@
 
 
         <div class="cookie-message">
-            <p class="center">
+            <div class="center">
                 عندما يقوم شخص ما بزيارة منصةنا على الويب، نستخدم ملفات تعريف الارتباط على الويب و خدمة طرف ثالث لتحسين
                 تجربة المستخدم و لجمع معلومات قياسية
                 عن سجل الإنترنت وتفاصيل أنماط سلوك الزائر. نحن نفعل ذلك للسماح
                 لنا بتتبع عدد الزوار إلى أجزاء مختلفة من المواقع وفهم كيفية استخدام منصةنا على الانترنت. نحن لا نقوم بأي
                 محاولة لمعرفة هويات أو طبيعة أولئك الذين يزورون منصةنا. لن نشارك معلوماتك مع أي منظمات أخرى لأغراض
                 التسويق أو أبحاث السوق أو الأغراض التجارية، ولا نقوم بتمرير بياناتك إلى مواقع ويب أخرى.
-            </p>
+            </div>
             <div class="cookie-close-button center">أتفهم ذلك</div>
             <div class="cookie-close-button center without-third-party">أتفهم ذلك, لكن بدون خدمة طرف ثالث</div>
         </div>

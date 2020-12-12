@@ -112,11 +112,11 @@ def profile_view(request, id):
         else:
             if request.user.id != id:
                 profile = User.objects.prefetch_related('posts').get(id=id)
-                return render(request, 'user/profile.html', {'profile': profile, 'view_title': f'رايكم في | { profile.username }'})
+                return render(request, 'user/profile.html', {'profile': profile, 'view_title': f'رايكم في | { profile.username }', 'url_name': 'profile_view'})
             else:
                 form = ProfileForm(instance=request.user,
                                 use_required_attribute=False)
-                return render(request, 'user/profile.html', {'form': form, 'view_title': f'رايكم في | { request.user.username }'})
+                return render(request, 'user/profile.html', {'form': form, 'view_title': f'رايكم في | { request.user.username }', 'url_name': 'profile_view'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ",e)
         messages.success(
@@ -704,9 +704,9 @@ def messages_view(request, user_id, message_id=0):
                 message.save()
                 user_messages = Message.objects.filter(receiver__exact=user_id)
                 Notification.objects.filter(description=request.path).first().delete()
-                return render(request, 'sections/messages.html', {'user_messages': user_messages, 'fetched_message': message, 'view_title': f'رايكم في | الرسائل'})
+                return render(request, 'sections/messages.html', {'user_messages': user_messages, 'fetched_message': message, 'view_title': f'رايكم في | الرسائل', 'url_name': 'message_view'})
             user_messages = Message.objects.filter(receiver__id__exact=user_id)
-            return render(request, 'sections/messages.html', {'user_messages': user_messages, 'view_title': f'رايكم في | الرسائل'})
+            return render(request, 'sections/messages.html', {'user_messages': user_messages, 'view_title': f'رايكم في | الرسائل', 'url_name': 'message_view'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(

@@ -389,9 +389,9 @@
 
             {% if not user.is_authenticated %}
             <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
-                <p class="w3-center"><a href="{% url 'raykomfi:user-register' %}" class="w3-text-blue">سجل حساب
+                <div class="w3-center w3-padding"><a href="{% url 'raykomfi:user-register' %}" class="w3-text-blue">سجل حساب
                         جديد</a> أو <a href="{% url 'raykomfi:user-signin' %}" class="w3-text-blue">سجل الدخول</a>
-                    للمشاركة في الآراء</p>
+                    للمشاركة في الآراء</div>
             </div>
 
             <div class="w3-display-container w3-panel">
@@ -430,7 +430,7 @@
             </div>
             {% else %}
             <div class="w3-display-container w3-panel w3-border message-wrapper w3-pale-yellow">
-                <p class="w3-center">فعل حسابك للمشاركة في الآراء</p>
+                <div class="w3-center w3-padding">فعل حسابك للمشاركة في الآراء</div>
             </div>
 
             {% endif %}
