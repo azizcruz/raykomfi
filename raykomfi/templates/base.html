@@ -12,16 +12,16 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-184849250-1">
     </script>
     <script>
-        if (Cookies.get('cookiebar') === 'hide' && Cookies.get('googleanalytics') != 'false') {
+        // if (Cookies.get('cookiebar') === 'hide' && Cookies.get('googleanalytics') != 'false') {
             console.log('yes')
             window.dataLayer = window.dataLayer || [];
             function gtag() { dataLayer.push(arguments); }
             gtag('js', new Date());
-        }
+        // }
 
-        if (Cookies.get('cookiebar') === 'hide' && Cookies.get('googleanalytics') != 'false') {
+        // if (Cookies.get('cookiebar') === 'hide' && Cookies.get('googleanalytics') != 'false') {
             gtag('config', 'UA-184849250-1');
-        }
+        // }
     </script>
     <title> {{ view_title }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -325,7 +325,7 @@
 
         <div class="cookie-message">
             <div class="center">
-                عندما يقوم شخص ما بزيارة منصةنا على الويب، نستخدم ملفات تعريف الارتباط على الويب و خدمة طرف ثالث لتحسين
+                عندما يقوم شخص ما بزيارة منصتنا على الويب، نستخدم ملفات تعريف الارتباط على الويب و خدمة طرف ثالث لتحسين
                 تجربة المستخدم و لجمع معلومات قياسية
                 عن سجل الإنترنت وتفاصيل أنماط سلوك الزائر. نحن نفعل ذلك للسماح
                 لنا بتتبع عدد الزوار إلى أجزاء مختلفة من المواقع وفهم كيفية استخدام منصةنا على الانترنت. نحن لا نقوم بأي
@@ -333,7 +333,7 @@
                 التسويق أو أبحاث السوق أو الأغراض التجارية، ولا نقوم بتمرير بياناتك إلى مواقع ويب أخرى.
             </div>
             <div class="cookie-close-button center">أتفهم ذلك</div>
-            <div class="cookie-close-button center without-third-party">أتفهم ذلك, لكن بدون خدمة طرف ثالث</div>
+            <!-- <div class="cookie-close-button center without-third-party">أتفهم ذلك, لكن بدون خدمة طرف ثالث</div> -->
         </div>
     </div>
     {% compress js %}

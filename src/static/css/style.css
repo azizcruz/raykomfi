@@ -216,6 +216,10 @@ h4 {
   bottom: 0;
   top: auto;
 }
+
+.cookie-message > .center {
+  font-size: 11px !important;
+}
 .cookie-close-button {
   background-color: #186bae;
   color: #fff !important;
