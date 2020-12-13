@@ -224,7 +224,7 @@ def sign_up_view(request):
 
         else:
             form = SignupForm(use_required_attribute=False)
-            return render(request, 'user/register.html', context={'form': form, 'url_name': 'signup_view'})
+            return render(request, 'user/register.html', context={'form': form, 'url_name': 'signup_view', 'view_title': f'منصة رايكم في | حساب جديد'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
@@ -905,10 +905,10 @@ def send_link(request):
         return render(request, 'user/activate_account.html')
 
 def privacy_policy_view(request):
-    return render(request, 'sections/privacy_policy.html')
+    return render(request, 'sections/privacy_policy.html', {'view_title': 'منصة رايكم في | سياسة الخصوصية والإستخدام'})
 
 def about_view(request):
-    return render(request, 'sections/about.html')
+    return render(request, 'sections/about.html', {'view_title': 'منصة رايكم في | عن منصة رايكم في'})
 
 def not_found_handler(request):
     return JsonResponse({'message': ''}, status=status.HTTP_404_NOT_FOUND)
