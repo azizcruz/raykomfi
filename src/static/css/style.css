@@ -249,6 +249,10 @@ h4 {
   padding: 20px !important;
 }
 
+.ray-box h2 {
+  font-size: 1.40rem;
+}
+
 .what-is-this {
   padding: 3px;
   cursor: pointer;
@@ -759,7 +763,7 @@ select:focus {
   font-size: 22px;
 } */
 
-.ray-box h3 {
+.ray-box h2 {
   color: #2196f3 !important;
 }
 
@@ -772,6 +776,10 @@ select:focus {
 /* Post View Style */
 .post-box {
   padding: 24px 16px;
+}
+
+.post-box h1 {
+  font-size: 1.8rem
 }
 .comment-wrapper {
   margin-bottom: 10px;

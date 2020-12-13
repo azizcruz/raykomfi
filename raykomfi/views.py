@@ -56,14 +56,14 @@ def index(request):
     count = posts.count()
     latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').all().order_by('-created')[:10]
     categories = Category.objects.all()
-    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'view_title': 'رايكم في', 'count': count})
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'view_title': 'منصة رايكم في', 'count': count})
 
 def latest_posts(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).order_by('-created')
     count = posts.count()
     latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').all().order_by('-created')[:10]
     categories = Category.objects.all()
-    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'view_title': 'رايكم في', 'count': count})
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'view_title': 'منصة رايكم في', 'count': count})
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def categorized_posts(request, category=False):
@@ -80,7 +80,7 @@ def most_discussed_posts(request):
     count = posts.count()
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:10]
-    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True, 'view_title': 'رايكم في | الأكثر مناقشة', 'url_name': 'most_discussed_view', 'count': count})
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True, 'view_title': 'منصة رايكم في | الأكثر مناقشة', 'url_name': 'most_discussed_view', 'count': count})
 
 
 @ratelimit(key='ip', rate='50/m', block=True)
@@ -89,7 +89,7 @@ def most_searched_posts(request):
     count = posts.count()
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:10]
-    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True, 'view_title': 'رايكم في | الأكثر بحثا', 'url_name': 'most_searched_view', 'count': count})
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True, 'view_title': 'منصة رايكم في | الأكثر بحثا', 'url_name': 'most_searched_view', 'count': count})
 
 @login_required
 @ratelimit(key='ip', rate='10/m', block=True)
@@ -151,9 +151,9 @@ def sign_in_view(request):
                     messages.success(
                         request, 'البريد الإكتروني أو كلمة المرور خاطئة', extra_tags='pale-red w3-border')
                     form = SigninForm(use_required_attribute=False)
-                    return render(request, 'user/signin.html', context={'form': form, 'view_title': f'رايكم في | تسجيل الدخول'})
+                    return render(request, 'user/signin.html', context={'form': form, 'view_title': f'منصة رايكم في | تسجيل الدخول'})
             else:
-                return render(request, 'user/signin.html', context={'form': form, 'view_title': f'رايكم في | تسجيل الدخول'})
+                return render(request, 'user/signin.html', context={'form': form, 'view_title': f'منصة رايكم في | تسجيل الدخول'})
         else:
             form = SigninForm(use_required_attribute=False)
             context = {'form': form, 'view_title': f'رايكم في | تسجيل الدخول', 'url_name': 'signin_view'}
@@ -220,7 +220,7 @@ def sign_up_view(request):
                 return HttpResponseRedirect('/user/signin')
 
             else:
-                return render(request, 'user/register.html', context={'form': form, 'view_title': f'رايكم في | حساب جديد'})
+                return render(request, 'user/register.html', context={'form': form, 'view_title': f'منصة رايكم في | حساب جديد'})
 
         else:
             form = SignupForm(use_required_attribute=False)
@@ -263,11 +263,11 @@ def sign_up_with_no_registration_view(request):
                 return HttpResponseRedirect('/')
 
             else:
-                return render(request, 'user/user_with_no_registration.html', context={'form': form, 'view_title': f'رايكم في | طلب رمز المشاركة'})
+                return render(request, 'user/user_with_no_registration.html', context={'form': form, 'view_title': f'منصة رايكم في | طلب رمز المشاركة'})
 
         else:
             form = SignupWithNoRegistrationForm(use_required_attribute=False)
-            return render(request, 'user/user_with_no_registration.html', context={'form': form, 'view_title': f'رايكم في | طلب رمز المشاركة'})
+            return render(request, 'user/user_with_no_registration.html', context={'form': form, 'view_title': f'منصة رايكم في | طلب رمز المشاركة'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
@@ -306,11 +306,11 @@ def forgot_no_registration_code(request):
                 return HttpResponseRedirect('/')
 
             else:
-                return render(request, 'user/forgot_no_registration_code.html', context={'form': form, 'view_title': f'رايكم في | طلب رمز المشاركة'})
+                return render(request, 'user/forgot_no_registration_code.html', context={'form': form, 'view_title': f'منصة رايكم في | طلب رمز المشاركة'})
 
         else:
             form = ForgotNoRegistrationCodeForm(use_required_attribute=False)
-            return render(request, 'user/forgot_no_registration_code.html', context={'form': form, 'view_title': f'رايكم في | طلب رمز المشاركة'})
+            return render(request, 'user/forgot_no_registration_code.html', context={'form': form, 'view_title': f'منصة رايكم في | طلب رمز المشاركة'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
@@ -395,7 +395,7 @@ def my_posts_view(request, user_id):
     try:
         posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(creator__id=user_id)[:5]
         count = Post.objects.prefetch_related('creator', 'category', 'comments').filter(creator__id=user_id).count()
-        return render(request, 'sections/user_posts.html', context={'posts': posts, 'count_posts': count, 'view_title': f'رايكم في | إستفساراتي'})
+        return render(request, 'sections/user_posts.html', context={'posts': posts, 'count_posts': count, 'view_title': f'منصة رايكم في | إستفساراتي'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
@@ -408,7 +408,7 @@ def my_comments_view(request, user_id):
     try:
         comments = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id).order_by('-created')[:5]
         count = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id).count()
-        return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count, 'view_title': f'رايكم في | آرائي'})
+        return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count, 'view_title': f'منصة رايكم في | آرائي'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
@@ -421,7 +421,7 @@ def my_comments_most_replied_view(request, user_id):
     try:
         comments = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id).annotate(replies_count=Count('replies')).order_by('-replies_count')
         count = 0
-        return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count, 'view_title': f'رايكم في | آرائي الأكثر ردا'})
+        return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count, 'view_title': f'منصة رايكم في | آرائي الأكثر ردا'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
@@ -434,7 +434,7 @@ def my_comments_most_voted_view(request, user_id):
     try:
         comments = Comment.objects.prefetch_related('user', 'replies').filter(user__id=user_id).order_by('-votes')
         count = 0
-        return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count, 'view_title': f'رايكم في | آرائي الأكثر تصويتا'})
+        return render(request, 'sections/user_comments.html', context={'comments': comments, 'count_comments': count, 'view_title': f'منصة رايكم في | آرائي الأكثر تصويتا'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
@@ -484,10 +484,10 @@ def create_post(request):
                 post.save()
                 return redirect(post.get_absolute_url())
             else:
-                return render(request, 'sections/create_post.html', context={'form': form, 'view_title': f'رايكم في | إستفسار جديد'})
+                return render(request, 'sections/create_post.html', context={'form': form, 'view_title': f'منصة رايكم في | إستفسار جديد'})
         else:
             form = NewPostForm(use_required_attribute=False)
-            return render(request, 'sections/create_post.html', context={'form': form, 'view_title': f'رايكم في | إستفسار جديد', 'url_name': 'ask_people_view'})
+            return render(request, 'sections/create_post.html', context={'form': form, 'view_title': f'منصة رايكم في | إستفسار جديد', 'url_name': 'ask_people_view'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
@@ -507,10 +507,10 @@ def create_post_with_no_registration(request):
                 post.save()
                 return redirect(post.get_absolute_url())
             else:
-                return render(request, 'sections/create_post_with_no_registration.html', context={'form': form, 'view_title': f'رايكم في | إستفسار جديد'})
+                return render(request, 'sections/create_post_with_no_registration.html', context={'form': form, 'view_title': f'منصة رايكم في | إستفسار جديد'})
         else:
             form = NewPostWithNoRegistrationForm(use_required_attribute=False)
-            return render(request, 'sections/create_post_with_no_registration.html', context={'form': form, 'view_title': f'رايكم في | إستفسار جديد', 'url_name': 'ask_people_view'})
+            return render(request, 'sections/create_post_with_no_registration.html', context={'form': form, 'view_title': f'منصة رايكم في | إستفسار جديد', 'url_name': 'ask_people_view'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
@@ -568,7 +568,7 @@ def restore_password_view(request):
                     return render(request, 'user/restore_password.html', {
                         'form': form,
                         'user': user,
-                        'view_title': f'رايكم في | إعادة تعيين كلمة المرور'
+                        'view_title': f'منصة رايكم في | إعادة تعيين كلمة المرور'
                     })
             else:
                 return redirect('raykomfi:user-signin')
@@ -611,10 +611,10 @@ def forgot_password_view(request):
 
                 return HttpResponseRedirect('/user/signin')
             else:
-                return render(request, 'user/forgot_password.html', context={'form': form, 'view_title': f'رايكم في | نسيت كلمة المرور'})
+                return render(request, 'user/forgot_password.html', context={'form': form, 'view_title': f'منصة رايكم في | نسيت كلمة المرور'})
         else:
             form = CustomPasswordResetForm(use_required_attribute=False)
-            return render(request, 'user/forgot_password.html', context={'form': form, 'view_title': f'رايكم في | نسيت كلمة المرور'})
+            return render(request, 'user/forgot_password.html', context={'form': form, 'view_title': f'منصة رايكم في | نسيت كلمة المرور'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
@@ -656,10 +656,10 @@ def change_email_view(request):
 
                 return HttpResponseRedirect('/')
             else:
-                return render(request, 'user/change_email.html', context={'form': form, 'view_title': f'رايكم في | تغيير البريد الإلكتروني'})
+                return render(request, 'user/change_email.html', context={'form': form, 'view_title': f'منصة رايكم في | تغيير البريد الإلكتروني'})
         else:
             form = ChangeEmailForm(use_required_attribute=False, request=request)
-            return render(request, 'user/change_email.html', context={'form': form, 'view_title': f'رايكم في | تغيير البريد الإلكتروني'})
+            return render(request, 'user/change_email.html', context={'form': form, 'view_title': f'منصة رايكم في | تغيير البريد الإلكتروني'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
@@ -696,7 +696,7 @@ def messages_view(request, user_id, message_id=0):
             message.is_read = True
             message.save()
             user_messages = Message.objects.filter(receiver__exact=user_id)
-            return render(request, 'sections/messages.html', {'user_messages': user_messages, 'fetched_message': message, 'view_title': f'رايكم في | الرسائل'})
+            return render(request, 'sections/messages.html', {'user_messages': user_messages, 'fetched_message': message, 'view_title': f'منصة رايكم في | الرسائل'})
         else:
             if message_id != 0:
                 message = get_object_or_404(Message, id=message_id)
@@ -704,9 +704,9 @@ def messages_view(request, user_id, message_id=0):
                 message.save()
                 user_messages = Message.objects.filter(receiver__exact=user_id)
                 Notification.objects.filter(description=request.path).first().delete()
-                return render(request, 'sections/messages.html', {'user_messages': user_messages, 'fetched_message': message, 'view_title': f'رايكم في | الرسائل', 'url_name': 'message_view'})
+                return render(request, 'sections/messages.html', {'user_messages': user_messages, 'fetched_message': message, 'view_title': f'منصة رايكم في | الرسائل', 'url_name': 'message_view'})
             user_messages = Message.objects.filter(receiver__id__exact=user_id)
-            return render(request, 'sections/messages.html', {'user_messages': user_messages, 'view_title': f'رايكم في | الرسائل', 'url_name': 'message_view'})
+            return render(request, 'sections/messages.html', {'user_messages': user_messages, 'view_title': f'منصة رايكم في | الرسائل', 'url_name': 'message_view'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
@@ -729,10 +729,10 @@ def new_message_view(request, code):
                     notify.send(request.user, recipient=receiver ,action_object=message, description=message.get_noti_url(), target=message, verb='message')
                 return redirect(receiver.get_absolute_url())
             else:
-                return render(request, 'sections/new_message.html', context={'form': form, 'receiver': receiver, 'view_title': f'رايكم في | رسالة جديدة'})
+                return render(request, 'sections/new_message.html', context={'form': form, 'receiver': receiver, 'view_title': f'منصة رايكم في | رسالة جديدة'})
         else:
             form = MessageForm(use_required_attribute=False)
-            return render(request, 'sections/new_message.html', context={'form': form, 'receiver': receiver, 'view_title': f'رايكم في | رسالة جديدة'})
+            return render(request, 'sections/new_message.html', context={'form': form, 'receiver': receiver, 'view_title': f'منصة رايكم في | رسالة جديدة'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
