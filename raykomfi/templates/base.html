@@ -69,6 +69,8 @@
     <meta name="twitter:site" content="@raykomfi">
     {% else %}
     <!-- Open Graph / Facebook -->
+    <meta name="description" content="منصة تجمع الناس للمناقشة و إستفسار
+    آراء الناس في شراء, زيارة, تجربة, تعلم, مهنة و الكثير">
     <meta property="og:type" content="website">
     <meta property="og:url" content="http://www.raykomfi.com">
     <meta property="og:title" content="رايكم في">
@@ -117,6 +119,7 @@
 ">
     {% if url_name == 'post_view' %}
     <meta property="og:title" content="{{ post.title }}" />
+    <meta name="description" content="{{ post.title }}">
     {% if post.content %}
     <meta name="og:description" content="{{ post.content }}" />
     {% else %}
