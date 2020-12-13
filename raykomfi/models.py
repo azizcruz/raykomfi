@@ -21,6 +21,7 @@ from django.contrib.contenttypes.fields import GenericRelation
 from tinymce.models import HTMLField
 from notifications.signals import notify
 from twitter import *
+import facebook
 from dotenv import load_dotenv
 load_dotenv()
 import os
@@ -164,8 +165,11 @@ class Post(models.Model, HitCountMixin):
                 try:
                     t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
                     t.statuses.update(status=f'{self.title} \n {self.get_twitter_url()}', media_ids="")
-                except:
-                    pass
+                    token = os.getenv('fb_token')
+                    fb = facebook.GraphAPI(access_token=token)
+                    fb.put_object(parent_object='me', connection_name='feed', message=f'{self.title} \n {self.get_twitter_url()}')
+                except Exception as e:
+                    print('=======================>', e)
 
                 admin = User.objects.get(email=os.getenv('ADMIN_EMAIL'))
                 notify.send(admin, recipient=self.creator ,action_object=self, description=self.get_noti_url(), target=self, verb='post_accepted')
