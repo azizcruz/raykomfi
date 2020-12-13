@@ -101,7 +101,7 @@ class Category(models.Model):
         max_length=200, db_index=True, unique=True, blank=True)
 
     class Meta:
-        ordering = ("name", )
+        ordering = ("-name", )
         verbose_name = "تصنيف"
         verbose_name_plural = "تصنيفات"
 
