@@ -13,14 +13,14 @@
     </script>
     <script>
         // if (Cookies.get('cookiebar') === 'hide' && Cookies.get('googleanalytics') != 'false') {
-            console.log('yes')
-            window.dataLayer = window.dataLayer || [];
-            function gtag() { dataLayer.push(arguments); }
-            gtag('js', new Date());
+        console.log('yes')
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
         // }
 
         // if (Cookies.get('cookiebar') === 'hide' && Cookies.get('googleanalytics') != 'false') {
-            gtag('config', 'UA-184849250-1');
+        gtag('config', 'UA-184849250-1');
         // }
     </script>
     <title> {{ view_title }}</title>
@@ -32,7 +32,7 @@
     <meta name="og:description" content="إنضم إلى مجتمع رايكم في وأبدأ بتسجيل حساب جديد" />
     <meta property="og:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
-    <meta property="og:url" content="https://www.raykomfi.com" />
+    <meta property="og:url" content="http://www.raykomfi.com" />
     <meta property="twitter:title" content="منصة رايكم في" />
     <meta name="twitter:description" content="منصة تجمع الناس للمناقشة و إستفسار
     آراء الناس في شراء, زيارة, تجربة, تعلم, مهنة و الكثير" />
@@ -46,7 +46,7 @@
     <meta name="og:description" content="تسجيل الدخول الى رايكم في للبدأ في إستفسار الناس عن ما تريد" />
     <meta property="og:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
-    <meta property="og:url" content="https://www.raykomfi.com" />
+    <meta property="og:url" content="http://www.raykomfi.com" />
     <meta property="twitter:title" content="منصة رايكم في" />
     <meta name="twitter:description" content="منصة تجمع المشترين لمناقشة وأخذ
             آراء أناس إشتروا نفس الشيء من قبل" />
@@ -60,13 +60,33 @@
     <meta name="og:description" content="بحث عن إستفسارات حسب التصنيف {{ category }}" />
     <meta property="og:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
-    <meta property="og:url" content="https://www.raykomfi.com" />
+    <meta property="og:url" content="http://www.raykomfi.com" />
     <meta property="twitter:title" content="منصة رايكم في" />
     <meta name="twitter:description" content="بحث عن إستفسارات حسب التصنيف {{ category }}" />
     <meta name="twitter:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@raykomfi">
+    {% else %}
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://www.raykomfi.com">
+    <meta property="og:title" content="رايكم في">
+    <meta property="og:description"
+        content="منصة تجمع الناس للمناقشة و إستفسار
+        آراء الناس في شراء, زيارة, تجربة, تعلم, مهنة و الكثير">
+    <meta property="og:image"
+        content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_image">
+    <meta property="twitter:url" content="http://www.raykomfi.com">
+    <meta property="twitter:title" content="رايكم في">
+    <meta property="twitter:description"
+        content="منصة تجمع الناس للمناقشة و إستفسار
+        آراء الناس في شراء, زيارة, تجربة, تعلم, مهنة و الكثير">
+    <meta property="twitter:image"
+        content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png">
     {% endif %}
 
     {% if url_name == 'profile_view' or url_name == 'message_view' %}
@@ -251,8 +271,8 @@
             </div>
             <div class="raykomfi-social-media">
                 <div>
-                    <a href="https://web.facebook.com/raykomfi.original"
-                        target="_blank" title="فيسبوك رايكم في"><i class="fa fa-facebook"></i></a>
+                    <a href="https://web.facebook.com/raykomfi.original" target="_blank" title="فيسبوك رايكم في"><i
+                            class="fa fa-facebook"></i></a>
                 </div>
                 <div>
                     <a href="https://twitter.com/raykomfi" target="_blank" title="تويتر رايكم في"><i
@@ -345,7 +365,8 @@
     {% endif %}
 
     {% if user.is_authenticated %}
-    {% register_notify_callbacks refresh_period=40 callbacks='fill_notification_list_override,fill_notification_badge_override' %}
+    {% register_notify_callbacks refresh_period=40
+    callbacks='fill_notification_list_override,fill_notification_badge_override' %}
     {% endif %}
 </body>
 
