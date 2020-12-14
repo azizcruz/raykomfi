@@ -140,7 +140,7 @@
     <meta property="og:title" content="{{ post.title }}" />
     <meta name="description" content="{{ post.title }}">
     {% if post.content %}
-    <meta name="og:description" content="{{ post.content }}" />
+    <meta name="og:description" content="{{ post.content|safe }}" />
     {% else %}
     <meta name="og:description" content="منصة تجمع الناس للمناقشة و إستفسار
     آراء الناس في شراء, زيارة, تجربة, تعلم, مهنة و الكثير" />
@@ -150,7 +150,7 @@
     <meta property="og:url" content="{{ post.get_twitter_url }}" />
     <meta property="twitter:title" content="{{ post.title }}" />
     {% if post.content %}
-    <meta name="twitter:description" content="{{ post.content }}" />
+    <meta name="twitter:description" content="{{ post.content|safe }}" />
     {% else %}
     <meta name="twitter:description" content="منصة تجمع الناس للمناقشة و إستفسار
         آراء الناس في شراء, زيارة, تجربة, تعلم, مهنة و الكثير" />
@@ -336,6 +336,12 @@
             </div>
         </header>
 
+       {% if important_message %}
+       <div class="yellow">
+        <div class="center-block w3-padding manager-message center">   {{ important_message }}</div>
+       </div>
+       {% endif %}
+
         <div class="raykomfi-content container">
             {% if messages %}
             {% for message in messages %}
@@ -363,6 +369,7 @@
             <!-- <div class="cookie-close-button center without-third-party">أتفهم ذلك, لكن بدون خدمة طرف ثالث</div> -->
         </div>
     </div>
+    <script src="https://cdn.tiny.cloud/1/s7koavq5smn9hdo8whw4qckuqbtazojqhhrnex25s35iyu75/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     {% compress js %}
     <script src="{% static 'js/jquery.min.3.1.1.js' %}"></script>
     <script src="{% static 'js/parsley.min.js' %}"></script>

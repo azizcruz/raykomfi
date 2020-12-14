@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Post, Message, Reply, Comment, Category, NoRegistrationCode
+from .models import User, Post, Message, Reply, Comment, Category, NoRegistrationCode, ImportantAdminMessages
 from admin_auto_filters.filters import AutocompleteFilter
 
 
@@ -46,6 +46,9 @@ class CommentAdmin(admin.ModelAdmin):
     search_fields = ['content']
     list_filter = ("isActive", "created", UserFilter)
 
+class AdminMessages(admin.ModelAdmin):
+    list_display = ('message', 'show')
+
 
 
 # Register your models here.
@@ -56,3 +59,4 @@ admin.site.register(Reply, ReplyAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Category)
 admin.site.register(NoRegistrationCode, NoRegistrationCodeAdmin)
+admin.site.register(ImportantAdminMessages, AdminMessages)

@@ -510,3 +510,18 @@ $(document).on("click", ".close-reply-edit-form", (e) => {
 $('#add-comment-no-register').on('click', () => {
   $(".commentNoRegisterForm").toggleClass('raykomfi-display-block')
 })
+
+tinymce.init({
+  selector: 'textarea',
+  plugins: 'advlist lists link charmap preview hr anchor pagebreak',
+  toolbar_mode: 'floating',
+  max_height: 400,
+  toolbar: ["undo redo | bold italic | styleselect | alignleft aligncenter alignright alignjustify | bullist numlist link preview"],
+  autoresize: false,
+  height: 500,
+  min_height: 400,
+  menubar: false,
+  directionality : 'rtl',
+  language: 'ar',
+  preview_styles:true
+});

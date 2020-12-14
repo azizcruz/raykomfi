@@ -160,7 +160,7 @@
                 </span>
                 {% endif %}
                 <a href="{{post.get_absolute_url}}">
-                    <h2>{{post.title |truncatechars:100}}</h2>
+                    <h2 class="raykomfi-bold">{{post.title |truncatechars:100}}</h2>
                     {% if post.image and post.image_source %}
                     <div class="ray-image-section">
                         <img src="" alt="{{post.title}}" data-src="{{ post.image.url }}"

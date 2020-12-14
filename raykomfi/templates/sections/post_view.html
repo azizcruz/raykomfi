@@ -46,9 +46,9 @@
                 {% endif %}
             </div>
             <div class="w3-mobile">
-                <h1>{{post.title}}</h1>
+                <h1 class="raykomfi-bold raykomfi-main-color">{{post.title}}</h1>
                 {% if post.content %}
-                <p>{{post.content}}</p>
+                <p>{{post.content|safe}}</p>
                 {% endif %}
             </div>
             <div class="w3-mobile">

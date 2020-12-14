@@ -377,12 +377,12 @@ class NewPostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('category', 'title', 'content', 'image', 'image_source')
+        fields = ('category', 'title', 'content')
 
     def __init__(self, *args, **kwargs):
         super(NewPostForm, self).__init__(*args, **kwargs)
 
-        for fieldname in ['category', 'title', 'content', 'image', 'image_source']:
+        for fieldname in ['category', 'title', 'content']:
 
             if fieldname == 'category':
                 self.fields[fieldname].label = '* تصنيف الإستفسار'
@@ -392,26 +392,7 @@ class NewPostForm(forms.ModelForm):
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'content':
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
-                self.fields[fieldname].label = ' نبذة عن الإستفسار (يسمح 400 حرف)'
-            if fieldname == 'image':
-                self.fields[fieldname].label = 'صورة إن وجدت'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
-            if fieldname == 'image_source':
-                self.fields[fieldname].label = 'مصدر الصورة (رابط الموقع الذي أخذت منه الصورة "إذا كانت صورة تخصك يمكنك وضع أي رابط وسيتم التأكد منها")'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
-
-    def clean_image_source(self):
-        image = self.cleaned_data.get('image')
-        image_source = self.cleaned_data.get('image_source')
-        if image and not image_source:
-            raise forms.ValidationError(
-                "مصدر الصورة يجب أن لا يكون فارغا")
-
-        if image_source:
-            pass
-
-        return image_source
-
+               
     def clean_title(self):
         title = self.cleaned_data.get('title')
         ALLOWED_EXT = ['jpg', 'png', 'jpeg']
@@ -431,12 +412,12 @@ class NewPostWithNoRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('category', 'title', 'content', 'image', 'image_source', 'code')
+        fields = ('category', 'title', 'content', 'code')
 
     def __init__(self, *args, **kwargs):
         super(NewPostWithNoRegistrationForm, self).__init__(*args, **kwargs)
 
-        for fieldname in ['category', 'title', 'content', 'image', 'image_source', 'code']:
+        for fieldname in ['category', 'title', 'content', 'code']:
 
             if fieldname == 'category':
                 self.fields[fieldname].label = '* تصنيف الإستفسار'
@@ -446,32 +427,14 @@ class NewPostWithNoRegistrationForm(forms.ModelForm):
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'content':
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
-                self.fields[fieldname].label = ' نبذة عن الإستفسار (يسمح 400 حرف)'
-            if fieldname == 'image':
-                self.fields[fieldname].label = 'صورة إن وجدت'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
-            if fieldname == 'image_source':
-                self.fields[fieldname].label = 'مصدر الصورة (رابط الموقع الذي أخذت منه الصورة "إذا كانت صورة تخصك يمكنك وضع أي رابط وسيتم التأكد منها")'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'code':
-                self.fields[fieldname].label = 'رمز المشاركة بدون تسجيل'
+                self.fields[fieldname].label = '* رمز المشاركة'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
-
-    def clean_image_source(self):
-        image = self.cleaned_data.get('image')
-        image_source = self.cleaned_data.get('image_source')
-        if image and not image_source:
-            raise forms.ValidationError(
-                "مصدر الصورة يجب أن لا يكون فارغا")
-
-        if image_source:
-            pass
-
-        return image_source
+            
 
     def clean_title(self):
         title = self.cleaned_data.get('title')
-        ALLOWED_EXT = ['jpg', 'png', 'jpeg']
+
         if title.find('رايكم في') == -1:
             raise forms.ValidationError(
                     "يجب أن يبدأ عنوان الإستفسار بعبارة رايكم في")
