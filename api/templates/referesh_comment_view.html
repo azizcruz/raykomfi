@@ -2,7 +2,7 @@
 {% load humanize %}
 
 <div class="comment-side">
-    {% if comment.user and reply.user.is_active != False %}
+    {% if comment.user and reply.user.is_active != False and comment.post.creator.id %}
     <a href="{% url 'raykomfi:user-profile' id=comment.post.creator.id %}" class="writer-name">
         <div class="name">
             <i class="fa fa-user" aria-hidden="true"></i>
