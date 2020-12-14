@@ -169,7 +169,12 @@ class Post(models.Model, HitCountMixin):
                     print('=======================>', e)
 
                 admin = User.objects.get(email=os.getenv('ADMIN_EMAIL'))
-                notify.send(admin, recipient=self.creator ,action_object=self, description=self.get_noti_url(), target=self, verb='post_accepted')
+                anonymousUser = User.objects.filter(email="anonymous@anonymous.com").first()
+                creator = self.creator
+                if not self.creator:
+                    creator = anonymousUser
+
+                notify.send(admin, recipient=creator ,action_object=self, description=self.get_noti_url(), target=self, verb='post_accepted')
                 
             # Generate slug
         self.slug = slugify(self.title)
