@@ -512,7 +512,7 @@ $('#add-comment-no-register').on('click', () => {
 })
 
 tinymce.init({
-  selector: 'textarea',
+  selector: '.post-content',
   plugins: 'advlist lists link charmap preview hr anchor pagebreak',
   toolbar_mode: 'floating',
   max_height: 400,

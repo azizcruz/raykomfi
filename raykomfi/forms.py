@@ -391,7 +391,7 @@ class NewPostForm(forms.ModelForm):
                 self.fields[fieldname].label = '* عنوان الإستفسار'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'content':
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  post-content'
                
     def clean_title(self):
         title = self.cleaned_data.get('title')
@@ -426,7 +426,7 @@ class NewPostWithNoRegistrationForm(forms.ModelForm):
                 self.fields[fieldname].label = '* عنوان الإستفسار'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'content':
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  post-content'
             if fieldname == 'code':
                 self.fields[fieldname].label = '* رمز المشاركة'
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
