@@ -157,16 +157,16 @@ class Post(models.Model, HitCountMixin):
         # When post gets accepted
         prev_post_status = Post.objects.filter(pk=self.pk).first()
         if prev_post_status:
-            if prev_post_status != self.isActive and self.isActive == True:
-                # Post to twitter
-                # try:
-                # t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
-                # t.statuses.update(status=f'{self.title} \n {self.get_twitter_url()}', media_ids="")
-                token = os.getenv('fb_token')
-                fb = facebook.GraphAPI(access_token=token)
-                fb.put_object(parent_object='me', connection_name='feed', message=f'{self.title} \n {self.get_twitter_url()}')
-                # except Exception as e:
-                    # print('=======================>', e)
+            if prev_post_status != self.isActive and self.isActive == True and os.getenv('environment') == 'prod':
+                # Post to twitter and facebook
+                try:
+                    t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
+                    t.statuses.update(status=f'{self.title} \n {self.get_twitter_url()}', media_ids="")
+                    token = os.getenv('fb_token')
+                    fb = facebook.GraphAPI(access_token=token)
+                    fb.put_object(parent_object='me', connection_name='feed', message=f'{self.title} \n {self.get_twitter_url()}')
+                except Exception as e:
+                    print('=======================>', e)
 
                 admin = User.objects.get(email=os.getenv('ADMIN_EMAIL'))
                 anonymousUser = User.objects.filter(email="anonymous@anonymous.com").first()

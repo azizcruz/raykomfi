@@ -222,6 +222,10 @@ h4 {
   top: auto;
 }
 
+.latest-opinions {
+  word-break: break-all;
+}
+
 .cookie-message > .center {
   font-size: 11px !important;
 }
@@ -256,7 +260,9 @@ h4 {
 
 .ray-box h2 {
   font-size: 1.40rem;
-}
+  word-break: break-all;
+  line-height: 1.6rem;}
+
 
 .what-is-this {
   padding: 3px;
@@ -781,10 +787,12 @@ select:focus {
 /* Post View Style */
 .post-box {
   padding: 24px 16px;
+  word-break: break-all;
 }
 
 .post-box h1 {
-  font-size: 1.8rem
+  font-size: 1.8rem;
+  line-height: 2.3rem;
 }
 .comment-wrapper {
   margin-bottom: 10px;
