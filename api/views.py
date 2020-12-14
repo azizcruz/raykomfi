@@ -268,7 +268,10 @@ class CommentsView(APIView):
                     'view': referesh_post_view_html,
                     'message': 'success'
                 }
-                if request.user.id != post.creator.id and post.creator.get_notifications == True:
+                anonymousUser = User.objects.filter(email='anonymous@anonymous.com').first()
+                if post.creator == None:
+                    post.creator = anonymousUser
+                if post.creator and request.user.id != post.creator.id and post.creator.get_notifications == True:
                     notify.send(request.user, recipient=post.creator , action_object=comment,  description=comment.get_noti_url(), target=comment, verb='comment')
                 return JsonResponse(output_data)
             else:
@@ -324,9 +327,11 @@ class RepliesView(APIView):
                     'view': referesh_comment_view_html,
                     'message': 'success'
                 }
+                
                 anonymousUser = User.objects.filter(email='anonymous@anonymous.com').first()
                 if comment.user == None:
                     comment.user = anonymousUser
+
                 if request.user.id != comment.user.id and reply.user.get_notifications == True:
                     notify.send(request.user, recipient=comment.user ,action_object=reply, description=reply.get_noti_url(), target=comment, verb='reply')
                 return JsonResponse(output_data)
