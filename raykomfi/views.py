@@ -54,7 +54,7 @@ from pdb import set_trace
 def index(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')[:8]
     count = posts.count()
-    latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').all().order_by('-created')[:10]
+    latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').all().order_by('-created')[:8]
     categories = Category.objects.all()
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'view_title': f'منصة رايكم في | إستفسر رأي الناس عن أي شي ', 'count': count})
 
