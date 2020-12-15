@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
 import api.serializers as serializers
-from django.db.models import Sum, Q
+from django.db.models import Sum, Q, Max
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -50,11 +50,11 @@ class LazyPostsView(APIView):
         user_id = request.POST.get('user_id')
         posts = None
         if user_id != 'false':
-            posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(creator__id=int(user_id), isActive=True)
+            posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(creator__id=int(user_id), isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')
         elif category != 'false':
-            posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True)
+            posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')
         else:
-            posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True)
+            posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')
         # use Django's pagination
         # https://docs.djangoproject.com/en/dev/topics/pagination/
         results_per_page = 8
