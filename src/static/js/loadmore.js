@@ -37,6 +37,7 @@
     var link = $(this);
     var page = link.data("page");
     var user_id = link.data("user") || false;
+    var viewer = link.data("viewer") || false;
     var post_id = document.getElementById("post_id")
       ? parseInt(document.getElementById("post_id").value)
       : false;
@@ -47,6 +48,7 @@
         page: page,
         post_id: post_id,
         user_id: user_id,
+        viewer: viewer,
         csrfmiddlewaretoken: Cookies.get("csrftoken"), // from index.html
       },
       success: function (data) {

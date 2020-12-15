@@ -12,10 +12,11 @@ class LazyCommentsSerializer(serializers.ModelSerializer):
     csrfmiddlewaretoken = serializers.CharField()
     post_id = serializers.CharField()
     user_id = serializers.CharField()
+    viewer = serializers.CharField()
     class Meta:
         model = Comment
-        fields = ['post_id', 'page', 'csrfmiddlewaretoken', 'user_id']
-        read_only_fields = ['post_id', 'page', 'csrfmiddlewaretoken', 'user_id']
+        fields = ['post_id', 'page', 'csrfmiddlewaretoken', 'user_id', 'viewer']
+        read_only_fields = ['post_id', 'page', 'csrfmiddlewaretoken', 'user_id', 'viewer']
 
 class CommentSerializer(serializers.ModelSerializer):
     user = UserSerializer()

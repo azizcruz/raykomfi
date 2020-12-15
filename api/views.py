@@ -91,11 +91,15 @@ class LazyCommentsView(APIView):
 
     @method_decorator(ratelimit(key='ip', rate='100/m', block=True))
     def post(self, request, format=None):
-        page = request.POST.get('page')
-        user_id = request.POST.get('user_id')
         serializer = serializers.LazyCommentsSerializer(data=request.data)
         if serializer.is_valid():
             comments = []
+            page = serializer.data['page']
+            user_id = serializer.data['user_id']
+            viewer = serializer.data['viewer']
+            
+            if viewer != 'false':
+                request.user = User.objects.filter(id=viewer).first()
             if user_id != 'false':
                 comments = Comment.objects.prefetch_related('user' ,'replies').filter(user__id=user_id)
             else:
