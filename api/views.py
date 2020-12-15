@@ -57,7 +57,7 @@ class LazyPostsView(APIView):
             posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).order_by('-comments__created')
         # use Django's pagination
         # https://docs.djangoproject.com/en/dev/topics/pagination/
-        results_per_page = 8
+        results_per_page = 10
         paginator = Paginator(posts, results_per_page)
         try:
             posts = paginator.page(page)
@@ -327,7 +327,7 @@ class RepliesView(APIView):
                     'view': referesh_comment_view_html,
                     'message': 'success'
                 }
-                
+
                 anonymousUser = User.objects.filter(email='anonymous@anonymous.com').first()
                 if comment.user == None:
                     comment.user = anonymousUser
