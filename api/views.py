@@ -146,7 +146,7 @@ class BestUsers(APIView):
         if current_best_users and current_best_users['last_time_checked'] + datetime.timedelta(days=30) > today_date:
             return Response(current_best_users['best_users'])
         else:
-            if datetime.datetime.today().day == 5 or current_best_users == None:
+            if datetime.datetime.today().day == 5:
                 best_users = User.objects.filter(
                     my_comments__created__lte=timezone.now()-datetime.timedelta(days=1),
                     my_comments__created__gt=timezone.now()-datetime.timedelta(days=30),
