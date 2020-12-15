@@ -52,7 +52,7 @@ from pdb import set_trace
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def index(request):
-    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')[:10]
+    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')[:8]
     count = posts.count()
     latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').all().order_by('-created')[:8]
     categories = Category.objects.all()
@@ -67,7 +67,7 @@ def latest_posts(request):
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def categorized_posts(request, category=False):
-    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')[:10]
+    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')[:8]
     count_categoized = posts.count()
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:8]
@@ -76,7 +76,7 @@ def categorized_posts(request, category=False):
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def most_discussed_posts(request):
-    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(count=Count('comments')).order_by('-count')[:10]
+    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(count=Count('comments')).order_by('-count')[:8]
     count = posts.count()
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:8]
@@ -85,7 +85,7 @@ def most_discussed_posts(request):
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def most_searched_posts(request):
-    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).order_by("-hit_count_generic__hits")[:10]
+    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).order_by("-hit_count_generic__hits")[:8]
     count = posts.count()
     categories = Category.objects.all()
     latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:8]
