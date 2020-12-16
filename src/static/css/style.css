@@ -19,6 +19,13 @@
 * Browsers: last 4 version
 */
 
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v7.0.29,
+* Autoprefixer: v9.7.6
+* Browsers: last 4 version
+*/
+
 /* Main Style */
 html {
   font-size: 16px;
@@ -230,7 +237,7 @@ h4 {
 }
 
 .latest-opinions {
-  word-break: break-all;
+  overflow-wrap:break-word;
   max-width: 500px;
 }
 
@@ -419,12 +426,12 @@ footer {
 }
 
 .latest-opinion p {
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-size: .7rem;
+  color: #484848;
 }
 
-.latest-opinion:hover {
-}
 
 .w3-button {
   -webkit-transition: background-color 0.2s ease-in-out;
@@ -845,8 +852,9 @@ select:focus {
 }
 
 .related-posts {
-  padding-right: 5px;
-  padding-left: 5px;
+  padding-right: 15px;
+  padding-left: 15px;
+  border-bottom: #999;
 }
 
 .vote-side {
