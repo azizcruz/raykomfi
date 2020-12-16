@@ -87,7 +87,9 @@
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@raykomfi">
-    {% else %}
+    {% endif %}
+
+    {% if not url_name %}
     <!-- Open Graph / Facebook -->
     <meta name="description" content="منصة تجمع الناس للمناقشة و إستفسار
     آراء الناس في شراء, زيارة, تجربة, تعلم, مهنة و الكثير">

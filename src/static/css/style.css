@@ -12,6 +12,13 @@
 * Browsers: last 4 version
 */
 
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v7.0.29,
+* Autoprefixer: v9.7.6
+* Browsers: last 4 version
+*/
+
 /* Main Style */
 html {
   font-size: 16px;
@@ -224,6 +231,7 @@ h4 {
 
 .latest-opinions {
   word-break: break-all;
+  max-width: 500px;
 }
 
 .cookie-message > .center {
@@ -393,7 +401,13 @@ footer {
   -webkit-transition: background-color 0.2s ease-in-out;
   -o-transition: background-color 0.2s ease-in-out;
   transition: background-color 0.2s ease-in-out;
+  border-bottom: 1px solid #999;
 }
+
+.latest-opinion:last-child {
+  border-bottom: none;
+}
+
 
 .btn {
   padding: 0 1rem;

@@ -192,6 +192,10 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
+COMPRESS_JS_FILTERS = ['compressor.filters.jsmin.JSMinFilter']
+COMPRESS_CSS_FILTERS = ['compressor.filters.css_default.CssAbsoluteFilter',  'compressor.filters.cssmin.CSSMinFilter']
+
+
 # Custom User Model Settings
 AUTH_USER_MODEL = 'raykomfi.User'
 AUTHENTICATION_BACKENDS = ['raykomfi.backends.EmailBackend']
