@@ -161,7 +161,7 @@ class Post(models.Model, HitCountMixin):
                 # Post to twitter and facebook
                 try:
                     t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
-                    t.statuses.update(status=f'{self.get_twitter_url()}', media_ids="")
+                    t.statuses.update(status=f'{self.title} \n {self.get_twitter_url()}', media_ids="")
                     token = os.getenv('fb_token')
                     fb = facebook.GraphAPI(access_token=token)
                     fb.put_object(parent_object='me', connection_name='feed', message=f'{self.title} \n {self.get_twitter_url()}')
