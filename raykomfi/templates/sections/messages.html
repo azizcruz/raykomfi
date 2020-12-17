@@ -9,12 +9,19 @@
 
       <div class="message-sender">
         <span>المرسل</span>
-        <span id="message-sender-field">
-          <a href="{% url 'raykomfi:user-profile' id=fetched_message.user.id %}">{{ fetched_message.user }}</a></span>
-      </div>
+        {% if fetched_message.user and fetched_message.user.is_active != False %}
+        {% if fetched_message.user.username == 'الإدارة' %}
+        الإدارة
+        {% else %}
+        <span><a href="{% url 'raykomfi:user-profile' id=fetched_message.user.id %}">{{ fetched_message.user }}</a></span>
+        {% endif %}
+        {% else %}
+        <span><i class="fa fa-user" aria-hidden="true"></i> مجهول</span>
+        {% endif %}
+    </div>
       <hr />
       <div class="message-content">
-        <span id="message-content-field">{{fetched_message.content}}</span>
+        <span id="message-content-field">{{fetched_message.content|safe}}</span>
       </div>
       {% else %} <p class="center">لم تعرض أي رسالة</p> {% endif %}
     </div>

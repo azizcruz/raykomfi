@@ -54,7 +54,7 @@ class LazyPostsView(APIView):
         elif category != 'false':
             posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')
         else:
-            posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')
+            posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True)
         # use Django's pagination
         # https://docs.djangoproject.com/en/dev/topics/pagination/
         results_per_page = 8
@@ -559,3 +559,80 @@ class NotificationView(APIView):
     def delete(self, request):
         Notification.objects.filter(recipient=request.user).delete()
         return JsonResponse({'message': 'تم الحذف'})
+
+
+class UserActivityView(APIView):
+    '''
+    User Activity View
+    '''
+    permission_classes = [permissions.IsAuthenticated]
+
+    @method_decorator(ratelimit(key='ip', rate='5/m', block=True))
+    def put(self, request):
+        User.objects.filter(id=request.user.id).update(latest_activity=timezone.now() + datetime.timedelta(minutes=2))
+        return JsonResponse({'message': 'تم التحديث'})
+
+
+class AdminActionsView(APIView):
+    '''
+    User Activity View
+    '''
+    permission_classes = [permissions.IsAuthenticated]
+
+    @method_decorator(ratelimit(key='ip', rate='5/m', block=True))
+    def post(self, request):
+        if request.user.is_staff:
+            request_type = request.data.get('type', '')
+            action = request.data.get('action', '')
+            url = request.data.get('url', '')
+            id = int(request.data.get('id', ''))
+            if request_type == 'post':
+                post = Post.objects.filter(id=id).first()
+                if post:
+                    if action == 'delete':
+                        post.delete()
+                        return JsonResponse({'message': 'تم الحذف'})
+                    if action == 'activate':
+                        post.isActive = True
+                        post.save()
+                        return JsonResponse({'message': 'تم التفعيل'})
+                    if action == 'deactivate':
+                        post.isActive = False
+                        post.save()
+                        return JsonResponse({'message': 'تم الغاء التفعيل'})
+                    if action == 'reportAsNotAllowed':
+                        admin = User.objects.filter(email='support@raykomfi.com').first()
+                        message = Message.objects.create(user=admin, receiver=post.creator, title="رسالة من إدارة رايكم في", content=f'<p>إستفسارك <a href={post.get_noti_url()}>{post.title}</a> مخالف لشروط إستخدام منصة رايكم في, سيتم حذف إستفسارك<p>')
+                        notify.send(admin, recipient=post.creator ,action_object=post, description=message.get_noti_url(), target=post, verb='message')
+                        return JsonResponse({'message': 'تم الإبلاغ'})
+
+            if request_type == 'comment':
+                comment = Comment.objects.filter(id=id).first()
+                if comment:
+                    if action == 'delete':
+                        comment.delete()
+                        return JsonResponse({'message': 'تم الحذف'})
+                    if action == 'reportAsNotAllowed':
+                        admin = User.objects.filter(email='support@raykomfi.com').first()
+                        message = Message.objects.create(user=admin, receiver=comment.user, title="رسالة من إدارة رايكم في", content=f"<p>رأيك <a href={comment.get_noti_url()}>{comment.content[0:20]}...</a> مخالف لشروط إستخدام منصة رايكم في, سيتم حذف رأيك<p>")
+                        notify.send(admin, recipient=comment.user ,action_object=comment, description=message.get_noti_url(), target=comment, verb='message')
+                        return JsonResponse({'message': 'تم الإبلاغ'})
+
+            if request_type == 'reply':
+                reply = Reply.objects.filter(id=id).first()
+                if reply:
+                    if action == 'delete':
+                        reply.delete()
+                        return JsonResponse({'message': 'تم الحذف'})
+                    if action == 'reportAsNotAllowed':
+                        admin = User.objects.filter(email='support@raykomfi.com').first()
+                        message = Message.objects.create(user=admin, receiver=reply.user, title="رسالة من إدارة رايكم في", content=f"<p>ردك <a href={reply.get_noti_url()}>{reply.content[0:20]}...</a> مخالف لشروط إستخدام منصة رايكم في, سيتم حذف ردك<p>")
+                        notify.send(admin, recipient=reply.user ,action_object=reply, description=message.get_noti_url(), target=reply, verb='message')
+                        return JsonResponse({'message': 'تم الإبلاغ'})
+                else:
+                    return JsonResponse({'message': 'لا يوجد'})
+            else:
+                return JsonResponse({'message': 'غير مخول لعمل هذا الشيء'}, status=status.HTTP_403_FORBIDDEN)
+
+        else:
+            return JsonResponse({'message': 'غير مخول لعمل هذا الشيء'}, status=status.HTTP_403_FORBIDDEN)

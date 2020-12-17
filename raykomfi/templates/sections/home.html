@@ -41,6 +41,10 @@
                         class="order-btn"><button class="w3-button  raykomfi-main-background-color z-depth-1"><i
                                 class="fa fa-sort-amount-desc" aria-hidden="true"></i>
                             الأحدث</button></a></div>
+                <div class="w3-bar-item  w3-right"> <a href="{% url 'raykomfi:with-latest-opinion-ordered' %}"
+                    class="order-btn"><button class="w3-button  raykomfi-main-background-color z-depth-1"><i
+                            class="fa fa fa-comments-o" aria-hidden="true"></i>
+                            آخر رأي </button></a></div>
                 <div class="w3-bar-item  w3-right"><a href="{% url 'raykomfi:most-discussed-posts' %}"
                         class="order-btn"><button class="w3-button  raykomfi-main-background-color z-depth-1"><i
                                 class="fa fa-commenting" aria-hidden="true"></i>
@@ -169,6 +173,14 @@
                             <a href="{{ post.image_source }}" target="_blank">مصدر الصورة</a>
                         </div>
                     </div>
+                    {% endif %}
+                    {% if user.is_staff %}
+                    <div class="w3-margin"></div>
+                    {% if post.isActive %}
+                        <div><i class="fa fa-circle green-text"></i> مفعل</div>
+                    {% else %}
+                        <div><i class="fa fa-circle red-text"></i> غير مفعل</div>
+                    {% endif %}
                     {% endif %}
                     <div class="ray-box-footer-icons">
                         <div class="">

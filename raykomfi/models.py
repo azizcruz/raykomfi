@@ -66,6 +66,7 @@ class User(AbstractUser):
     user_trust = models.FloatField(validators=[MaxValueValidator(6.0), MinValueValidator(0.0)], default=0.0, verbose_name='قوة الرأي')
     accepted_conditions_terms = models.BooleanField(default=False)
     continent = models.CharField(max_length=155, default='')
+    latest_activity = models.DateTimeField(blank=True, null=True, verbose_name='اخر نشاط')
 
 
     def get_absolute_url(self):
@@ -78,8 +79,11 @@ class User(AbstractUser):
             if not last_seen:
                 return False
 
-            if last_seen.replace(microsecond = 0).replace(tzinfo=None) > now.replace(microsecond = 0) - datetime.timedelta(seconds=38):
-                return True
+            if self.latest_activity:
+                if self.latest_activity.replace(tzinfo=None) > now.replace(microsecond = 0) - datetime.timedelta(minutes=3):
+                    return True
+                else:
+                    return False
             else:
                 return False
         else:

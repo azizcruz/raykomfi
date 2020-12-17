@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from .forms import SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, CustomPasswordResetForm, CommentForm, ReplyForm, ProfileForm, MessageForm, RestorePasswordForm, ForgotNoRegistrationCodeForm, ChangeEmailForm, NewPostWithNoRegistrationForm, SignupWithNoRegistrationForm
@@ -52,16 +52,27 @@ from pdb import set_trace
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def index(request):
+    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True)[:8]
+    count = posts.count()
+    latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').filter(post__isActive=True).order_by('-created')[:10]
+    categories = Category.objects.all()
+    if request.user.is_staff:
+        posts = Post.objects.prefetch_related('creator', 'category', 'comments').all()
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'view_title': f'منصة رايكم في | إستفسر رأي الناس عن أي شي ', 'count': count})
+
+@ratelimit(key='ip', rate='50/m', block=True)
+def posts_with_latests_comment_order(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')[:8]
     count = posts.count()
-    latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').all().order_by('-created')[:10]
+    latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').filter(post__isActive=True).order_by('-created')[:10]
     categories = Category.objects.all()
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'view_title': f'منصة رايكم في | إستفسر رأي الناس عن أي شي ', 'count': count})
+
 
 def latest_posts(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).order_by('-created')[:8]
     count = posts.count()
-    latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').all().order_by('-created')[:10]
+    latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').filter(post__isActive=True).order_by('-created')[:10]
     categories = Category.objects.all()
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'view_title': 'منصة رايكم في | أحدث الإستفسارات', 'count': count})
 
@@ -70,7 +81,7 @@ def categorized_posts(request, category=False):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')
     count_categoized = posts.count()
     categories = Category.objects.all()
-    latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:10]
+    latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').filter(post__isActive=True).order_by('-created')[:10]
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'is_categorized': True, 'hide_load_more': True, 'category': category, 'view_title': f'رايكم في | { category }', 'url_name': 'categorized_view', 'count_categorized': count_categoized})
 
 
@@ -79,7 +90,7 @@ def most_discussed_posts(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(count=Count('comments')).order_by('-count')
     count = posts.count()
     categories = Category.objects.all()
-    latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:10]
+    latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').filter(post__isActive=True).order_by('-created')[:10]
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True, 'view_title': 'منصة رايكم في | الأكثر مناقشة', 'url_name': 'most_discussed_view', 'count': count})
 
 
@@ -88,7 +99,7 @@ def most_searched_posts(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).order_by("-hit_count_generic__hits")
     count = posts.count()
     categories = Category.objects.all()
-    latest_comments = Comment.objects.all().prefetch_related('user', 'post', 'replies').order_by('-created')[:8]
+    latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').filter(post__isActive=True).order_by('-created')[:8]
     return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'hide_load_more': True, 'view_title': 'منصة رايكم في | الأكثر بحثا', 'url_name': 'most_searched_view', 'count': count})
 
 @login_required
@@ -354,6 +365,10 @@ def post_view(request, id, slug):
             post_comments = Comment.objects.filter(post__id=id)
         
         post = Post.objects.select_related('creator', 'category').filter(Q(id__exact=id)).first()
+        if post.isActive == False:
+            if request.user and not request.user.is_staff and request.user.id != post.creator.id:
+                return redirect('raykomfi:raykomfi-home')
+
         rand_ids = Post.objects.select_related('creator', 'category').filter(category=post.category).values_list('id', flat=True)
         related_posts = []
         if len(rand_ids) > 6:

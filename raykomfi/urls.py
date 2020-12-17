@@ -55,6 +55,7 @@ urlpatterns = [
     path('posts/latest', views.latest_posts, name='latest-posts'),
     path('posts/most-discussed', views.most_discussed_posts, name='most-discussed-posts'),
     path('posts/most-searched', views.most_searched_posts, name='most-searched-posts'),
+    path('posts/with-latest-opinion-ordered', views.posts_with_latests_comment_order, name='with-latest-opinion-ordered'),
     path('posts/<str:category>', views.categorized_posts, name='filtered-posts'),
     # Messages routes
     path('user/messages/<int:user_id>', views.messages_view, name='messages'),

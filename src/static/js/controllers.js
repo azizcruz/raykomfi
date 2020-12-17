@@ -163,15 +163,12 @@ $(document).on("submit", "form.commentNoRegisterForm", function (e) {
           );
         }
 
-        if (
-          err.response.status === 400
-        ) {
-          $('#noRegisterCommentError').html(err.response.data.message)
+        if (err.response.status === 400) {
+          $("#noRegisterCommentError").html(err.response.data.message);
           setTimeout(() => {
-            $('#noRegisterCommentError').html('')
-          }, 1500)
+            $("#noRegisterCommentError").html("");
+          }, 1500);
         }
-  
       });
   }
 });
@@ -486,3 +483,115 @@ $(document).on("click", "#delete-all-notis", function (e) {
       }
     });
 });
+
+// Admin actions
+$(document).on("click", ".admin-action-btn", function (e) {
+  var theBtn = $(this)
+  var adminActionMessage = $('.admin-action-message')
+  e.preventDefault()
+  var ans = confirm('هل أنت متأكد')
+  if(ans) {
+    let {id, requestType, action, url} = e.target.dataset
+  theBtn.removeClass('admin-action-btn')
+  axios({
+    method: "POST",
+    url: "/api/admin/action",
+    headers: {
+      "X-CSRFTOKEN": Cookies.get("csrftoken"),
+      "Content-Type": "application/json",
+    },
+    data: {
+      id: id,
+      type: requestType,
+      action: action,
+      url: url
+    }
+  })
+    .then((response) => {
+      adminActionMessage.text(response.data.message)
+      setTimeout(() => {
+        theBtn.addClass('admin-action-btn')
+        adminActionMessage.text('')
+      }, 2000);
+    })
+    .catch((err) => {
+      theBtn.addClass('admin-action-btn')
+      if (
+        err.response.status === 403 &&
+        err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+      ) {
+        custom_alert(
+          "محاولات متكررة, يرجى المحاولة لاحقا",
+          "<i class='fa fa-warning'></i>"
+        );
+      }
+    });
+  }
+});
+
+// $(document).on("beforeunload", function (e) {
+//   console.log("leave");
+//   axios({
+//     method: "PUT",
+//     url: "/api/user/activity",
+//     headers: {
+//       "X-CSRFTOKEN": Cookies.get("csrftoken"),
+//       "Content-Type": "application/json",
+//     },
+//   })
+//     .then((response) => {
+//       console.log(response.data)
+//     })
+//     .catch((err) => {
+//       if (
+//         err.response.status === 403 &&
+//         err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+//       ) {
+//         custom_alert(
+//           "محاولات متكررة, يرجى المحاولة لاحقا",
+//           "<i class='fa fa-warning'></i>"
+//         );
+//       }
+//     });
+// });
+
+var count = 0;
+var myInterval;
+// Active
+// window.addEventListener("focus", startTimer);
+
+// Inactive
+window.addEventListener("focus", lastActivity);
+
+// Start timer
+// function startTimer() {
+//   console.log("online");
+// }
+
+// Stop timer
+function lastActivity() {
+  setTimeout(function () {
+    axios({
+      method: "PUT",
+      url: "/api/user/activity",
+      headers: {
+        "X-CSRFTOKEN": Cookies.get("csrftoken"),
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => {
+        if (
+          err.response.status === 403 &&
+          err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+        ) {
+          custom_alert(
+            "محاولات متكررة, يرجى المحاولة لاحقا",
+            "<i class='fa fa-warning'></i>"
+          );
+        }
+      });
+  }, 5000);
+}
