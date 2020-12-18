@@ -390,7 +390,7 @@ generateStars();
 // Highlight of the to div box
 if (window.location.hash) {
   var anchor = $(window.location.hash);
-  $("html,body").animate({ scrollTop: anchor.offset().top - 50 }, "slow");
+  $("html,body").animate({ scrollTop: anchor.offset().top - 150 }, "slow");
   setTimeout(() => {
     anchor
       .stop()

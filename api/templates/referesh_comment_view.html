@@ -87,9 +87,6 @@
         <a href="{% url 'raykomfi:user-profile' id=reply.user.id %}" class="writer-name">
             <div class="name"><i class="fa fa-user" aria-hidden="true"></i>
                 {{reply.user.username}}
-                <span class="opinion-power">
-                    {{comment.user.user_trust}}
-                </span>
             </div>
         </a>
         {% else %}

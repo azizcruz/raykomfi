@@ -66,6 +66,11 @@ div {
   display: inline-block !important;
 }
 
+.message-close {
+  background-color: transparent !important;
+  padding: 10px !important;
+}
+
 .remove-button-hover:hover {
   background-color: transparent !important;
   color: #FFF !important;
@@ -73,6 +78,10 @@ div {
 
 .raykomfi-bold {
   font-weight: 700 !important;
+}
+
+hr {
+  margin: 10px 0;
 }
 
 .hide-overflow {
@@ -369,7 +378,8 @@ textarea {
 nav {
   z-index: 3 !important;
   width: 250px !important;
-  word-break: break-word;
+  overflow-wrap: break-word;
+  top: 0;
 }
 
 .raykomfi-logo {
@@ -457,11 +467,15 @@ footer {
   -webkit-box-pack: space-evenly;
   -ms-flex-pack: space-evenly;
   justify-content: space-evenly;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .raykomfi-rights {
   margin-top: 10px;
+}
+
+.raykomfi-rights > div {
+  padding: 10px 0;
 }
 
 .message-wrapper {

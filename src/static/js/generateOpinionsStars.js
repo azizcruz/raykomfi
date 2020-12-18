@@ -3,9 +3,9 @@ function generateStars() {
   let starsGenerated = "";
   if (opinionPower.length > 0) {
     for (let i = 0; i < opinionPower.length; i++) {
-      let opinionPowerValue =
-        parseFloat(opinionPower[i].innerHTML.replace(",", ".")) || false;
+      let opinionPowerValue = parseFloat(opinionPower[i].innerHTML.replace(",", ".")) || false;
       starsGenerated = "";
+      console.log(opinionPowerValue)
       if (opinionPowerValue) {
         for (let i = 0; i < parseInt(opinionPowerValue); i++) {
           starsGenerated +=
@@ -18,7 +18,7 @@ function generateStars() {
         }
       } else {
         starsGenerated =
-          '<span><i class="fa fa-star-o" aria-hidden="true"></i></span>';
+         opinionPower[i].innerHTML;
       }
 
       opinionPower[i].innerHTML = starsGenerated;

@@ -322,8 +322,8 @@
             {% if messages %}
             {% for message in messages %}
             <div class="w3-display-container w3-panel w3-{{message.tags}} message-wrapper">
-                <span onclick="this.parentElement.style.display='none'"
-                    class="w3-button w3-display-topleft">&times;</span>
+                <div onclick="this.parentElement.style.display='none'"
+                    class="w3-button w3-display-topleft message-close">&times;</div>
                 <p class="w3-center">{{message}}</p>
             </div>
             {% endfor %}

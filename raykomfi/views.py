@@ -357,6 +357,14 @@ def delete_user(request, id):
 @ratelimit(key='ip', rate='10/m', block=True)
 def post_view(request, id, slug):
     try:
+
+        post = Post.objects.select_related('creator', 'category').filter(Q(id__exact=id)).first()
+
+        if not post:
+            messages.success(
+                    request, 'ما تبحث عنه غير موجود', extra_tags='pale-red w3-border')
+            return redirect('raykomfi:raykomfi-home')
+
         comments_count = 0
         if request.get_raw_uri().find('all_comments') < 0:
             comments_count =  Post.objects.select_related('creator', 'category').filter(id__exact=id).first().comments.count()
@@ -364,8 +372,12 @@ def post_view(request, id, slug):
         else:
             post_comments = Comment.objects.filter(post__id=id)
         
-        post = Post.objects.select_related('creator', 'category').filter(Q(id__exact=id)).first()
+
         if post.isActive == False:
+            if request.user.id == None:
+                messages.success(
+                    request, 'تتم مراجعة الإستفسار الان, سيتم نشر إستفسارك قريبا, إذا لم تجد إستفسارك نشر خلال 24 ساعة هذا يعني أنه مخالف', extra_tags='pale-green w3-border')
+                return redirect('raykomfi:raykomfi-home')
             if request.user and not request.user.is_staff and request.user.id != post.creator.id:
                 return redirect('raykomfi:raykomfi-home')
 
