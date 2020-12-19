@@ -4,7 +4,7 @@ let view_html = "";
 let loading = $("#spinner");
 
 function custom_alert(message, icon) {
-  document.getElementById("alert-message").innerText = message;
+  $("#alert-message").html(message);
   document.getElementById("alert-icon").innerHTML = icon;
   document.getElementById("alert-modal").style.display = "block";
 }
@@ -247,6 +247,14 @@ $(document).on("submit", "form.voteForm", function (e) {
           custom_alert(
             "محاولات متكررة, يرجى المحاولة لاحقا",
             "<i class='fa fa-warning'></i>"
+          );
+        } else if (
+          err.response.status === 403 &&
+          err.response.data.detail === "لم يتم تزويد بيانات الدخول."
+        ) {
+          custom_alert(
+            "<a href='/user/signin/'>سجل دخولك</a> أو <a href='/user/register/'>سجل في المنصة</a> للمشاركة",
+            ""
           );
         }
       });

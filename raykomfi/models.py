@@ -78,15 +78,12 @@ class User(AbstractUser):
             if not last_seen:
                 return False
 
-            if self.latest_activity:
-                if self.latest_activity.replace(tzinfo=None) > now.replace(microsecond = 0) - datetime.timedelta(minutes=3):
-                    return True
-                else:
-                    return False
+            if last_seen.replace(microsecond = 0).replace(tzinfo=None) > now.replace(microsecond = 0) - datetime.timedelta(seconds=38):
+                return True
             else:
                 return False
         else:
-            return False 
+            return False
     
     def last_seen(self):
         last_seen = cache.get(f'seen_{self.username}')

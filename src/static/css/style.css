@@ -243,6 +243,7 @@ h4 {
   padding: 10px;
   bottom: 0;
   top: auto;
+  z-index: 1000;
 }
 
 .latest-opinions {
@@ -1076,7 +1077,9 @@ input ~ .parsley-errors-list.filled {
 /* Parcely Validator Styles */
 
 /* Profile Style */
-
+#profile-form {
+  margin-top: 20px;
+}
 .user-profile {
   padding: 15px !important;
   overflow-wrap: break-word;

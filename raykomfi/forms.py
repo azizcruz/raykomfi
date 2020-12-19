@@ -534,7 +534,7 @@ class MessageForm(forms.ModelForm):
     class Meta:
         parsley_extras = {
                 'content': {
-                    'maxlength': 255,
+                    'maxlength': 600,
                     'maxlength-message': "لقد تعديت الحد المسموح",
                 },
             }  
