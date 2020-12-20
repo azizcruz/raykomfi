@@ -545,7 +545,7 @@ class ReportView(APIView):
         if serializer.is_valid():
             admin = User.objects.get(email=os.getenv('ADMIN_EMAIL'))
             report = Report.objects.create(user=request.user, content=serializer.validated_data['content'], topic=serializer.validated_data['topic'], reported_url=serializer.validated_data['reported_url'])
-            notify.send(request.user, recipient=admin ,action_object=report, description=serializer.validated_data['reported_url'], target=report, verb='report')
+            notify.send(request.user, recipient=admin ,action_object=report, description=serializer.validated_data['reported_url'] + '&read=1', target=report, verb='report')
             return JsonResponse({'message': 'تم الإبلاغ'})
 
 
@@ -610,6 +610,7 @@ class AdminActionsView(APIView):
                 comment = Comment.objects.filter(id=id).first()
                 if comment:
                     if action == 'delete':
+                        Notification.objects.filter(description=comment.get_noti_url()).delete()
                         comment.delete()
                         return JsonResponse({'message': 'تم الحذف'})
                     if action == 'reportAsNotAllowed':
@@ -622,6 +623,7 @@ class AdminActionsView(APIView):
                 reply = Reply.objects.filter(id=id).first()
                 if reply:
                     if action == 'delete':
+                        Notification.objects.filter(description=reply.get_noti_url()).delete()
                         reply.delete()
                         return JsonResponse({'message': 'تم الحذف'})
                     if action == 'reportAsNotAllowed':
