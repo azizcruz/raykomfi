@@ -18,6 +18,8 @@ from dotenv import load_dotenv
 import json
 load_dotenv()
 import mimetypes
+import sys
+from logging.handlers import SysLogHandler
 mimetypes.add_type("text/css", ".css", True)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -303,43 +305,47 @@ USER_LASTSEEN_TIMEOUT = 60 * 60 * 24 * 7
 
 SITE_ID=os.getenv('SITE_ID')
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': True,
-#     'formatters': {
-#         'standard': {
-#             'format': '%(asctime)s %(levelname)s %(name)s %(message)s'
-#         },
-#     },
-#     'handlers': {
-#         'default': {
-#             'level':'DEBUG',
-#             'class':'logging.handlers.RotatingFileHandler',
-#             'filename': './server.log',
-#             'maxBytes': 1024*1024*10, # 10 MB
-#             'backupCount': 5,
-#             'formatter':'standard',
-#         },  
-#         'request_handler': {
-#                 'level':'DEBUG',
-#                 'class':'logging.handlers.RotatingFileHandler',
-#                 'filename': './server.log',
-#                 'maxBytes': 1024*1024*10, # 10 MB
-#                 'backupCount': 5,
-#                 'formatter':'standard',
-#         },
-#     },
-#     'loggers': {
-
-#         '': {
-#             'handlers': ['default'],
-#             'level': 'DEBUG',
-#             'propagate': True
-#         },
-#         'django.request': { # Stop SQL debug from logging to main logger
-#             'handlers': ['request_handler'],
-#             'level': 'DEBUG',
-#             'propagate': False
-#         },
-#     }
-# }
+if os.getenv('environment') == 'prod':
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,                                                                    
+        'handlers': {                                                                                         
+            'file': {
+                'level': 'INFO',
+                'class': 'logging.FileHandler',
+                'filename': './info.log',      
+            },
+            'console': { 
+                'level': 'DEBUG',
+                'class': 'logging.StreamHandler',                                                             
+            }, 
+            'syslog': {
+                'level': 'INFO',
+                'class': 'logging.handlers.SysLogHandler',                                                    
+                'formatter': 'simple',
+                'address': (os.getenv('log_host'), int(os.getenv('log_port'))),                                         
+            },                                                                                            
+        },
+        'formatters': {
+            'verbose': {
+                'format': '%(levelname)s|%(asctime)s|%(module)s|%(process)d|%(thread)d|%(message)s',
+                'datefmt' : "%d/%b/%Y %H:%M:%S"
+            },
+            'simple': {
+                'format': '%(levelname)s|%(message)s'
+            },
+        },
+        'loggers': {
+            'app-logger': { 
+                'handlers': ['file', 'console'],                                                              
+                'level': 'CRITICAL',                                                                          
+                'propagate': True,                                                                            
+            },   
+            'django':{
+                'handlers': ['syslog'],
+                'level': 'INFO',
+                'disabled': False,
+                'propagate': True
+            }                                                            
+        }, 
+    }

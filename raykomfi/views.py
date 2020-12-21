@@ -898,7 +898,7 @@ def send_link(request):
             user = get_object_or_404(User, email=to_email)
             if user.email_active == True or not user:
                 messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'البريد الألكتروني مفعل أو حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
                 return redirect('raykomfi:user-signin')
             user.verification_code = token
             current_date_and_time =timezone.now()
