@@ -173,6 +173,11 @@ $(document).on("submit", "form.commentNoRegisterForm", function (e) {
           }, 1500);
         }
       });
+  } else {
+    custom_alert(
+      "حقول رمز المشاركة والرأي لا يمكن أن تكون فارغة , ليس لديك رمز مشاركة؟ يمكنك الحصول عليه <a href='/user/actions/code'>هنا</a>",
+      ""
+    );
   }
 });
 
