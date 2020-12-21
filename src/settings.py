@@ -305,47 +305,46 @@ USER_LASTSEEN_TIMEOUT = 60 * 60 * 24 * 7
 
 SITE_ID=os.getenv('SITE_ID')
 
-if os.getenv('environment') == 'prod':
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,                                                                    
-        'handlers': {                                                                                         
-            'file': {
-                'level': 'INFO',
-                'class': 'logging.FileHandler',
-                'filename': './info.log',      
-            },
-            'console': { 
-                'level': 'DEBUG',
-                'class': 'logging.StreamHandler',                                                             
-            }, 
-            'syslog': {
-                'level': 'INFO',
-                'class': 'logging.handlers.SysLogHandler',                                                    
-                'formatter': 'simple',
-                'address': (os.getenv('log_host'), int(os.getenv('log_port'))),                                         
-            },                                                                                            
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,                                                                    
+    'handlers': {                                                                                         
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': './info.log',      
         },
-        'formatters': {
-            'verbose': {
-                'format': '%(levelname)s|%(asctime)s|%(module)s|%(process)d|%(thread)d|%(message)s',
-                'datefmt' : "%d/%b/%Y %H:%M:%S"
-            },
-            'simple': {
-                'format': '%(levelname)s|%(message)s'
-            },
-        },
-        'loggers': {
-            'app-logger': { 
-                'handlers': ['file', 'console'],                                                              
-                'level': 'CRITICAL',                                                                          
-                'propagate': True,                                                                            
-            },   
-            'django':{
-                'handlers': ['syslog'],
-                'level': 'INFO',
-                'disabled': False,
-                'propagate': True
-            }                                                            
+        'console': { 
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',                                                             
         }, 
-    }
+        'syslog': {
+            'level': 'INFO',
+            'class': 'logging.handlers.SysLogHandler',                                                    
+            'formatter': 'simple',
+            'address': (os.getenv('log_host'), int(os.getenv('log_port'))),                                         
+        },                                                                                            
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s|%(asctime)s|%(module)s|%(process)d|%(thread)d|%(message)s',
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s|%(message)s'
+        },
+    },
+    'loggers': {
+        'app-logger': { 
+            'handlers': ['file', 'console'],                                                              
+            'level': 'CRITICAL',                                                                          
+            'propagate': True,                                                                            
+        },   
+        'django':{
+            'handlers': ['syslog'],
+            'level': 'INFO',
+            'disabled': False,
+            'propagate': True
+        }                                                            
+    }, 
+}
