@@ -117,6 +117,7 @@ $(document).on("submit", "form.commentForm", function (e) {
         generateStars();
       })
       .catch((err) => {
+        $(this)[0][2].disabled = true
         if (
           err.response.status === 403 &&
           err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
