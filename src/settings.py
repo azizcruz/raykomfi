@@ -36,7 +36,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.getenv("environment") == 'development' else False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'azizlioua111.pythonanywhere.com', 'www.raykomfi.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'azizlioua111.pythonanywhere.com', 'www.raykomfi.com', 'logs4.papertrailapp.com']
 
 # Application definition
 
