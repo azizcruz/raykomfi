@@ -12,10 +12,10 @@ function custom_alert(message, icon) {
 // Add reply
 $(document).on("submit", "form.replyForm", function (e) {
   e.preventDefault();
-  $(this)[0][2].disabled = true
   let content = e.target[1].value;
   let { commentId } = e.target.dataset;
   if (content) {
+    $(this)[0][2].disabled = true
     axios({
       method: "POST",
       url: "/api/reply/add",
@@ -95,8 +95,8 @@ $(document).on("submit", "form.commentForm", function (e) {
   e.preventDefault();
   let content = e.target[1].value;
   let { postId } = e.target.dataset;
-  $(this)[0][2].disabled = true
   if (content) {
+    $(this)[0][2].disabled = true
     axios({
       method: "POST",
       url: "/api/comment/add",
