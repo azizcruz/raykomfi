@@ -321,6 +321,7 @@ LOGGING = {
         'syslog': {
             'level': 'INFO',
             'class': 'logging.handlers.SysLogHandler',                                                    
+            'formatter': 'simple',
             'address': (os.getenv('log_host'), int(os.getenv('log_port'))),                                         
         },                                                                                            
     },
@@ -336,12 +337,12 @@ LOGGING = {
     'loggers': {
         'app-logger': { 
             'handlers': ['file', 'console'],                                                              
-            'level': 'INFO',                                                                          
+            'level': 'CRITICAL',                                                                          
             'propagate': True,                                                                            
         },   
         'django':{
             'handlers': ['syslog'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'disabled': False,
             'propagate': True
         }                                                            
