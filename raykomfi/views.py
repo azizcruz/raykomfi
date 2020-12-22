@@ -13,6 +13,7 @@ from django.core.mail import EmailMessage
 from django.contrib import messages
 from django.db.utils import IntegrityError
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.views.decorators.http import require_GET
 from django.urls import reverse
 from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render, redirect
@@ -931,16 +932,28 @@ def send_link(request):
     else:
         return render(request, 'user/activate_account.html')
 
+@ratelimit(key='ip', rate='50/m', block=True)
 def privacy_policy_view(request):
     return render(request, 'sections/privacy_policy.html', {'view_title': 'منصة رايكم في | سياسة الخصوصية والإستخدام'})
 
+@ratelimit(key='ip', rate='50/m', block=True)
 def about_view(request):
     return render(request, 'sections/about.html', {'view_title': 'منصة رايكم في | عن منصة رايكم في'})
 
+@ratelimit(key='ip', rate='50/m', block=True)
 def not_found_handler(request):
     return JsonResponse({'message': ''}, status=status.HTTP_404_NOT_FOUND)
 
-@ratelimit(key='ip', rate='50/m', block=True)
 def suspicious_limit(request , exception=None):
     print('LimitedError:', 'with ip', request.META.get('X-Real-IP'))
     return JsonResponse({'message': 'Sorry, you are blocked'}, status=status.HTTP_429_TOO_MANY_REQUESTS)
+
+@require_GET
+@ratelimit(key='ip', rate='50/m', block=True)
+def robots_txt(request):
+    lines = [
+        "User-Agent: *",
+        "Disallow: /user/profile/",
+        "Disallow: /admin/",
+        ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")

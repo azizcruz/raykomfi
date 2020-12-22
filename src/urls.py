@@ -19,7 +19,8 @@ from django.conf.urls import url
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
-from raykomfi.sitemaps import PostSitemap
+from raykomfi.sitemaps import PostSitemap, StaticViewSitemap
+from raykomfi import views
 from dotenv import load_dotenv
 load_dotenv()
 import os
@@ -30,11 +31,10 @@ import debug_toolbar
 
 sitemaps = {
 	"posts": PostSitemap,
+    "static": StaticViewSitemap
 }
 
 urlpatterns = [
-    path('sitemap.xml/', sitemap, {'sitemaps': sitemaps},
-			name='django.contrib.sitemaps.views.sitemap'),
     path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
     path(os.getenv("ADMIN_URL"), admin.site.urls),
     path('', include('raykomfi.urls')),
@@ -42,6 +42,9 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('__debug__/', include(debug_toolbar.urls)),
     url('^inbox/notifications/', include('notifications.urls', namespace='notifications')),
+    path("robots.txt/", views.robots_txt),
+    path('sitemap.xml/', sitemap, {'sitemaps': sitemaps},
+			name='django.contrib.sitemaps.views.sitemap'),
 ]
 
 if settings.DEBUG:
