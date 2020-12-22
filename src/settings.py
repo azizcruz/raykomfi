@@ -309,17 +309,8 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,                                                                    
     'handlers': {                                                                                         
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': './info.log',      
-        },
-        'console': { 
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',                                                             
-        }, 
         'syslog': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'class': 'logging.handlers.SysLogHandler',                                                    
             'formatter': 'simple',
             'address': (os.getenv('log_host'), int(os.getenv('log_port'))),                                         
@@ -335,16 +326,10 @@ LOGGING = {
         },
     },
     'loggers': {
-        'app-logger': { 
-            'handlers': ['file', 'console'],                                                              
-            'level': 'CRITICAL',                                                                          
-            'propagate': True,                                                                            
-        },   
-        'django':{
-            'handlers': ['syslog'],
-            'level': 'INFO',
-            'disabled': False,
-            'propagate': True
-        }                                                            
-    }, 
+        'django': {
+        'handlers': ['syslog'],
+        'level': 'INFO',
+        'propagate': True,
+    } 
+    }
 }
