@@ -319,7 +319,7 @@ LOGGING = {
             'class': 'logging.StreamHandler',                                                             
         }, 
         'syslog': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'class': 'logging.handlers.SysLogHandler',                                                    
             'formatter': 'simple',
             'address': (os.getenv('log_host'), int(os.getenv('log_port'))),                                         
