@@ -305,31 +305,32 @@ USER_LASTSEEN_TIMEOUT = 60 * 60 * 24 * 7
 
 SITE_ID=os.getenv('SITE_ID')
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,                                                                    
-    'handlers': {                                                                                         
-        'syslog': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.SysLogHandler',                                                    
-            'formatter': 'simple',
-            'address': (os.getenv('log_host'), int(os.getenv('log_port'))),                                         
-        },                                                                                            
-    },
-    'formatters': {
-        'verbose': {
-            'format': '%(levelname)s|%(asctime)s|%(module)s|%(process)d|%(thread)d|%(message)s',
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
+if DEBUG == False:
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,                                                                    
+        'handlers': {                                                                                         
+            'syslog': {
+                'level': 'DEBUG',
+                'class': 'logging.handlers.SysLogHandler',                                                    
+                'formatter': 'verbose',
+                'address': (os.getenv('log_host'), int(os.getenv('log_port'))),                                         
+            },                                                                                            
         },
-        'simple': {
-            'format': '%(levelname)s|%(message)s'
+        'formatters': {
+            'verbose': {
+                'format': '%(levelname)s|%(asctime)s|%(module)s|%(process)d|%(thread)d|%(message)s',
+                'datefmt' : "%d/%b/%Y %H:%M:%S"
+            },
+            'simple': {
+                'format': '%(levelname)s|%(message)s'
+            },
         },
-    },
-    'loggers': {
-        'django': {
-        'handlers': ['syslog'],
-        'level': 'INFO',
-        'propagate': True,
-    } 
+        'loggers': {
+            'django': {
+            'handlers': ['syslog'],
+            'level': 'INFO',
+            'propagate': True,
+        } 
+        }
     }
-}
