@@ -851,7 +851,8 @@ def activate(request, uid, token):
         current_date_and_time = timezone.now()
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
-    if user is not None and current_date_and_time < user.verification_code_expire and user.verification_code == token:
+        
+    if user is not None and user.verification_code_expire is not None and current_date_and_time < user.verification_code_expire and user.verification_code == token:
         if user.email_active == True:
             messages.success(
             request, 'حسابك مفعل من قبل', extra_tags='pale-green w3-border')
