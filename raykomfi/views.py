@@ -477,7 +477,7 @@ def my_comments_most_voted_view(request, user_id):
 def post_edit(request, id, slug):
     try:
         instance = get_object_or_404(Post, id=id, slug=slug)
-        if request.method == 'POST':
+        if request.method == 'POST' and request.user and request.user.id == instance.creator.id:
             form = NewPostForm(request.POST or None, request.FILES or None, instance=instance,
                             use_required_attribute=False)
             if form.is_valid():
@@ -489,9 +489,12 @@ def post_edit(request, id, slug):
             else:
                 return render(request, 'sections/edit_post.html', context={'form': form, 'post': instance, 'view_title': f'رايكم في | {instance.title}'})
         else:
-            post = Post.objects.get(Q(id__exact=id) & Q(slug__exact=slug))
-            form = NewPostForm(instance=instance, use_required_attribute=False)
-            return render(request, 'sections/edit_post.html', context={'form': form, 'post': post, 'view_title': f'رايكم في | {post.title}'})
+            if request.user and request.user.id == instance.creator.id:
+                post = Post.objects.get(Q(id__exact=id) & Q(slug__exact=slug))
+                form = NewPostForm(instance=instance, use_required_attribute=False)
+                return render(request, 'sections/edit_post.html', context={'form': form, 'post': post, 'view_title': f'رايكم في | {post.title}'})
+            else:
+                 return redirect('raykomfi:raykomfi-home')
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
@@ -851,7 +854,7 @@ def activate(request, uid, token):
         current_date_and_time = timezone.now()
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
-        
+
     if user is not None and user.verification_code_expire is not None and current_date_and_time < user.verification_code_expire and user.verification_code == token:
         if user.email_active == True:
             messages.success(

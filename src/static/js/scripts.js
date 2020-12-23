@@ -241,9 +241,10 @@ function fill_notification_list_override(data) {
       var messages = data.unread_list
         .map(function (item) {
           if (item.verb === "comment") {
+            console.log(item.description)
             var message = `<a href='${
               item.description
-            }'>لديك تعليق جديد على إستفسارك ${item.target} من ${
+            }'>لديك رأي جديد على إستفسارك ${item.target} من ${
               item.actor
             }<div>${moment(item.timestamp).fromNow()}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
@@ -252,7 +253,7 @@ function fill_notification_list_override(data) {
           if (item.verb === "reply") {
             var message = `<a href='${
               item.description
-            }'>لديك رد جديد على تعليقك من ${item.actor}<div>${moment(
+            }'>لديك رد جديد على رأيك من ${item.actor}<div>${moment(
               item.timestamp
             )
               .locale("ar-dz")
@@ -390,7 +391,20 @@ generateStars();
 // Highlight of the to div box
 if (window.location.hash) {
   var anchor = $(window.location.hash);
-  $("html,body").animate({ scrollTop: anchor.offset().top - 150 }, "slow");
+  if(window.location.hash.indexOf('to') > 0) {
+    $("html,body").animate({ scrollTop: anchor.offset().top - 150 }, "slow");
+    setTimeout(() => {
+      anchor
+        .stop()
+        .animate({ backgroundColor: "#FFFFE0" }, 250)
+        .animate({ backgroundColor: "#ececec" }, 250)
+        .animate({ backgroundColor: "#FFFFE0" }, 250)
+        .animate({ backgroundColor: "#ececec" }, 250)
+        .animate({ backgroundColor: "#FFFFE0" }, 250)
+        .animate({ backgroundColor: "#ececec" }, 250);
+    }, 700);
+  } else {
+    $("html,body").animate({ scrollTop: anchor.offset().top - 150 }, "slow");
   setTimeout(() => {
     anchor
       .stop()
@@ -401,6 +415,7 @@ if (window.location.hash) {
       .animate({ backgroundColor: "#FFFFE0" }, 250)
       .animate({ backgroundColor: "#FFFFFF" }, 250);
   }, 700);
+  }
 }
 
 // tooltip initialization

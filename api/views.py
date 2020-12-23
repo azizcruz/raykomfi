@@ -216,7 +216,7 @@ class NoRegisterCommentsView(APIView):
                 if post.creator == None:
                     post.creator = anonymousUser
                 if request.user.id != post.creator.id and post.creator.get_notifications == True:
-                    notify.send(anonymousUser, recipient=post.creator , action_object=comment,  description=comment.get_noti_url(), target=comment, verb='comment')
+                    notify.send(anonymousUser, recipient=post.creator , action_object=comment,  description=comment.get_noti_url(), target=post, verb='comment')
                 return JsonResponse(output_data)
             else:
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -276,7 +276,7 @@ class CommentsView(APIView):
                 if post.creator == None:
                     post.creator = anonymousUser
                 if post.creator and request.user.id != post.creator.id and post.creator.get_notifications == True:
-                    notify.send(request.user, recipient=post.creator , action_object=comment,  description=comment.get_noti_url(), target=comment, verb='comment')
+                    notify.send(request.user, recipient=post.creator , action_object=comment,  description=comment.get_noti_url(), target=post, verb='comment')
                 return JsonResponse(output_data)
             else:
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
