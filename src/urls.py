@@ -24,7 +24,7 @@ from raykomfi import views
 from dotenv import load_dotenv
 load_dotenv()
 import os
-
+from django.views.generic import RedirectView
 
 
 import debug_toolbar
@@ -43,6 +43,7 @@ urlpatterns = [
     path('__debug__/', include(debug_toolbar.urls)),
     url('^inbox/notifications/', include('notifications.urls', namespace='notifications')),
     path("robots.txt/", views.robots_txt),
+    url(r'^favicon\.ico$',RedirectView.as_view(url='/static/img/favicon.ico')),
     path('sitemap.xml/', sitemap, {'sitemaps': sitemaps},
 			name='django.contrib.sitemaps.views.sitemap'),
 ]
