@@ -2,8 +2,8 @@
 {% load humanize %}
 
 <div class="comment-side">
-    {% if comment.user and reply.user.is_active != False and comment.post.creator.id %}
-    <a href="{% url 'raykomfi:user-profile' id=comment.post.creator.id %}" class="writer-name">
+    {% if comment.user and reply.user.is_active != False %}
+    <a href="{% url 'raykomfi:user-profile' id=comment.user.id %}" class="writer-name">
         <div class="name">
             <i class="fa fa-user" aria-hidden="true"></i>
             {{comment.user.username}}
@@ -18,10 +18,9 @@
         مجهول
     </div>
     {% endif %}
-    <small><i class="fa fa-clock-o" aria-hidden="true"></i><span
-            class="created-time">{{comment.created | naturaltime}}</span>
+    <small><i class="fa fa-clock-o" aria-hidden="true"></i><span class="created-time">{{comment.created | naturaltime}}</span>
     </small>
-    <div class="comment">{{ comment.content }}</div>
+    <div class="comment">{{ comment.content|safe }}</div>
     <form class="editCommentForm-{{comment.id}} closest-edit-comment-form" data-comment-id="{{comment.id}}">
         {% csrf_token %}
         <input type="text" name="content" class="w3-input w3-border">
@@ -35,6 +34,14 @@
     {% if comment.user.id == user.id or user.is_staff %}
     <button class="btn green raykomfi-report-btn comment-action-btn edit-comment-btn" data-comment-id="{{ comment.id }}"
         data-content="{{comment.content}}">تعديل </button>
+    {% endif %}
+    {% if user.is_staff %}
+    <a href="#" class="raykomfi-report-btn orange darken-3 btn admin-action-btn" data-request-type="comment"
+        data-action="reportAsNotAllowed" data-url="{{request.get_full_path}}" data-id="{{comment.id}}">إبلاغ كمخالف</a>
+    <a href="#" class="raykomfi-report-btn blue-grey darken-2 btn admin-action-btn" data-request-type="comment"
+        data-action="delete" data-url="{{request.get_full_path}}" data-id="{{comment.id}}">حذف</a>
+    <div class="w3-margin"></div>
+    <p class="green-text raykomfi-bold admin-action-message"></p>
     {% endif %}
     {% endif %}
     <!-- The Comment Report Modal -->
@@ -97,7 +104,7 @@
         <small><i class="fa fa-clock-o" aria-hidden="true"></i><span class="created-time">
                 {{reply.created | naturaltime}}</span>
         </small>
-        <div class="reply">{{ reply.content }}</div>
+        <div class="reply">{{ reply.content|safe }}</div>
         <form class="editReplyForm-{{reply.id}} closest-edit-reply-form" data-comment-id="{{comment.id}}"
             data-reply-id="{{reply.id}}">
             {% csrf_token %}
@@ -112,6 +119,15 @@
         <button class="btn green raykomfi-report-btn reply-action-btn edit-reply-btn" data-reply-id="{{ reply.id }}"
             data-content="{{reply.content}}">تعديل
         </button>
+        {% if user.is_staff %}
+        <a href="#" class="raykomfi-report-btn orange darken-3 btn admin-action-btn" data-request-type="reply"
+            data-action="reportAsNotAllowed" data-url="{{request.get_full_path}}" data-id="{{reply.id}}">إبلاغ
+            كمخالف</a>
+        <a href="#" class="raykomfi-report-btn blue-grey darken-2 btn admin-action-btn" data-request-type="reply"
+            data-action="delete" data-url="{{request.get_full_path}}" data-id="{{reply.id}}">حذف</a>
+        <div class="w3-margin"></div>
+        <p class="green-text raykomfi-bold admin-action-message"></p>
+        {% endif %}
         {% endif %}
         {% endif %}
         <!-- The Reply Report Modal -->

@@ -12,7 +12,7 @@ function custom_alert(message, icon) {
 // Add reply
 $(document).on("submit", "form.replyForm", function (e) {
   e.preventDefault();
-  let content = e.target[1].value;
+  let content = replacePlainLinks(e.target[1].value);
   let { commentId } = e.target.dataset;
   if (content) {
     $(this)[0][2].disabled = true
@@ -54,7 +54,7 @@ $(document).on("submit", "form.replyForm", function (e) {
 // Edit reply
 $(document).on("submit", "form.closest-edit-reply-form", function (e) {
   e.preventDefault();
-  let content = e.target[1].value;
+  let content = replacePlainLinks( e.target[1].value);
   let { replyId, commentId } = e.target.dataset;
   if (content) {
     axios({
@@ -93,7 +93,7 @@ $(document).on("submit", "form.closest-edit-reply-form", function (e) {
 // Add comment
 $(document).on("submit", "form.commentForm", function (e) {
   e.preventDefault();
-  let content = e.target[1].value;
+  let content = replacePlainLinks(e.target[1].value);
   let { postId } = e.target.dataset;
   if (content) {
     $(this)[0][2].disabled = true
@@ -134,7 +134,7 @@ $(document).on("submit", "form.commentForm", function (e) {
 // Add comment no registration
 $(document).on("submit", "form.commentNoRegisterForm", function (e) {
   e.preventDefault();
-  let content = e.target[1].value;
+  let content = replacePlainLinks(e.target[1].value);
   let code = e.target[2].value;
   let { postId } = e.target.dataset;
   if (content && code) {
@@ -185,7 +185,7 @@ $(document).on("submit", "form.commentNoRegisterForm", function (e) {
 // Edit comment
 $(document).on("submit", "form.closest-edit-comment-form", function (e) {
   e.preventDefault();
-  let content = e.target[1].value;
+  let content = replacePlainLinks(e.target[1].value);
   let { commentId } = e.target.dataset;
   if (content) {
     axios({

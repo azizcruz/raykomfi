@@ -193,7 +193,7 @@
                             <small><i class="fa fa-clock-o" aria-hidden="true"></i><span
                                     class="created-time">{{comment.created | naturaltime}}</span>
                             </small>
-                            <div class="comment">{{ comment.content }}</div>
+                            <div class="comment">{{ comment.content|safe }}</div>
                             <form class="editCommentForm-{{comment.id}} closest-edit-comment-form"
                                 data-comment-id="{{comment.id}}">
                                 {% csrf_token %}
@@ -283,7 +283,7 @@
                                 <small><i class="fa fa-clock-o" aria-hidden="true"></i><span class="created-time">
                                         {{reply.created | naturaltime}}</span>
                                 </small>
-                                <div class="reply">{{ reply.content }}</div>
+                                <div class="reply">{{ reply.content|safe }}</div>
                                 <form class="editReplyForm-{{reply.id}} closest-edit-reply-form"
                                     data-comment-id="{{comment.id}}" data-reply-id="{{reply.id}}">
                                     {% csrf_token %}

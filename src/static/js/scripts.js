@@ -454,9 +454,11 @@ $("#i-dont-want-cookies").on("click", () => {
   Cookies.set("useCookies", false, { expires: 30 });
 });
 
+var toStripLinkTags = /(<([^>]+)>)/gi
+
 // Edit comment
 $(document).on("click", ".edit-comment-btn", (e) => {
-  var commentContent = e.target.dataset.content;
+  var commentContent = e.target.dataset.content.replace(toStripLinkTags, '');
   var commentId = e.target.dataset.commentId;
   var closestEditCommentForm = $(".edit-comment-btn")
     .parent()
@@ -482,7 +484,7 @@ $(document).on("click", ".close-comment-edit-form", (e) => {
 
 // Edit Reply
 $(document).on("click", ".edit-reply-btn", (e) => {
-  var replyContent = e.target.dataset.content;
+  var replyContent = e.target.dataset.content.replace(toStripLinkTags, '');
   var replyId = e.target.dataset.replyId;
   var closestEditReplyForm = $(".edit-reply-btn")
     .parent()
