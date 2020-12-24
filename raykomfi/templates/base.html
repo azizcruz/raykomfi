@@ -30,42 +30,42 @@
     {% if url_name == 'signup_view' %}
     <meta name="description" content="إنضم إلى مجتمع رايكم في وأبدأ بتسجيل حساب جديد">
     <meta property="og:title" content="منصة رايكم في" />
-    <meta name="og:description" content="إنضم إلى مجتمع رايكم في وأبدأ بتسجيل حساب جديد" />
+    <meta property="og:description" content="إنضم إلى مجتمع رايكم في وأبدأ بتسجيل حساب جديد" />
     <meta property="og:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
     <meta property="og:url" content="http://www.raykomfi.com" />
     <meta property="twitter:title" content="منصة رايكم في" />
-    <meta name="twitter:description" content="منصة تجمع الناس لمناقشة و إستفسار آراء الناس في الشراء ,البيع ,الإلكترونيات, الجوالات,السيارات, التجربة و الكثير من المسائل والمواضيع" />
-    <meta name="twitter:image"
+    <meta property="twitter:description" content="منصة تجمع الناس لمناقشة و إستفسار آراء الناس في الشراء ,البيع ,الإلكترونيات, الجوالات,السيارات, التجربة و الكثير من المسائل والمواضيع" />
+    <meta property="twitter:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@raykomfi">
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:site" content="@raykomfi">
     {% elif url_name == 'signin_view' %}
     <meta name="description" content="تسجيل الدخول الى رايكم في للبدأ في إستفسار الناس عن ما تريد">
     <meta property="og:title" content="منصة رايكم في" />
-    <meta name="og:description" content="تسجيل الدخول الى رايكم في للبدأ في إستفسار الناس عن ما تريد" />
+    <meta property="og:description" content="تسجيل الدخول الى رايكم في للبدأ في إستفسار الناس عن ما تريد" />
     <meta property="og:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
     <meta property="og:url" content="http://www.raykomfi.com" />
     <meta property="twitter:title" content="منصة رايكم في" />
-    <meta name="twitter:description" content="منصة تجمع الناس لمناقشة و إستفسار آراء الناس في الشراء ,البيع ,الإلكترونيات, الجوالات,السيارات, التجربة و الكثير من المسائل والمواضيع" />
-    <meta name="twitter:image"
+    <meta property="twitter:description" content="منصة تجمع الناس لمناقشة و إستفسار آراء الناس في الشراء ,البيع ,الإلكترونيات, الجوالات,السيارات, التجربة و الكثير من المسائل والمواضيع" />
+    <meta property="twitter:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@raykomfi">
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:site" content="@raykomfi">
     {% elif url_name == 'categorized_view' %}
     <meta name="description" content="بحث عن إستفسارات حسب التصنيف {{ category }}">
     <meta property="og:title" content="منصة رايكم في" />
-    <meta name="og:description" content="بحث عن إستفسارات حسب التصنيف {{ category }}" />
+    <meta property="og:description" content="بحث عن إستفسارات حسب التصنيف {{ category }}" />
     <meta property="og:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
     <meta property="og:url" content="http://www.raykomfi.com" />
     <meta property="twitter:title" content="منصة رايكم في" />
-    <meta name="twitter:description" content="بحث عن إستفسارات حسب التصنيف {{ category }}" />
-    <meta name="twitter:image"
+    <meta property="twitter:description" content="بحث عن إستفسارات حسب التصنيف {{ category }}" />
+    <meta property="twitter:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@raykomfi">
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:site" content="@raykomfi">
     {% endif %}
 
     {% if not url_name %}
@@ -118,9 +118,9 @@
     <meta property="og:type" content="website">
     <meta name="description" content="{{ post.title }}">
     {% if post.content %}
-    <meta name="og:description" content="{{ post.content|safe }}" />
+    <meta property="og:description" content="{{ post.content|safe }}" />
     {% else %}
-    <meta name="og:description" content="منصة تجمع الناس للمناقشة و إستفسار
+    <meta property="og:description" content="منصة تجمع الناس للمناقشة و إستفسار
     آراء الناس في شراء, زيارة, تجربة, تعلم, مهنة و الكثير" />
     {% endif %}
     <meta property="og:image"
@@ -128,14 +128,14 @@
     <meta property="og:url" content="{{ post.get_twitter_url }}" />
     <meta property="twitter:title" content="{{ post.title }}" />
     {% if post.content %}
-    <meta name="twitter:description" content="{{ post.content|safe }}" />
+    <meta property="twitter:description" content="{{ post.content|safe }}" />
     {% else %}
-    <meta name="twitter:description" content="منصة تجمع الناس لمناقشة و إستفسار آراء الناس في الشراء ,البيع ,الإلكترونيات, الجوالات,السيارات, التجربة و الكثير من المسائل والمواضيع" />
+    <meta property="twitter:description" content="منصة تجمع الناس لمناقشة و إستفسار آراء الناس في الشراء ,البيع ,الإلكترونيات, الجوالات,السيارات, التجربة و الكثير من المسائل والمواضيع" />
     {% endif %}
-    <meta name="twitter:image"
+    <meta property="twitter:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@raykomfi">
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:creator" content="@raykomfi">
     {% endif %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
