@@ -10,7 +10,8 @@
             {% if fetched_message.user.username == 'الإدارة' %}
             الإدارة
             {% else %}
-            <span><a href="{% url 'raykomfi:user-profile' id=fetched_message.user.id %}">{{ fetched_message.user }}</a></span>
+            <span><a href="{% url 'raykomfi:user-profile' id=fetched_message.user.id %}">{{ fetched_message.user
+                    }}</a></span>
             {% endif %}
             {% else %}
             <span><i class="fa fa-user" aria-hidden="true"></i> مجهول</span>
@@ -24,29 +25,29 @@
     </div>
 </div>
 <div class="w3-col s12 m12 l6">
-    <h3  class="center">الرسائل الواردة</h3>
+    <h3 class="center">الرسائل الواردة</h3>
     <div class="messages-box">
         <div class="incoming-messages-wrapper">
-          {% if user_messages %}
-          {% for message in user_messages %}
-          <form class="getMessageForm" data-message-id="{{ message.id }}">
-            {% csrf_token %}
-            <button type="submit" class="w3-card w3-padding message-button  {{ message.is_read|yesno:'opened, ' }}">
-              {% if message.is_read %}
-              <i class="fa fa-envelope-open w3-left" aria-hidden="true"></i>
-              {% else %}
-              <i class="fa fa-envelope w3-left" aria-hidden="true"></i>
-              {% endif %}
-              <div class="w3-right w3-xlarge">{{ message.title }}</div>
-              <div class="clear-fix"></div>
-            </button>
-          </form>
-          {% endfor %}
-          {% else %}
-          <p class="w3-center">لا يوجد لديك أي رسائل واردة</p>
-          {% endif %}
+            {% if user_messages %}
+            {% for message in user_messages %}
+            <form class="getMessageForm" data-message-id="{{ message.id }}">
+                {% csrf_token %}
+                <button type="submit" class="w3-card w3-padding message-button  {{ message.is_read|yesno:'opened, ' }}">
+                    {% if message.is_read %}
+                    <i class="fa fa-envelope-open w3-left" aria-hidden="true"></i>
+                    {% else %}
+                    <i class="fa fa-envelope w3-left" aria-hidden="true"></i>
+                    {% endif %}
+                    <div class="w3-right w3-xlarge">{{ message.title }}</div>
+                    <div class="clear-fix"></div>
+                </button>
+            </form>
+            {% endfor %}
+            {% else %}
+            <p class="w3-center">لا يوجد لديك أي رسائل واردة</p>
+            {% endif %}
         </div>
-      </div>
+    </div>
 </div>
 
 {% else %}
