@@ -44,6 +44,7 @@ from rest_framework import status
 from random import randint
 import os
 from django.db.models import Max
+from datetime import datetime, timedelta
 
 
 
@@ -53,6 +54,13 @@ from pdb import set_trace
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def index(request):
+
+    if request.user.is_authenticated:
+        now = timezone.now()
+        if request.user.last_login + timedelta(minutes=30) < now:
+            request.user.last_login = now
+            request.user.save()
+
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True)[:8]
     count = posts.count()
     latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').filter(post__isActive=True).order_by('-created')[:10]

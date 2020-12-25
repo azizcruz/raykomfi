@@ -1142,6 +1142,11 @@ input ~ .parsley-errors-list.filled {
 /* Pofile Style */
 
 /* Messages Style */
+.messages-box {
+  max-height: 500px;
+  overflow-y: scroll;
+}
+
 .incoming-messages-wrapper i {
   line-height: 42px;
 }

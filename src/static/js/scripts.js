@@ -134,31 +134,32 @@ $(".lazy-img").Lazy({
 });
 
 // Get country
-if (
-  !sessionStorage.getItem("country") &&
-  !sessionStorage.getItem("continent")
-) {
-  var options = {
-    method: "GET",
-    hostname: "freegeoip.app",
-    port: null,
-    path: "/json/",
-    headers: {
-      accept: "application/json",
-      "content-type": "application/json",
-    },
-  };
-  axios
-    .get("https://freegeoip.app/json/")
-    .then((data) => {
-      console.log(data);
-      sessionStorage.setItem("country", data.data.country_name);
-      sessionStorage.setItem("continent", data.data.time_zone.split("/")[0]);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
+setInterval(function() {
+  if (
+    !sessionStorage.getItem("country") &&
+    !sessionStorage.getItem("continent")
+  ) {
+    var options = {
+      method: "GET",
+      hostname: "freegeoip.app",
+      port: null,
+      path: "/json/",
+      headers: {
+        accept: "application/json",
+        "content-type": "application/json",
+      },
+    };
+    axios
+      .get("https://freegeoip.app/json/")
+      .then((data) => {
+        sessionStorage.setItem("country", data.data.country_name);
+        sessionStorage.setItem("continent", data.data.time_zone.split("/")[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+}, 3000)
 
 var countryInput = $("#id_country");
 var continentInput = $("#id_continent");
@@ -241,7 +242,6 @@ function fill_notification_list_override(data) {
       var messages = data.unread_list
         .map(function (item) {
           if (item.verb === "comment") {
-            console.log(item.description)
             var message = `<a href='${
               item.description
             }'>لديك رأي جديد على إستفسارك ${item.target} من ${

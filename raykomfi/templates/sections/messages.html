@@ -28,25 +28,27 @@
   </div>
   <div class="w3-col s12 m12 l6">
     <h3 class="center">الرسائل الواردة</h3>
-    <div class="incoming-messages-wrapper">
-      {% if user_messages %}
-      {% for message in user_messages %}
-      <form class="getMessageForm" data-message-id="{{ message.id }}">
-        {% csrf_token %}
-        <button type="submit" class="w3-card w3-padding message-button  {{ message.is_read|yesno:'opened, ' }}">
-          {% if message.is_read %}
-          <i class="fa fa-envelope-open w3-left" aria-hidden="true"></i>
-          {% else %}
-          <i class="fa fa-envelope w3-left" aria-hidden="true"></i>
-          {% endif %}
-          <div class="w3-right w3-xlarge">{{ message.title }}</div>
-          <div class="clear-fix"></div>
-        </button>
-      </form>
-      {% endfor %}
-      {% else %}
-      <p class="w3-center">لا يوجد لديك أي رسائل واردة</p>
-      {% endif %}
+    <div class="messages-box">
+      <div class="incoming-messages-wrapper">
+        {% if user_messages %}
+        {% for message in user_messages %}
+        <form class="getMessageForm" data-message-id="{{ message.id }}">
+          {% csrf_token %}
+          <button type="submit" class="w3-card w3-padding message-button  {{ message.is_read|yesno:'opened, ' }}">
+            {% if message.is_read %}
+            <i class="fa fa-envelope-open w3-left" aria-hidden="true"></i>
+            {% else %}
+            <i class="fa fa-envelope w3-left" aria-hidden="true"></i>
+            {% endif %}
+            <div class="w3-right w3-xlarge">{{ message.title }}</div>
+            <div class="clear-fix"></div>
+          </button>
+        </form>
+        {% endfor %}
+        {% else %}
+        <p class="w3-center">لا يوجد لديك أي رسائل واردة</p>
+        {% endif %}
+      </div>
     </div>
   </div>
 

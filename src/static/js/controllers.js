@@ -293,6 +293,7 @@ $(document).on("submit", "form.getMessageForm", function (e) {
       })
       .catch((err) => {
         if (
+          err.response &&
           err.response.status === 403 &&
           err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
         ) {
@@ -370,7 +371,6 @@ $(document).on("submit", "form.commentsSearchForm", function (e) {
         view_html = response.data.view;
         message_view.html(view_html);
         $(document).ready(() => {
-          console.log(response.data);
           let view_html = response.data.view;
           console.log(view_html);
           let post_wrapper = document.getElementById("user-comments");
