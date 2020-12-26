@@ -45,7 +45,6 @@ from random import randint
 import os
 from django.db.models import Max
 from datetime import datetime, timedelta
-from rake_nltk import Rake
 
 
 
