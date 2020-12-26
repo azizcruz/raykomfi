@@ -45,7 +45,7 @@ from random import randint
 import os
 from django.db.models import Max
 from datetime import datetime, timedelta
-
+from rake_nltk import Rake
 
 
 
@@ -54,7 +54,6 @@ from pdb import set_trace
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def index(request):
-
     if request.user.is_authenticated:
         now = timezone.now()
         if request.user.last_login + timedelta(minutes=30) < now:
@@ -485,7 +484,7 @@ def my_comments_most_voted_view(request, user_id):
 def post_edit(request, id, slug):
     try:
         instance = get_object_or_404(Post, id=id, slug=slug)
-        if request.method == 'POST' and request.user and request.user.id == instance.creator.id:
+        if request.method == 'POST' and request.user and request.user.id == instance.creator.id or request.user.is_staff:
             form = NewPostForm(request.POST or None, request.FILES or None, instance=instance,
                             use_required_attribute=False)
             if form.is_valid():
@@ -497,7 +496,7 @@ def post_edit(request, id, slug):
             else:
                 return render(request, 'sections/edit_post.html', context={'form': form, 'post': instance, 'view_title': f'رايكم في | {instance.title}'})
         else:
-            if request.user and request.user.id == instance.creator.id:
+            if request.user and request.user.id == instance.creator.id or request.user.is_staff:
                 post = Post.objects.get(Q(id__exact=id) & Q(slug__exact=slug))
                 form = NewPostForm(instance=instance, use_required_attribute=False)
                 return render(request, 'sections/edit_post.html', context={'form': form, 'post': post, 'view_title': f'رايكم في | {post.title}'})

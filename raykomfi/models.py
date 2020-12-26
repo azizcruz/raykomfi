@@ -26,7 +26,8 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 import pytz
-
+import re
+from summa import keywords
 utc=pytz.UTC
 
 BASE_URL = 'https://www.raykomfi.com' if os.getenv('environment') == 'prod' else 'http://localhost:8000'
@@ -130,6 +131,7 @@ class Post(models.Model, HitCountMixin):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk', related_query_name='hit_count_generic_relation')
+    keywords = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         ordering = ('-created', )
@@ -178,6 +180,16 @@ class Post(models.Model, HitCountMixin):
                 
             # Generate slug
         self.slug = slugify(self.title)
+        k = self.title + self.content
+        clean1 = re.compile('<.*?>')
+        clean2 = re.compile('[^A-Za-z0-9-\u0621-\u064A\u0660-\u0669 ]+')
+        k = k.replace('nbsp', '')
+        k = clean1.sub('', k)
+        k = clean2.sub('', k)
+        k = keywords.keywords(k, ratio=0.9, language='arabic') 
+        k = k.split('\n')
+        k = ','.join(k)
+        self.keywords = k
         super(Post, self).save(*args, **kwargs)
        
         

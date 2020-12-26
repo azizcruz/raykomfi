@@ -156,6 +156,12 @@
                         <div><i class="fa fa-circle red-text"></i> غير مفعل</div>
                     {% endif %}
                 {% endif %}
+                {% if post.keywords %}
+                <p>كلمات مفتاحية</p>
+                <div class="post-keywords" data-keywords="{{post.keywords}}">
+                    
+                </div>
+                {% endif %}
             </div>
         </div>
         <div>
