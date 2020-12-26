@@ -543,14 +543,14 @@ tinymce.init({
   preview_styles:true
 });
 
-// Post keywords generation
-var postKeywordsWrapper = $('.post-keywords')
-var keywords = postKeywordsWrapper.data().keywords.split(',')
-if(postKeywordsWrapper && keywords) {
-  var generatedTags = ''
-  for(var i = 0; i < keywords.length; i++){
-    generatedTags += ` <span class="w3-padding raykomfi-main-background-color">${keywords[i]}</span>`
-  }
+// // Post keywords generation
+// var postKeywordsWrapper = $('.post-keywords')
+// var keywords = postKeywordsWrapper.data().keywords.split(',')
+// if(postKeywordsWrapper && keywords) {
+//   var generatedTags = ''
+//   for(var i = 0; i < keywords.length; i++){
+//     generatedTags += ` <span class="w3-padding raykomfi-main-background-color">${keywords[i]}</span>`
+//   }
 
-  postKeywordsWrapper.html(generatedTags)
-}
+//   postKeywordsWrapper.html(generatedTags)
+// }

@@ -186,10 +186,15 @@ class Post(models.Model, HitCountMixin):
         k = k.replace('nbsp', '')
         k = clean1.sub('', k)
         k = clean2.sub('', k)
-        k = keywords.keywords(k, ratio=0.9, language='arabic') 
-        k = k.split('\n')
-        k = ','.join(k)
-        self.keywords = k
+        k = k.split(' ')
+        final_keywords = []
+        for keyword in k:
+            if keyword in ["من", "على", "رايكم", "في", "الى", "عن", "منذ", "الذي", "اللي"]  or len(keyword) < 4:
+                continue
+            else:
+                final_keywords.append(keyword)
+
+        self.keywords = ','.join(final_keywords)
         super(Post, self).save(*args, **kwargs)
        
         
