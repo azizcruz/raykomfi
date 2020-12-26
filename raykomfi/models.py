@@ -180,7 +180,7 @@ class Post(models.Model, HitCountMixin):
                 
             # Generate slug
         self.slug = slugify(self.title)
-        k = self.title + self.content
+        k = self.title
         clean1 = re.compile('<.*?>')
         clean2 = re.compile('[^A-Za-z0-9-\u0621-\u064A\u0660-\u0669 ]+')
         k = k.replace('nbsp', '')
