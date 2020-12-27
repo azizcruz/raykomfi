@@ -28,6 +28,8 @@ import os
 import pytz
 import re
 from summa import keywords
+import requests
+import json
 utc=pytz.UTC
 
 BASE_URL = 'https://www.raykomfi.com' if os.getenv('environment') == 'prod' else 'http://localhost:8000'
@@ -162,11 +164,19 @@ class Post(models.Model, HitCountMixin):
             if prev_post_status != self.isActive and self.isActive == True and os.getenv('environment') == 'prod':
                 # Post to twitter and facebook
                 try:
+                    headers = {
+                    'Authorization': f'Bearer {os.getenv("bitly_token")}',
+                    'Content-Type': 'application/json',
+                    }
+
+                    data = { "long_url": f"{self.get_twitter_url()}", "domain": "bit.ly", "group_guid": "BkcriP1cZcS" }
+
+                    response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, data=json.dumps(data))
                     t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
-                    t.statuses.update(status=f'{self.title} \n {self.get_twitter_url()}', media_ids="")
+                    t.statuses.update(status=f'{self.title} \n {response.json()["link"]}', media_ids="")
                     token = os.getenv('fb_token')
                     fb = facebook.GraphAPI(access_token=token)
-                    fb.put_object(parent_object='me', connection_name='feed', message=f'{self.title} \n {self.get_twitter_url()}')
+                    fb.put_object(parent_object='me', connection_name='feed', message=f'{self.title} \n {response.json()["link"]}')
                 except Exception as e:
                     print('=======================>', e)
 
