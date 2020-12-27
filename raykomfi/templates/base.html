@@ -33,53 +33,45 @@
     <meta property="og:description" content="إنضم إلى مجتمع رايكم في وأبدأ بتسجيل حساب جديد" />
     <meta property="og:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
-    <meta property="og:url" content="http://www.raykomfi.com" />
     <meta property="twitter:title" content="منصة رايكم في" />
     <meta property="twitter:description" content="منصة تجمع الناس لمناقشة و إستفسار آراء الناس في الشراء ,البيع ,الإلكترونيات, الجوالات,السيارات, التجربة و الكثير من المسائل والمواضيع" />
     <meta property="twitter:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:site" content="@raykomfi">
     {% elif url_name == 'signin_view' %}
     <meta name="description" content="تسجيل الدخول الى رايكم في للبدأ في إستفسار الناس عن ما تريد">
     <meta property="og:title" content="منصة رايكم في" />
     <meta property="og:description" content="تسجيل الدخول الى رايكم في للبدأ في إستفسار الناس عن ما تريد" />
     <meta property="og:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
-    <meta property="og:url" content="http://www.raykomfi.com" />
     <meta property="twitter:title" content="منصة رايكم في" />
     <meta property="twitter:description" content="منصة تجمع الناس لمناقشة و إستفسار آراء الناس في الشراء ,البيع ,الإلكترونيات, الجوالات,السيارات, التجربة و الكثير من المسائل والمواضيع" />
     <meta property="twitter:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:site" content="@raykomfi">
     {% elif url_name == 'categorized_view' %}
     <meta name="description" content="بحث عن إستفسارات حسب التصنيف {{ category }}">
     <meta property="og:title" content="منصة رايكم في" />
     <meta property="og:description" content="بحث عن إستفسارات حسب التصنيف {{ category }}" />
     <meta property="og:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
-    <meta property="og:url" content="http://www.raykomfi.com" />
     <meta property="twitter:title" content="منصة رايكم في" />
     <meta property="twitter:description" content="بحث عن إستفسارات حسب التصنيف {{ category }}" />
     <meta property="twitter:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:site" content="@raykomfi">
     {% endif %}
 
     {% if not url_name %}
     <!-- Open Graph / Facebook -->
     <meta name="description" content="منصة تجمع الناس لمناقشة و إستفسار آراء الناس في الشراء ,البيع ,الإلكترونيات, الجوالات,السيارات, التجربة و الكثير من المسائل والمواضيع">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="http://www.raykomfi.com">
     <meta property="og:title" content="رايكم في">
     <meta property="og:description" content="منصة تجمع الناس لمناقشة و إستفسار آراء الناس في الشراء ,البيع ,الإلكترونيات, الجوالات,السيارات, التجربة و الكثير من المسائل والمواضيع">
     <meta property="og:image" content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="http://www.raykomfi.com">
     <meta property="twitter:title" content="رايكم في">
     <meta property="twitter:description" content="منصة تجمع الناس لمناقشة و إستفسار آراء الناس في الشراء ,البيع ,الإلكترونيات, الجوالات,السيارات, التجربة و الكثير من المسائل والمواضيع">
     <meta property="twitter:image"
@@ -130,7 +122,6 @@
     {% endif %}
     <meta property="og:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
-    <meta property="og:url" content="{{ post.get_twitter_url }}" />
     <meta property="twitter:title" content="{{ post.title }}" />
     {% if post.content %}
     <meta property="twitter:description" content="{{ post.content|safe }}" />
@@ -140,12 +131,16 @@
     <meta property="twitter:image"
         content="https://res.cloudinary.com/raykomfi/image/upload/v1605124009/raykomfi/images/email/email_logo_eps4zt.png" />
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:creator" content="@raykomfi">
     {% endif %}
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+    <meta property="twitter:creator" content="@raykomfi">
+    <meta property="twitter:site" content="@raykomfi">
+    <meta property="twitter:url" content="{{ request.build_absolute_uri }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     {% compress css %}
     <link rel="stylesheet" href="{% static 'css/w3.css'  %}">
     <link rel="stylesheet" href="{% static 'css/w3-colors-flat.css'  %}">
@@ -325,6 +320,8 @@
         <div class="center-block w3-padding manager-message center">   {{ important_message }}</div>
        </div>
        {% endif %}
+
+       
 
         <div class="raykomfi-content container">
             {% if messages %}
