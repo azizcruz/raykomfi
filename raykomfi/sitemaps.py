@@ -18,7 +18,7 @@ class StaticViewSitemap(Sitemap):
     changefreq = 'monthly'
 
     def items(self):
-        return ['raykomfi:usage-terms', 'raykomfi:about', 'raykomfi:user-signin', 'raykomfi:user-register', 'raykomfi:user-register-withnosignup']
+        return ['raykomfi:raykomfi-home', 'raykomfi:about', 'raykomfi:user-register', 'raykomfi:user-signin', 'raykomfi:user-register-withnosignup', 'raykomfi:usage-terms']
 
     def location(self, item):
         return reverse(item)
