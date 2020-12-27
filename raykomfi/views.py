@@ -962,7 +962,6 @@ def suspicious_limit(request , exception=None):
 @ratelimit(key='ip', rate='50/m', block=True)
 def robots_txt(request):
     lines = [
-        "User-Agent: *",
         "Disallow: /user/profile/",
         "Disallow: /admin/",
         ]
