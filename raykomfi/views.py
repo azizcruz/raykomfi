@@ -69,11 +69,11 @@ def index(request):
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def posts_with_latests_comment_order(request):
-    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')[:8]
+    posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')
     count = posts.count()
     latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').filter(post__isActive=True).order_by('-created')[:10]
     categories = Category.objects.all()
-    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'categories': categories, 'view_title': f'منصة رايكم في | إستفسر رأي الناس عن أي شي ', 'count': count})
+    return render(request, 'sections/home.html', context={'posts': posts, 'latest_comments': latest_comments, 'hide_load_more': True, 'categories': categories, 'view_title': f'منصة رايكم في | إستفسر رأي الناس عن أي شي ', 'count': count})
 
 
 def latest_posts(request):
