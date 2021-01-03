@@ -81,7 +81,7 @@ pre {
 
 .remove-button-hover:hover {
   background-color: transparent !important;
-  color: #FFF !important;
+  color: #fff !important;
 }
 
 .raykomfi-bold {
@@ -129,8 +129,11 @@ noscript span {
 }
 
 pre {
-  overflow-x: hidden;
-  text-overflow: ellipsis;
+  white-space: pre-wrap; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
 }
 
 .raykomfi-main-background-color {
@@ -243,7 +246,7 @@ h4 {
 
 .no-register-button:hover {
   background-color: #4caf50 !important;
-  color: #FFF !important;
+  color: #fff !important;
 }
 
 .raykomfi-list {
@@ -260,12 +263,12 @@ h4 {
 }
 
 .latest-opinions {
-  overflow-wrap:break-word;
+  overflow-wrap: break-word;
   max-width: 500px;
 }
 
 .cookie-message > .center {
-  font-size: .4rem !important;
+  font-size: 0.4rem !important;
 }
 .cookie-close-button {
   background-color: #186bae;
@@ -297,10 +300,10 @@ h4 {
 }
 
 .ray-box h2 {
-  font-size: 1.40rem;
+  font-size: 1.4rem;
   overflow-wrap: break-word;
-  line-height: 1.6rem;}
-
+  line-height: 1.6rem;
+}
 
 .what-is-this {
   padding: 3px;
@@ -439,7 +442,6 @@ footer {
   border-bottom: none;
 }
 
-
 .btn {
   padding: 0 1rem;
   border-radius: 0;
@@ -452,10 +454,9 @@ footer {
 .latest-opinion p {
   margin-top: 8px;
   margin-bottom: 8px;
-  font-size: .7rem;
+  font-size: 0.7rem;
   color: #484848;
 }
-
 
 .w3-button {
   -webkit-transition: background-color 0.2s ease-in-out;
