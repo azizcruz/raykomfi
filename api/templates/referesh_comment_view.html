@@ -18,12 +18,13 @@
         مجهول
     </div>
     {% endif %}
-    <small><i class="fa fa-clock-o" aria-hidden="true"></i><span class="created-time">{{comment.created | naturaltime}}</span>
-    </small>
-    <div class="comment">{{ comment.content|safe }}</div>
+    <small><i class="fa fa-clock-o" aria-hidden="true"></i><span class="created-time">{{comment.created | naturaltime}}</span></small>
+    <div class="comment">
+        <pre>{{ comment.content|safe }}</pre>
+    </div>
     <form class="editCommentForm-{{comment.id}} closest-edit-comment-form" data-comment-id="{{comment.id}}">
         {% csrf_token %}
-        <input type="text" name="content" class="w3-input w3-border">
+        <textarea name="content" class="w3-input w3-border textarea-with-preservations" rows="4"></textarea>
         <button class="btn raykomfi-main-background-color raykomfi-report-btn" type="submit">تأكيد</button>
         <a href="" class="btn red raykomfi-report-btn close-comment-edit-form"
             data-comment-id="{{comment.id}}">إلغاء</a>
@@ -104,11 +105,13 @@
         <small><i class="fa fa-clock-o" aria-hidden="true"></i><span class="created-time">
                 {{reply.created | naturaltime}}</span>
         </small>
-        <div class="reply">{{ reply.content|safe }}</div>
+        <div class="reply">
+            <pre>{{ reply.content|safe }}</pre>
+        </div>
         <form class="editReplyForm-{{reply.id}} closest-edit-reply-form" data-comment-id="{{comment.id}}"
             data-reply-id="{{reply.id}}">
             {% csrf_token %}
-            <input type="text" name="content" class="w3-input w3-border">
+            <textarea name="content" class="w3-input w3-border textarea-with-preservations"></textarea>
             <button class="btn raykomfi-main-background-color raykomfi-report-btn" type="submit">تأكيد</button>
             <a href="" class="btn red raykomfi-report-btn close-reply-edit-form" data-reply-id="{{reply.id}}">إلغاء</a>
         </form>
@@ -179,7 +182,8 @@
 <div class="reply">
     <form class="replyForm" data-comment-id="{{comment.id}}">
         {% csrf_token %}
-        <textarea name="reply_content" cols="40" rows="1" class="w3-input w3-border   reply-textarea"
+        <textarea name="reply_content" cols="40" rows="1"
+            class="w3-input w3-border  reply-textarea textarea-with-preservations"
             id="id_reply_content-{{comment.id}}"></textarea>
         <div class="col s12">
             <button class='w3-button z-depth-1' type="submit"> اضافة رد</button>

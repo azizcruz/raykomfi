@@ -3,6 +3,10 @@ function generateStars() {
   let starsGenerated = "";
   if (opinionPower.length > 0) {
     for (let i = 0; i < opinionPower.length; i++) {
+      if(opinionPower[i].innerHTML.indexOf('span') > 0) {
+        opinionPower[i].innerHTML = opinionPower[i].innerHTML
+        continue;
+      }
       let opinionPowerValue =
         parseFloat(opinionPower[i].innerHTML.replace(",", ".")) || false;
       starsGenerated = "";

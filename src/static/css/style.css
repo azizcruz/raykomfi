@@ -26,6 +26,13 @@
 * Browsers: last 4 version
 */
 
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v7.0.29,
+* Autoprefixer: v9.7.6
+* Browsers: last 4 version
+*/
+
 /* Main Style */
 html {
   font-size: 16px;
@@ -52,7 +59,8 @@ h4,
 h5,
 h6,
 span,
-div {
+div,
+pre {
   font-family: "Almarai", sans-serif !important;
   color: #484848 !important;
 }
@@ -118,6 +126,11 @@ noscript span {
 
 .card .card-action span {
   margin-right: 20px;
+}
+
+pre {
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 
 .raykomfi-main-background-color {
@@ -1196,6 +1209,10 @@ input ~ .parsley-errors-list.filled {
 
 .message-view .message-sender span:nth-child(2):hover {
   text-decoration: underline;
+}
+
+.textarea-with-preservations {
+  white-space: pre-wrap !important;
 }
 
 /* Messages Style */

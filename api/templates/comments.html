@@ -23,14 +23,14 @@
                 مجهول
             </div>
             {% endif %}
-            <small><i class="fa fa-clock-o" aria-hidden="true"></i><span
-                    class="created-time">{{comment.created | naturaltime}}</span>
-            </small>
-            <div class="comment">{{ comment.content|safe }}</div>
-            <form class="editCommentForm-{{comment.id}} closest-edit-comment-form" data-comment-id="{{comment.id}}">
+            <small><i class="fa fa-clock-o" aria-hidden="true"></i><span class="created-time">{{comment.created | naturaltime}}</span></small>
+            <div class="comment"><pre>{{ comment.content|safe }}</pre></div>
+            <form class="editCommentForm-{{comment.id}} closest-edit-comment-form"
+                data-comment-id="{{comment.id}}">
                 {% csrf_token %}
-                <input type="text" name="content" class="w3-input w3-border">
-                <button class="btn raykomfi-main-background-color raykomfi-report-btn" type="submit">تأكيد</button>
+                <textarea name="content" class="w3-input w3-border textarea-with-preservations" rows="4"></textarea>
+                <button class="btn raykomfi-main-background-color raykomfi-report-btn"
+                    type="submit">تأكيد</button>
                 <a href="" class="btn red raykomfi-report-btn close-comment-edit-form"
                     data-comment-id="{{comment.id}}">إلغاء</a>
             </form>
@@ -40,6 +40,14 @@
             {% if comment.user.id == user.id or user.is_staff %}
             <button class="btn green raykomfi-report-btn comment-action-btn edit-comment-btn"
                 data-comment-id="{{ comment.id }}" data-content="{{comment.content}}">تعديل </button>
+            {% endif %}
+            {% if user.is_staff %}
+            <a href="#"
+            class="raykomfi-report-btn orange darken-3 btn admin-action-btn" data-request-type="comment" data-action="reportAsNotAllowed" data-url="{{request.get_full_path}}" data-id="{{comment.id}}">إبلاغ كمخالف</a>
+            <a href="#"
+            class="raykomfi-report-btn blue-grey darken-2 btn admin-action-btn" data-request-type="comment" data-action="delete" data-url="{{request.get_full_path}}" data-id="{{comment.id}}">حذف</a>
+            <div class="w3-margin"></div>
+            <p class="green-text raykomfi-bold admin-action-message"></p>
             {% endif %}
             {% endif %}
             <!-- The Comment Report Modal -->
@@ -52,7 +60,8 @@
                                     <h6>حدد نوع الإبلاغ</h6>
                                     <form class="reportForm">
                                         {% csrf_token %}
-                                        <input class="w3-radio" type="radio" name="content" value="إساءة شخصية">
+                                        <input class="w3-radio" type="radio" name="content"
+                                            value="إساءة شخصية">
                                         <label class="black-text">إساءة
                                             شخصية</label>
                                         <br>
@@ -67,7 +76,8 @@
                                         <label class="black-text">إساءة
                                             لطائفة أو إلى
                                             الدين</label>
-                                        <input type="hidden" name="reported_url" value="{{comment.get_absolute_url}}">
+                                        <input type="hidden" name="reported_url"
+                                            value="{{comment.get_absolute_url}}">
                                         <br>
 
                                         <input type="hidden" name="topic" value="comment">
@@ -104,12 +114,13 @@
                 <small><i class="fa fa-clock-o" aria-hidden="true"></i><span class="created-time">
                         {{reply.created | naturaltime}}</span>
                 </small>
-                <div class="reply">{{ reply.content|safe }}</div>
-                <form class="editReplyForm-{{reply.id}} closest-edit-reply-form" data-comment-id="{{comment.id}}"
-                    data-reply-id="{{reply.id}}">
+                <div class="reply"><pre>{{ reply.content|safe }}</pre></div>
+                <form class="editReplyForm-{{reply.id}} closest-edit-reply-form"
+                    data-comment-id="{{comment.id}}" data-reply-id="{{reply.id}}">
                     {% csrf_token %}
-                    <input type="text" name="content" class="w3-input w3-border">
-                    <button class="btn raykomfi-main-background-color raykomfi-report-btn" type="submit">تأكيد</button>
+                    <textarea name="content" class="w3-input w3-border textarea-with-preservations"></textarea>
+                    <button class="btn raykomfi-main-background-color raykomfi-report-btn"
+                        type="submit">تأكيد</button>
                     <a href="" class="btn red raykomfi-report-btn close-reply-edit-form"
                         data-reply-id="{{reply.id}}">إلغاء</a>
                 </form>
@@ -120,6 +131,14 @@
                 <button class="btn green raykomfi-report-btn reply-action-btn edit-reply-btn"
                     data-reply-id="{{ reply.id }}" data-content="{{reply.content}}">تعديل
                 </button>
+                {% if user.is_staff %}
+                <a href="#"
+                class="raykomfi-report-btn orange darken-3 btn admin-action-btn" data-request-type="reply" data-action="reportAsNotAllowed" data-url="{{request.get_full_path}}" data-id="{{reply.id}}">إبلاغ كمخالف</a>
+                <a href="#"
+                class="raykomfi-report-btn blue-grey darken-2 btn admin-action-btn" data-request-type="reply" data-action="delete" data-url="{{request.get_full_path}}" data-id="{{reply.id}}">حذف</a>
+                <div class="w3-margin"></div>
+                <p class="green-text raykomfi-bold admin-action-message"></p>
+                {% endif %}
                 {% endif %}
                 {% endif %}
                 <!-- The Reply Report Modal -->
@@ -132,7 +151,8 @@
                                         <h6>حدد نوع الإبلاغ</h6>
                                         <form class="reportForm">
                                             {% csrf_token %}
-                                            <input class="w3-radio" type="radio" name="content" value="إساءة شخصية">
+                                            <input class="w3-radio" type="radio" name="content"
+                                                value="إساءة شخصية">
                                             <label class="black-text">إساءة
                                                 شخصية</label>
                                             <br>
@@ -147,7 +167,8 @@
                                             <label class="black-text">إساءة
                                                 لطائفة أو إلى
                                                 الدين</label>
-                                            <input type="hidden" name="reported_url" value="{{reply.get_noti_url}}">
+                                            <input type="hidden" name="reported_url"
+                                                value="{{reply.get_noti_url}}">
                                             <input type="hidden" name="topic" value="reply">
                                             <br>
                                             <button type="submit"
@@ -171,7 +192,8 @@
         <div class="reply">
             <form class="replyForm" data-comment-id="{{comment.id}}">
                 {% csrf_token %}
-                <textarea name="reply_content" cols="40" rows="1" class="w3-input w3-border   reply-textarea"
+                <textarea name="reply_content" cols="40" rows="1"
+                    class="w3-input w3-border  reply-textarea textarea-with-preservations"
                     id="id_reply_content-{{comment.id}}"></textarea>
                 <div class="col s12">
                     <button class='w3-button z-depth-1' type="submit"> اضافة رد</button>
@@ -182,7 +204,8 @@
     </div>
     <div class="w3-col s2 m1 l1 w3-center vote-side" id="comment-{{comment.id}}-vote-side-wrapper">
         <div>
-            <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}} data-vote-type="like">
+            <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}}
+                data-vote-type="like">
                 {% csrf_token %}
                 <button type="submit" {% if user in comment.voted_like.all %} disabled {% endif %}
                     class="like-button"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
@@ -190,8 +213,8 @@
         </div>
         <div>{{comment.votes}}</div>
         <div>
-            <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}} data-vote-type="dislike">
-                {% csrf_token %}
+            <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}}
+                data-vote-type="dislike">
                 <button type="submit" {% if user in comment.voted_dislike.all %} disabled {% endif %}
                     class="dislike-button"><i class="fa fa-thumbs-down" aria-hidden="true"></i></button>
             </form>
