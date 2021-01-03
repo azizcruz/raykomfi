@@ -172,6 +172,7 @@ class Post(models.Model, HitCountMixin):
                     # data = { "long_url": f"{self.get_twitter_url()}", "domain": "bit.ly", "group_guid": "BkcriP1cZcS" }
 
                     # response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, data=json.dumps(data))
+                    
                     t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
                     t.statuses.update(status=f'{self.title} \n \n ☟ سجل في المنصة لتشارك رأيك مع المستفسر  ☟  \n {self.get_twitter_url()} ', media_ids="")
                     token = os.getenv('fb_token')
