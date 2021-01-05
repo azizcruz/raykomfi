@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import User, Post, Message, Reply, Comment, Category, NoRegistrationCode, ImportantAdminMessages
+from api.models import BestUserListTrack
 from admin_auto_filters.filters import AutocompleteFilter
 
 
@@ -46,6 +47,12 @@ class CommentAdmin(admin.ModelAdmin):
     search_fields = ['content']
     list_filter = ("isActive", "created", UserFilter)
 
+class BestUserListTrackAdmin(admin.ModelAdmin):
+    list_display = ('created', 'content')
+    search_fields = ['content']
+    list_filter = ("created",)
+
+
 class AdminMessages(admin.ModelAdmin):
     list_display = ('message', 'show')
 
@@ -60,3 +67,5 @@ admin.site.register(Comment, CommentAdmin)
 admin.site.register(Category)
 admin.site.register(NoRegistrationCode, NoRegistrationCodeAdmin)
 admin.site.register(ImportantAdminMessages, AdminMessages)
+admin.site.register(BestUserListTrack, BestUserListTrackAdmin)
+

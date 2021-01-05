@@ -372,7 +372,6 @@ $(document).on("submit", "form.commentsSearchForm", function (e) {
         message_view.html(view_html);
         $(document).ready(() => {
           let view_html = response.data.view;
-          console.log(view_html);
           let post_wrapper = document.getElementById("user-comments");
           $("#lazyLoadLink").css("display", "none");
           loading.css("display", "none");
@@ -431,8 +430,6 @@ $(document).on("submit", "form.reportForm", function (e) {
     reported_url: data[2].value,
     topic: data[3].value,
   };
-
-  console.log(data);
   if (content) {
     axios({
       method: "POST",

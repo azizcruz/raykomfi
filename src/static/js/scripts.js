@@ -156,7 +156,7 @@ setInterval(function() {
         sessionStorage.setItem("continent", data.data.time_zone.split("/")[0]);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err.status);
       });
   }
 }, 3000)

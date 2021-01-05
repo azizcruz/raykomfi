@@ -27,7 +27,7 @@
         fixTime();
       },
       error: function (xhr, status, error) {
-        console.log(error);
+        console.error(status);
       },
     });
   });

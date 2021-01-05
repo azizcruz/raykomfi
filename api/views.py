@@ -27,6 +27,8 @@ from notifications.signals import notify
 from django.middleware.csrf import get_token
 from raykomfi.background_tasks import send_notify
 from notifications.models import Notification
+from .models import BestUserListTrack
+import json
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -146,17 +148,18 @@ class BestUsers(APIView):
     @method_decorator(ratelimit(key='ip', rate='30/m', block=True))
     def get(self, request, format=None):
         today_date = timezone.now()
-        current_best_users = cache.get('best_users')
-        if current_best_users and current_best_users['last_time_checked'] + datetime.timedelta(days=30) > today_date:
+        current_best_users = BestUserListTrack.objects.all().first()
+        if current_best_users:
+            current_best_users = json.loads(current_best_users.content)
             return Response(current_best_users['best_users'])
         else:
-            if datetime.datetime.today().day == 5:
+            if not current_best_users or datetime.datetime.today().day == 5 and current_best_users.created + datetime.timedelta(days=30) < today_date:
                 best_users = User.objects.filter(
                     my_comments__created__lte=timezone.now()-datetime.timedelta(days=1),
                     my_comments__created__gt=timezone.now()-datetime.timedelta(days=30),
                     ).annotate(Sum('my_comments__votes')).order_by('-my_comments__votes__sum')[:10]
 
-                users_list = {'best_users': [], 'last_time_checked': today_date}
+                users_list = {'best_users': [], 'last_time_checked': f"{today_date.day}-{today_date.month}-{today_date.year}"}
                 obj = {}
                 for rank, user in enumerate(best_users):
                     if user.last_time_best_user == None or user.my_comments__votes__sum > 0.0:
@@ -175,10 +178,9 @@ class BestUsers(APIView):
                         obj['username'] = user.username
                         obj['id'] = user.id
                         obj['my_comments__votes__sum'] = user.my_comments__votes__sum
-                        obj['last_time_best_user'] = user.last_time_best_user
                         users_list['best_users'].append(obj)
                         obj = {}
-                cache.set('best_users', users_list)
+                BestUserListTrack.objects.create(content=json.dumps(users_list))
                 return Response(users_list['best_users'])
             else:
                 return Response({'last_time_checked': '', 'best_users': []})

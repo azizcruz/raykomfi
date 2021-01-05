@@ -27,7 +27,6 @@ if (bestUserWrapper) {
       } else {
         displayHtml = `<p class="center">لم يتم إختيار الأعضاء بعد </p>`;
       }
-
       whereToDisplayResponse.html(displayHtml);
       bestUserLoading.css("display", "none");
     })
