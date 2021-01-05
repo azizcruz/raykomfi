@@ -154,6 +154,8 @@ class BestUsers(APIView):
             return Response(current_best_users['best_users'])
         else:
             if not current_best_users or datetime.datetime.today().day == 5 and current_best_users.created + datetime.timedelta(days=30) < today_date:
+                anonymousUser = User.objects.filter(email='anonymous@anonymous.com').first()
+                comment = Comment.objects.all().last() 
                 best_users = User.objects.filter(
                     my_comments__created__lte=timezone.now()-datetime.timedelta(days=1),
                     my_comments__created__gt=timezone.now()-datetime.timedelta(days=30),
@@ -162,6 +164,7 @@ class BestUsers(APIView):
                 users_list = {'best_users': [], 'last_time_checked': f"{today_date.day}-{today_date.month}-{today_date.year}"}
                 obj = {}
                 for rank, user in enumerate(best_users):
+                    notify.send(anonymousUser, recipient=user , action_object=comment,  description='/', target=comment, verb='best_user')
                     if user.last_time_best_user == None or user.my_comments__votes__sum > 0.0:
                         if rank + 1 in [1, 2]:
                             if user.last_time_best_user == None or ((user.user_trust != 6.0 and user.user_trust > -1.0) and (user.last_time_best_user + datetime.timedelta(days=30) > today_date)):

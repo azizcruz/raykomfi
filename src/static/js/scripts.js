@@ -2,9 +2,9 @@
 // axios.defaults.baseURL = "http://localhost:8000";
 
 // Accept cookies without third party
-$('.without-third-party').on('click', function() {
-  Cookies.set('googleanalytics', false)
-})
+$(".without-third-party").on("click", function () {
+  Cookies.set("googleanalytics", false);
+});
 
 // Open and close the sidebar on medium and small screens
 function w3_open() {
@@ -134,7 +134,7 @@ $(".lazy-img").Lazy({
 });
 
 // Get country
-setInterval(function() {
+setInterval(function () {
   if (
     !sessionStorage.getItem("country") &&
     !sessionStorage.getItem("continent")
@@ -159,21 +159,20 @@ setInterval(function() {
         console.error(err.status);
       });
   }
-}, 3000)
+}, 3000);
 
 var countryInput = $("#id_country");
 var continentInput = $("#id_continent");
 var registerForm = $("#raykomfi-register-form");
 var signinForm = $("#signin-form");
 var registerWithNoSignUpForm = $("#register-with-no-sign-up-form");
-function createCookie(name,value,days) {
+function createCookie(name, value, days) {
   if (days) {
-      var date = new Date();
-      date.setTime(date.getTime()+(days*24*60*60*1000));
-      var expires = "; expires="+date.toGMTString();
-  }
-  else var expires = "";
-  document.cookie = name+"="+value+expires+"; path=/";
+    var date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    var expires = "; expires=" + date.toGMTString();
+  } else var expires = "";
+  document.cookie = name + "=" + value + expires + "; path=/";
 }
 function eraseCookie(name) {
   createCookie(name, "", -1);
@@ -201,7 +200,10 @@ if (countryInput && continentInput) {
     );
   }
 
-  if (registerWithNoSignUpForm[0] && sessionStorage.getItem("continent") == "Europe") {
+  if (
+    registerWithNoSignUpForm[0] &&
+    sessionStorage.getItem("continent") == "Europe"
+  ) {
     var len = registerWithNoSignUpForm[0].length;
     for (var i = 0; i < len; ++i) {
       registerWithNoSignUpForm[0][i].readOnly = true;
@@ -211,16 +213,14 @@ if (countryInput && continentInput) {
     );
   }
 
-  if (sessionStorage.getItem("continent") == "Europe") { 
+  if (sessionStorage.getItem("continent") == "Europe") {
     var cookies = document.cookie.split(";");
     for (var i = 0; i < cookies.length; i++)
-    if(cookies[i].split("=")[0].trim() !== 'csrftoken') {
-      eraseCookie(cookies[i].split("=")[0]);
-    }
+      if (cookies[i].split("=")[0].trim() !== "csrftoken") {
+        eraseCookie(cookies[i].split("=")[0]);
+      }
   }
 }
-
-
 
 // notifications feeds
 function fill_notification_badge_override(data) {
@@ -246,14 +246,14 @@ function fill_notification_list_override(data) {
               item.description
             }'>لديك رأي جديد على إستفسارك ${item.target} من ${
               item.actor
-            }<div>${moment(item.timestamp).fromNow()}</div></a>`;
+            }<div class='w3-tiny w3-margin-top'>${moment(item.timestamp).fromNow()}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
           }
 
           if (item.verb === "reply") {
             var message = `<a href='${
               item.description
-            }'>لديك رد جديد على رأيك من ${item.actor}<div>${moment(
+            }'>لديك رد جديد على رأيك من ${item.actor}<div class='w3-tiny'>${moment(
               item.timestamp
             )
               .locale("ar-dz")
@@ -264,7 +264,7 @@ function fill_notification_list_override(data) {
           if (item.verb === "message") {
             var message = `<a href='${item.description}'>لديك رسالة جديدة من ${
               item.actor
-            }<div>${moment(item.timestamp)
+            }<div class='w3-tiny w3-margin-top'>${moment(item.timestamp)
               .locale("ar-dz")
               .fromNow()}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
@@ -273,7 +273,7 @@ function fill_notification_list_override(data) {
           if (item.verb === "report") {
             var message = `<a href='${
               item.description
-            }'>لديك بلاغ جديد<div>${moment(item.timestamp)
+            }'>لديك بلاغ جديد<div class='w3-tiny w3-margin-top'>${moment(item.timestamp)
               .locale("ar-dz")
               .fromNow()}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
@@ -282,7 +282,15 @@ function fill_notification_list_override(data) {
           if (item.verb === "post_accepted") {
             var message = `<a href='${item.description}'>تم قبول إستفسارك ${
               item.target
-            }<div>${moment(item.timestamp)
+            }<div class='w3-tiny w3-margin-top'>${moment(item.timestamp)
+              .locale("ar-dz")
+              .fromNow()}</div></a>`;
+            return "<li class='w3-display-container'>" + message + "</li>";
+          }
+
+          if (item.verb === "best_user") {
+            var message = `<a href='${item.description}'> <i class="fa fa-star raykomfi-gold" aria-hidden="true"></i> مبروك لقد دخلت ترتيب أعضاء الشهر الماضي <i class="fa fa-star raykomfi-gold" aria-hidden="true"></i>
+            <div class='w3-tiny w3-margin-top'>${moment(item.timestamp)
               .locale("ar-dz")
               .fromNow()}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
@@ -358,30 +366,38 @@ fixTime();
 // Force Raykomfi in the beginning
 var postCreateTitle = $("#create-post-form #id_title");
 var postEditTitle = $("#edit-post-form #id_title");
-var postCreateNoRegistrationTitle = $('#create-post-with-no-registration-form #id_title')
+var postCreateNoRegistrationTitle = $(
+  "#create-post-with-no-registration-form #id_title"
+);
 
-
-if (postCreateTitle.length > 0 || postEditTitle.length > 0 || postCreateNoRegistrationTitle.length > 0) {
+if (
+  postCreateTitle.length > 0 ||
+  postEditTitle.length > 0 ||
+  postCreateNoRegistrationTitle.length > 0
+) {
   var postTitle = postCreateTitle.length > 0 ? postCreateTitle : false;
-  if(postTitle === false) {
+  if (postTitle === false) {
     postTitle = postEditTitle.length > 0 ? postEditTitle : false;
   }
-  if(postTitle === false) {
-    postTitle = postCreateNoRegistrationTitle.length > 0 ? postCreateNoRegistrationTitle : false
+  if (postTitle === false) {
+    postTitle =
+      postCreateNoRegistrationTitle.length > 0
+        ? postCreateNoRegistrationTitle
+        : false;
   }
 
-  if(postTitle !== false) {
-      postTitle.on("keydown", (e) => {
-        var currentVal = e.target.value;
-        if (currentVal.length <= 9) {
-          e.target.value = "رايكم في ";
-        }
-  
-        var count = (currentVal.match(/رايكم في/g) || []).length;
-        if (count > 1) {
-          postTitle.val("رايكم في ");
-        }
-      });
+  if (postTitle !== false) {
+    postTitle.on("keydown", (e) => {
+      var currentVal = e.target.value;
+      if (currentVal.length <= 9) {
+        e.target.value = "رايكم في ";
+      }
+
+      var count = (currentVal.match(/رايكم في/g) || []).length;
+      if (count > 1) {
+        postTitle.val("رايكم في ");
+      }
+    });
   }
 }
 
@@ -391,7 +407,7 @@ generateStars();
 // Highlight of the to div box
 if (window.location.hash) {
   var anchor = $(window.location.hash);
-  if(window.location.hash.indexOf('to') > 0) {
+  if (window.location.hash.indexOf("to") > 0) {
     $("html,body").animate({ scrollTop: anchor.offset().top - 150 }, "slow");
     setTimeout(() => {
       anchor
@@ -405,16 +421,16 @@ if (window.location.hash) {
     }, 700);
   } else {
     $("html,body").animate({ scrollTop: anchor.offset().top - 150 }, "slow");
-  setTimeout(() => {
-    anchor
-      .stop()
-      .animate({ backgroundColor: "#FFFFE0" }, 250)
-      .animate({ backgroundColor: "#FFFFFF" }, 250)
-      .animate({ backgroundColor: "#FFFFE0" }, 250)
-      .animate({ backgroundColor: "#FFFFFF" }, 250)
-      .animate({ backgroundColor: "#FFFFE0" }, 250)
-      .animate({ backgroundColor: "#FFFFFF" }, 250);
-  }, 700);
+    setTimeout(() => {
+      anchor
+        .stop()
+        .animate({ backgroundColor: "#FFFFE0" }, 250)
+        .animate({ backgroundColor: "#FFFFFF" }, 250)
+        .animate({ backgroundColor: "#FFFFE0" }, 250)
+        .animate({ backgroundColor: "#FFFFFF" }, 250)
+        .animate({ backgroundColor: "#FFFFE0" }, 250)
+        .animate({ backgroundColor: "#FFFFFF" }, 250);
+    }, 700);
   }
 }
 
@@ -469,11 +485,11 @@ $("#i-dont-want-cookies").on("click", () => {
   Cookies.set("useCookies", false, { expires: 30 });
 });
 
-var toStripLinkTags = /(<([^>]+)>)/gi
+var toStripLinkTags = /(<([^>]+)>)/gi;
 
 // Edit comment
 $(document).on("click", ".edit-comment-btn", (e) => {
-  var commentContent = e.target.dataset.content.replace(toStripLinkTags, '');
+  var commentContent = e.target.dataset.content.replace(toStripLinkTags, "");
   var commentId = e.target.dataset.commentId;
   var closestEditCommentForm = $(".edit-comment-btn")
     .parent()
@@ -499,7 +515,7 @@ $(document).on("click", ".close-comment-edit-form", (e) => {
 
 // Edit Reply
 $(document).on("click", ".edit-reply-btn", (e) => {
-  var replyContent = e.target.dataset.content.replace(toStripLinkTags, '');
+  var replyContent = e.target.dataset.content.replace(toStripLinkTags, "");
   var replyId = e.target.dataset.replyId;
   var closestEditReplyForm = $(".edit-reply-btn")
     .parent()
@@ -524,23 +540,25 @@ $(document).on("click", ".close-reply-edit-form", (e) => {
 });
 
 // Toggle comment without registration
-$('#add-comment-no-register').on('click', () => {
-  $(".commentNoRegisterForm").toggleClass('raykomfi-display-block')
-})
+$("#add-comment-no-register").on("click", () => {
+  $(".commentNoRegisterForm").toggleClass("raykomfi-display-block");
+});
 
 tinymce.init({
-  selector: '.post-content',
-  plugins: 'advlist lists link charmap preview hr anchor pagebreak',
-  toolbar_mode: 'floating',
+  selector: ".post-content",
+  plugins: "advlist lists link charmap preview hr anchor pagebreak",
+  toolbar_mode: "floating",
   max_height: 400,
-  toolbar: ["undo redo | bold italic | styleselect | alignleft aligncenter alignright alignjustify | bullist numlist link preview"],
+  toolbar: [
+    "undo redo | bold italic | styleselect | alignleft aligncenter alignright alignjustify | bullist numlist link preview",
+  ],
   autoresize: false,
   height: 500,
   min_height: 400,
   menubar: false,
-  directionality : 'rtl',
-  language: 'ar',
-  preview_styles:true
+  directionality: "rtl",
+  language: "ar",
+  preview_styles: true,
 });
 
 // // Post keywords generation
