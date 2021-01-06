@@ -289,7 +289,7 @@ function fill_notification_list_override(data) {
           }
 
           if (item.verb === "best_user") {
-            var message = `<a href='${item.description}'> <i class="fa fa-star raykomfi-gold" aria-hidden="true"></i> مبروك لقد دخلت ترتيب أعضاء الشهر الماضي <i class="fa fa-star raykomfi-gold" aria-hidden="true"></i>
+            var message = `<a href='${item.description}'> مبروك لقد دخلت ترتيب أفضل أعضاء الشهر الماضي <i class="fa fa-star raykomfi-gold" aria-hidden="true"></i>
             <div class='w3-tiny w3-margin-top'>${moment(item.timestamp)
               .locale("ar-dz")
               .fromNow()}</div></a>`;
