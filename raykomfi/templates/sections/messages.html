@@ -13,7 +13,7 @@
         {% if fetched_message.user.username == 'الإدارة' %}
         الإدارة
         {% else %}
-        <span><a href="{% url 'raykomfi:user-profile' id=fetched_message.user.id %}">{{ fetched_message.user }}</a></span>
+        <span><a href="{% url 'raykomfi:user-profile' id=fetched_message.user.id %}">{{ fetched_message.user.username }}</a></span>
         {% endif %}
         {% else %}
         <span><i class="fa fa-user" aria-hidden="true"></i> مجهول</span>
