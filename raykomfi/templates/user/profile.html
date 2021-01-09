@@ -12,7 +12,7 @@
             {% if user.online %}
             <div><i class="fa fa-circle green-text w3-medium" aria-hidden="true"></i> متصل حاليا</div>
             {% else %}
-            <div> {{ user.last_signin }} آخر ظهور</div>
+            <div> {{ user.last_login_natural }} آخر ظهور</div>
             {% endif %}
             <!-- <h4 class="w3-xlarge">رمز العضو <br> {{ user.uuid }}</h4> -->
             <h4 class="w3-xlarge">قوة آرائي<br></h4>
@@ -70,10 +70,10 @@
             {% else %}
             {% if profile.last_seen %}
             <div class="raykomfi-main-background-color w3-padding white-text raykomfi-inline-block"> آخر ظهور | <span
-                class='created-time white-text'>{{profile.last_seen | naturaltime}}</span></div>
+                class='created-time white-text'>{{profile.last_seen}}</span></div>
             {% else %}
             <div class="raykomfi-main-background-color w3-padding white-text raykomfi-inline-block"> آخر ظهور | <span
-                class='created-time white-text'>{{profile.last_login | naturaltime}}</span></div>
+                class='created-time white-text'>{{profile.last_login_natural}}</span></div>
             {% endif %}
             {% endif %}
             <!-- <h3 class="w3-xlarge">رمز العضو <br> {{ profile.uuid }}</h3> -->

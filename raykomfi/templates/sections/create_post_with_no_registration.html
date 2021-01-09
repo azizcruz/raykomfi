@@ -4,8 +4,7 @@
 
 <div class="w3-container">
     <div class="row raykomfi-main-padding  raykomfi-max-width">
-        <div class="w3-col s12 m6 l8">&nbsp;</div>
-        <div class="w3-col s12 m6 l4">
+        <div class="w3-col s12">
             <h3 class="w3-center">إستفسار جديد</h3>
             <form action="{% url 'raykomfi:post-new-withnoregistration' %}" enctype="multipart/form-data" method='post' id="create-post-with-no-registration-form">
                 {% csrf_token %}

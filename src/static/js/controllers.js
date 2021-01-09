@@ -33,7 +33,6 @@ $(document).on("submit", "form.replyForm", function (e) {
         let comment_view = $(`#comment-id-${commentId}`);
         view_html = response.data.view;
         comment_view.html(view_html);
-        fixTime();
         generateStars();
         e.target[0].value = "";
       })
@@ -73,7 +72,6 @@ $(document).on("submit", "form.closest-edit-reply-form", function (e) {
         );
         comment_wrapper.innerHTML = view_html;
         e.target[1].value = "";
-        fixTime();
         generateStars();
       })
       .catch((err) => {
@@ -113,7 +111,6 @@ $(document).on("submit", "form.commentForm", function (e) {
         post_wrapper.innerHTML = view_html;
         $("#lazyLoadLinkComments").hide();
         e.target[1].value = "";
-        fixTime();
         generateStars();
       })
       .catch((err) => {
@@ -153,7 +150,6 @@ $(document).on("submit", "form.commentNoRegisterForm", function (e) {
         post_wrapper.innerHTML = view_html;
         $("#lazyLoadLinkComments").hide();
         e.target[1].value = "";
-        fixTime();
         generateStars();
       })
       .catch((err) => {
@@ -205,7 +201,6 @@ $(document).on("submit", "form.closest-edit-comment-form", function (e) {
         comment_wrapper.innerHTML = view_html;
         // $("#lazyLoadLinkComments").hide();
         e.target[1].value = "";
-        fixTime();
         generateStars();
       })
       .catch((err) => {
@@ -289,7 +284,6 @@ $(document).on("submit", "form.getMessageForm", function (e) {
         let converter = new showdown.Converter();
         let message = document.getElementById("message-content-field");
         message.innerHTML = converter.makeHtml(message.innerHTML);
-        fixTime();
       })
       .catch((err) => {
         if (
@@ -330,7 +324,6 @@ $(document).on("submit", "form.postsSearchForm", function (e) {
         $("#lazyLoadLink").css("display", "none");
         loading.css("display", "none");
         post_wrapper.innerHTML = view_html;
-        fixTime();
       })
       .catch((err) => {
         loading.css("display", "none");
@@ -376,7 +369,6 @@ $(document).on("submit", "form.commentsSearchForm", function (e) {
           $("#lazyLoadLink").css("display", "none");
           loading.css("display", "none");
           post_wrapper.innerHTML = view_html;
-          fixTime();
           generateStars();
         });
       })

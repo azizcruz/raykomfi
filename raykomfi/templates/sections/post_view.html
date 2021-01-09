@@ -44,9 +44,14 @@
                     مجهول
                 </h6>
                 {% endif %}
+                <div class="post-info">
+                    <div><i class="fa fa-clock-o" aria-hidden="true"></i> <span class="created-time"> <span>تاريخ النشر
+                            </span>{{post.created|naturalday}}</span> &nbsp;&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true"></i> <span class="created-time"> <span>آخر تعديل
+                            </span>{{post.updated|naturalday}}</span></div>
+                </div>
             </div>
             <div class="w3-mobile">
-                <h1 class="raykomfi-bold raykomfi-main-color">{{post.title}}</h1>
+                <h1 class="raykomfi-bold raykomfi-main-color post-title">{{post.title}}</h1>
                 {% if post.content %}
                 <p>{{post.content|safe}}</p>
                 {% endif %}
@@ -75,11 +80,6 @@
             </div>
             <br>
             <div class="">
-                <div><i class="fa fa-clock-o" aria-hidden="true"></i> <span
-                        class="created-time">{{post.created | naturaltime}}</span>
-                </div>
-                <div><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</div>
-                <div><i class="fa fa-eye"></i> {% get_hit_count for post %}</div>
                 {% if user.is_authenticated %}
                 <button class="btn red raykomfi-report-btn"
                     onclick="document.getElementById('reportPost').style.display='block'">إبلاغ</button>
@@ -162,6 +162,7 @@
                     
                 </div>
                 {% endif %} -->
+                <div class="left"><i class="fa fa-eye"></i> {% get_hit_count for post %}</div>
             </div>
         </div>
         <div>
@@ -196,8 +197,8 @@
                                 مجهول
                             </div>
                             {% endif %}
-                            <small><i class="fa fa-clock-o" aria-hidden="true"></i><span
-                                    class="created-time">{{comment.created | naturaltime}}</span>
+                            <small><i class="fa fa-clock-o" aria-hidden="true"></i> <span
+                                    class="created-time">{{comment.get_created_natural}}</span>
                             </small>
                             <div class="comment"><pre>{{ comment.content|safe }}</pre></div>
                             <form class="editCommentForm-{{comment.id}} closest-edit-comment-form"
@@ -287,7 +288,7 @@
                                 </div>
                                 {% endif %}
                                 <small><i class="fa fa-clock-o" aria-hidden="true"></i><span class="created-time">
-                                        {{reply.created | naturaltime}}</span>
+                                        {{reply.get_created_natural}}</span>
                                 </small>
                                 <div class="reply"><pre>{{ reply.content|safe }}</pre></div>
                                 <form class="editReplyForm-{{reply.id}} closest-edit-reply-form"

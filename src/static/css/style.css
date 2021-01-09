@@ -856,14 +856,25 @@ select:focus {
 
 /* Post View Style */
 .post-box {
-  padding: 24px 16px;
+  padding: 16px 16px;
   overflow-wrap: break-word;
 }
 
 .post-box h1 {
   font-size: 1.8rem;
   line-height: 2.3rem;
+  margin-top: 0;
 }
+
+.post-info {
+  margin-top: 30px;
+}
+
+.post-info > div {
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
 .comment-wrapper {
   margin-bottom: 10px;
   padding-right: 5px !important;
@@ -1699,6 +1710,10 @@ input.raykomfi-input:checked + .raykomfi-slider:before {
   .signin-signup-side {
     line-height: 69.2px;
     font-size: 12px;
+  }
+
+  .post-info > div {
+    font-size: 10px;
   }
 }
 

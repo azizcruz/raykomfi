@@ -264,53 +264,41 @@ function fill_notification_list_override(data) {
               item.description
             }'>لديك رأي جديد على إستفسارك ${item.target} من ${
               item.actor
-            }<div class='w3-tiny w3-margin-top'>${moment(item.timestamp).fromNow()}</div></a>`;
+            }<div class='w3-tiny w3-margin-top'>${item.timestamp}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
           }
 
           if (item.verb === "reply") {
             var message = `<a href='${
               item.description
-            }'>لديك رد جديد على رأيك من ${item.actor}<div class='w3-tiny'>${moment(
-              item.timestamp
-            )
-              .locale("ar-dz")
-              .fromNow()}</div></a>`;
+            }'>لديك رد جديد على رأيك من ${item.actor}<div class='w3-tiny'>${item.timestamp}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
           }
 
           if (item.verb === "message") {
             var message = `<a href='${item.description}'>لديك رسالة جديدة من ${
               item.actor
-            }<div class='w3-tiny w3-margin-top'>${moment(item.timestamp)
-              .locale("ar-dz")
-              .fromNow()}</div></a>`;
+            }<div class='w3-tiny w3-margin-top'>${item.timestamp}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
           }
 
           if (item.verb === "report") {
             var message = `<a href='${
               item.description
-            }'>لديك بلاغ جديد<div class='w3-tiny w3-margin-top'>${moment(item.timestamp)
-              .locale("ar-dz")
-              .fromNow()}</div></a>`;
+            }'>لديك بلاغ جديد<div class='w3-tiny w3-margin-top'>${item.timestamp}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
           }
 
           if (item.verb === "post_accepted") {
             var message = `<a href='${item.description}'>تم قبول إستفسارك ${
               item.target
-            }<div class='w3-tiny w3-margin-top'>${moment(item.timestamp)
-              .locale("ar-dz")
-              .fromNow()}</div></a>`;
+            }<div class='w3-tiny w3-margin-top'>${item.timestamp}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
           }
 
           if (item.verb === "best_user") {
             var message = `<a href='${item.description}'> مبروك لقد دخلت ترتيب أفضل أعضاء الشهر الماضي <i class="fa fa-star raykomfi-gold" aria-hidden="true"></i>
-            <div class='w3-tiny w3-margin-top'>${moment(item.timestamp)
-              .locale("ar-dz")
-              .fromNow()}</div></a>`;
+            <div class='w3-tiny w3-margin-top'>${item.timestamp}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
           }
         })
@@ -377,9 +365,6 @@ window.onclick = function (event) {
 $("#search-btn").on("click", () => {
   $("#search-field-wrapper").toggleClass("show-search-field");
 });
-
-// Edit created display time
-fixTime();
 
 // Force Raykomfi in the beginning
 var postCreateTitle = $("#create-post-form #id_title");

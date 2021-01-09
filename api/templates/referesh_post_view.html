@@ -22,7 +22,7 @@
                 مجهول
             </div>
             {% endif %}
-            <small><i class="fa fa-clock-o" aria-hidden="true"></i><span class="created-time">{{comment.created | naturaltime}}</span>
+            <small><i class="fa fa-clock-o" aria-hidden="true"></i> <span class="created-time">{{comment.get_created_natural}}</span>
             </small>
             <div class="comment"><pre>{{ comment.content|safe }}</pre></div>
             <form class="editCommentForm-{{comment.id}} closest-edit-comment-form"
@@ -111,7 +111,7 @@
                     مجهول
                 </div>
                 {% endif %}
-                <small><i class="fa fa-clock-o" aria-hidden="true"></i><span class="created-time">{{reply.created | naturaltime}}</span>
+                <small><i class="fa fa-clock-o" aria-hidden="true"></i> <span class="created-time">{{reply.get_created_natural}}</span>
                 </small>
                 <div class="reply"><pre>{{ reply.content|safe }}</pre></div>
                 <form class="editReplyForm-{{reply.id}} closest-edit-reply-form"

@@ -12,7 +12,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 from django.core.cache import cache 
-import datetime
+from datetime import datetime
+from datetime import timedelta
 from django.conf import settings
 from django_countries.fields import CountryField
 
@@ -30,6 +31,7 @@ import re
 from summa import keywords
 import requests
 import json
+import arrow
 utc=pytz.UTC
 
 BASE_URL = 'https://www.raykomfi.com' if os.getenv('environment') == 'prod' else 'http://localhost:8000'
@@ -45,6 +47,8 @@ def slugify(str):
     str = str.replace("؟", "")
     return str
 
+def natural_time(targeted_object):
+    return arrow.get(targeted_object).humanize(locale='ar')
 
 class User(AbstractUser):
     bio = models.TextField(blank=True, verbose_name='نبذة عن',)
@@ -76,12 +80,12 @@ class User(AbstractUser):
 
     def online(self):
         if self.last_login:
-            now = datetime.datetime.now()
+            now = datetime.now()
             last_seen = cache.get(f'seen_{self.username}')
             if not last_seen:
                 return False
 
-            if last_seen.replace(microsecond = 0).replace(tzinfo=None) > now.replace(microsecond = 0) - datetime.timedelta(seconds=38):
+            if last_seen.replace(microsecond = 0).replace(tzinfo=None) > now.replace(microsecond = 0) - timedelta(seconds=38):
                 return True
             else:
                 return False
@@ -95,6 +99,9 @@ class User(AbstractUser):
             return last_seen
         else:
             False
+
+    def last_login_natural(self):
+        return natural_time(self.last_login)
 
 class Category(models.Model):
 
@@ -155,6 +162,12 @@ class Post(models.Model, HitCountMixin):
     
     def get_twitter_url(self):
         return BASE_URL + reverse('raykomfi:post-view', args=[self.id, self.slug])
+
+    def get_created_natural(self):
+        return natural_time(self.created)
+
+    def get_updated_natural(self):
+        return natural_time(self.updated)
 
 
     def save(self, *args, **kwargs):
@@ -245,6 +258,14 @@ class Comment(models.Model):
     def get_noti_url(self):
         return reverse('raykomfi:post-view', args=[self.post.id, self.post.slug]) + f'?all_comments=true' + f'&read={self.id}' + f'#comment-id-{self.id}'
 
+    def get_created_natural(self):
+        return natural_time(self.created)
+
+    def get_updated_natural(self):
+        return natural_time(self.updated)
+
+
+
 
 
 class Reply(models.Model):
@@ -273,6 +294,12 @@ class Reply(models.Model):
     
     def get_noti_url(self):
         return reverse('raykomfi:post-view', args=[self.comment.post.id, self.comment.post.slug])+ f'?all_comments=true' + f'&read={self.id}' + f'#to-{self.id}'
+    
+    def get_created_natural(self):
+        return natural_time(self.created)
+
+    def get_updated_natural(self):
+        return natural_time(self.updated)
 
 
 class Message(models.Model):
@@ -302,6 +329,12 @@ class Message(models.Model):
 
     def __str__(self):
         return self.content
+    
+    def get_created_natural(self):
+        return natural_time(self.created)
+
+    def get_updated_natural(self):
+        return natural_time(self.updated)
 
     
 class Report(models.Model):
