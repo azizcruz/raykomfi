@@ -148,6 +148,7 @@
     <link rel="stylesheet" href="{% static 'css/w3-theme-teal.css'  %}">
     <link rel="stylesheet" href="{% static 'css/custom_materialize.css'  %}">
     <link rel="stylesheet" href="{% static 'css/cookiebar.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css'  %}">
     {% endcompress %}
     <noscript>
@@ -209,25 +210,18 @@
             </div>
         </div>
     </div>
-    <nav class="w3-sidebar w3-bar-block w3-collapse w3-card" id="mySidebar">
-        <div class="w3-hide-small">
-            <a href="/"><img src="{% static 'img/logo.png' %}" class="logo" alt="شعار رايكم في"></a>
-        </div>
+    <nav class="w3-sidebar w3-bar-block w3-animate-right w3-card" id="mySidebar">
+        <a class="w3-bar-item w3-medium" href="javascript:void(0)" onclick="w3_close()"><i class="fa fa-remove"></i></a>
         
             <input type="hidden" name="" id="csrf_token" value="{{ csrf_token }}">
-            {% if user.is_authenticated %}
-            <h4 class="w3-center">مرحبا {{user.username}}</h4>
-            {% endif %}
             {% with request.resolver_match.url_name as url_name %}
-            <a class="w3-bar-item w3-button {% if url_name == 'raykomfi-home' %}active-page-sidenav{% endif %}"
-                href="{% url 'raykomfi:raykomfi-home' %}">الرئيسية &nbsp;<i class="fa fa-home"
-                    aria-hidden="true"></i></a>
+            
             {% if user.is_authenticated %}
             <hr>
             <div>
-                <a class="w3-bar-item w3-button {% if url_name == 'user-profile' %}active-page-sidenav{% endif %}"
+                <a class="w3-bar-item "
                     href="{% url 'raykomfi:user-profile' id=user.id %}">الصفحة
-                    الشخصية&nbsp;<i class="fa fa-user-circle" aria-hidden="true"></i></a>
+                    الشخصية</a>
                 <a class="w3-bar-item w3-button {% if url_name == 'posts-get' %}active-page-sidenav{% endif %}"
                     href="{% url 'raykomfi:posts-get' user_id=user.id %}">إستفساراتي&nbsp;<i
                         class="fa fa-question-circle" aria-hidden="true"></i>
@@ -249,13 +243,13 @@
 
             </div>
             {% else %}
-            <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-register' %}">حساب جديد &nbsp;<i
-                    class="fa fa-user-plus" aria-hidden="true"></i></a>
-            <a class="w3-bar-item w3-button" href="{% url 'raykomfi:user-signin' %}">تسجيل دخول &nbsp;<i
-                    class="fa fa-sign-in" aria-hidden="true"></i></a>
+            <a class="w3-bar-item w3-right-align"
+                    href="{% url 'raykomfi:raykomfi-home' %}">الصفحة
+                    الرئيسية</a>
+            <a class="w3-bar-item w3-right-align" href="{% url 'raykomfi:user-register' %}">إضافة إستفسار</a>
+            <a class="w3-bar-item w3-right-align" href="{% url 'raykomfi:user-signin' %}">تسجيل دخول </a>
             <a class="w3-bar-item w3-button green white-text no-register-button"
-                href="{% url 'raykomfi:user-register-withnosignup' %}">طلب رمز المشاركة &nbsp;<i class="fa fa-bolt"
-                    aria-hidden="true"></i></a>
+                href="{% url 'raykomfi:user-register-withnosignup' %}">طلب رمز المشاركة </a>
 
             {% endif %}
             {% endwith %}
@@ -291,21 +285,27 @@
                 <div class="center w3-small">جميع الحقوق محفوظة لصاحب المنصة</div>
             </div>
     </nav>
+    <div class="w3-main raykomfi-main" id="main">
 
-    <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" id="myOverlay">
-    </div>
-
-    <div class="w3-main raykomfi-main">
-
-        <div id="myTop" class="w3-container w3-top w3-theme raykomfi-theme w3-large w3-row">
-            <i class="fa fa-bars w3-button w3-teal raykomfi-theme w3-hide-large w3-xxlarge remove-button-hover"
-                onclick="w3_open()"></i>
-            <a href="/"><i
-                    class="fa fa-home w3-button w3-teal white-text raykomfi-theme w3-hide-large w3-xxlarge remove-button-hover"></i></a>
-            {% if user.is_authenticated == False %}
-            <a href="{% url 'raykomfi:user-register' %}"><i
-                    class="fa fa-user-plus w3-button w3-teal white-text raykomfi-theme w3-hide-large w3-xxlarge remove-button-hover"></i></a>
-            {% endif %}
+        <div id="myTop" class="w3-container w3-top white w3-border-bottom">
+            <div class="raykomfi-max-width raykomfi-navbar">
+                    <div class="w3-col s4 m4 l2">
+                        <div class="signin-signup-side left">
+                            {% if user.is_authenticated %}
+                            مرحبا <a href="">{{user.username}}</a>
+                            {% else %}
+                            <a href="{% url 'raykomfi:user-register' %}">تسجيل</a>
+                            |
+                            <a href="{% url 'raykomfi:user-signin' %}">دخول</a>
+                            {% endif %} 
+                        </div>
+                    </div>
+                    <div class="w3-col s8 m8 l10">
+                        <i class="fa fa-bars w3-button w3-xxlarge remove-button-hover raykomfi-burger-menu" id="sidenav-toggle"></i>
+                    <a href="/"><img src="{% static 'img/logo.png' %}" class="logo" alt="شعار رايكم في"></a>
+                    <span class="raykomfi-motto">أن تكون مطمئن!</span>
+                    </div>
+            </div>
         </div>
 
         <header class="w3-container w3-theme raykomfi-theme w3-hide-small w3-hide-medium w3-hide">
@@ -336,8 +336,6 @@
             {% endif %}
             {% block content %}{% endblock %}
         </div>
-
-
         <div class="cookie-message">
             <div class="center">
                 عندما يقوم شخص ما بزيارة منصتنا على الويب, نستخدم ملفات تعريف الارتباط على الويب و خدمة طرف ثالث لتحسين
@@ -350,10 +348,17 @@
             <div class="cookie-close-button center">أتفهم ذلك</div>
             <!-- <div class="cookie-close-button center without-third-party">أتفهم ذلك, لكن بدون خدمة طرف ثالث</div> -->
         </div>
+        <footer class="w3-container w3-theme raykomfi-footer-style raykomfi-main-background-color">
+            <div class="raykomfi-max-width">
+                <p>Footer information goes here</p>
+            </div>
+        </footer>
     </div>
+    
     <script src="https://cdn.tiny.cloud/1/s7koavq5smn9hdo8whw4qckuqbtazojqhhrnex25s35iyu75/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     {% compress js %}
     <script src="{% static 'js/jquery.min.3.1.1.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
     <script src="{% static 'js/parsley.min.js' %}"></script>
     <script src="{% static 'js/replacePlainLinks.js' %}"></script>
     <script src="{% static 'js/axios.min.js' %}"></script>

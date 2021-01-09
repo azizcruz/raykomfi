@@ -6,16 +6,34 @@ $(".without-third-party").on("click", function () {
   Cookies.set("googleanalytics", false);
 });
 
-// Open and close the sidebar on medium and small screens
-function w3_open() {
-  document.getElementById("mySidebar").style.display = "block";
-  document.getElementById("myOverlay").style.display = "block";
+// // Open and close the sidebar on medium and small screens
+// function w3_open() {
+//   document.getElementById("mySidebar").style.display = "block";
+//   document.getElementById("myOverlay").style.display = "block";
+//   if(window.innerWidth > 992) {
+    
+//    }
+// }
+var sideBar = $('#mySidebar')
+function w3_close() {
+  sideBar.hide("slide", {direction: "right"}, 400);
+  sideBar.removeClass('showSideBar')
+  if(window.innerWidth > 992) {
+    
+  }
 }
 
-function w3_close() {
-  document.getElementById("mySidebar").style.display = "none";
-  document.getElementById("myOverlay").style.display = "none";
-}
+// Burger menu button toggle
+$('#sidenav-toggle').on('click', function() {
+  var sideBar = $('#mySidebar')
+  if(sideBar.hasClass('showSideBar')) {
+    sideBar.hide("slide", {direction: "right"}, 400);
+    sideBar.removeClass('showSideBar')
+  } else {
+    sideBar.show()
+    sideBar.addClass('showSideBar')
+  }
+})
 
 // Change style of top container on scroll
 window.onscroll = function () {

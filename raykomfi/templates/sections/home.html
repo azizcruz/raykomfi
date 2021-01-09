@@ -9,7 +9,6 @@
 
 
 <div class="w3-row-padding">
-    <div class="w3-col l1 w3-hide-small">&nbsp</div>
     <div class="w3-col s12 m4 l4 w3-hide-small">
         <div class="w3-padding w3-white z-depth-1 latest-opinions">
             <h4 class="w3-center">آخر الآراء</h4>
@@ -31,10 +30,7 @@
             {% endfor %}
         </div>
     </div>
-    <div class="w3-col s12 m8 l6 ray ">
-        <div class="w3-row center w3-hide-large w3-hide-medium ">
-            <a href="/"><img src="{% static 'img/logo.png' %}" class="logo logo-mobile" alt="شعار رايكم في"></a>
-        </div>
+    <div class="w3-col s12 m8 l8 ray">
         <div class="w3-row">
             <div class="w3-bar w3-white  ray-order z-depth-1">
                 <div class="w3-bar-item  w3-right"> <a href="{% url 'raykomfi:latest-posts' %}"
@@ -118,30 +114,10 @@
             </ul>
         </div>
         {% endif %}
-        {% if not user.is_authenticated %}
-        <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper register-message">
-            <div class="w3-center w3-padding"><a href="{% url 'raykomfi:user-register' %}" class="w3-text-blue">سجل حساب جديد</a> أو
-                <a href="{% url 'raykomfi:user-signin' %}" class="w3-text-blue">سجل الدخول</a> لإستفسار الناس عن ما تريد
-                </div>
-        </div>
-        <div class="w3-display-container w3-panel center">
-            <p class="w3-center btn green"><a href="{% url 'raykomfi:post-new-withnoregistration' %}" class="white-text"> إستفسار بدون تسجيل </a> </p>
-        </div>
-        {% else %}
-        {% if user.email_active %}
-
-        <div class="new-post-side">
-            <a href="{% url 'raykomfi:post-new' %}" title="اضافة إستفسار جديد">
-                <button class="w3-button w3-center z-depth-2"><i class="fa fa-plus" aria-hidden="true"></i>
-                </button>
-            </a>
-        </div>
-
-        {% else %}
+        {% if user.is_authenticated and not user.email_active %}
         <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
             <p class="w3-center">فعل حسابك للإستفسار الناس عن ما تريد</p>
         </div>
-        {% endif %}
         {% endif %}
         {% if url_name == 'categorized_view' %}
         <div class="categorized-text">التصنيف {{ category }}</div>
@@ -251,7 +227,6 @@
             {% endfor %}
         </div>
     </div>
-    <div class="w3-col l1 w3-hide-small w3-hide-medium">&nbsp</div>
 </div>
 
 {% endblock content %}

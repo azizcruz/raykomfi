@@ -5,34 +5,6 @@
 * Browsers: last 4 version
 */
 
-/*
-* Prefixed by https://autoprefixer.github.io
-* PostCSS: v7.0.29,
-* Autoprefixer: v9.7.6
-* Browsers: last 4 version
-*/
-
-/*
-* Prefixed by https://autoprefixer.github.io
-* PostCSS: v7.0.29,
-* Autoprefixer: v9.7.6
-* Browsers: last 4 version
-*/
-
-/*
-* Prefixed by https://autoprefixer.github.io
-* PostCSS: v7.0.29,
-* Autoprefixer: v9.7.6
-* Browsers: last 4 version
-*/
-
-/*
-* Prefixed by https://autoprefixer.github.io
-* PostCSS: v7.0.29,
-* Autoprefixer: v9.7.6
-* Browsers: last 4 version
-*/
-
 /* Main Style */
 html {
   font-size: 16px;
@@ -66,7 +38,7 @@ pre {
 }
 
 .manager-message {
-  max-width: 1200px;
+  max-width: 1440px;
   font-size: 12px;
   font-weight: 700;
 }
@@ -201,15 +173,23 @@ h4 {
 }
 
 .logo {
-  width: 100%;
+  width: 120px;
   height: auto;
-  background-color: #aaa;
+  display: inline;
 }
 
 .logo-mobile {
   background-color: #f2f2f2;
   margin-top: 20px;
   width: 70%;
+}
+
+.signin-signup-side {
+  line-height: 100px;
+}
+
+.center-nav-links {
+  line-height: 100px;
 }
 
 .raykomfi-margin-small {
@@ -268,7 +248,6 @@ h4 {
 
 .latest-opinions {
   overflow-wrap: break-word;
-  max-width: 500px;
 }
 
 .cookie-message > .center {
@@ -351,6 +330,10 @@ h4 {
   color: #fff !important;
 }
 
+#mySidebar {
+  top: 70px;
+}
+
 .clear-fix {
   clear: both;
 }
@@ -361,6 +344,10 @@ h4 {
 
 textarea {
   resize: none;
+}
+
+#main {
+  transition: margin 0.2s ease-in-out;
 }
 
 .raykomfi-color {
@@ -398,17 +385,32 @@ textarea {
 
 nav {
   z-index: 3 !important;
-  width: 250px !important;
+  width: 320px !important;
   overflow-wrap: break-word;
-  top: 0;
+}
+
+.raykomfi-navbar {
+  padding: 0 17px;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: none;
 }
 
 .raykomfi-logo {
   width: 80% !important;
-}
-
-.raykomfi-main {
-  margin-right: 250px;
 }
 
 header {
@@ -416,7 +418,21 @@ header {
 }
 
 .raykomfi-content {
-  padding: 32px !important;
+  max-width: 1440px;
+  margin: 100px auto;
+}
+
+.raykomfi-max-width {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.raykomfi-burger-menu {
+  padding: 32px 0;
+}
+
+.raykomfi-burger-menu:hover {
+  color: #484848 !important;
 }
 
 footer {
@@ -1222,6 +1238,13 @@ input ~ .parsley-errors-list.filled {
 
 /* Messages Style */
 
+/* Footer Style */
+
+.raykomfi-footer-style {
+  display: block;
+}
+/* Footer Style */
+
 /* Spinner Style */
 
 .sk-cube-grid {
@@ -1583,9 +1606,6 @@ input.raykomfi-input:checked + .raykomfi-slider:before {
   .modal-content {
     width: 100%;
   }
-  .raykomfi-content {
-    padding: 32px 0 !important;
-  }
 }
 
 @media only screen and (max-width: 992px) {
@@ -1616,16 +1636,46 @@ input.raykomfi-input:checked + .raykomfi-slider:before {
   }
 }
 
-@media only screen and (max-width: 600px) {
-  .ray-order {
-    margin-top: 20px;
-    padding: 10px;
+@media only screen and (max-width: 992px) {
+  .logo {
+    width: 70px;
+    height: auto;
+    display: inline;
+  }
+  .raykomfi-burger-menu {
+    padding: 16px 0;
+  }
+  .raykomfi-motto {
+    font-size: 14px;
+  }
+  .signin-signup-side {
+    line-height: 69.2px;
+    font-size: 14px;
   }
 }
 
-@media only screen and (max-width: 1024px) {
-  .raykomfi-content {
-    padding: 39px 0 !important;
+@media only screen and (min-width: 992px) {
+}
+
+@media only screen and (min-width: 421px) {
+  #posts-wrapper .comment-reply-side {
+    padding-left: 0 !important;
+  }
+
+  .logo {
+    width: 60px;
+    height: auto;
+    display: inline;
+  }
+  .raykomfi-burger-menu {
+    padding: 16px 0;
+  }
+  .raykomfi-motto {
+    font-size: 12px;
+  }
+  .signin-signup-side {
+    line-height: 69.2px;
+    font-size: 14px;
   }
 }
 
@@ -1634,10 +1684,48 @@ input.raykomfi-input:checked + .raykomfi-slider:before {
   #posts-wrapper .comment-reply-side {
     padding-left: 0 !important;
   }
+
+  .logo {
+    width: 50px;
+    height: auto;
+    display: inline;
+  }
+  .raykomfi-burger-menu {
+    padding: 16px 0;
+  }
+  .raykomfi-motto {
+    font-size: 9px;
+  }
+  .signin-signup-side {
+    line-height: 69.2px;
+    font-size: 12px;
+  }
+}
+
+@media only screen and (min-width: 600) and (max-width: 2050px) {
+  nav {
+    width: 250px !important
+  }
+}
+
+@media only screen and (max-width: 1470px) {
+  .raykomfi-navbar {
+    padding: 0
+  }
 }
 
 @media only screen and (max-width: 350px) {
   .ray-box-footer-icons {
     font-size: 13px;
+  }
+}
+
+@media only screen and (max-width: 319px) {
+  .raykomfi-motto {
+    font-size: 5px;
+  }
+  .signin-signup-side {
+    line-height: 69.2px;
+    font-size: 9px;
   }
 }
