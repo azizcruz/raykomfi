@@ -339,6 +339,36 @@ $(document).on("submit", "form.postsSearchForm", function (e) {
       });
   } else {
     loading.css("display", "none");
+    axios({
+      method: "POST",
+      url: "/api/posts/search",
+      headers: {
+        "X-CSRFTOKEN": Cookies.get("csrftoken"),
+        "Content-Type": "application/json",
+      },
+      data: {
+        searchField: '',
+      },
+    })
+      .then((response) => {
+        let view_html = response.data.view;
+        let post_wrapper = document.getElementById("raykomfi-posts");
+        $("#lazyLoadLink").css("display", "none");
+        loading.css("display", "none");
+        post_wrapper.innerHTML = view_html;
+      })
+      .catch((err) => {
+        loading.css("display", "none");
+        if (
+          err.response.status === 403 &&
+          err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+        ) {
+          custom_alert(
+            "محاولات متكررة, يرجى المحاولة لاحقا",
+            "<i class='fa fa-warning'></i>"
+          );
+        }
+      });
   }
 });
 
@@ -366,7 +396,7 @@ $(document).on("submit", "form.commentsSearchForm", function (e) {
         $(document).ready(() => {
           let view_html = response.data.view;
           let post_wrapper = document.getElementById("user-comments");
-          $("#lazyLoadLink").css("display", "none");
+          $("#lazyLoadLinkComments").css("display", "none");
           loading.css("display", "none");
           post_wrapper.innerHTML = view_html;
           generateStars();
@@ -385,6 +415,40 @@ $(document).on("submit", "form.commentsSearchForm", function (e) {
       });
   } else {
     loading.css("display", "none");
+    axios({
+      method: "POST",
+      url: "/api/comments/search",
+      headers: {
+        "X-CSRFTOKEN": Cookies.get("csrftoken"),
+        "Content-Type": "application/json",
+      },
+      data: {
+        searchField: '',
+      },
+    })
+      .then((response) => {
+        view_html = response.data.view;
+        message_view.html(view_html);
+        $(document).ready(() => {
+          let view_html = response.data.view;
+          let post_wrapper = document.getElementById("user-comments");
+          $("#lazyLoadLinkComments").css("display", "none");
+          loading.css("display", "none");
+          post_wrapper.innerHTML = view_html;
+          generateStars();
+        });
+      })
+      .catch((err) => {
+        if (
+          err.response.status === 403 &&
+          err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+        ) {
+          custom_alert(
+            "محاولات متكررة, يرجى المحاولة لاحقا",
+            "<i class='fa fa-warning'></i>"
+          );
+        }
+      });
   }
 });
 

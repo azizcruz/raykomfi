@@ -366,6 +366,11 @@ $("#search-btn").on("click", () => {
   $("#search-field-wrapper").toggleClass("show-search-field");
 });
 
+// User area dropdown
+$('.dropbtn-user-area').on('click', function() {
+  $('#loggedin-user-area-dropdown').toggleClass('raykomfi-show')
+})
+
 // Force Raykomfi in the beginning
 var postCreateTitle = $("#create-post-form #id_title");
 var postEditTitle = $("#edit-post-form #id_title");

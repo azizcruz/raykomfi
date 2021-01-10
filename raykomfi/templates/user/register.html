@@ -3,9 +3,8 @@
 {% block content %}
 
 <div class="w3-container">
-    <div class="row raykomfi-main-padding raykomfi-max-width">
-        <div class="w3-col s12 m12 l8">&nbsp;</div>
-        <div class="w3-col s12 m12 l4">
+    <div class="w3-row raykomfi-main-padding raykomfi-max-width">
+        <div class="raykomfi-form">
             <h3 class="w3-center">حساب جديد</h3>
             <p class="center"> لديك حساب من قبل؟   <a href="/user/signin/">سجل دخولك من هنا</a></p>
             <form action="{% url 'raykomfi:user-register' %}" method='post' id="raykomfi-register-form">

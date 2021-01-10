@@ -5,49 +5,18 @@
 
 <div class="w3-container">
     <div class="row raykomfi-main-padding  raykomfi-max-width">
-        <div class="w3-col s12 m12 l8">&nbsp;</div>
-        <div class="w3-col s12 m12 l4">
-            <h3 class="w3-center">طلب رمز المشاركة</h3>
+        <div class="w3-col s12">
             <div class="row">
-                <div class="col s12 m6">
-                  <div class="card white">
-                    <div class="card-content white-text">
-                      <div>يمكنك المشاركة في اللإستفسارات والآراء بسرعة بدون تسجيل عن طريق <span class="raykomfi-bold">رمز المشاركة</span> .</div>
-                      <br>
-                      <div><div class="raykomfi-bold">رمز المشاركة</div></div>
-                      <div>يتم إرسال هذا الرمز لبريدك الإلكتروني, وعن طريق هذا الرمز يمكنك المشاركة على رايكم في بدون الحاجة للتسجيل.</div>
-                      <br>
-                      <div class="raykomfi-bold">عيوب المشاركة بالرمز</div>
-                      <ol class="black-text raykomfi-list">
-                          <li>مشاركتك بالرمز تعني أنه لا يمكنك تعديل إستفساراتك و آراءك.</li>
-                          <li>لا يمكنك الحصول على إشعارات في حالة تم إضافة رأي لإستفسارك.</li>
-                          <li>آراءك لن تكون قوية مثل أعضاء رايكم في.</li>
-                          <li>توجد فرصة لخسارة أن تصبح عضو الشهر في حالة أضفت آراء وحازت على تصويتات مرتفعة.</li>
-                          <li>جميع مشاركاتك ستكون تحت إسم مجهول.</li>
-                          <li>لا يمكنك إستقبال وإرسال رسائل للإعضاء.</li>
-                      </ol>
-                    </div>
-                  </div>
+                <div class="col s12 m6 center">
+                      <i class="fa fa-question grey-text lighten-2 fa-4x"></i>
+                     <h4 class="raykomfi-bold">أضف إستفسار</h4>
+                     <p>إذا أردت وصول تنبيهات في حالة أضيفت آراء لإستفسارك يجب عليك تسجيل دخولك للمنصة أو تسجيل حساب جديد مسبقًا.</p>
+                     <a href="{% url 'raykomfi:user-signin' %}" class="btn light-blue darken-2 white-text waves-effect waves-light">تسجيل دخول</a>
+                     <a href="{% url 'raykomfi:user-register' %}" class="btn white light-blue-text waves-effect waves-light">تسجيل حساب</a>
+                     <div class="w3-margin">أو</div>
+                     <a href="{% url 'raykomfi:post-new-withnoregistration' %}" class="btn grey white-text waves-effect waves-light raykomfi-margin-0">إستفسر كمجهول</a>
                 </div>
               </div>
-            <form action="{% url 'raykomfi:user-register-withnosignup' %}" method='post' id="register-with-no-sign-up-form">
-                {% csrf_token %}
-                {% for field in form %}
-                {% if field.field.widget.input_type == 'checkbox' %}
-                <div class="w3-col">
-                {{ field }}
-                <a href="{% url 'raykomfi:usage-terms' %}" target="_blank">أوافق على سياسات و شروط المنصة</a>
-                </div>
-                {% else %}
-                {% if field.label != 'c' %}
-                    {{ field.label_tag }} <br />
-                {% endif %}
-                {{ field }}
-                {{ field.errors }}
-                {% endif %}
-                {% endfor %}
-                <button class="w3-button raykomfi-button ">تأكيد</button>
-            </form>
         </div>
     </div>
 </div>

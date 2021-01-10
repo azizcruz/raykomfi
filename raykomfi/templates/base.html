@@ -214,76 +214,6 @@
         <a class="w3-bar-item w3-medium" href="javascript:void(0)" onclick="w3_close()"><i class="fa fa-remove"></i></a>
         
             <input type="hidden" name="" id="csrf_token" value="{{ csrf_token }}">
-            {% with request.resolver_match.url_name as url_name %}
-            
-            {% if user.is_authenticated %}
-            <hr>
-            <div>
-                <a class="w3-bar-item "
-                    href="{% url 'raykomfi:user-profile' id=user.id %}">الصفحة
-                    الشخصية</a>
-                <a class="w3-bar-item w3-button {% if url_name == 'posts-get' %}active-page-sidenav{% endif %}"
-                    href="{% url 'raykomfi:posts-get' user_id=user.id %}">إستفساراتي&nbsp;<i
-                        class="fa fa-question-circle" aria-hidden="true"></i>
-                </a>
-                <a class="w3-bar-item w3-button {% if url_name == 'comments-get' %}active-page-sidenav{% endif %}"
-                    href="{% url 'raykomfi:comments-get' user_id=user.id %}">آرائي&nbsp;<i class="fa fa-comments"
-                        aria-hidden="true"></i>
-                    <a class="w3-bar-item w3-button {% if url_name == 'messages' %}active-page-sidenav{% endif %}"
-                        href="{% url 'raykomfi:messages' user_id=user.id %}">الرسائل&nbsp;
-                        {% if not_opened_messages.count > 0 %}
-                        <i class="fa fa-circle fa-align-center notification-dot" aria-hidden="true"></i>
-                        {% endif %}
-                        <i class="fa fa-envelope" aria-hidden="true"></i>
-                    </a>
-                    <hr>
-                    <a class="w3-bar-item w3-button {% if request.resolver_match.url_name == view_name %}active-page-sidenav{% endif %}"
-                        href="{% url 'raykomfi:user-signout' %}">تسجيل خروج &nbsp;<i class="fa fa-sign-out"
-                            aria-hidden="true"></i></a>
-
-            </div>
-            {% else %}
-            <a class="w3-bar-item w3-right-align"
-                    href="{% url 'raykomfi:raykomfi-home' %}">الصفحة
-                    الرئيسية</a>
-            <a class="w3-bar-item w3-right-align" href="{% url 'raykomfi:user-register' %}">إضافة إستفسار</a>
-            <a class="w3-bar-item w3-right-align" href="{% url 'raykomfi:user-signin' %}">تسجيل دخول </a>
-            <a class="w3-bar-item w3-button green white-text no-register-button"
-                href="{% url 'raykomfi:user-register-withnosignup' %}">طلب رمز المشاركة </a>
-
-            {% endif %}
-            {% endwith %}
-            <hr>
-            <div class="">
-                <div class="center w3-small"><span class="raykomfi-bold">للتواصل</span></div>
-                <div class="center w3-small"> <a href="mailto:info@raykomfi.com" class="">info@raykomfi.com</a></div>
-                <div class="center w3-small w3-margin-top"><span class="raykomfi-bold">للتبيلغ عن المشاكل في
-                        المنصة</span></div>
-                <div class="center w3-small"> <a href="mailto:support@raykomfi.com" class="">support@raykomfi.com</a>
-                </div>
-            </div>
-            <hr>
-            <div class="center">تابع آخر الإستفسارات على فيسبوك وتويتر</div>
-            <div class="raykomfi-social-media">
-                <div>
-                    <a href="https://web.facebook.com/raykomfi.original" target="_blank" title="فيسبوك رايكم في"><i
-                            class="fa fa-facebook"></i></a>
-                </div>
-                <div>
-                    <a href="https://twitter.com/raykomfi" target="_blank" title="تويتر رايكم في"><i
-                            class="fa fa-twitter"></i></a>
-                </div>
-                <!-- <div>
-                    <a href=""><i class="fa fa-instagram" title="انستغرام رايكم في"></i></a>
-                </div> -->
-            </div>
-            <hr>
-            <div class="raykomfi-rights">
-                <div class="center w3-small"><a href="{% url 'raykomfi:usage-terms' %}">سياسات و شروط إستخدام المنصة</a>
-                </div>
-                <div class="center w3-small"><a href="{% url 'raykomfi:about' %}">عن منصة رايكم في</a></div>
-                <div class="center w3-small">جميع الحقوق محفوظة لصاحب المنصة</div>
-            </div>
     </nav>
     <div class="w3-main raykomfi-main" id="main">
 
@@ -292,7 +222,33 @@
                     <div class="w3-col s4 m4 l2">
                         <div class="signin-signup-side left">
                             {% if user.is_authenticated %}
-                            مرحبا <a href="">{{user.username}}</a>
+                            <div class="loggedin-user-area">
+                                <div class="profile-image-section">
+                                    <div class="dropbtn-user-area">
+                                        <span>{{user.username}}</span>
+                                        <img src="https://via.placeholder.com/50" class="w3-circle" alt="{{user.profileImage}}">
+                                    </div>
+                                </div>
+                                <div id="loggedin-user-area-dropdown" class="loggedin-user-area-content user-area">
+                                    <a class="user-area-link" href="{% url 'raykomfi:user-profile' id=user.id %}"><span class="user-area-link-text">الإعدادات</span><i
+                                            class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                    <a class="user-area-link" href="{% url 'raykomfi:posts-get' user_id=user.id %}"><span class="user-area-link-text">إستفساراتي</span><i
+                                            class="fa fa-question-circle" aria-hidden="true"></i>
+                                    </a>
+                                    <a class="user-area-link" href="{% url 'raykomfi:comments-get' user_id=user.id %}"><span class="user-area-link-text">آرائي</span><i
+                                            class="fa fa-comments" aria-hidden="true"></i>
+                                    </a>
+                                    <a class="user-area-link" href="{% url 'raykomfi:messages' user_id=user.id %}"><span class="user-area-link-text">الرسائل</span>
+                                        {% if not_opened_messages.count > 0 %}
+                                        <i class="fa fa-circle fa-align-center notification-dot" aria-hidden="true"></i>
+                                        {% endif %}
+                                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                                    </a>
+                                    <a class="user-area-link {% if request.resolver_match.url_name == view_name %}active-page-sidenav{% endif %}"
+                                        href="{% url 'raykomfi:user-signout' %}"><span class="user-area-link-text">تسجيل خروج</span><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+                                
+                                </div>
+                            </div>
                             {% else %}
                             <a href="{% url 'raykomfi:user-register' %}">تسجيل</a>
                             |
@@ -349,12 +305,55 @@
             <!-- <div class="cookie-close-button center without-third-party">أتفهم ذلك, لكن بدون خدمة طرف ثالث</div> -->
         </div>
     </div>
-
-    <footer class="w3-container w3-theme raykomfi-footer-style raykomfi-main-background-color">
-        <div class="raykomfi-max-width">
-            <p>Footer information goes here</p>
+    
+    <div class="w3-theme raykomfi-main-background-color">
+        <footer class="raykomfi-footer-style">
+            <div class="raykomfi-max-width w3-container">
+                <div class="w3-row-padding">
+                    <div class="w3-col s12 m4">
+                        <div class="center-block">
+                            <div class="center white-text">تابع آخر الإستفسارات على فيسبوك وتويتر</div>
+                            <div class="raykomfi-social-media">
+                                <div>
+                                    <a href="https://web.facebook.com/raykomfi.original" target="_blank" title="فيسبوك رايكم في"><i
+                                            class="fa fa-facebook-square white-text fa-3x"></i></a>
+                                </div>
+                                <div>
+                                    <a href="https://twitter.com/raykomfi" target="_blank" title="تويتر رايكم في"><i
+                                            class="fa fa-twitter-square white-text fa-3x"></i></a>
+                                </div>
+                                <!-- <div>
+                                                                                            <a href=""><i class="fa fa-instagram" title="انستغرام رايكم في"></i></a>
+                                                                                        </div> -->
+                            </div>
+                            <div class="center w3-small"><span class="raykomfi-bold white-text">للتواصل</span></div>
+                            <div class="center w3-small"> <a href="mailto:info@raykomfi.com" class="white-text">info@raykomfi.com</a></div>
+                            <div class="center w3-small w3-margin-top"><span class="raykomfi-bold white-text">للتبيلغ عن المشاكل في
+                                    المنصة</span></div>
+                            <div class="center w3-small"> <a href="mailto:support@raykomfi.com" class="white-text">support@raykomfi.com</a></div>
+                        </div>
+                    </div>
+                    <div class="w3-col s12 m8">
+                        <div class="footer-logo">
+                            <a href="/"><img src="{% static 'img/logo.png' %}" class="logo" alt="شعار رايكم في"></a>
+                            <span class="raykomfi-motto white-text">أن تكون مطمئن!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <div class="under-footer w3-theme raykomfi-secondary-background-color">
+            <div class="w3-container">
+                <span class="center w3-small"><a href="{% url 'raykomfi:usage-terms' %}" class="white-text">سياسات و شروط إستخدام المنصة</a>
+                </span>
+                <span class="center w3-small"><a href="{% url 'raykomfi:about' %}" class="white-text">عن منصة رايكم في</a></span>
+                <span class="center w3-small white-text">جميع الحقوق محفوظة 2021</span>
+            </div>
         </div>
-    </footer>
+        </div>
+
+    
+    
     
     <script src="https://cdn.tiny.cloud/1/s7koavq5smn9hdo8whw4qckuqbtazojqhhrnex25s35iyu75/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     {% compress js %}

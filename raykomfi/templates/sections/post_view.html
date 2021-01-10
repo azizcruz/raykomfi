@@ -162,8 +162,8 @@
                     
                 </div>
                 {% endif %} -->
-                <div class="left"><i class="fa fa-eye"></i> {% get_hit_count for post %}</div>
             </div>
+            <div class="left"><i class="fa fa-eye"></i> {% get_hit_count for post %}</div>
         </div>
         <div>
             {% if post.creator.id == user.id  and post.isActive == False %}

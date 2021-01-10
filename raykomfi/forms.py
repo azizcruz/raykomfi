@@ -408,16 +408,14 @@ class NewPostForm(forms.ModelForm):
 
 @parsleyfy
 class NewPostWithNoRegistrationForm(forms.ModelForm):
-    code = forms.CharField()
-
     class Meta:
         model = Post
-        fields = ('category', 'title', 'content', 'code')
+        fields = ('category', 'title', 'content')
 
     def __init__(self, *args, **kwargs):
         super(NewPostWithNoRegistrationForm, self).__init__(*args, **kwargs)
 
-        for fieldname in ['category', 'title', 'content', 'code']:
+        for fieldname in ['category', 'title', 'content']:
 
             if fieldname == 'category':
                 self.fields[fieldname].label = '* تصنيف الإستفسار'
@@ -427,9 +425,6 @@ class NewPostWithNoRegistrationForm(forms.ModelForm):
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'content':
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  post-content'
-            if fieldname == 'code':
-                self.fields[fieldname].label = '* رمز المشاركة'
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             
 
     def clean_title(self):
@@ -444,20 +439,6 @@ class NewPostWithNoRegistrationForm(forms.ModelForm):
                     "إستفسر عن شيء حقيقي")
 
         return title
-    
-    def clean_code(self):
-        code = self.cleaned_data.get('code')
-
-        if code == '':
-             raise forms.ValidationError(
-                    "يرجى إضافة رمز المشاركة بدون تسجيل")
-                    
-        if not NoRegistrationCode.objects.filter(code=code).exists():
-            raise forms.ValidationError(
-                    "رمز المشاركة غير صحيح")
-
-
-        return code
 
 @parsleyfy
 class CustomChangePasswordForm(PasswordChangeForm):

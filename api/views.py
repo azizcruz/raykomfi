@@ -459,7 +459,21 @@ class SearchPostsView(APIView):
             q = serializer.data['searchField']
             if q == '':
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
-            posts = Post.objects.prefetch_related('creator', 'comments', 'category').filter(Q(title__icontains=q) | Q(content__icontains=q)).annotate(counted_comments=Sum('comments')).order_by('-counted_comments')
+            posts = Post.objects.prefetch_related('creator', 'comments', 'category').filter(Q(creator__email=request.user.email) & Q(title__icontains=q) | Q(content__icontains=q)).annotate(counted_comments=Sum('comments')).order_by('-counted_comments')
+            csrf_token = get_token(request)
+            csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
+            referesh_posts_view_html = loader.render_to_string('posts.html', {'posts': posts, 'user': request.user, 'search_request': True, 'csrf_token': csrf_token})
+            output_data = {
+                'view': referesh_posts_view_html,
+                'message': 'success'
+            }
+
+            if posts == []:
+                return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
+
+            return JsonResponse(output_data)
+        else:
+            posts = Post.objects.prefetch_related('creator', 'comments', 'category').filter(creator__email=request.user.email).annotate(counted_comments=Sum('comments')).order_by('-counted_comments')
             csrf_token = get_token(request)
             csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
             referesh_posts_view_html = loader.render_to_string('posts.html', {'posts': posts, 'user': request.user, 'search_request': True, 'csrf_token': csrf_token})
@@ -473,6 +487,7 @@ class SearchPostsView(APIView):
 
             return JsonResponse(output_data)
 
+
 class SearchCommentsView(APIView):
     '''
     Search Comments
@@ -484,10 +499,7 @@ class SearchCommentsView(APIView):
         serializer = serializers.SearchBarSerializer(data=request.data)
         if serializer.is_valid():
             q = serializer.data['searchField']
-            if q == '':
-                return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
-
-            comments = Comment.objects.prefetch_related('user', 'replies').filter(Q(content__icontains=q)).annotate(counted_replies=Sum('replies')).order_by('-counted_replies')
+            comments = Comment.objects.prefetch_related('user', 'replies').filter(content__icontains=q, user__email=request.user.email).annotate(counted_replies=Sum('replies')).order_by('-counted_replies')
             csrf_token = get_token(request)
             csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
             referesh_user_comments_view_html = loader.render_to_string('user_comments.html', {'comments': comments, 'user': request.user, 'search_request': True, 'csrf_token': csrf_token})
@@ -500,6 +512,22 @@ class SearchCommentsView(APIView):
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
 
             return JsonResponse(output_data)
+        
+        else:
+            comments = Comment.objects.prefetch_related('user', 'replies').filter(user__email=request.user.email).annotate(counted_replies=Sum('replies')).order_by('-counted_replies')
+            csrf_token = get_token(request)
+            csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
+            referesh_user_comments_view_html = loader.render_to_string('user_comments.html', {'comments': comments, 'user': request.user, 'search_request': True, 'csrf_token': csrf_token})
+            output_data = {
+                'view': referesh_user_comments_view_html,
+                'message': 'success'
+            }
+
+            if comments == []:
+                return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
+
+            return JsonResponse(output_data)
+
         
 class UploadImageView(APIView):
     '''
