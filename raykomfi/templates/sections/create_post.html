@@ -4,9 +4,13 @@
 
 <div class="w3-container">
     <div class="row raykomfi-main-padding  raykomfi-max-width">
-        {% if user.email_active %}
+        {% if user.is_authenticated and user.email_active %}
         <div class="raykomfi-form">
             <h3 class="w3-center">إستفسار جديد</h3>
+            <div class="w3-margin-bottom w3-margin-top">
+                <img src="{{ user.profile_image }}" class="w3-circle" alt="{{ صورة {{user.username}} على رايكم في }}" width="50" height="50">
+                <span class="raykomfi-bold">{{ user.username }}</span>
+            </div>
             <form action="{% url 'raykomfi:post-new' %}" enctype="multipart/form-data" method='post' id="create-post-form">
                 {% csrf_token %}
                 {{ form }}

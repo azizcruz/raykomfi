@@ -139,14 +139,14 @@
             <div class="w3-padding ray-box  z-depth-1">
                 {% if post.creator and post.creator.is_active != False %}
                 <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
+                    <img src="{{ post.creator_image }}" alt="صورة {{user.username}} على رايكم في"  class="w3-circle creator-profile-image">
                     <span class="poster-name">
-                        <i class="fa fa-user" aria-hidden="true"></i>
                         {{post.creator}}
                     </span>
                 </a>
                 {% else %}
                 <span class="poster-name">
-                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <img src="{{ post.creator_image }}" alt="صورة مجهول على رايكم في"  class="w3-circle creator-profile-image">
                     مجهول
                 </span>
                 {% endif %}

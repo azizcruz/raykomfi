@@ -164,8 +164,17 @@ pre {
   padding: 20px 0 !important;
 }
 
+.creator-profile-image {
+  width: 30px;
+  height: 30px;
+}
+
 .raykomfi-max-width {
   max-width: 1600px;
+}
+
+#add-question-no-register {
+  display: none;
 }
 
 .home-mobile-button {
@@ -325,6 +334,7 @@ h4 {
   font-size: 1.4rem;
   overflow-wrap: break-word;
   line-height: 1.6rem;
+  margin-top: 16px;
 }
 
 .what-is-this {
@@ -440,6 +450,11 @@ nav {
   background-color: #2980B9;
 }
 
+.user-area-profile-image {
+  width: 50px;
+  height: 50px;
+}
+
 /* The container <div> - needed to position the dropdown content */
 .loggedin-user-area {
   position: relative;
@@ -520,6 +535,7 @@ header {
   max-width: 1440px;
   margin: 100px auto 0 auto;
   min-height: 80vh;
+  margin-bottom: 30px;
 }
 
 .raykomfi-max-width {
@@ -966,7 +982,8 @@ select:focus {
 }
 
 .post-info {
-  margin-top: 30px;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 .post-info > div {
@@ -1221,9 +1238,6 @@ input ~ .parsley-errors-list.filled {
 /* Parcely Validator Styles */
 
 /* Profile Style */
-#profile-form {
-  margin-top: 20px;
-}
 .user-profile {
   padding: 15px !important;
   overflow-wrap: break-word;
@@ -1842,6 +1856,9 @@ input.raykomfi-input:checked + .raykomfi-slider:before {
 }
 
 @media only screen and (max-width: 600px) {
+  #profile-form {
+    margin-top: 20px;
+  }
   .add-question-wrapper > div {
     font-size: 11px;
   }
@@ -1896,6 +1913,16 @@ input.raykomfi-input:checked + .raykomfi-slider:before {
 
   .post-info > div {
     font-size: 10px;
+  }
+}
+
+@media only screen and (max-width: 405px) {
+  .dropbtn-user-area span {
+    font-size: 12px;
+  }
+  .user-area-profile-image {
+    width: 30px;
+    height: 30px;
   }
 }
 

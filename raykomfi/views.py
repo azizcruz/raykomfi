@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
-from .forms import SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, CustomPasswordResetForm, CommentForm, ReplyForm, ProfileForm, MessageForm, RestorePasswordForm, ForgotNoRegistrationCodeForm, ChangeEmailForm, NewPostWithNoRegistrationForm, SignupWithNoRegistrationForm
+from .forms import get_random_image_path, SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, CustomPasswordResetForm, CommentForm, ReplyForm, ProfileForm, MessageForm, RestorePasswordForm, ForgotNoRegistrationCodeForm, ChangeEmailForm, NewPostWithNoRegistrationForm, SignupWithNoRegistrationForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -51,9 +51,17 @@ from datetime import datetime, timedelta
 
 from pdb import set_trace
 
+
 @ratelimit(key='ip', rate='50/m', block=True)
 def index(request):
+
     if request.user.is_authenticated:
+        # If user does not have a profile image, give him one
+        if request.user.profile_image == '/media/profile_images/0.png':
+            request.user.profile_image = get_random_image_path()
+            request.user.save()
+
+        # If user set stay online always, this will update last login whenever user comes back
         now = timezone.now()
         if request.user.last_login + timedelta(minutes=30) < now:
             request.user.last_login = now
@@ -252,40 +260,8 @@ def sign_up_view(request):
 @ratelimit(key='ip', rate='10/m', block=True)
 def sign_up_with_no_registration_view(request):
     try:
-        if request.method == 'POST':
-            form = SignupWithNoRegistrationForm(request.POST, use_required_attribute=False)
-
-            if form.is_valid():
-                token = secrets.token_hex(4)
-                user = form.save(commit=False)
-                current_date_and_time = timezone.now()
-                current_site = get_current_site(request)
-                mail_subject = 'رمز المشاركة على رايكم في'
-                to_email = form.cleaned_data.get('email')
-                email_name = to_email.split('@')[0]
-                token = f'{email_name}-{token}'
-                user.code = token
-                user.save()
-                from_email = 'no-reply@raykomfi.com'
-                template="user/no_registration_code_email.html"
-                html_email_template = get_template(template).render(
-                    {
-                        'token': token
-                    }
-                )
-                # send email
-                send_email(html_email_template=html_email_template, mail_subject=mail_subject, to_email=to_email, from_email=from_email, token=token)
-                messages.success(
-                    request, 'تم إرسال رمز المشاركة إلى بريدك الإلكتروني', extra_tags='pale-green w3-border')
-
-                return HttpResponseRedirect('/')
-
-            else:
-                return render(request, 'user/user_with_no_registration.html', context={'form': form, 'view_title': f'منصة رايكم في | طلب رمز المشاركة'})
-
-        else:
-            form = SignupWithNoRegistrationForm(use_required_attribute=False)
-            return render(request, 'user/user_with_no_registration.html', context={'form': form, 'view_title': f'منصة رايكم في | طلب رمز المشاركة'})
+        form = NewPostWithNoRegistrationForm(use_required_attribute=False)
+        return render(request, 'user/user_with_no_registration.html', context={'form': form, 'view_title': f'منصة رايكم في | طلب رمز المشاركة'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
@@ -538,7 +514,6 @@ def create_post_with_no_registration(request):
             form = NewPostWithNoRegistrationForm(request.POST or None, request.FILES or None,
                             use_required_attribute=False)
             if form.is_valid():
-                code = form.cleaned_data['code']
                 post = form.save(commit=False)
                 post.creator = None
                 post.save()

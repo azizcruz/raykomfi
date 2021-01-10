@@ -7,7 +7,9 @@
     {% if user.id == request.resolver_match.kwargs.id %}
     <div class="w3-col s12 m6 l6">
         <div class="w3-center">
-            <i class="fa fa-user-circle-o large-font profile-icon" aria-hidden="true"></i>
+            <div>
+                <img src="/{{ user.profile_image }}" alt="{{user.username }} رايكم في -" width="150" height="150" class="w3-circle">
+            </div>
             <h2 class=""><br>{{user.username}}</h2>
             {% if user.online %}
             <div><i class="fa fa-circle green-text w3-medium" aria-hidden="true"></i> متصل حاليا</div>

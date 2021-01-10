@@ -52,6 +52,7 @@ def natural_time(targeted_object):
 
 class User(AbstractUser):
     bio = models.TextField(blank=True, verbose_name='نبذة عن',)
+    profile_image = models.CharField(max_length=255, blank=True, null=True, verbose_name='صورة شخصية', default='/media/profile_images/0.png')
     country = models.CharField(max_length=255, verbose_name='الدولة', blank=True)
     isBlocked = models.BooleanField(default=False, verbose_name='محظور؟')
     uuid = models.UUIDField(default=uuid4, editable=False, verbose_name='رمز العضو', null=True)
@@ -127,8 +128,8 @@ class Category(models.Model):
 
 
 class Post(models.Model, HitCountMixin):
-    creator = models.ForeignKey(
-        User, related_name='posts', verbose_name='الكاتب',  on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_index=True)
+    creator = models.ForeignKey(User, related_name='posts', verbose_name='الكاتب',  on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_index=True)
+    creator_image = models.URLField(verbose_name='صورة الكاتب', blank=True, null=True, default='/media/profile_images/0.png')
     category = models.ForeignKey(
         Category, verbose_name='التصنيف', null=True, on_delete=models.SET_DEFAULT, default=None, db_index=True)
     title = models.CharField(
@@ -227,6 +228,7 @@ class Comment(models.Model):
 
     user = models.ForeignKey(
         User, related_name='my_comments', verbose_name='صاحب النعليق', on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_index=True)
+    user_image = models.URLField(name='صورة الكاتب', blank=True, null=True, default='/media/profile_images/0.png')
     post = models.ForeignKey(
         Post, related_name='comments', verbose_name='المنشور', on_delete=models.CASCADE)
     content = models.TextField(verbose_name='التعليق', db_index=True)
@@ -272,6 +274,7 @@ class Reply(models.Model):
 
     user = models.ForeignKey(
         User, related_name='my_replies', verbose_name='صاحب النعليق', on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_index=True)
+    user_image = models.URLField(name='صورة الكاتب', blank=True, null=True, default='/media/profile_images/0.png')
     comment = models.ForeignKey(
         Comment, related_name='replies', verbose_name='التعليق', on_delete=models.CASCADE, db_index=True)
     content = models.TextField()

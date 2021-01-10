@@ -5,7 +5,7 @@
 
 <div class="w3-container">
     <div class="row raykomfi-main-padding  raykomfi-max-width">
-        <div class="w3-col s12">
+        <div class="w3-col s12" id="page-to-add-question">
             <div class="row">
                 <div class="col s12 m6 center">
                       <i class="fa fa-question grey-text lighten-2 fa-4x"></i>
@@ -14,10 +14,22 @@
                      <a href="{% url 'raykomfi:user-signin' %}" class="btn light-blue darken-2 white-text waves-effect waves-light">تسجيل دخول</a>
                      <a href="{% url 'raykomfi:user-register' %}" class="btn white light-blue-text waves-effect waves-light">تسجيل حساب</a>
                      <div class="w3-margin">أو</div>
-                     <a href="{% url 'raykomfi:post-new-withnoregistration' %}" class="btn grey white-text waves-effect waves-light raykomfi-margin-0">إستفسر كمجهول</a>
+                     <div class="btn grey white-text waves-effect waves-light raykomfi-margin-0" id="anonymous-question-btn">إستفسر كمجهول</div>
                 </div>
               </div>
         </div>
+        <div class="raykomfi-form" id="add-question-no-register">
+          <h3 class="w3-center">إستفسار جديد</h3>
+          <div class="w3-margin-bottom w3-margin-top">
+              <img src="" class="w3-circle" alt="إستفسر كمجهول" width="50" height="50" id="anonymous-image">
+              <span class="raykomfi-bold">مجهول</span>
+          </div>
+          <form action="{% url 'raykomfi:post-new-withnoregistration' %}" enctype="multipart/form-data" method='post' id="create-post-with-no-registration-form">
+              {% csrf_token %}
+              {{ form }}
+              <button class="w3-button raykomfi-button ">تأكيد</button>
+          </form>
+      </div>
     </div>
 </div>
 

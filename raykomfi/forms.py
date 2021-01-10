@@ -12,6 +12,19 @@ from sorl.thumbnail import ImageField
 from django.contrib.auth import password_validation
 from parsley.decorators import parsleyfy
 from django.core.validators import RegexValidator
+import os
+from django.conf import settings
+from random import randint
+import requests
+
+def get_random_image_path():
+    media_root = settings.MEDIA_ROOT
+    profile_images_path = os.path.join(media_root, 'profile_images')
+    profile_images = os.listdir(profile_images_path)
+    count_images = len(profile_images)
+    random_image_number = randint(1, 1)
+    path = os.path.join('media', 'profile_images', f'{random_image_number}.png')
+    return path
 
 # username_validator = RegexValidator(r"^(?=.*[a-zA-Z0-9])\w{6,}$", "إسم المستخدم يجب أن يكون على الأقل 6 أحرف و باللغة الإنجليزية")
 username_validator = RegexValidator(r"^.{6,15}$", "إسم المستخدم يجب أن يكون على الأقل 6 أحرف")
@@ -408,14 +421,15 @@ class NewPostForm(forms.ModelForm):
 
 @parsleyfy
 class NewPostWithNoRegistrationForm(forms.ModelForm):
+    creator_image = forms.CharField(widget=forms.HiddenInput(), required=True)
     class Meta:
         model = Post
-        fields = ('category', 'title', 'content')
+        fields = ('creator_image', 'category', 'title', 'content')
 
     def __init__(self, *args, **kwargs):
         super(NewPostWithNoRegistrationForm, self).__init__(*args, **kwargs)
 
-        for fieldname in ['category', 'title', 'content']:
+        for fieldname in ['category', 'title', 'content', 'creator_image']:
 
             if fieldname == 'category':
                 self.fields[fieldname].label = '* تصنيف الإستفسار'
@@ -425,10 +439,17 @@ class NewPostWithNoRegistrationForm(forms.ModelForm):
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'content':
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  post-content'
+            if fieldname == 'creator_image':
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border anonymous-image'
+                self.fields[fieldname].widget.attrs['value'] = get_random_image_path()
+                
+            
             
 
     def clean_title(self):
         title = self.cleaned_data.get('title')
+
+        
 
         if title.find('رايكم في') == -1:
             raise forms.ValidationError(
@@ -439,6 +460,19 @@ class NewPostWithNoRegistrationForm(forms.ModelForm):
                     "إستفسر عن شيء حقيقي")
 
         return title
+
+    
+    def clean_creator_image(self):
+        creator_image = self.cleaned_data.get('creator_image')
+
+        # Check if image belongs to raykomfi
+        url = f'https://www.raykomfi.com/{creator_image}' if os.getenv('environment') == 'prod' else f'http://localhost:8000/{creator_image}'
+        response = requests.get(url)
+
+        if response.status_code != 200 or creator_image == '':
+           creator_image = get_random_image_path()
+
+        return creator_image
 
 @parsleyfy
 class CustomChangePasswordForm(PasswordChangeForm):

@@ -32,17 +32,17 @@
         <div class="w3-row white post-box z-depth-1">
             <div class="w3-mobile">
                 {% if post.creator and post.creator.is_active != False %}
-                <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}" class="writer-name">
-                    <h6>
-                        <i class="fa fa-user" aria-hidden="true"></i>
+                <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
+                    <img src="{{ post.creator_image }}" alt="صورة {{user.username}} على رايكم في"  class="w3-circle creator-profile-image">
+                    <span class="poster-name">
                         {{post.creator}}
-                    </h6>
+                    </span>
                 </a>
                 {% else %}
-                <h6>
-                    <i class="fa fa-user" aria-hidden="true"></i>
+                <span class="poster-name">
+                    <img src="{{ post.creator_image }}" alt="صورة مجهول على رايكم في"  class="w3-circle creator-profile-image">
                     مجهول
-                </h6>
+                </span>
                 {% endif %}
                 <div class="post-info">
                     <div><i class="fa fa-clock-o" aria-hidden="true"></i> <span class="created-time"> <span>تاريخ النشر
@@ -387,7 +387,7 @@
                                     class="like-button"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
                             </form>
                         </div>
-                        <div>{{comment.votes}}</div>
+                        <div class="raykomfi-bold">{{comment.votes}}</div>
                         <div>
                             <form class="voteForm" data-comment-id="{{comment.id}}" data-user-id={{user.id}}
                                 data-vote-type="dislike">
@@ -475,26 +475,28 @@
         </div>
     </div>
 </div>
-<div class="w3-col s12 m4 l4 w3-hide-medium w3-hide-large">
-    <div class="related-posts w3-padding-16 w3-white z-depth-1">
-        <h4 class="center">إستفسارات مشابهة</h4>
-        <div class="w3-row">
-            <div class="w3-mobile">
-                {% for related_post in related_posts %}
-                <div class="w3-margin">
-                    <a href="{{ related_post.get_absolute_url }}">
-
-                        {% if related_post.creator and related_post.creator.is_active != False %}
-                        <span class="w3-round-small w3-right">
-                            {{related_post.creator}}
-                        </span>
-                        {% else %}
-                        <span class="w3-round-small w3-right">مجهول</span>
-                        {% endif %}
-
-                        &nbsp; <span class="raykomfi-color">{{related_post.title}}</span></a>
+<div class="w3-container">
+    <div class="w3-col s12 m4 l4 w3-hide-medium w3-hide-large">
+        <div class="related-posts w3-padding-16 w3-white z-depth-1">
+            <h4 class="center">إستفسارات مشابهة</h4>
+            <div class="w3-row">
+                <div class="w3-mobile">
+                    {% for related_post in related_posts %}
+                    <div class="w3-margin">
+                        <a href="{{ related_post.get_absolute_url }}">
+    
+                            {% if related_post.creator and related_post.creator.is_active != False %}
+                            <span class="w3-round-small w3-right">
+                                {{related_post.creator}}
+                            </span>
+                            {% else %}
+                            <span class="w3-round-small w3-right">مجهول</span>
+                            {% endif %}
+    
+                            &nbsp; <span class="raykomfi-color">{{related_post.title}}</span></a>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
         </div>
     </div>

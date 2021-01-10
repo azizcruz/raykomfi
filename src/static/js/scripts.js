@@ -580,3 +580,13 @@ tinymce.init({
 
 //   postKeywordsWrapper.html(generatedTags)
 // }
+
+
+// Question as anonymous
+$('#anonymous-question-btn').on('click', function() {
+  $('#page-to-add-question').hide()
+  $('#add-question-no-register').show()
+})
+
+// Set anonymous image
+$('#anonymous-image').attr('src', '/' + $('#id_creator_image').val())
