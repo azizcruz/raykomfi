@@ -149,6 +149,7 @@
     <link rel="stylesheet" href="{% static 'css/custom_materialize.css'  %}">
     <link rel="stylesheet" href="{% static 'css/cookiebar.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/aos.css'  %}">
     <link rel="stylesheet" href="{% static 'css/style.css'  %}">
     {% endcompress %}
     <noscript>
@@ -226,7 +227,7 @@
                                 <div class="profile-image-section">
                                     <div class="dropbtn-user-area">
                                         <span>{{user.username}}</span>
-                                        <img src="/{{user.profile_image}}" class="w3-circle user-area-profile-image" alt=" على رايكم في {{user.username}} صورة">
+                                        <img src="{{user.profile_image}}" class="w3-circle user-area-profile-image" alt=" على رايكم في {{user.username}} صورة">
                                     </div>
                                 </div>
                                 <div id="loggedin-user-area-dropdown" class="loggedin-user-area-content user-area">
@@ -371,6 +372,7 @@
     <script src="{% static 'js/generateOpinionsStars.js' %}"></script>
     <script src="{% static 'js/controllers.js' %}"></script>
     <script src="{% static 'js/validators.js' %}"></script>
+    <script src="{% static 'js/aos.js' %}"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
     {% endcompress %}
 

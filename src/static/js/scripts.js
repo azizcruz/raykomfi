@@ -506,6 +506,7 @@ $(document).on("click", ".edit-comment-btn", (e) => {
   closestEditCommentForm.css("display", "block");
   closestEditCommentForm.parent().find(".comment").hide();
   closestEditCommentForm.parent().find(".comment-action-btn").hide();
+  $(closestEditCommentForm[0][1]).focus()
 });
 
 $(document).on("click", ".close-comment-edit-form", (e) => {
@@ -532,6 +533,7 @@ $(document).on("click", ".edit-reply-btn", (e) => {
   closestEditReplyForm.css("display", "block");
   closestEditReplyForm.parent().find(".reply").hide();
   closestEditReplyForm.parent().find(".reply-action-btn").hide();
+  $(closestEditReplyForm[0][1]).focus()
 });
 
 $(document).on("click", ".close-reply-edit-form", (e) => {
@@ -590,3 +592,16 @@ $('#anonymous-question-btn').on('click', function() {
 
 // Set anonymous image
 $('#anonymous-image').attr('src', '/' + $('#id_creator_image').val())
+
+// Show hide replies
+$('.show-hide-replies-bar').on('click', function() {
+  $(this).parent().prev().toggleClass('raykomfi-show')
+  if($(this).parent().prev().hasClass('raykomfi-show')) {
+    $(this).text('أخفي الردود')
+  } else {
+    $(this).text('أظهر الردود')
+  }
+})
+
+// Initialize aos animation
+AOS.init();

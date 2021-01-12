@@ -57,8 +57,8 @@ def index(request):
 
     if request.user.is_authenticated:
         # If user does not have a profile image, give him one
-        if request.user.profile_image == '/media/profile_images/0.png':
-            request.user.profile_image = get_random_image_path()
+        if request.user.profile_image == '/media/profile_images/0.png/':
+            request.user.profile_image = get_random_image_path() + '/'
             request.user.save()
 
         # If user set stay online always, this will update last login whenever user comes back
@@ -342,6 +342,7 @@ def post_view(request, id, slug):
     try:
 
         post = Post.objects.select_related('creator', 'category').filter(Q(id__exact=id)).first()
+        no_registration_image = get_random_image_path()
 
         if not post:
             messages.success(
@@ -378,7 +379,7 @@ def post_view(request, id, slug):
             if notis: 
                 notis.first().delete()
 
-        context = {'post': post, 'comment_form': comment_form, 'reply_form': reply_form, 'related_posts': related_posts, 'comments_count': comments_count, 'post_comments': post_comments, 'view_title': f'رايكم في | { post.title }', 'url_name': 'post_view'}
+        context = {'post': post, 'comment_form': comment_form, 'reply_form': reply_form, 'related_posts': related_posts, 'comments_count': comments_count, 'post_comments': post_comments, 'view_title': f'رايكم في | { post.title }', 'no_registration_image': no_registration_image, 'url_name': 'post_view'}
 
         # hitcount logic
         hit_count = get_hitcount_model().objects.get_for_object(post)
