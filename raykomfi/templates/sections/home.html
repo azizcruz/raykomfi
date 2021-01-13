@@ -10,20 +10,26 @@
 
 <div class="w3-row-padding">
     <div class="w3-col s12 m4 l4 w3-hide-small">
-        <div class="w3-padding w3-white z-depth-1 latest-opinions">
-            <h4 class="w3-center">آخر الآراء</h4>
+        <div class="w3-padding w3-white z-depth-1 latest-opinions w3-round-medium">
+            <h4 class="w3-center raykomfi-bold raykomfi-main-color">آخر الآراء</h4>
             {% for comment in latest_comments %}
             <div class="w3-row latest-opinion">
                 {% if comment.user and comment.user.is_active != False %}
-                <a href="{% url 'raykomfi:user-profile' id=comment.user.id %}"><span><i class="fa fa-user"
-                            aria-hidden="true"></i> {{comment.user}}</span></a>
+                <a href="{% url 'raykomfi:user-profile' id=comment.user.id %}" class="writer-name">
+                    <img src="{{ comment.user.profile_image }}" alt="صورة {{comment.user.username}} على رايكم في"  class="w3-circle" width='20' width='20'>
+                    <span class="name">
+                        {{comment.user.username}}
+                    </span>
+                </a>
                 {% else %}
-                <span><i class="fa fa-user" aria-hidden="true"></i> مجهول</span>
+                <span class="poster-name">
+                    <img src="{{ comment.user_image }}" alt="صورة مجهول على رايكم في"  class="w3-circle creator-profile-image">
+                    مجهول
+                </span>
                 {% endif %}
                 <p class="truncate">{{ comment.content | safe }}</p>
                 <div class="">
-                    <span class="w3-tag  w3-red w3-center w3-small"><i class="fa fa-reply" aria-hidden="true"></i>رد
-                        على</span>
+                    <span class="w3-tag red white-text w3-round-medium w3-small w3-padding-small">رأي في</span>
                     <a href="{{ comment.post.get_absolute_url }}" class="">{{ comment.post.title|truncatechars:100 }}</a>
                 </div>
             </div>
@@ -33,55 +39,61 @@
     
     <div class="w3-col s12 m8 l8 ray">
         <div class="w3-row">
-            <div class="add-question-wrapper z-depth-1 w3-white ray-box">
-                <div>
-                    إستفسر الآخرين الذين خاضوا نفس التجربة&#129300 
+            <div class="add-question-wrapper z-depth-1 w3-white ray-box w3-round-medium">
+                <div id="typed-strings">
+                    <p></p>
+                    <p>لديك مشكلة ؟</p>
+                    <p>متردد ؟</p>
+                    <p>إستفسر الآخرين الذين خاضوا نفس التجربة <span>&#129300</span></p>
                 </div>
-                <a href="{% url 'raykomfi:user-register-withnosignup' %}" class="add-question">
+                <div class="for-typed-js">
+
+                </div>
+                <a href="{% url 'raykomfi:user-register-withnosignup' %}" class="add-question w3-round-medium">
                      أضف إستفسار <i class="fa fa-plus" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
         <div class="w3-row">
-            <div class="w3-bar w3-white  ray-order z-depth-1">
+            <div class="w3-bar w3-white  ray-order w3-round-medium z-depth-1">
                 <div class="w3-bar-item  w3-right"> <a href="{% url 'raykomfi:latest-posts' %}"
-                        class="order-btn"><button class="w3-button  raykomfi-main-background-color z-depth-1"><i
+                        class="order-btn"><button class="w3-button  w3-round-medium raykomfi-main-background-color z-depth-1"><i
                                 class="fa fa-sort-amount-desc" aria-hidden="true"></i>
                             الأحدث</button></a></div>
                 <div class="w3-bar-item  w3-right"> <a href="{% url 'raykomfi:with-latest-opinion-ordered' %}"
-                    class="order-btn"><button class="w3-button  raykomfi-main-background-color z-depth-1"><i
+                    class="order-btn"><button class="w3-button w3-round-medium raykomfi-main-background-color z-depth-1"><i
                             class="fa fa fa-comments-o" aria-hidden="true"></i>
                             آخر رأي </button></a></div>
-                <div class="w3-bar-item  w3-right"><a href="{% url 'raykomfi:most-discussed-posts' %}"
-                        class="order-btn"><button class="w3-button  raykomfi-main-background-color z-depth-1"><i
+                <div class="w3-bar-item w3-round-medium w3-right"><a href="{% url 'raykomfi:most-discussed-posts' %}"
+                        class="order-btn"><button class="w3-button  w3-round-medium raykomfi-main-background-color z-depth-1"><i
                                 class="fa fa-commenting" aria-hidden="true"></i>
                             الأكثر مناقشة</button></a></div>
-                <div class="w3-bar-item  w3-right"><a href="{% url 'raykomfi:most-searched-posts' %}"
-                        class="order-btn"><button class="w3-button  raykomfi-main-background-color z-depth-1"><i
+                <div class="w3-bar-item w3-round-medium w3-right"><a href="{% url 'raykomfi:most-searched-posts' %}"
+                        class="order-btn"><button class="w3-button  w3-round-medium raykomfi-main-background-color z-depth-1"><i
                                 class="fa fa-fire" aria-hidden="true"></i>
                             الأكثر بحثا</button></a></div>
                 <div class="w3-bar-item  w3-right w3-dropdown-hover  order-btn">
-                    <button class="w3-button  raykomfi-main-background-color z-depth-1"><i class="fa fa-tags"
+                    <button class="w3-button w3-round-medium raykomfi-main-background-color z-depth-1"><i class="fa fa-tags"
                             aria-hidden="true"></i>
                         حسب التصنيف</button>
                     <div class="w3-dropdown-content raykomfi-category-dropdown w3-bar-block  w3-card z-depth-1">
                         {% for category in categories %}
                         <a href="{% url 'raykomfi:filtered-posts' category=category.name %}"
-                            class="w3-bar-item w3-button">{{category.name}}</a>
+                            class="w3-bar-item w3-round-medium w3-button">{{category.name}}</a>
                         {% endfor %}
                     </div>
 
                 </div>
                 {% if url_name != 'categorized_view' %}
                 <div class="w3-bar-item w3-right">
-                    <button class="w3-button  raykomfi-main-background-color order-btn" id="search-btn">
+                    <button class="w3-button w3-round-medium  raykomfi-main-background-color order-btn" id="search-btn">
                         <i class="fa fa-search"></i> بحث </button>
                 </div>
                 {% endif %}
             </div>
         </div>
         <div class="w3-row" id="search-field-wrapper">
-            <div class="w3-col w3-padding w3-white z-depth-1">
+            <div class="w3-col w3-padding w3-white z-depth-1 w3-round-medium">
                 <div class="spinner" id="spinner">
                     <div class="bounce1"></div>
                     <div class="bounce2"></div>
@@ -89,7 +101,7 @@
                 </div>
                 <form class="postsSearchForm">
                     {% csrf_token %}
-                    <input class="w3-input search-input" type="text" placeholder="بحث عن إستفسار ..." name="q">
+                    <input class="w3-input search-input w3-round-medium" type="text" placeholder="بحث عن إستفسار ..." name="q">
                 </form>
             </div>
         </div>
@@ -131,12 +143,12 @@
         </div>
         {% endif %}
         {% if url_name == 'categorized_view' %}
-        <div class="categorized-text">التصنيف {{ category }}</div>
+        <div class="categorized-text w3-round-medium w3-margin-top">التصنيف {{ category }}</div>
         {% endif %}
         <div id="raykomfi-posts">
             {% if count > 0 or count_categorized > 0%}
             {% for post in posts %}
-            <div class="w3-padding ray-box  z-depth-1">
+            <div class="w3-padding ray-box w3-round-medium w3-margin-top w3-margin-bottom z-depth-1 raykomfi-border" data-aos="fade-up" data-aos-delay="150">
                 {% if post.creator and post.creator.is_active != False %}
                 <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
                     <img src="{{ post.creator_image }}" alt="صورة {{user.username}} على رايكم في"  class="w3-circle creator-profile-image">
@@ -171,17 +183,17 @@
                     {% endif %}
                     <div class="ray-box-footer-icons">
                         <div class="">
-                            <span><i class="fa fa-clock-o" aria-hidden="true"></i> 
-                                <span class='created-time'>{{post.get_created_natural}}</span></span>
+                            <span class="raykomfi-bold grey-text"><i class="fa fa-clock-o" aria-hidden="true"></i> 
+                                <span class='created-time raykomfi-bold grey-text'>{{post.get_created_natural}}</span></span>
                         </div>
                         <div class="">
-                            <span><i class="fa fa-comments" aria-hidden="true"></i> {{post.comments.count}}</span>
+                            <span class="raykomfi-bold grey-text"><i class="fa fa-comments" aria-hidden="true"></i> {{post.comments.count}}</span>
                         </div>
                         <div class="">
-                            <span><i class="fa fa-eye" aria-hidden="true"></i> {% get_hit_count for post %}</span>
+                            <span class="raykomfi-bold grey-text"><i class="fa fa-eye" aria-hidden="true"></i> {% get_hit_count for post %}</span>
                         </div>
                         <div class="">
-                            <span><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</span>
+                            <span class="raykomfi-bold grey-text"><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</span>
                         </div>
                     </div>
                 </a>
@@ -204,12 +216,12 @@
         {% else %}
         {% if is_categorized == True %}
         <div class="lazy-load-linkwrapper w3-center">
-            <a id="lazyLoadLink" class="w3-padding raykomfi-button z-depth-1" href="javascript:void(0);"
+            <a id="lazyLoadLink" class="w3-padding raykomfi-button w3-round-medium z-depth-1" href="javascript:void(0);"
                 data-page="2" data-category="{{category}}">عرض المزيد</a>
         </div>
         {% else %}
         <div class="lazy-load-linkwrapper w3-center">
-            <a id="lazyLoadLink" class="w3-padding raykomfi-button z-depth-1" href="javascript:void(0);"
+            <a id="lazyLoadLink" class="w3-padding raykomfi-button w3-round-medium z-depth-1" href="javascript:void(0);"
                 data-page="2">عرض
                 المزيد</a>
         </div>
@@ -218,7 +230,7 @@
 
     </div>
     <div class="w3-col s12 m4 l4 w3-hide-medium w3-hide-large">
-        <div class="w3-padding w3-white  z-depth-1 latest-opinions">
+        <div class="w3-padding w3-white w3-round-medium  z-depth-1 latest-opinions">
             <h4 class="w3-center">اخر الأراء</h4>
             {% for comment in latest_comments %}
             <div class="w3-row latest-opinion">
@@ -230,8 +242,8 @@
                 {% endif %}
                 <p class="truncate">{{ comment.content | safe }}</p>
                 <div class="">
-                    <span class="w3-tag  w3-red w3-center w3-small"><i class="fa fa-reply" aria-hidden="true"></i>رد
-                        على</span>
+                    <span class="w3-tag red white-text w3-round-medium w3-small w3-padding-small">رأي في
+                        </span>
                     <a href="{{ comment.post.get_absolute_url }}" class="">{{ comment.post.title|truncatechars:100 }}</a>
                 </div>
             </div>

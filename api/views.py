@@ -199,13 +199,11 @@ class NoRegisterCommentsView(APIView):
     def post(self, request):
         serializer = serializers.NoRegisterCommentAddSerializer(data=request.data)
         if serializer.is_valid():
-            if not NoRegistrationCode.objects.filter(code=serializer.data['code']).exists():
-                return Response({'message': 'رمز مشاركة غير صحيح'}, status=status.HTTP_400_BAD_REQUEST)
             post = Post.objects.select_related('creator', 'category').filter(id__exact=serializer.data['post_id']).first()
             
             if post:
                 comment = Comment.objects.create(
-                content=serializer.data['content'], user=None, post=post)
+                content=serializer.data['content'], user=None, post=post, user_image=serializer.data['profile_image'])
                 comment = Comment.objects.select_related('user', 'post').filter(id=comment.id).first()
                 csrf_token = get_token(request)
                 csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
@@ -215,7 +213,8 @@ class NoRegisterCommentsView(APIView):
 
                 output_data = {
                     'view': referesh_post_view_html,
-                    'message': 'success'
+                    'message': 'success',
+                    'comment_id': comment.id
                 }
                 anonymousUser = User.objects.filter(email='anonymous@anonymous.com').first()
                 if post.creator == None:
@@ -275,7 +274,8 @@ class CommentsView(APIView):
 
                 output_data = {
                     'view': referesh_post_view_html,
-                    'message': 'success'
+                    'message': 'success',
+                    'comment_id': comment.id
                 }
                 anonymousUser = User.objects.filter(email='anonymous@anonymous.com').first()
                 if post.creator == None:

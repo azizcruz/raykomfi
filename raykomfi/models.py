@@ -228,7 +228,7 @@ class Comment(models.Model):
 
     user = models.ForeignKey(
         User, related_name='my_comments', verbose_name='صاحب النعليق', on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_index=True)
-    user_image = models.URLField(name='صورة الكاتب', blank=True, null=True, default='/media/profile_images/0.png')
+    user_image = models.CharField(max_length=255, verbose_name='صورة الكاتب', blank=True, null=True, default='/media/profile_images/0.png')
     post = models.ForeignKey(
         Post, related_name='comments', verbose_name='المنشور', on_delete=models.CASCADE)
     content = models.TextField(verbose_name='التعليق', db_index=True)
@@ -274,7 +274,7 @@ class Reply(models.Model):
 
     user = models.ForeignKey(
         User, related_name='my_replies', verbose_name='صاحب النعليق', on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_index=True)
-    user_image = models.URLField(name='صورة الكاتب', blank=True, null=True, default='/media/profile_images/0.png')
+    user_image = models.CharField(max_length=255, verbose_name='صورة الكاتب', blank=True, null=True, default='/media/profile_images/0.png')
     comment = models.ForeignKey(
         Comment, related_name='replies', verbose_name='التعليق', on_delete=models.CASCADE, db_index=True)
     content = models.TextField()

@@ -550,8 +550,9 @@ $(document).on("click", ".close-reply-edit-form", (e) => {
 });
 
 // Toggle comment without registration
-$("#add-comment-no-register").on("click", () => {
+$("#add-comment-no-register, .top-add-comment").on("click", () => {
   $(".commentNoRegisterForm").toggleClass("raykomfi-display-block");
+  $(".signed-in-comment").toggleClass("raykomfi-display-block");
 });
 
 tinymce.init({
@@ -605,3 +606,23 @@ $('.show-hide-replies-bar').on('click', function() {
 
 // Initialize aos animation
 AOS.init();
+
+if($('#typed-strings').length > 0) {
+  // Initialize typed js
+var options = {
+  stringsElement: '#typed-strings',
+  typeSpeed: 40
+};
+
+var typed = new Typed('.for-typed-js', options);
+}
+
+$('.top-add-comment').on('click', function() {
+  $(".commentNoRegisterForm").addClass("raykomfi-display-block");
+  $(".signed-in-comment").addClass("raykomfi-display-block");
+  setTimeout(function() {
+    $('html, body').animate({
+      scrollTop: $('.add-comment-section').offset().top
+  }, 1000);
+  }, 100)
+})

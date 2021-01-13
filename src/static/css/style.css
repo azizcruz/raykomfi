@@ -54,6 +54,7 @@ pre {
 .add-question-wrapper {
   display: flex;
   justify-content: space-between;
+  margin-top: 0 !important;
 }
 
 .add-question-wrapper > div {
@@ -423,6 +424,10 @@ textarea {
   border: none;
 }
 
+.typed-cursor {
+  display: none;
+}
+
 .raykomfi-category-dropdown a {
   text-align: right !important;
 }
@@ -436,6 +441,10 @@ nav {
   z-index: 3 !important;
   width: 320px !important;
   overflow-wrap: break-word;
+}
+
+#myTop {
+  z-index: 9;
 }
 
 /* User Area */
@@ -897,7 +906,6 @@ select:focus {
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  border-top: 1px solid #dbdbdb;
   padding-top: 10px;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
@@ -1064,7 +1072,7 @@ select:focus {
   margin-top: 20px;
 }
 
-.commentNoRegisterForm {
+.commentNoRegisterForm, .signed-in-comment {
   display: none;
 }
 

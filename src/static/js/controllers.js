@@ -15,7 +15,7 @@ $(document).on("submit", "form.replyForm", function (e) {
   let content = replacePlainLinks(e.target[1].value);
   let { commentId } = e.target.dataset;
   if (content) {
-    $(this)[0][2].disabled = true
+    $(this)[0][2].disabled = true;
     axios({
       method: "POST",
       url: "/api/reply/add",
@@ -29,7 +29,7 @@ $(document).on("submit", "form.replyForm", function (e) {
       },
     })
       .then((response) => {
-        $(this)[0][2].disabled = false
+        $(this)[0][2].disabled = false;
         let comment_view = $(`#comment-id-${commentId}`);
         view_html = response.data.view;
         comment_view.html(view_html);
@@ -53,7 +53,7 @@ $(document).on("submit", "form.replyForm", function (e) {
 // Edit reply
 $(document).on("submit", "form.closest-edit-reply-form", function (e) {
   e.preventDefault();
-  let content = replacePlainLinks( e.target[1].value);
+  let content = replacePlainLinks(e.target[1].value);
   let { replyId, commentId } = e.target.dataset;
   if (content) {
     axios({
@@ -94,7 +94,7 @@ $(document).on("submit", "form.commentForm", function (e) {
   let content = replacePlainLinks(e.target[1].value);
   let { postId } = e.target.dataset;
   if (content) {
-    $(this)[0][2].disabled = true
+    $(this)[0][2].disabled = true;
     axios({
       method: "POST",
       url: "/api/comment/add",
@@ -105,16 +105,25 @@ $(document).on("submit", "form.commentForm", function (e) {
       data: { content: content, post_id: postId },
     })
       .then((response) => {
-        $(this)[0][2].disabled = false
+        $(this)[0][2].disabled = false;
         let view_html = response.data.view;
         let post_wrapper = document.getElementById("posts-wrapper");
+        var comment_id = response.data.comment_id
         post_wrapper.innerHTML = view_html;
         $("#lazyLoadLinkComments").hide();
         e.target[1].value = "";
         generateStars();
+        setTimeout(function () {
+          $("html, body").animate(
+            {
+              scrollTop: $("#comment-id-" + comment_id).offset().top - 500,
+            },
+            500
+          );
+        }, 100);
       })
       .catch((err) => {
-        $(this)[0][2].disabled = true
+        $(this)[0][2].disabled = false;
         if (
           err.response.status === 403 &&
           err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
@@ -132,9 +141,9 @@ $(document).on("submit", "form.commentForm", function (e) {
 $(document).on("submit", "form.commentNoRegisterForm", function (e) {
   e.preventDefault();
   let content = replacePlainLinks(e.target[1].value);
-  let code = e.target[2].value;
+  let profile_image = "/" + e.target[2].value;
   let { postId } = e.target.dataset;
-  if (content && code) {
+  if (content && profile_image) {
     axios({
       method: "POST",
       url: "/api/comment/add/no-registeration",
@@ -142,15 +151,24 @@ $(document).on("submit", "form.commentNoRegisterForm", function (e) {
         "X-CSRFTOKEN": Cookies.get("csrftoken"),
         "Content-Type": "application/json",
       },
-      data: { content: content, post_id: postId, code: code },
+      data: { content: content, post_id: postId, profile_image: profile_image },
     })
       .then((response) => {
         let view_html = response.data.view;
         let post_wrapper = document.getElementById("posts-wrapper");
+        var comment_id = response.data.comment_id;
         post_wrapper.innerHTML = view_html;
         $("#lazyLoadLinkComments").hide();
         e.target[1].value = "";
         generateStars();
+        setTimeout(function () {
+          $("html, body").animate(
+            {
+              scrollTop: $("#comment-id-" + comment_id).offset().top - 500,
+            },
+            500
+          );
+        }, 100);
       })
       .catch((err) => {
         if (
@@ -171,10 +189,7 @@ $(document).on("submit", "form.commentNoRegisterForm", function (e) {
         }
       });
   } else {
-    custom_alert(
-      "حقول رمز المشاركة والرأي لا يمكن أن تكون فارغة , ليس لديك رمز مشاركة؟ يمكنك الحصول عليه <a href='/user/actions/code'>هنا</a>",
-      ""
-    );
+    custom_alert("يوجد خطأ من المستخدم, حدث الصفحة وأعد المحاولة", "");
   }
 });
 
@@ -347,7 +362,7 @@ $(document).on("submit", "form.postsSearchForm", function (e) {
         "Content-Type": "application/json",
       },
       data: {
-        searchField: '',
+        searchField: "",
       },
     })
       .then((response) => {
@@ -423,7 +438,7 @@ $(document).on("submit", "form.commentsSearchForm", function (e) {
         "Content-Type": "application/json",
       },
       data: {
-        searchField: '',
+        searchField: "",
       },
     })
       .then((response) => {
@@ -556,45 +571,45 @@ $(document).on("click", "#delete-all-notis", function (e) {
 
 // Admin actions
 $(document).on("click", ".admin-action-btn", function (e) {
-  var theBtn = $(this)
-  var adminActionMessage = $('.admin-action-message')
-  e.preventDefault()
-  var ans = confirm('هل أنت متأكد')
-  if(ans) {
-    let {id, requestType, action, url} = e.target.dataset
-  theBtn.removeClass('admin-action-btn')
-  axios({
-    method: "POST",
-    url: "/api/admin/action",
-    headers: {
-      "X-CSRFTOKEN": Cookies.get("csrftoken"),
-      "Content-Type": "application/json",
-    },
-    data: {
-      id: id,
-      type: requestType,
-      action: action,
-      url: url
-    }
-  })
-    .then((response) => {
-      adminActionMessage.text(response.data.message)
-      setTimeout(() => {
-        theBtn.addClass('admin-action-btn')
-        adminActionMessage.text('')
-      }, 2000);
+  var theBtn = $(this);
+  var adminActionMessage = $(".admin-action-message");
+  e.preventDefault();
+  var ans = confirm("هل أنت متأكد");
+  if (ans) {
+    let { id, requestType, action, url } = e.target.dataset;
+    theBtn.removeClass("admin-action-btn");
+    axios({
+      method: "POST",
+      url: "/api/admin/action",
+      headers: {
+        "X-CSRFTOKEN": Cookies.get("csrftoken"),
+        "Content-Type": "application/json",
+      },
+      data: {
+        id: id,
+        type: requestType,
+        action: action,
+        url: url,
+      },
     })
-    .catch((err) => {
-      theBtn.addClass('admin-action-btn')
-      if (
-        err.response.status === 403 &&
-        err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
-      ) {
-        custom_alert(
-          "محاولات متكررة, يرجى المحاولة لاحقا",
-          "<i class='fa fa-warning'></i>"
-        );
-      }
-    });
+      .then((response) => {
+        adminActionMessage.text(response.data.message);
+        setTimeout(() => {
+          theBtn.addClass("admin-action-btn");
+          adminActionMessage.text("");
+        }, 2000);
+      })
+      .catch((err) => {
+        theBtn.addClass("admin-action-btn");
+        if (
+          err.response.status === 403 &&
+          err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+        ) {
+          custom_alert(
+            "محاولات متكررة, يرجى المحاولة لاحقا",
+            "<i class='fa fa-warning'></i>"
+          );
+        }
+      });
   }
 });

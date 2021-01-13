@@ -29,7 +29,7 @@
         </div>
     </div>
     <div class="w3-col s12 m8 l8">
-        <div class="w3-row white post-box raykomfi-border z-depth-1">
+        <div class="w3-row white post-box raykomfi-border z-depth-1" data-aos="zoom-out">
             <div class="w3-mobile">
                 {% if post.creator and post.creator.is_active != False %}
                 <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
@@ -171,8 +171,13 @@
             {% endif %}
         </div>
         <div>
-            <hr>
             <h3>الآراء</h3>
+        </div>
+        <div class="w3-margin-bottom center">
+            {% if post_comments|length > 3 %}
+            <button class="btn green white-text waves-effect waves-light top-add-comment">أضف رأيك <i
+                class="fa fa-plus"></i></button>
+            {% endif %}
         </div>
         <div class="w3-mobile reply-buttons">
             <div id="posts-wrapper">
@@ -194,7 +199,7 @@
                                 </a>
                                 {% else %}
                                 <span class="poster-name">
-                                    <img src="{{ comment.creator_image }}" alt="صورة مجهول على رايكم في"  class="w3-circle creator-profile-image">
+                                    <img src="{{ comment.user_image }}" alt="صورة مجهول على رايكم في"  class="w3-circle creator-profile-image">
                                     مجهول
                                 </span>
                                 {% endif %}
@@ -294,7 +299,7 @@
                                     </a>
                                     {% else %}
                                     <span class="poster-name">
-                                        <img src="{{ comment.creator_image }}" alt="صورة مجهول على رايكم في"  class="w3-circle creator-profile-image">
+                                        <img src="{{ comment.user_image }}" alt="صورة مجهول على رايكم في"  class="w3-circle creator-profile-image">
                                         مجهول
                                     </span>
                                     {% endif %}
@@ -436,42 +441,76 @@
                 المزيد</a>
         </div>
         {% endif %}
-
-        <div class="divider raykomfi-main-background-color w3-margin-top"></div>
-
+    </div>
+</div>
+<div class="w3-container">
+    <div class="w3-col s12 m4 l4 w3-hide-small">
+        &nbsp;
+    </div>
+    <div class="w3-col s12 m8 l8">
         <input type="hidden" id="post_id" value={{post.id}}>
-        <div class="w3-margin-bottom">
-            <button class="btn green white-text waves-effect waves-light" id="add-comment-no-register">أضف رأيك <i class="fa fa-plus"></i></button>
+        <div class="w3-margin-bottom center">
+            <button class="btn green white-text waves-effect waves-light" id="add-comment-no-register">أضف رأيك <i
+                    class="fa fa-plus"></i></button>
         </div>
+        
+        {% if user.is_authenticated %}
+        <div id="comment" class="add-comment-section signed-in-comment">
+            <div
+                class="talk-bubble tri-right border raykomfi-border {% cycle 'btm-right-in' ' left btm-left-in' %} raykomfi-margin-0">
+                <div class="w3-margin-bottom w3-margin-top">
+                    <img src="{{ user.profile_image }}" class="w3-circle w3-margin-right" alt="{{ user.username }} صورة" width="50" height="50">
+                    <span class="raykomfi-bold">{{ user.username }}</span>
+                </div>
+                <div class="talktext">
+                    <form class="commentForm" data-post-id="{{post.id}}">
+                        {% csrf_token %}
+                        <textarea cols="40" rows="10" class="w3-input anonymous-comment-textarea w3-margin-right  textarea-with-preservations" placeholder="أكتب رأيك..."></textarea>
+                        <div class="col s12">
+                            <button class='w3-button raykomfi-button z-depth-1 w3-margin-right w3-margin-bottom'>
+                                إضافة رأي</button>
+                        </div>
+        
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% else %}
         <div class="w3-mobile comment-button">
             <div class="w3-display-container">
-                <form class="commentNoRegisterForm" data-post-id="{{post.id}}">
-                     <div class="raykomfi-bold w3-margin-bottom">إذا أردت وصول تنبيهات في حالة أضيفت ردود لرأيك يجب عليك تسجيل دخولك للمنصة أو تسجيل حساب جديد مسبقًا.</div>
-                     <a href="{% url 'raykomfi:user-signin' %}" class="btn light-blue darken-2 white-text waves-effect waves-light">تسجيل دخول</a>
-                     <a href="{% url 'raykomfi:user-register' %}" class="btn white light-blue-text waves-effect waves-light">تسجيل حساب</a>
+                <form class="commentNoRegisterForm add-comment-section" data-post-id="{{post.id}}">
+                    <div class="raykomfi-bold w3-margin-bottom">إذا أردت وصول تنبيهات في حالة أضيفت ردود لرأيك يجب عليك
+                        تسجيل دخولك للمنصة أو تسجيل حساب جديد مسبقًا.</div>
+                    <a href="{% url 'raykomfi:user-signin' %}"
+                        class="btn light-blue darken-2 white-text waves-effect waves-light">تسجيل دخول</a>
+                    <a href="{% url 'raykomfi:user-register' %}"
+                        class="btn white light-blue-text waves-effect waves-light">تسجيل حساب</a>
 
-                     <div class="w3-margin-top w3-margin-bottom raykomfi-bold"> يمكنك أيضا إضافة رأيك كمجهول &#128526</div>
-                    <div class="talk-bubble tri-right border raykomfi-border {% cycle 'btm-right-in' ' left btm-left-in' %} raykomfi-margin-0">
+                    <div class="w3-margin-top w3-margin-bottom raykomfi-bold"> يمكنك أيضا إضافة رأيك كمجهول &#128526
+                    </div>
+                    <div class="talk-bubble tri-right border raykomfi-border btm-right-in raykomfi-border raykomfi-margin-0">
                         <div class="w3-margin-bottom w3-margin-top">
                             <img src="" class="w3-circle w3-margin-right" alt="إستفسر كمجهول" width="50" height="50" id="anonymous-image">
                             <span class="raykomfi-bold">مجهول</span>
                         </div>
                         <div class="talktext">
                             {% csrf_token %}
-                            <textarea cols="40" rows="10" class="anonymous-comment-textarea w3-margin-right" placeholder="أكتب رأيك..."></textarea>
-                            <input type="hidden" name="no_registration_image" id="id_creator_image" value="{{ no_registration_image }}">                        
+                            <textarea cols="40" rows="10" class="anonymous-comment-textarea w3-margin-right"
+                                placeholder="أكتب رأيك..."></textarea>
+                            <input type="hidden" name="no_registration_image" id="id_creator_image" value="{{ no_registration_image }}">
                             <div class="col s12">
                                 <button class='w3-button raykomfi-button z-depth-1 w3-margin-right'>
                                     إضافة رأي</button>
                             </div>
                             <div id="noRegisterCommentError" class="red-text w3-margin-top">
-                            
+                    
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+        {% endif %}
     </div>
 </div>
 <div class="w3-container w3-margin-top">
