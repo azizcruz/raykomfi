@@ -711,6 +711,39 @@ class SimilarQuestions(APIView):
                 related_posts = Post.objects.select_related('creator', 'category').filter(id__in=rand_ids)
 
                 referesh_posts_view_html = loader.render_to_string('similar_questions.html', {'related_posts': related_posts})
+
+                output_data = {
+                    'view': referesh_posts_view_html,
+                    'message': 'success'
+                }
+
+                return Response(output_data)
+
+            return JsonResponse({'message': 'not enough'})
+            
+        else:
+            return JsonResponse({'message': 'غير مخول لعمل هذا الشيء'}, status=status.HTTP_403_FORBIDDEN)
+
+
+class QuestionsNearYou(APIView):
+    '''
+    Post From Country
+    '''
+    permission_classes = [permissions.AllowAny]
+
+    @method_decorator(ratelimit(key='ip', rate='15/m', block=True))
+    def post(self, request):
+        serializer = serializers.FromYourCountryQuestions(data=request.data)
+
+        if serializer.is_valid():
+            rand_ids = Post.objects.select_related('creator', 'category').filter(creator__country__icontains=serializer.data['country']).values_list('id', flat=True)
+            related_posts = []
+            if len(rand_ids) > 5:
+                rand_ids = list(rand_ids)
+                rand_ids = sample(rand_ids, 5)
+                related_posts = Post.objects.select_related('creator', 'category').filter(id__in=rand_ids)
+
+                referesh_posts_view_html = loader.render_to_string('similar_questions.html', {'related_posts': related_posts})
                 
                 output_data = {
                     'view': referesh_posts_view_html,

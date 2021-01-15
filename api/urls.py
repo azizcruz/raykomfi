@@ -22,6 +22,7 @@ urlpatterns = [
     path('comment/vote', views.LikeDislikeView.as_view()),
     path('posts/search', views.SearchPostsView.as_view()),
     path('post/similar-posts', views.SimilarQuestions.as_view()),
+    path('post/questions-near-you', views.QuestionsNearYou.as_view()),
     path('comments/search', views.SearchCommentsView.as_view()),
     path('post/image', views.UploadImageView.as_view()),
     path('report/', views.ReportView.as_view()),

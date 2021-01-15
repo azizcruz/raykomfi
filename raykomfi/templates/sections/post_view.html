@@ -10,7 +10,7 @@
             <h4 class="center raykomfi-bold raykomfi-main-color">إستفسارات مشابهة</h4>
             <div class="w3-row">
                 <div class="w3-mobile">
-                    <div class="ajax-loading-request-wrapper">
+                    <div class="ajax-loading-request-wrapper latest-comments-load">
                         <div class="box-overlay w3-display-container similar-questions-fix">
                             <div class="content-loader">
                                 جاري التحميل ...
@@ -164,11 +164,11 @@
         </div>
         <div>
             {% if post.creator.id == user.id  and post.isActive == False %}
-            <div class="red white-text center w3-padding">يرجى الإنتظار ريثما تتم مراجعة الإستفسار</div>
+            <div class="red white-text center w3-padding w3-margin-top">يرجى الإنتظار ريثما تتم مراجعة الإستفسار</div>
             {% endif %}
         </div>
         <div>
-            <h3>الآراء</h3>
+            <h3 class="grey-text">الآراء</h3>
         </div>
         <div class="w3-margin-bottom center">
             {% if post_comments|length > 3 %}
@@ -512,24 +512,20 @@
 </div>
 <div class="w3-container w3-margin-top">
     <div class="w3-col s12 m4 l4 w3-hide-medium w3-hide-large">
-        <div class="related-posts w3-padding-16 w3-white z-depth-1 raykomfi-border raykomfi-border-3 w3-margin-top">
-            <h4 class="center">إستفسارات مشابهة</h4>
+        <div class="related-posts w3-padding-16 w3-white z-depth-1 similar-questions">
+            <h4 class="center raykomfi-bold raykomfi-main-color">إستفسارات مشابهة</h4>
             <div class="w3-row">
                 <div class="w3-mobile">
-                    {% for related_post in related_posts %}
-                    <div class="w3-margin">
-                        <a href="{{ related_post.get_absolute_url }}">
-                            {% if related_post.creator and related_post.creator.is_active != False %}
-                            <span class="w3-round-small w3-right">
-                                {{related_post.creator}}
-                            </span>
-                            {% else %}
-                            <span class="w3-round-small w3-right">مجهول</span>
-                            {% endif %}
-    
-                            &nbsp; <span class="raykomfi-color">{{related_post.title}}</span></a>
+                    <div class="ajax-loading-request-wrapper">
+                        <div class="box-overlay w3-display-container similar-questions-fix">
+                            <div class="content-loader">
+                                جاري التحميل ...
+                            </div>
+                        </div>
                     </div>
-                    {% endfor %}
+                    <div class="similar-questions-wrapper">
+                        <div class="no-results-now-style">لا توجد نتائج حاليا</div>
+                    </div>
                 </div>
             </div>
         </div>

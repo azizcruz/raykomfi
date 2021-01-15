@@ -10,8 +10,23 @@
 
 <div class="w3-row-padding">
     <div class="w3-col s12 m4 l4 w3-hide-small">
-        <div class="w3-padding w3-white z-depth-1 latest-opinions w3-round-medium similar-questions">
+        <div class="w3-padding w3-white z-depth-1 latest-opinions w3-round-medium">
             <h4 class="w3-center raykomfi-bold raykomfi-main-color">آخر الآراء</h4>
+            <div class="ajax-loading-request-wrapper latest-comments-load">
+                <div class="box-overlay w3-display-container">
+                    <div class="content-loader">
+                        جاري التحميل ...
+                    </div>
+                </div>
+            </div>
+            <div class="latest-comments-wrapper">
+                <div class="no-results-now-style">لا توجد نتائج حاليا</div>
+            </div>
+        </div>
+
+        
+        <div class="w3-padding w3-white z-depth-1 near-you-questions w3-round-medium w3-margin-top">
+            <h4 class="w3-center raykomfi-bold raykomfi-main-color w3-large">إستفسارات من منطقتك</h4>
             <div class="ajax-loading-request-wrapper">
                 <div class="box-overlay w3-display-container">
                     <div class="content-loader">
@@ -19,10 +34,11 @@
                     </div>
                 </div>
             </div>
-            <div id="latest-comments-wrapper">
+            <div class="questions-near-you-wrapper">
                 <div class="no-results-now-style">لا توجد نتائج حاليا</div>
             </div>
         </div>
+       
     </div>
     
     <div class="w3-col s12 m8 l8 ray">
@@ -218,24 +234,31 @@
 
     </div>
     <div class="w3-col s12 m4 l4 w3-hide-medium w3-hide-large">
-        <div class="w3-padding w3-white w3-round-medium  z-depth-1 latest-opinions">
-            <h4 class="w3-center">اخر الأراء</h4>
-            {% for comment in latest_comments %}
-            <div class="w3-row latest-opinion">
-                {% if comment.user and comment.user.is_active != False %}
-                <a href="{% url 'raykomfi:user-profile' id=comment.user.id %}"><span><i class="fa fa-user"
-                            aria-hidden="true"></i> {{comment.user}}</span></a>
-                {% else %}
-                <span><i class="fa fa-user" aria-hidden="true"></i> مجهول</span>
-                {% endif %}
-                <p class="truncate">{{ comment.content | safe }}</p>
-                <div class="">
-                    <span class="w3-tag red white-text w3-round-medium w3-small w3-padding-small">رأي في
-                        </span>
-                    <a href="{{ comment.post.get_absolute_url }}" class="">{{ comment.post.title|truncatechars:100 }}</a>
+        <div class="w3-padding w3-white z-depth-1 latest-opinions w3-round-medium similar-questions">
+            <h4 class="w3-center raykomfi-bold raykomfi-main-color">آخر الآراء</h4>
+            <div class="ajax-loading-request-wrapper">
+                <div class="box-overlay w3-display-container">
+                    <div class="content-loader">
+                        جاري التحميل ...
+                    </div>
                 </div>
             </div>
-            {% endfor %}
+            <div class="latest-comments-wrapper">
+                <div class="no-results-now-style">لا توجد نتائج حاليا</div>
+            </div>
+        </div>
+        <div class="w3-padding w3-white z-depth-1 near-you-questions w3-round-medium w3-margin-top">
+            <h4 class="w3-center raykomfi-bold raykomfi-main-color w3-large">إستفسارات من منطقتك</h4>
+            <div class="ajax-loading-request-wrapper">
+                <div class="box-overlay w3-display-container">
+                    <div class="content-loader">
+                        جاري التحميل ...
+                    </div>
+                </div>
+            </div>
+            <div class="questions-near-you-wrapper">
+                <div class="no-results-now-style">لا توجد نتائج حاليا</div>
+            </div>
         </div>
     </div>
 </div>

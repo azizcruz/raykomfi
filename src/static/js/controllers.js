@@ -615,18 +615,20 @@ $(document).on("click", ".admin-action-btn", function (e) {
 });
 
 
-var latestCommentWrapper = $('#latest-comments-wrapper');
+var latestCommentWrapper = $('.latest-comments-wrapper');
 var similarQuestionsWrapper = $('.similar-questions-wrapper');
+var questionsNearYouWrapper = $('.questions-near-you-wrapper');
 var ajaxLoading = $('.ajax-loading-request-wrapper');
+var latestCommentsAjaxLoading = $('.ajax-loading-request-wrapper.latest-comments-load');
 // Latest Comments Load
 function loadLatestComments() {
-  ajaxLoading.show(1000);
+  latestCommentsAjaxLoading.show(1000);
   axios({
     method: "GET",
     url: "/api/comment/latest-comments"
   })
     .then((response) => {
-      ajaxLoading.hide(1000);
+      latestCommentsAjaxLoading.hide(1000);
       latestCommentWrapper.html(response.data.view)
     })
     .catch((err) => {
@@ -635,17 +637,19 @@ function loadLatestComments() {
         err.response.status === 403 &&
         err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
       ) {
+        latestCommentsAjaxLoading.hide()
         custom_alert(
           "محاولات متكررة, يرجى المحاولة لاحقا",
           "<i class='fa fa-warning'></i>"
         );
       } else {
-        ajaxLoading.hide('clip', 200)
+        latestCommentsAjaxLoading.hide('clip', 200)
         latestCommentWrapper.appendChild('<div class="no-results-now-style">لا توجد نتائج حاليا</div>')
       }
     });
 }
 
+// Similar Questions
 function loadSimilarQuestions() {
   ajaxLoading.show(1000);
   axios({
@@ -681,6 +685,41 @@ function loadSimilarQuestions() {
     });
 }
 
+// Questions Near You
+function loadNearYouQuestions() {
+  ajaxLoading.show(1000);
+  axios({
+    method: "POST",
+    url: "/api/post/questions-near-you",
+    data: {
+      country: sessionStorage.getItem("country")
+    },
+    headers: {
+      "X-CSRFTOKEN": Cookies.get("csrftoken"),
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      ajaxLoading.hide(1000);
+      questionsNearYouWrapper.html(response.data.view)
+    })
+    .catch((err) => {
+      theBtn.addClass("admin-action-btn");
+      if (
+        err.response.status === 403 &&
+        err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+      ) {
+        custom_alert(
+          "محاولات متكررة, يرجى المحاولة لاحقا",
+          "<i class='fa fa-warning'></i>"
+        );
+      } else {
+        ajaxLoading.hide(200)
+        latestCommentWrapper.appendChild('<div class="no-results-now-style">لا توجد نتائج حاليا</div>')
+      }
+    });
+}
+
 
 if(latestCommentWrapper.length > 0) {
   loadLatestComments()
@@ -691,4 +730,8 @@ if(latestCommentWrapper.length > 0) {
 
 if(similarQuestionsWrapper.length > 0) {
   loadSimilarQuestions()
+}
+
+if(questionsNearYouWrapper.length > 0) {
+  loadNearYouQuestions()
 }

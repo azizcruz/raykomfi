@@ -104,3 +104,9 @@ class SimilarQuestions(serializers.Serializer):
     category = serializers.CharField()
     class Meta:
         fields = ['category']
+
+class FromYourCountryQuestions(serializers.Serializer):
+    country = serializers.CharField()
+    class Meta:
+        fields = ['country']
+

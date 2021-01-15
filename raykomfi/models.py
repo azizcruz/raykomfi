@@ -129,7 +129,7 @@ class Category(models.Model):
 
 class Post(models.Model, HitCountMixin):
     creator = models.ForeignKey(User, related_name='posts', verbose_name='الكاتب',  on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_index=True)
-    creator_image = models.URLField(verbose_name='صورة الكاتب', blank=True, null=True, default='/media/profile_images/0.png')
+    creator_image = models.CharField(max_length=255, verbose_name='صورة الكاتب', blank=True, null=True, default='/media/profile_images/0.png')
     category = models.ForeignKey(
         Category, verbose_name='التصنيف', null=True, on_delete=models.SET_DEFAULT, default=None, db_index=True)
     title = models.CharField(
