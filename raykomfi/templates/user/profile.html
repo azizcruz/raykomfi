@@ -65,7 +65,7 @@
     {% else %}
     <div class="w3-col s12 m6 l6">
         <div class="w3-center">
-            <img src="{{ user.profile_image }}" alt="{{user.username }} رايكم في -" class="w3-circle user-profile-image">
+            <img src="{{ profile.profile_image }}" alt="{{profile.username }} رايكم في -" class="w3-circle user-profile-image">
             <h1 class="w3-xxlarge">{{profile.username}}</h1>
             {% if profile.online == True %}
             <div><i class="fa fa-circle green-text w3-medium" aria-hidden="true"></i> متصل حاليا</div>
@@ -95,7 +95,7 @@
                  {% endif %}</p>
             <hr>
             <p><span class="title">قوة الرأي</span><span class="opinion-power">{{profile.user_trust}}</span></p>
-            {% if user.email_active and profile.allow_messages == True %}
+            {% if profile.email_active and profile.allow_messages == True %}
             <a href="{% url 'raykomfi:new-message' code=profile.uuid %}" class="w3-button raykomfi-button ">
                 إرسال رسالة
             </a>

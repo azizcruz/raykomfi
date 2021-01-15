@@ -6,24 +6,20 @@
 {% block content %}
 <div class="w3-row-padding raykomfi-main-padding raykomfi-max-width">
     <div class="w3-col s12 m4 l4 w3-hide-small">
-        <div class="related-posts w3-padding-16 w3-white z-depth-1 raykomfi-border raykomfi-border-3">
-            <h4 class="center">إستفسارات مشابهة</h4>
+        <div class="related-posts w3-padding-16 w3-white z-depth-1 similar-questions">
+            <h4 class="center raykomfi-bold raykomfi-main-color">إستفسارات مشابهة</h4>
             <div class="w3-row">
                 <div class="w3-mobile">
-                    {% for related_post in related_posts %}
-                    <div class="w3-margin">
-                        <a href="{{ related_post.get_absolute_url }}">
-                            {% if related_post.creator and related_post.creator.is_active != False %}
-                            <span class="w3-round-small w3-right">
-                                {{related_post.creator}}
-                            </span>
-                            {% else %}
-                            <span class="w3-round-small w3-right">مجهول</span>
-                            {% endif %}
-
-                            &nbsp; <span class="raykomfi-color">{{related_post.title}}</span></a>
+                    <div class="ajax-loading-request-wrapper">
+                        <div class="box-overlay w3-display-container similar-questions-fix">
+                            <div class="content-loader">
+                                جاري التحميل ...
+                            </div>
+                        </div>
                     </div>
-                    {% endfor %}
+                    <div class="similar-questions-wrapper">
+                        <div class="no-results-now-style">لا توجد نتائج حاليا</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -49,6 +45,7 @@
                             </span>{{post.created|naturalday}}</span> &nbsp;&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true"></i> <span class="created-time grey-text raykomfi-bold"> <span class="grey-text raykomfi-bold">آخر تعديل
                             </span>{{post.updated|naturalday}}</span></div>
                 </div>
+                <input type="hidden" name="post_category" id="post-category" value="{{post.category.name}}">
             </div>
             <div class="w3-mobile">
                 <h1 class="raykomfi-bold raykomfi-main-color post-title">{{post.title}}</h1>

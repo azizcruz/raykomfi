@@ -613,3 +613,82 @@ $(document).on("click", ".admin-action-btn", function (e) {
       });
   }
 });
+
+
+var latestCommentWrapper = $('#latest-comments-wrapper');
+var similarQuestionsWrapper = $('.similar-questions-wrapper');
+var ajaxLoading = $('.ajax-loading-request-wrapper');
+// Latest Comments Load
+function loadLatestComments() {
+  ajaxLoading.show(1000);
+  axios({
+    method: "GET",
+    url: "/api/comment/latest-comments"
+  })
+    .then((response) => {
+      ajaxLoading.hide(1000);
+      latestCommentWrapper.html(response.data.view)
+    })
+    .catch((err) => {
+      theBtn.addClass("admin-action-btn");
+      if (
+        err.response.status === 403 &&
+        err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+      ) {
+        custom_alert(
+          "محاولات متكررة, يرجى المحاولة لاحقا",
+          "<i class='fa fa-warning'></i>"
+        );
+      } else {
+        ajaxLoading.hide('clip', 200)
+        latestCommentWrapper.appendChild('<div class="no-results-now-style">لا توجد نتائج حاليا</div>')
+      }
+    });
+}
+
+function loadSimilarQuestions() {
+  ajaxLoading.show(1000);
+  axios({
+    method: "POST",
+    url: "/api/post/similar-posts",
+    data: {
+      category: $('#post-category').val()
+    },
+    headers: {
+      "X-CSRFTOKEN": Cookies.get("csrftoken"),
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      ajaxLoading.hide(1000);
+      console.log(response.data.view)
+      similarQuestionsWrapper.html(response.data.view)
+    })
+    .catch((err) => {
+      theBtn.addClass("admin-action-btn");
+      if (
+        err.response.status === 403 &&
+        err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+      ) {
+        custom_alert(
+          "محاولات متكررة, يرجى المحاولة لاحقا",
+          "<i class='fa fa-warning'></i>"
+        );
+      } else {
+        ajaxLoading.hide('clip', 200)
+        latestCommentWrapper.appendChild('<div class="no-results-now-style">لا توجد نتائج حاليا</div>')
+      }
+    });
+}
+
+
+if(latestCommentWrapper.length > 0) {
+  loadLatestComments()
+  setInterval(function() {
+    loadLatestComments()
+  }, 30000)
+}
+
+if(similarQuestionsWrapper.length > 0) {
+  loadSimilarQuestions()
+}

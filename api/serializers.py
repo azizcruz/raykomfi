@@ -99,3 +99,8 @@ class ReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
         fields = ['content', 'reported_url', 'topic']
+
+class SimilarQuestions(serializers.Serializer):
+    category = serializers.CharField()
+    class Meta:
+        fields = ['category']

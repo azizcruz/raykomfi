@@ -29,6 +29,7 @@ from raykomfi.background_tasks import send_notify
 from notifications.models import Notification
 from .models import BestUserListTrack
 import json
+from random import sample
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -671,3 +672,55 @@ class AdminActionsView(APIView):
 
         else:
             return JsonResponse({'message': 'غير مخول لعمل هذا الشيء'}, status=status.HTTP_403_FORBIDDEN)
+
+
+
+
+class LatestComments(APIView):
+    '''
+    Latest Comments
+    '''
+    permission_classes = [permissions.AllowAny]
+
+    @method_decorator(ratelimit(key='ip', rate='15/m', block=True))
+    def get(self, request):
+        latest_comments = Comment.objects.prefetch_related('user', 'post', 'replies').filter(post__isActive=True).order_by('-created')[:10]
+        referesh_posts_view_html = loader.render_to_string('latest_comments.html', {'latest_comments': latest_comments})
+        output_data = {
+            'view': referesh_posts_view_html,
+            'message': 'success'
+        }
+        return Response(output_data)
+
+class SimilarQuestions(APIView):
+    '''
+    Similar Questions
+    '''
+    permission_classes = [permissions.AllowAny]
+
+    @method_decorator(ratelimit(key='ip', rate='15/m', block=True))
+    def post(self, request):
+        serializer = serializers.SimilarQuestions(data=request.data)
+
+        if serializer.is_valid():
+            rand_ids = Post.objects.select_related('creator', 'category').filter(category__name=serializer.data['category']).values_list('id', flat=True)
+            related_posts = []
+            if len(rand_ids) > 6:
+                rand_ids = list(rand_ids)
+                rand_ids = sample(rand_ids, 6)
+                related_posts = Post.objects.select_related('creator', 'category').filter(id__in=rand_ids)
+
+                referesh_posts_view_html = loader.render_to_string('similar_questions.html', {'related_posts': related_posts})
+                
+                output_data = {
+                    'view': referesh_posts_view_html,
+                    'message': 'success'
+                }
+
+                return Response(output_data)
+
+            return JsonResponse({'message': 'not enough'})
+            
+        else:
+            return JsonResponse({'message': 'غير مخول لعمل هذا الشيء'}, status=status.HTTP_403_FORBIDDEN)
+
