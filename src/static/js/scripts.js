@@ -626,3 +626,28 @@ $('.top-add-comment').on('click', function() {
   }, 1000);
   }, 100)
 })
+
+// Category Dropdown
+$('.category-button').on('click', function() {
+  var categoryWrapper = $('.category-wrapper');
+  if(categoryWrapper.hasClass('show-category')) {
+    categoryWrapper.removeClass('show-category')
+    categoryWrapper.hide('slide', {direction: 'up'}, 300)
+  } else {
+    categoryWrapper.addClass('show-category')
+    categoryWrapper.show('slide', {direction: 'up'}, 300)
+  }
+})
+
+// Set report comment or reply url
+$(document).on('click', '.raykomfi-report-btn', function() {
+  var data = $(this).data()
+
+  if(data.hasOwnProperty('replyUrl')) {
+    $('#reply-reported-url').val(data.replyUrl)
+    $('#reportReply').show()
+  } else {
+    $('#comment-reported-url').val(data.commentUrl)
+    $('#reportComment').show()
+  }
+})

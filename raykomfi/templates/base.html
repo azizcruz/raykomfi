@@ -213,8 +213,36 @@
     </div>
     <nav class="w3-sidebar w3-bar-block w3-animate-right w3-card" id="mySidebar">
         <a class="w3-bar-item w3-medium" href="javascript:void(0)" onclick="w3_close()"><i class="fa fa-remove"></i></a>
-        
             <input type="hidden" name="" id="csrf_token" value="{{ csrf_token }}">
+            <div class="nav-links">
+                <a href="/">الرئيسية</a>
+                <a href="{% url 'raykomfi:user-register-withnosignup' %}">أضف أستفسار</a>
+                <a class="category-button">التصنيفات <i class="fa fa-caret-down"></i></a>
+                <div class="category-wrapper w3-margin-bottom">
+                    {% for category in categories %}
+                    <ul class="category-list">
+                        <li>
+                            <a href="{% url 'raykomfi:filtered-posts' category=category.name %}">{{category.name}}</a>
+                        </li>
+                    </ul>
+                    {% endfor %}
+                </div>
+                <a href="{% url 'raykomfi:users-ranking' %}">ترتيب أعضاء رايكم في</a>
+                <a href="{% url 'raykomfi:about' %}">عن رايكم في</a>
+                <div class="raykomfi-social-media side-nav-social-media">
+                    <div>
+                        <a href="https://web.facebook.com/raykomfi.original" target="_blank" title="فيسبوك رايكم في"><i
+                                class="fa fa-facebook-square blue-text fa-2x"></i></a>
+                    </div>
+                    <div>
+                        <a href="https://twitter.com/raykomfi" target="_blank" title="تويتر رايكم في"><i
+                                class="fa fa-twitter-square blue-text fa-2x"></i></a>
+                    </div>
+                    <!-- <div>
+                                                                                <a href=""><i class="fa fa-instagram" title="انستغرام رايكم في"></i></a>
+                                                                            </div> -->
+                </div>
+            </div>
     </nav>
     <div class="w3-main raykomfi-main" id="main">
 

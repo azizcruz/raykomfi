@@ -929,3 +929,8 @@ def robots_txt(request):
         "Disallow: /admin/",
         ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
+
+@require_GET
+@ratelimit(key='ip', rate='50/m', block=True)
+def users_ranking_view(request):
+    return render(request, 'sections/users_ranking.html')

@@ -387,6 +387,7 @@ class CustomPasswordResetForm(PasswordResetForm):
 
 @parsleyfy
 class NewPostForm(forms.ModelForm):
+    country = forms.CharField(required=False, widget=forms.HiddenInput())
 
     class Meta:
         model = Post
@@ -405,6 +406,8 @@ class NewPostForm(forms.ModelForm):
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
             if fieldname == 'content':
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  post-content'
+            # if fieldname == 'country':
+            #     self.fields[fieldname].widget.attrs['id'] = 'post-country'
                
     def clean_title(self):
         title = self.cleaned_data.get('title')
@@ -422,9 +425,11 @@ class NewPostForm(forms.ModelForm):
 @parsleyfy
 class NewPostWithNoRegistrationForm(forms.ModelForm):
     creator_image = forms.CharField(widget=forms.HiddenInput(), required=True)
+    country = forms.CharField(required=False, widget=forms.HiddenInput())
+
     class Meta:
         model = Post
-        fields = ('creator_image', 'category', 'title', 'content')
+        fields = ('creator_image', 'category', 'title', 'content', 'country')
 
     def __init__(self, *args, **kwargs):
         super(NewPostWithNoRegistrationForm, self).__init__(*args, **kwargs)
@@ -535,7 +540,7 @@ class MessageForm(forms.ModelForm):
                 self.fields[fieldname].required = True
             if fieldname == 'content':
                 self.fields[fieldname].widget.attrs['rows'] = 10
-                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border textarea-with-preservations'
                 self.fields[fieldname].widget.attrs['placeholder'] = ''
                 self.fields[fieldname].widget.attrs['id'] = 'new-message-content'
                 self.fields[fieldname].help_text = 'مسموح 255 حرف فقط'

@@ -573,9 +573,10 @@ class ReportView(APIView):
     '''
     permission_classes = [permissions.IsAuthenticated]
 
-    @method_decorator(ratelimit(key='ip', rate='1/m', block=True))
+    @method_decorator(ratelimit(key='ip', rate='5/m', block=True))
     def post(self, request):
         serializer = serializers.ReportSerializer(data=request.data)
+        set_trace()
         if serializer.is_valid():
             admin = User.objects.get(email=os.getenv('ADMIN_EMAIL'))
             report = Report.objects.create(user=request.user, content=serializer.validated_data['content'], topic=serializer.validated_data['topic'], reported_url=serializer.validated_data['reported_url'])

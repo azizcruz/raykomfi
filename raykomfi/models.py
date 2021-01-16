@@ -130,6 +130,7 @@ class Category(models.Model):
 class Post(models.Model, HitCountMixin):
     creator = models.ForeignKey(User, related_name='posts', verbose_name='الكاتب',  on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_index=True)
     creator_image = models.CharField(max_length=255, verbose_name='صورة الكاتب', blank=True, null=True, default='/media/profile_images/0.png')
+    country = models.CharField(max_length=255, verbose_name='دولة الكاتب', blank=True, null=True, default='')
     category = models.ForeignKey(
         Category, verbose_name='التصنيف', null=True, on_delete=models.SET_DEFAULT, default=None, db_index=True)
     title = models.CharField(
@@ -229,6 +230,7 @@ class Comment(models.Model):
     user = models.ForeignKey(
         User, related_name='my_comments', verbose_name='صاحب النعليق', on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_index=True)
     user_image = models.CharField(max_length=255, verbose_name='صورة الكاتب', blank=True, null=True, default='/media/profile_images/0.png')
+    country = models.CharField(max_length=255, verbose_name='دولة الكاتب', blank=True, null=True, default='')
     post = models.ForeignKey(
         Post, related_name='comments', verbose_name='المنشور', on_delete=models.CASCADE)
     content = models.TextField(verbose_name='التعليق', db_index=True)

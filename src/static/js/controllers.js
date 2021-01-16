@@ -121,6 +121,18 @@ $(document).on("submit", "form.commentForm", function (e) {
             500
           );
         }, 100);
+
+        setTimeout(() => {
+          console.log('niow')
+          $("#comment-id-" + comment_id)
+            .stop()
+            .animate({ backgroundColor: "#FFFFE0" }, 250)
+            .animate({ backgroundColor: "#FFFFFF" }, 250)
+            .animate({ backgroundColor: "#FFFFE0" }, 250)
+            .animate({ backgroundColor: "#FFFFFF" }, 250)
+            .animate({ backgroundColor: "#FFFFE0" }, 250)
+            .animate({ backgroundColor: "#FFFFFF" }, 250);
+        }, 700);
       })
       .catch((err) => {
         $(this)[0][2].disabled = false;
@@ -169,6 +181,17 @@ $(document).on("submit", "form.commentNoRegisterForm", function (e) {
             500
           );
         }, 100);
+
+        setTimeout(() => {
+          $("#comment-id-" + comment_id)
+            .stop()
+            .animate({ backgroundColor: "#FFFFE0" }, 250)
+            .animate({ backgroundColor: "#FFFFFF" }, 250)
+            .animate({ backgroundColor: "#FFFFE0" }, 250)
+            .animate({ backgroundColor: "#FFFFFF" }, 250)
+            .animate({ backgroundColor: "#FFFFE0" }, 250)
+            .animate({ backgroundColor: "#FFFFFF" }, 250);
+        }, 700);
       })
       .catch((err) => {
         if (
@@ -517,6 +540,11 @@ $(document).on("submit", "form.reportForm", function (e) {
         sendBtn.text(response.data.message);
         $("form.reportForm").trigger("reset");
         setTimeout(() => {
+          $('#reportComment').hide()
+          $('#reportReply').hide()
+          $('#reportPost').hide()
+        }, 500)
+        setTimeout(() => {
           sendBtn.attr("disabled", false);
           sendBtn.text("إرسال");
         }, 60 * 1000);
@@ -665,7 +693,6 @@ function loadSimilarQuestions() {
   })
     .then((response) => {
       ajaxLoading.hide(1000);
-      console.log(response.data.view)
       similarQuestionsWrapper.html(response.data.view)
     })
     .catch((err) => {

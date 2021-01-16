@@ -18,7 +18,11 @@
         </div>
         <hr />
         <div class="message-content">
-            <span id="message-content-field">{{fetched_message.content|safe}}</span>
+            <span id="message-content-field">
+            <pre>
+                {{fetched_message.content|safe}}
+            </pre>
+        </span>
         </div>
         {% else %} لم تعرض أي رسالة {% endif %}
     </div>
