@@ -17,6 +17,7 @@ urlpatterns = [
     path('comment/edit', views.CommentsView.as_view()),
     path('comment/latest-comments/', views.LatestComments.as_view()),
     path('reply/add', views.RepliesView.as_view()),
+    path('reply/add/anonymous', views.AnonymousRepliesView.as_view()),
     path('reply/edit', views.RepliesView.as_view()),
     path('messages/get', views.GetMessageView.as_view()),
     path('comment/vote', views.LikeDislikeView.as_view()),

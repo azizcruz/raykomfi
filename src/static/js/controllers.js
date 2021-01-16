@@ -14,39 +14,76 @@ $(document).on("submit", "form.replyForm", function (e) {
   e.preventDefault();
   let content = replacePlainLinks(e.target[1].value);
   let { commentId } = e.target.dataset;
+  var button = $(this)[0][2];
   if (content) {
     $(this)[0][2].disabled = true;
-    axios({
-      method: "POST",
-      url: "/api/reply/add",
-      headers: {
-        "X-CSRFTOKEN": Cookies.get("csrftoken"),
-        "Content-Type": "application/json",
-      },
-      data: {
-        content: content,
-        comment_id: parseInt(commentId),
-      },
-    })
-      .then((response) => {
-        $(this)[0][2].disabled = false;
-        let comment_view = $(`#comment-id-${commentId}`);
-        view_html = response.data.view;
-        comment_view.html(view_html);
-        generateStars();
-        e.target[0].value = "";
+
+    // Reply as anonymous
+    if ($(button).data().hasOwnProperty("asAnonymous")) {
+      axios({
+        method: "POST",
+        url: "/api/reply/add/anonymous",
+        headers: {
+          "X-CSRFTOKEN": Cookies.get("csrftoken"),
+          "Content-Type": "application/json",
+        },
+        data: {
+          content: content,
+          comment_id: parseInt(commentId),
+        },
       })
-      .catch((err) => {
-        if (
-          err.response.status === 403 &&
-          err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
-        ) {
-          custom_alert(
-            "محاولات متكررة, يرجى المحاولة لاحقا",
-            "<i class='fa fa-warning'></i>"
-          );
-        }
-      });
+        .then((response) => {
+          $(this)[0][2].disabled = false;
+          let comment_view = $(`#comment-id-${commentId}`);
+          view_html = response.data.view;
+          comment_view.html(view_html);
+          generateStars();
+          e.target[0].value = "";
+        })
+        .catch((err) => {
+          if (
+            err.response.status === 403 &&
+            err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+          ) {
+            custom_alert(
+              "محاولات متكررة, يرجى المحاولة لاحقا",
+              "<i class='fa fa-warning'></i>"
+            );
+          }
+        });
+    } else {
+      axios({
+        method: "POST",
+        url: "/api/reply/add",
+        headers: {
+          "X-CSRFTOKEN": Cookies.get("csrftoken"),
+          "Content-Type": "application/json",
+        },
+        data: {
+          content: content,
+          comment_id: parseInt(commentId),
+        },
+      })
+        .then((response) => {
+          $(this)[0][2].disabled = false;
+          let comment_view = $(`#comment-id-${commentId}`);
+          view_html = response.data.view;
+          comment_view.html(view_html);
+          generateStars();
+          e.target[0].value = "";
+        })
+        .catch((err) => {
+          if (
+            err.response.status === 403 &&
+            err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+          ) {
+            custom_alert(
+              "محاولات متكررة, يرجى المحاولة لاحقا",
+              "<i class='fa fa-warning'></i>"
+            );
+          }
+        });
+    }
   }
 });
 
@@ -108,7 +145,7 @@ $(document).on("submit", "form.commentForm", function (e) {
         $(this)[0][2].disabled = false;
         let view_html = response.data.view;
         let post_wrapper = document.getElementById("posts-wrapper");
-        var comment_id = response.data.comment_id
+        var comment_id = response.data.comment_id;
         post_wrapper.innerHTML = view_html;
         $("#lazyLoadLinkComments").hide();
         e.target[1].value = "";
@@ -123,7 +160,7 @@ $(document).on("submit", "form.commentForm", function (e) {
         }, 100);
 
         setTimeout(() => {
-          console.log('niow')
+          console.log("niow");
           $("#comment-id-" + comment_id)
             .stop()
             .animate({ backgroundColor: "#FFFFE0" }, 250)
@@ -540,10 +577,10 @@ $(document).on("submit", "form.reportForm", function (e) {
         sendBtn.text(response.data.message);
         $("form.reportForm").trigger("reset");
         setTimeout(() => {
-          $('#reportComment').hide()
-          $('#reportReply').hide()
-          $('#reportPost').hide()
-        }, 500)
+          $("#reportComment").hide();
+          $("#reportReply").hide();
+          $("#reportPost").hide();
+        }, 500);
         setTimeout(() => {
           sendBtn.attr("disabled", false);
           sendBtn.text("إرسال");
@@ -642,22 +679,23 @@ $(document).on("click", ".admin-action-btn", function (e) {
   }
 });
 
-
-var latestCommentWrapper = $('.latest-comments-wrapper');
-var similarQuestionsWrapper = $('.similar-questions-wrapper');
-var questionsNearYouWrapper = $('.questions-near-you-wrapper');
-var ajaxLoading = $('.ajax-loading-request-wrapper');
-var latestCommentsAjaxLoading = $('.ajax-loading-request-wrapper.latest-comments-load');
+var latestCommentWrapper = $(".latest-comments-wrapper");
+var similarQuestionsWrapper = $(".similar-questions-wrapper");
+var questionsNearYouWrapper = $(".questions-near-you-wrapper");
+var ajaxLoading = $(".ajax-loading-request-wrapper");
+var latestCommentsAjaxLoading = $(
+  ".ajax-loading-request-wrapper.latest-comments-load"
+);
 // Latest Comments Load
 function loadLatestComments() {
   latestCommentsAjaxLoading.show(1000);
   axios({
     method: "GET",
-    url: "/api/comment/latest-comments"
+    url: "/api/comment/latest-comments",
   })
     .then((response) => {
       latestCommentsAjaxLoading.hide(1000);
-      latestCommentWrapper.html(response.data.view)
+      latestCommentWrapper.html(response.data.view);
     })
     .catch((err) => {
       theBtn.addClass("admin-action-btn");
@@ -665,14 +703,16 @@ function loadLatestComments() {
         err.response.status === 403 &&
         err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
       ) {
-        latestCommentsAjaxLoading.hide()
+        latestCommentsAjaxLoading.hide();
         custom_alert(
           "محاولات متكررة, يرجى المحاولة لاحقا",
           "<i class='fa fa-warning'></i>"
         );
       } else {
-        latestCommentsAjaxLoading.hide('clip', 200)
-        latestCommentWrapper.appendChild('<div class="no-results-now-style">لا توجد نتائج حاليا</div>')
+        latestCommentsAjaxLoading.hide("clip", 200);
+        latestCommentWrapper.appendChild(
+          '<div class="no-results-now-style">لا توجد نتائج حاليا</div>'
+        );
       }
     });
 }
@@ -684,7 +724,7 @@ function loadSimilarQuestions() {
     method: "POST",
     url: "/api/post/similar-posts",
     data: {
-      category: $('#post-category').val()
+      category: $("#post-category").val(),
     },
     headers: {
       "X-CSRFTOKEN": Cookies.get("csrftoken"),
@@ -693,7 +733,7 @@ function loadSimilarQuestions() {
   })
     .then((response) => {
       ajaxLoading.hide(1000);
-      similarQuestionsWrapper.html(response.data.view)
+      similarQuestionsWrapper.html(response.data.view);
     })
     .catch((err) => {
       theBtn.addClass("admin-action-btn");
@@ -706,8 +746,10 @@ function loadSimilarQuestions() {
           "<i class='fa fa-warning'></i>"
         );
       } else {
-        ajaxLoading.hide('clip', 200)
-        latestCommentWrapper.appendChild('<div class="no-results-now-style">لا توجد نتائج حاليا</div>')
+        ajaxLoading.hide("clip", 200);
+        latestCommentWrapper.appendChild(
+          '<div class="no-results-now-style">لا توجد نتائج حاليا</div>'
+        );
       }
     });
 }
@@ -719,7 +761,7 @@ function loadNearYouQuestions() {
     method: "POST",
     url: "/api/post/questions-near-you",
     data: {
-      country: sessionStorage.getItem("country")
+      country: sessionStorage.getItem("country"),
     },
     headers: {
       "X-CSRFTOKEN": Cookies.get("csrftoken"),
@@ -728,7 +770,7 @@ function loadNearYouQuestions() {
   })
     .then((response) => {
       ajaxLoading.hide(1000);
-      questionsNearYouWrapper.html(response.data.view)
+      questionsNearYouWrapper.html(response.data.view);
     })
     .catch((err) => {
       theBtn.addClass("admin-action-btn");
@@ -741,24 +783,25 @@ function loadNearYouQuestions() {
           "<i class='fa fa-warning'></i>"
         );
       } else {
-        ajaxLoading.hide(200)
-        latestCommentWrapper.appendChild('<div class="no-results-now-style">لا توجد نتائج حاليا</div>')
+        ajaxLoading.hide(200);
+        latestCommentWrapper.appendChild(
+          '<div class="no-results-now-style">لا توجد نتائج حاليا</div>'
+        );
       }
     });
 }
 
-
-if(latestCommentWrapper.length > 0) {
-  loadLatestComments()
-  setInterval(function() {
-    loadLatestComments()
-  }, 30000)
+if (latestCommentWrapper.length > 0) {
+  loadLatestComments();
+  setInterval(function () {
+    loadLatestComments();
+  }, 30000);
 }
 
-if(similarQuestionsWrapper.length > 0) {
-  loadSimilarQuestions()
+if (similarQuestionsWrapper.length > 0) {
+  loadSimilarQuestions();
 }
 
-if(questionsNearYouWrapper.length > 0) {
-  loadNearYouQuestions()
+if (questionsNearYouWrapper.length > 0) {
+  loadNearYouQuestions();
 }

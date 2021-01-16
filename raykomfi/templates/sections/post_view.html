@@ -328,7 +328,7 @@
                             <div class="comment-reply-side w3-padding post-replies">
                                 {% for reply in comment.replies.all %}
                                 <div class="w3-panel z-depth-1" id="to-{{reply.id}}">
-                                    {% if reply.user and reply.user.is_active != False %}
+                                    {% if reply.user and reply.user.is_active != False and reply.user.email != 'anonymous@anonymous.com' %}
                                     <a href="{% url 'raykomfi:user-profile' id=reply.user.id %}" class="writer-name">
                                         <img src="{{ reply.user.profile_image }}" alt="صورة {{reply.user.username}} على رايكم في"  class="w3-circle creator-profile-image">
                                         <span class="name">
@@ -379,7 +379,6 @@
                                 <div class="show-hide-replies-bar raykomfi-main-background-color w3-padding-small"> أظهر الردود </div>
                             </div>
                             {% endif %}
-                            {% if user.email_active %}
                             <div class="reply">
                                 <form class="replyForm" data-comment-id="{{comment.id}}">
                                     {% csrf_token %}
@@ -387,11 +386,15 @@
                                         class="w3-input w3-border  reply-textarea textarea-with-preservations"
                                         id="id_reply_content-{{comment.id}}"></textarea>
                                     <div class="col s12">
-                                        <button class='w3-button z-depth-1 w3-margin-bottom' type="submit"> اضافة رد</button>
+                                        {% if user.is_authenticated and user.email_active %}
+                                        <button class='w3-button z-depth-1 w3-margin-bottom' type="submit"> إضافة رد</button>
+                                        {% else %}
+                                        <a href="">سجّل الدخول</a> أو
+                                        <button class='w3-button z-depth-1 w3-margin-bottom' type="submit" data-as-anonymous="true"> إضافة رد كمجهول</button>
+                                        {% endif %}
                                     </div>
                                 </form>
                             </div>
-                            {% endif %}
                         </div>
                         <div class="w3-col s2 m1 l1 w3-center vote-side" id="comment-{{comment.id}}-vote-side-wrapper">
                             <div>

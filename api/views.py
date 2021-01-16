@@ -31,6 +31,7 @@ from .models import BestUserListTrack
 import json
 from random import sample
 from dotenv import load_dotenv
+from raykomfi.forms import get_random_image_path
 load_dotenv()
 
 
@@ -371,6 +372,42 @@ class RepliesView(APIView):
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)   
         else:
             return Response({'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+class AnonymousRepliesView(APIView):
+    '''
+    Add Reply As Anonymous
+    '''
+    permission_classes = [permissions.AllowAny]
+
+    @method_decorator(ratelimit(key='ip', rate='2/m', block=True))
+    def post(self, request):
+        serializer = serializers.ReplyAddSerializer(data=request.data)
+        if serializer.is_valid():
+            comment = Comment.objects.select_related('user', 'post').filter(id=serializer.data['comment_id']).first()
+            if comment:
+                anonymousUser = User.objects.filter(email='anonymous@anonymous.com').first()
+                
+                reply = Reply.objects.create(content=serializer.data['content'], comment=comment, user=anonymousUser, user_image=get_random_image_path())
+                comment.replies.add(reply)
+                comment.save()
+                comment = Comment.objects.prefetch_related('user', 'post',
+                'replies').filter(id__exact=serializer.data['comment_id']).first()
+                csrf_token = get_token(request)
+                csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
+                referesh_comment_view_html = loader.render_to_string('referesh_comment_view.html', {'comment': comment, 'user': request.user, 'csrf_token': csrf_token})
+                output_data = {
+                    'view': referesh_comment_view_html,
+                    'message': 'success'
+                }
+
+                if request.user.id != comment.user.id and comment.user.get_notifications == True and comment.user.email != 'anonymous@anonymous.com':
+                    notify.send(anonymousUser, recipient=comment.user ,action_object=reply, description=reply.get_noti_url(), target=comment, verb='reply')
+                return JsonResponse(output_data)
+            else:
+                return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)                
+        else:
+            return Response({'message': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class LikeDislikeView(APIView):
