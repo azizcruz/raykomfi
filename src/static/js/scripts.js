@@ -110,11 +110,11 @@ $("#raykomfi-modalImage").on("click", function (event) {
 });
 
 // Page loading
-$("html").addClass("hide-overflow");
-$(window).on("load", function () {
-  $("html").removeClass("hide-overflow");
-  $("#overlay").fadeOut(500);
-});
+// $("html").addClass("hide-overflow");
+// $(window).on("load", function () {
+//   $("html").removeClass("hide-overflow");
+//   $("#overlay").fadeOut(500);
+// });
 
 // Loading show
 var $loading = $("#sk-chase").hide();
@@ -595,7 +595,7 @@ $('#anonymous-question-btn').on('click', function() {
 })
 
 // Set anonymous image
-$('#anonymous-image').attr('src', '/' + $('#id_creator_image').val())
+$('#anonymous-image').attr('src', $('#id_creator_image').val())
 
 // Show hide replies
 $('.show-hide-replies-bar').on('click', function() {

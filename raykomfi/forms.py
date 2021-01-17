@@ -23,7 +23,7 @@ def get_random_image_path():
     profile_images = os.listdir(profile_images_path)
     count_images = len(profile_images)
     random_image_number = randint(1, 1)
-    path = os.path.join('media', 'profile_images', f'{random_image_number}.png')
+    path = os.path.join('/media', 'profile_images', f'{random_image_number}.png')
     return path
 
 # username_validator = RegexValidator(r"^(?=.*[a-zA-Z0-9])\w{6,}$", "إسم المستخدم يجب أن يكون على الأقل 6 أحرف و باللغة الإنجليزية")

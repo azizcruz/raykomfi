@@ -147,7 +147,7 @@
     </div>
     <!-- The Comment Report Modal -->
     <div class="w3-col s12 m8 l8">
-        <div class="w3-row white post-box raykomfi-border z-depth-1" data-aos="zoom-out">
+        <div class="w3-row white post-box raykomfi-border z-depth-1">
             <div class="w3-mobile">
                 {% if post.creator and post.creator.is_active != False %}
                 <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">

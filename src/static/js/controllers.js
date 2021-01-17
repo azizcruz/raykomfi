@@ -193,9 +193,10 @@ $(document).on("submit", "form.commentForm", function (e) {
 $(document).on("submit", "form.commentNoRegisterForm", function (e) {
   e.preventDefault();
   let content = replacePlainLinks(e.target[1].value);
-  let profile_image = "/" + e.target[2].value;
+  let profile_image = e.target[2].value;
   let { postId } = e.target.dataset;
   if (content && profile_image) {
+    $(this)[0][2].disabled = true;
     axios({
       method: "POST",
       url: "/api/comment/add/no-registeration",
@@ -206,6 +207,7 @@ $(document).on("submit", "form.commentNoRegisterForm", function (e) {
       data: { content: content, post_id: postId, profile_image: profile_image },
     })
       .then((response) => {
+        $(this)[0][2].disabled = false;
         let view_html = response.data.view;
         let post_wrapper = document.getElementById("posts-wrapper");
         var comment_id = response.data.comment_id;
@@ -236,6 +238,7 @@ $(document).on("submit", "form.commentNoRegisterForm", function (e) {
         successAlert("تم إضافة رأيك");
       })
       .catch((err) => {
+        $(this)[0][2].disabled = false;
         if (
           err.response.status === 403 &&
           err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
@@ -281,10 +284,9 @@ $(document).on("submit", "form.closest-edit-comment-form", function (e) {
           err.response.status === 403 &&
           err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
         ) {
-          custom_alert(
-            "محاولات متكررة, يرجى المحاولة لاحقا",
-            "<i class='fa fa-warning'></i>"
-          );
+          errorAlert("لقد تخطيت الحد المسموح من المحاولات, حاول لاحقا");
+        } else {
+          errorAlert("حدث خطأ غير متوقع, حاول لاحقا");
         }
       });
   }
@@ -397,10 +399,9 @@ $(document).on("submit", "form.postsSearchForm", function (e) {
           err.response.status === 403 &&
           err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
         ) {
-          custom_alert(
-            "محاولات متكررة, يرجى المحاولة لاحقا",
-            "<i class='fa fa-warning'></i>"
-          );
+          errorAlert("لقد تخطيت الحد المسموح من المحاولات, حاول لاحقا");
+        } else {
+          errorAlert("حدث خطأ غير متوقع, حاول لاحقا");
         }
       });
   } else {
@@ -795,8 +796,7 @@ function loadCategoroies() {
     });
 }
 
-setTimeout(() => {
-  loadCategoroies();
+loadCategoroies();
 
 if (latestCommentWrapper.length > 0) {
   loadLatestComments();
@@ -812,4 +812,3 @@ if (similarQuestionsWrapper.length > 0) {
 if (questionsNearYouWrapper.length > 0) {
   loadNearYouQuestions();
 }
-}, 3000)

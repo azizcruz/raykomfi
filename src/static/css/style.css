@@ -111,18 +111,19 @@ noscript span {
 #overlay {
   position: fixed;
   z-index: 99999;
-  top: 0;
+  top: 100px;
   left: 0;
   bottom: 0;
   right: 0;
   background: #fff;
   overflow: hidden;
+  display: none;
 }
 
 .box-overlay {
   position: absolute;
   z-index: 0;
-  top: 5.5%;
+  top: 100px;
   left: 0;
   bottom: 0;
   right: 0;
@@ -131,7 +132,7 @@ noscript span {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, .8);
+  background-color: rgba(255, 255, 255, .9);
 }
 
 .box-overlay .content-loader {
@@ -381,6 +382,17 @@ h4 {
   line-height: 0 !important;
   margin-top: 20px;
   height: 20px;
+}
+.select-wrapper input:nth-child(1) {
+  display: none;
+
+}
+.select-wrapper .select-dropdown {
+  display: none;
+}
+
+.select-wrapper svg.caret {
+  display: none;
 }
 
 .ray-box {
@@ -1214,7 +1226,7 @@ select:focus {
 }
 
 .similar-questions-fix {
-  top: 18%;
+  top: 100px;
 }
 
 .similar-questions-wrapper {

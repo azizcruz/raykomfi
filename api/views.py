@@ -400,7 +400,7 @@ class AnonymousRepliesView(APIView):
                     'message': 'success'
                 }
 
-                if request.user.id != comment.user.id and comment.user.get_notifications == True and comment.user.email != 'anonymous@anonymous.com':
+                if comment.user != None and comment.user.email != 'anonymous@anonymous.com' and request.user.id != comment.user.id and comment.user.get_notifications == True:
                     notify.send(anonymousUser, recipient=comment.user ,action_object=reply, description=reply.get_noti_url(), target=comment, verb='reply')
                 return JsonResponse(output_data)
             else:
@@ -497,7 +497,10 @@ class SearchPostsView(APIView):
             q = serializer.data['searchField']
             if q == '':
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
-            posts = Post.objects.prefetch_related('creator', 'comments', 'category').filter(Q(creator__email=request.user.email) & Q(title__icontains=q) | Q(content__icontains=q)).annotate(counted_comments=Sum('comments')).order_by('-counted_comments')
+            if request.user.is_authenticated:
+                posts = Post.objects.prefetch_related('creator', 'comments', 'category').filter(Q(creator__email=request.user.email) & Q(title__icontains=q) | Q(content__icontains=q)).annotate(counted_comments=Sum('comments')).order_by('-counted_comments')
+            else:
+                posts = Post.objects.prefetch_related('creator', 'comments', 'category').filter(Q(title__icontains=q) | Q(content__icontains=q)).annotate(counted_comments=Sum('comments')).order_by('-counted_comments')
             csrf_token = get_token(request)
             csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
             referesh_posts_view_html = loader.render_to_string('posts.html', {'posts': posts, 'user': request.user, 'search_request': True, 'csrf_token': csrf_token})
