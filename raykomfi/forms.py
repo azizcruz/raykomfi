@@ -426,10 +426,10 @@ class NewPostForm(forms.ModelForm):
 class NewPostWithNoRegistrationForm(forms.ModelForm):
     creator_image = forms.CharField(widget=forms.HiddenInput(), required=True)
     country = forms.CharField(required=False, widget=forms.HiddenInput())
-
+    
     class Meta:
         model = Post
-        fields = ('creator_image', 'category', 'title', 'content', 'country')
+        fields = ('creator_image', 'category', 'title', 'content')
 
     def __init__(self, *args, **kwargs):
         super(NewPostWithNoRegistrationForm, self).__init__(*args, **kwargs)

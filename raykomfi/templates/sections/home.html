@@ -46,9 +46,9 @@
             <div class="add-question-wrapper z-depth-1 w3-white ray-box w3-round-medium">
                 <div id="typed-strings">
                     <p></p>
-                    <p>لديك مشكلة ؟</p>
-                    <p>متردد ؟</p>
-                    <p>إستفسر الآخرين الذين خاضوا نفس التجربة <span class="home-emoji">&#129300</span></p>
+                    {% for ad_message in ad_messages %}
+                        <p>{{ad_message.message}}</p>
+                    {% endfor %}
                 </div>
                 <div class="for-typed-js">
 

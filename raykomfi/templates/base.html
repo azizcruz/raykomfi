@@ -149,6 +149,7 @@
     <link rel="stylesheet" href="{% static 'css/custom_materialize.css'  %}">
     <link rel="stylesheet" href="{% static 'css/cookiebar.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/toasts.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/aos.css'  %}">
     <link rel="stylesheet" href="{% static 'css/style.css'  %}">
     {% endcompress %}
@@ -218,14 +219,8 @@
                 <a href="/">الرئيسية</a>
                 <a href="{% url 'raykomfi:user-register-withnosignup' %}">أضف أستفسار</a>
                 <a class="category-button">التصنيفات <i class="fa fa-caret-down"></i></a>
-                <div class="category-wrapper w3-margin-bottom">
-                    {% for category in categories %}
-                    <ul class="category-list">
-                        <li>
-                            <a href="{% url 'raykomfi:filtered-posts' category=category.name %}">{{category.name}}</a>
-                        </li>
-                    </ul>
-                    {% endfor %}
+                <div class="category-wrapper w3-margin-bottom" id="categories-wrapper">
+                    
                 </div>
                 <a href="{% url 'raykomfi:users-ranking' %}">ترتيب أعضاء رايكم في</a>
                 <a href="{% url 'raykomfi:about' %}">عن رايكم في</a>
@@ -336,7 +331,7 @@
     </div>
     
     <div class="w3-theme raykomfi-main-background-color">
-        <footer class="raykomfi-footer-style">
+        <footer class="raykomfi-footer-style" id="footer">
             <div class="raykomfi-max-width w3-container">
                 <div class="w3-row-padding">
                     <div class="w3-col s12 m4">
@@ -398,6 +393,8 @@
     <script src="{% static 'js/jquery.lazy.min.js' %}"></script>
     <script src="{% static 'js/loadmore.js' %}"></script>
     <script src="{% static 'js/generateOpinionsStars.js' %}"></script>
+    <script src="{% static 'js/toasts.min.js' %}"></script>
+    <script src="{% static 'js/alerts.js' %}"></script>
     <script src="{% static 'js/controllers.js' %}"></script>
     <script src="{% static 'js/validators.js' %}"></script>
     <script src="{% static 'js/typed.js' %}"></script>

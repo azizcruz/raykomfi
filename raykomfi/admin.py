@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Post, Message, Reply, Comment, Category, NoRegistrationCode, ImportantAdminMessages
+from .models import User, Post, Message, Reply, Comment, Category, NoRegistrationCode, ImportantAdminMessages, HomeAdMessages
 from api.models import BestUserListTrack
 from admin_auto_filters.filters import AutocompleteFilter
 
@@ -56,6 +56,9 @@ class BestUserListTrackAdmin(admin.ModelAdmin):
 class AdminMessages(admin.ModelAdmin):
     list_display = ('message', 'show')
 
+class AdMessages(admin.ModelAdmin):
+    list_display = ('message',)
+
 
 
 # Register your models here.
@@ -68,4 +71,5 @@ admin.site.register(Category)
 admin.site.register(NoRegistrationCode, NoRegistrationCodeAdmin)
 admin.site.register(ImportantAdminMessages, AdminMessages)
 admin.site.register(BestUserListTrack, BestUserListTrackAdmin)
+admin.site.register(HomeAdMessages, AdMessages)
 

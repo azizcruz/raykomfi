@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from raykomfi.models import Comment, User, Post, Reply, Message, Report, NoRegistrationCode
+from raykomfi.models import Comment, User, Post, Reply, Message, Report, NoRegistrationCode, Category, HomeAdMessages
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -795,3 +795,48 @@ class QuestionsNearYou(APIView):
         else:
             return JsonResponse({'message': 'غير مخول لعمل هذا الشيء'}, status=status.HTTP_403_FORBIDDEN)
 
+class Categories(APIView):
+    '''
+    Categories
+    '''
+    permission_classes = [permissions.AllowAny]
+
+    @method_decorator(ratelimit(key='ip', rate='20/m', block=True))
+    def get(self, request):
+        categories = Category.objects.all()
+
+        if categories:
+            referesh_category_view_html = loader.render_to_string('categories.html', {'categories': categories})
+                    
+            output_data = {
+                'view': referesh_category_view_html,
+                'message': 'success'
+            }
+
+            return Response(output_data)
+
+        else:
+            return JsonResponse({'message': 'غير مخول لعمل هذا الشيء'}, status=status.HTTP_403_FORBIDDEN)
+
+class AdMessages(APIView):
+    '''
+    Ad Messages
+    '''
+    permission_classes = [permissions.AllowAny]
+
+    @method_decorator(ratelimit(key='ip', rate='20/m', block=True))
+    def get(self, request):
+        messages = HomeAdMessages.objects.all()
+
+        if messages:
+            referesh_messages_view_html = loader.render_to_string('ad_messages.html', {'messages': messages})
+                    
+            output_data = {
+                'view': referesh_messages_view_html,
+                'message': 'success'
+            }
+
+            return Response(output_data)
+
+        else:
+            return JsonResponse({'message': 'غير مخول لعمل هذا الشيء'}, status=status.HTTP_403_FORBIDDEN)

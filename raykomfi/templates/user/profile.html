@@ -81,7 +81,7 @@
             <!-- <h3 class="w3-xlarge">رمز العضو <br> {{ profile.uuid }}</h3> -->
             {% if profile.bio %}
             <div class="w3-margin">
-                <div class="center">{{ profile.bio }}</div>
+                <div class="center user-bio">{{ profile.bio }}</div>
             </div>
             {% endif %}
         </div>
@@ -107,7 +107,7 @@
             {% if profile.posts.all %}
             {% for post in profile.posts.all %}
             <a href="{{ post.get_absolute_url }}">
-                <div class="z-depth-1 raykomfi-main-background-color white-text">
+                <div class="raykomfi-main-color">
                     {{post.title}}
                 </div>
             </a>

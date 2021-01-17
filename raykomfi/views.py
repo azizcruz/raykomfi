@@ -8,7 +8,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
-from .models import User, Post, Comment, Reply, Message, Category, NoRegistrationCode
+from .models import User, Post, Comment, Reply, Message, Category, NoRegistrationCode, HomeAdMessages
 from django.core.mail import EmailMessage
 from django.contrib import messages
 from django.db.utils import IntegrityError
@@ -68,47 +68,47 @@ def index(request):
 
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True)[:8]
     count = posts.count()
-    categories = Category.objects.all()
+    ad_messages = HomeAdMessages.objects.all()
     if request.user.is_staff:
         posts = Post.objects.prefetch_related('creator', 'category', 'comments').all()
-    return render(request, 'sections/home.html', context={'posts': posts, 'categories': categories, 'view_title': f'منصة رايكم في | إستفسر رأي الناس عن أي شي ', 'count': count})
+    return render(request, 'sections/home.html', context={'posts': posts, 'ad_messages': ad_messages, 'view_title': f'منصة رايكم في | إستفسر رأي الناس عن أي شي ', 'count': count})
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def posts_with_latests_comment_order(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')
     count = posts.count()
-    categories = Category.objects.all()
-    return render(request, 'sections/home.html', context={'posts': posts, 'hide_load_more': True, 'categories': categories, 'view_title': f'منصة رايكم في | إستفسر رأي الناس عن أي شي ', 'count': count})
+    ad_messages = HomeAdMessages.objects.all()
+    return render(request, 'sections/home.html', context={'posts': posts, 'hide_load_more': True, 'ad_messages': ad_messages, 'view_title': f'منصة رايكم في | إستفسر رأي الناس عن أي شي ', 'count': count})
 
 
 def latest_posts(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).order_by('-created')[:8]
     count = posts.count()
-    categories = Category.objects.all()
-    return render(request, 'sections/home.html', context={'posts': posts, 'categories': categories, 'view_title': 'منصة رايكم في | أحدث الإستفسارات', 'count': count})
+    ad_messages = HomeAdMessages.objects.all()
+    return render(request, 'sections/home.html', context={'posts': posts, 'ad_messages': ad_messages, 'view_title': 'منصة رايكم في | أحدث الإستفسارات', 'count': count})
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def categorized_posts(request, category=False):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')
     count_categoized = posts.count()
-    categories = Category.objects.all()
-    return render(request, 'sections/home.html', context={'posts': posts, 'categories': categories, 'is_categorized': True, 'hide_load_more': True, 'category': category, 'view_title': f'رايكم في | { category }', 'url_name': 'categorized_view', 'count_categorized': count_categoized})
+    ad_messages = HomeAdMessages.objects.all()
+    return render(request, 'sections/home.html', context={'posts': posts, 'is_categorized': True, 'ad_messages': ad_messages, 'hide_load_more': True, 'category': category, 'view_title': f'رايكم في | { category }', 'url_name': 'categorized_view', 'count_categorized': count_categoized})
 
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def most_discussed_posts(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).annotate(count=Count('comments')).order_by('-count')
     count = posts.count()
-    categories = Category.objects.all()
-    return render(request, 'sections/home.html', context={'posts': posts, 'categories': categories, 'hide_load_more': True, 'view_title': 'منصة رايكم في | الأكثر مناقشة', 'url_name': 'most_discussed_view', 'count': count})
+    ad_messages = HomeAdMessages.objects.all()
+    return render(request, 'sections/home.html', context={'posts': posts, 'hide_load_more': True, 'ad_messages': ad_messages, 'view_title': 'منصة رايكم في | الأكثر مناقشة', 'url_name': 'most_discussed_view', 'count': count})
 
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def most_searched_posts(request):
     posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(isActive=True).order_by("-hit_count_generic__hits")
     count = posts.count()
-    categories = Category.objects.all()
-    return render(request, 'sections/home.html', context={'posts': posts, 'categories': categories, 'hide_load_more': True, 'view_title': 'منصة رايكم في | الأكثر بحثا', 'url_name': 'most_searched_view', 'count': count})
+    ad_messages = HomeAdMessages.objects.all()
+    return render(request, 'sections/home.html', context={'posts': posts, 'hide_load_more': True, 'ad_messages': ad_messages, 'view_title': 'منصة رايكم في | الأكثر بحثا', 'url_name': 'most_searched_view', 'count': count})
 
 @login_required
 @ratelimit(key='ip', rate='10/m', block=True)

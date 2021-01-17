@@ -456,6 +456,9 @@ document.addEventListener("DOMContentLoaded", function () {
   var instances = M.Modal.init(elems, options);
 });
 
+M.AutoInit();
+
+
 // Share dropdown
 function shareDropdown() {
   var x = document.getElementById("share-dropdown");
@@ -608,7 +611,7 @@ $('.show-hide-replies-bar').on('click', function() {
 AOS.init();
 
 if($('#typed-strings').length > 0) {
-  // Initialize typed js
+// Initialize typed js
 var options = {
   stringsElement: '#typed-strings',
   typeSpeed: 40
@@ -651,3 +654,22 @@ $(document).on('click', '.raykomfi-report-btn', function() {
     $('#reportComment').show()
   }
 })
+
+// Change notification circle colour when footer is reached
+$(window).scroll(function() {
+  var hT = $('#footer').offset().top,
+      hH = $('#footer').outerHeight(),
+      wH = $(window).height(),
+      wS = $(this).scrollTop();
+  if (wS > (hT+hH-wH - 120)){
+      $('.noti-dropbtn').css({
+        backgroundColor: '#FFFFFF',
+        color: '#3498db'
+      })
+  } else {
+    $('.noti-dropbtn').css({
+      backgroundColor: '#3498db',
+      color: '#FFFFFF'
+    })
+  }
+});

@@ -131,8 +131,7 @@ class Post(models.Model, HitCountMixin):
     creator = models.ForeignKey(User, related_name='posts', verbose_name='الكاتب',  on_delete=models.SET_DEFAULT, default=None, null=True, blank=True, db_index=True)
     creator_image = models.CharField(max_length=255, verbose_name='صورة الكاتب', blank=True, null=True, default='/media/profile_images/0.png')
     country = models.CharField(max_length=255, verbose_name='دولة الكاتب', blank=True, null=True, default='')
-    category = models.ForeignKey(
-        Category, verbose_name='التصنيف', null=True, on_delete=models.SET_DEFAULT, default=None, db_index=True)
+    category = models.ForeignKey(Category, verbose_name='التصنيف', null=True, on_delete=models.SET_DEFAULT, default=None, db_index=True)
     title = models.CharField(
         max_length=200, verbose_name='الموضوع', db_index=True)
     slug = models.CharField(
@@ -381,3 +380,10 @@ class ImportantAdminMessages(models.Model):
     class Meta:
         verbose_name = "رسالة للزوار"
         verbose_name_plural = "رسائل للزوار"
+
+class HomeAdMessages(models.Model):
+    message = models.TextField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = "رسالة ترويجية"
+        verbose_name_plural = "رسائل ترويجية"

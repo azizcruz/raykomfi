@@ -206,18 +206,18 @@
                 {% if post.isActive == True or user.is_staff  %}
                 <div class="w3-dropdown-click raykomfi-dropdown-click">
                     <button id="share-btn"
-                        class="btn raykomfi-main-background-color raykomfi-report-btn">مشاركة</button>
+                        class="btn raykomfi-main-background-color raykomfi-action-btn">مشاركة</button>
                     {% if user.is_staff %}
                         <a href="{% url 'raykomfi:post-edit' id=post.id slug=post.slug  %}"
-                            class="raykomfi-report-btn green btn">تعديل</a>
+                            class="raykomfi-action-btn green btn">تعديل</a>
                         <a href="#"
-                            class="raykomfi-report-btn deep-orange darken-3 btn admin-action-btn" data-request-type="post" data-action="deactivate" data-url="{{request.get_full_path}}" data-id="{{post.id}}">إلغاء تفعيل</a>
+                            class="raykomfi-action-btn deep-orange darken-3 btn admin-action-btn" data-request-type="post" data-action="deactivate" data-url="{{request.get_full_path}}" data-id="{{post.id}}">إلغاء تفعيل</a>
                             <a href="#"
-                            class="raykomfi-report-btn  teal darken-3 btn admin-action-btn" data-request-type="post" data-action="activate" data-url="{{request.get_full_path}}" data-id="{{post.id}}">تفعيل</a>
+                            class="raykomfi-action-btn  teal darken-3 btn admin-action-btn" data-request-type="post" data-action="activate" data-url="{{request.get_full_path}}" data-id="{{post.id}}">تفعيل</a>
                             <a href="#"
-                            class="raykomfi-report-btn orange darken-3 btn admin-action-btn" data-request-type="post" data-action="reportAsNotAllowed" data-url="{{request.get_full_path}}" data-id="{{post.id}}">إبلاغ كمخالف</a>
+                            class="raykomfi-action-btn orange darken-3 btn admin-action-btn" data-request-type="post" data-action="reportAsNotAllowed" data-url="{{request.get_full_path}}" data-id="{{post.id}}">إبلاغ كمخالف</a>
                             <a href="#"
-                            class="raykomfi-report-btn blue-grey darken-2 btn admin-action-btn" data-request-type="post" data-action="delete" data-url="{{request.get_full_path}}" data-id="{{post.id}}">حذف</a>
+                            class="raykomfi-action-btn blue-grey darken-2 btn admin-action-btn" data-request-type="post" data-action="delete" data-url="{{request.get_full_path}}" data-id="{{post.id}}">حذف</a>
                     {% endif %}
                     <div id="share-dropdown" class="w3-dropdown-content raykomfi-share-dropdown w3-bar-block z-depth-1">
                         <a href="https://twitter.com/intent/tweet?text={{request.build_absolute_uri}}"
@@ -302,22 +302,22 @@
                                     data-comment-id="{{comment.id}}">
                                     {% csrf_token %}
                                     <textarea name="content" class="w3-input textarea-with-preservations w3-border-0" rows="4"></textarea>
-                                    <button class="btn raykomfi-main-background-color raykomfi-report-btn"
+                                    <button class="btn raykomfi-main-background-color raykomfi-action-btn"
                                         type="submit">تأكيد</button>
-                                    <a href="" class="btn red raykomfi-report-btn close-comment-edit-form"
+                                    <a href="" class="btn red raykomfi-action-btn close-comment-edit-form"
                                         data-comment-id="{{comment.id}}">إلغاء</a>
                                 </form>
                                 {% if user.is_authenticated %}
                                 <button class="btn red raykomfi-report-btn comment-action-btn comment-report" data-comment-url="{{comment.get_noti_url}}">إبلاغ</button>
                                 {% if comment.user.id == user.id or user.is_staff %}
-                                <button class="btn green raykomfi-report-btn comment-action-btn edit-comment-btn"
+                                <button class="btn green raykomfi-action-btn comment-action-btn edit-comment-btn"
                                     data-comment-id="{{ comment.id }}" data-content="{{comment.content}}">تعديل </button>
                                 {% endif %}
                                 {% if user.is_staff %}
                                 <a href="#"
-                                class="raykomfi-report-btn orange darken-3 btn admin-action-btn" data-request-type="comment" data-action="reportAsNotAllowed" data-url="{{request.get_full_path}}" data-id="{{comment.id}}">إبلاغ كمخالف</a>
+                                class="raykomfi-action-btn orange darken-3 btn admin-action-btn" data-request-type="comment" data-action="reportAsNotAllowed" data-url="{{request.get_full_path}}" data-id="{{comment.id}}">إبلاغ كمخالف</a>
                                 <a href="#"
-                                class="raykomfi-report-btn blue-grey darken-2 btn admin-action-btn" data-request-type="comment" data-action="delete" data-url="{{request.get_full_path}}" data-id="{{comment.id}}">حذف</a>
+                                class="raykomfi-action-btn blue-grey darken-2 btn admin-action-btn" data-request-type="comment" data-action="delete" data-url="{{request.get_full_path}}" data-id="{{comment.id}}">حذف</a>
                                 <div class="w3-margin"></div>
                                 <p class="green-text raykomfi-bold admin-action-message"></p>
                                 {% endif %}
@@ -351,22 +351,22 @@
                                         data-comment-id="{{comment.id}}" data-reply-id="{{reply.id}}">
                                         {% csrf_token %}
                                         <textarea name="content" class="w3-input w3-border textarea-with-preservations"></textarea>
-                                        <button class="btn raykomfi-main-background-color raykomfi-report-btn"
+                                        <button class="btn raykomfi-main-background-color raykomfi-action-btn"
                                             type="submit">تأكيد</button>
-                                        <a href="" class="btn red raykomfi-report-btn close-reply-edit-form"
+                                        <a href="" class="btn red raykomfi-action-btn close-reply-edit-form"
                                             data-reply-id="{{reply.id}}">إلغاء</a>
                                     </form>
                                     {% if user.is_authenticated %}
                                     <button class="btn red raykomfi-report-btn reply-action-btn report-reply" data-reply-url="{{reply.get_noti_url}}">إبلاغ</button>
                                     {% if reply.user.id == user.id or user.is_staff %}
-                                    <button class="btn green raykomfi-report-btn reply-action-btn edit-reply-btn"
+                                    <button class="btn green raykomfi-action-btn reply-action-btn edit-reply-btn"
                                         data-reply-id="{{ reply.id }}" data-content="{{reply.content}}">تعديل
                                     </button>
                                     {% if user.is_staff %}
                                     <a href="#"
-                                    class="raykomfi-report-btn orange darken-3 btn admin-action-btn" data-request-type="reply" data-action="reportAsNotAllowed" data-url="{{request.get_full_path}}" data-id="{{reply.id}}">إبلاغ كمخالف</a>
+                                    class="raykomfi-action-btn orange darken-3 btn admin-action-btn" data-request-type="reply" data-action="reportAsNotAllowed" data-url="{{request.get_full_path}}" data-id="{{reply.id}}">إبلاغ كمخالف</a>
                                     <a href="#"
-                                    class="raykomfi-report-btn blue-grey darken-2 btn admin-action-btn" data-request-type="reply" data-action="delete" data-url="{{request.get_full_path}}" data-id="{{reply.id}}">حذف</a>
+                                    class="raykomfi-action-btn blue-grey darken-2 btn admin-action-btn" data-request-type="reply" data-action="delete" data-url="{{request.get_full_path}}" data-id="{{reply.id}}">حذف</a>
                                     <div class="w3-margin"></div>
                                     <p class="green-text raykomfi-bold admin-action-message"></p>
                                     {% endif %}
@@ -390,7 +390,7 @@
                                         <button class='w3-button z-depth-1 w3-margin-bottom' type="submit"> إضافة رد</button>
                                         {% else %}
                                         <a href="">سجّل الدخول</a> أو
-                                        <button class='w3-button z-depth-1 w3-margin-bottom' type="submit" data-as-anonymous="true"> إضافة رد كمجهول</button>
+                                        <button class='w3-button z-depth-1 w3-margin-bottom' type="submit" data-as-anonymous="true"> رد كمجهول</button>
                                         {% endif %}
                                     </div>
                                 </form>
