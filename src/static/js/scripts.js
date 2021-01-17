@@ -416,16 +416,16 @@ generateStars();
 if (window.location.hash) {
   var anchor = $(window.location.hash);
   if (window.location.hash.indexOf("to") > 0) {
-    $("html,body").animate({ scrollTop: anchor.offset().top - 150 }, "slow");
+    $("html,body").animate({ scrollTop: anchor.parent().parent().offset().top - 250 }, "slow");
     setTimeout(() => {
-      anchor
+      anchor.parent().parent()
         .stop()
         .animate({ backgroundColor: "#FFFFE0" }, 250)
-        .animate({ backgroundColor: "#ececec" }, 250)
+        .animate({ backgroundColor: "#FFFFFF" }, 250)
         .animate({ backgroundColor: "#FFFFE0" }, 250)
-        .animate({ backgroundColor: "#ececec" }, 250)
+        .animate({ backgroundColor: "#FFFFFF" }, 250)
         .animate({ backgroundColor: "#FFFFE0" }, 250)
-        .animate({ backgroundColor: "#ececec" }, 250);
+        .animate({ backgroundColor: "#FFFFFF" }, 250);
     }, 700);
   } else {
     $("html,body").animate({ scrollTop: anchor.offset().top - 150 }, "slow");
@@ -598,7 +598,7 @@ $('#anonymous-question-btn').on('click', function() {
 $('#anonymous-image').attr('src', $('#id_creator_image').val())
 
 // Show hide replies
-$('.show-hide-replies-bar').on('click', function() {
+$(document).on('click', '.show-hide-replies-bar',function() {
   $(this).parent().prev().toggleClass('raykomfi-show')
   if($(this).parent().prev().hasClass('raykomfi-show')) {
     $(this).text('أخفي الردود')

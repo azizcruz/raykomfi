@@ -34,7 +34,7 @@ function infoAlert(message) {
     $.toast({
         text: message,
         textAlign: "center",
-        hideAfter: 2000,
+        hideAfter: 5000,
         bgColor: "#616161",
         textColor: "#ffffff",
         position : 'top-center',

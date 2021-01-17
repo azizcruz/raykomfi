@@ -35,6 +35,7 @@ $(document).on("submit", "form.replyForm", function (e) {
         .then((response) => {
           $(this)[0][2].disabled = false;
           let comment_view = $(`#comment-id-${commentId}`);
+          var showMore = $($($(comment_view.parent().children()[0]).children()[2]).children()[0])
           view_html = response.data.view;
           comment_view.html(view_html);
           generateStars();
@@ -325,7 +326,7 @@ $(document).on("submit", "form.voteForm", function (e) {
           err.response.status === 403 &&
           err.response.data.detail === "لم يتم تزويد بيانات الدخول.") 
          {
-          infoAlert("<a href='/user/signin/'>سجل دخولك</a> أو <a href='/user/register/'>سجل في المنصة</a> للمشاركة");
+          infoAlert("<a href='/user/signin/' class='alert-link'>سجل دخولك</a> أو <a href='/user/register/' class='alert-link'>سجل في المنصة</a> للمشاركة");
         }
       });
   }

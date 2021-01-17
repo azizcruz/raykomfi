@@ -1222,7 +1222,13 @@ select:focus {
 
 .similar-questions {
   position: relative;
-  min-height: 300px;
+  min-height: 520px;
+}
+
+.alert-link {
+  text-decoration: none !important;
+  color: #3498db !important;
+  border: 0 !important;
 }
 
 .similar-questions-fix {

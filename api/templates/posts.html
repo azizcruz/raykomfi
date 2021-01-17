@@ -10,17 +10,19 @@
 {% endif %}
 {% if posts %}
 {% for post in posts %}
-<div class="w3-padding ray-box  z-depth-1">
+<div class="w3-padding ray-box w3-round-medium w3-margin-top w3-margin-bottom z-depth-1 raykomfi-border"
+    data-aos="fade-up" data-aos-delay="150">
     {% if post.creator and post.creator.is_active != False %}
     <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
+        <img src="{{ post.creator_image }}" alt="صورة {{user.username}} على رايكم في"
+            class="w3-circle creator-profile-image">
         <span class="poster-name">
-            <i class="fa fa-user" aria-hidden="true"></i>
             {{post.creator}}
         </span>
     </a>
     {% else %}
     <span class="poster-name">
-        <i class="fa fa-user" aria-hidden="true"></i>
+        <img src="{{ post.creator_image }}" alt="صورة مجهول على رايكم في" class="w3-circle creator-profile-image">
         مجهول
     </span>
     {% endif %}
@@ -28,26 +30,36 @@
         <h2 class="raykomfi-bold">{{post.title |truncatechars:100}}</h2>
         {% if post.image and post.image_source %}
         <div class="ray-image-section">
-            <img src="{{ post.image.url }}" alt="{{post.title}}" class="lazy-img w3-round-large">
+            <img src="" alt="{{post.title}}" data-src="{{ post.image.url }}" class="lazy-img w3-round-large">
             <div>
                 <a href="{{ post.image_source }}" target="_blank">مصدر الصورة</a>
             </div>
         </div>
         {% endif %}
+        {% if user.is_staff %}
+        <div class="w3-margin"></div>
+        {% if post.isActive %}
+        <div><i class="fa fa-circle green-text"></i> مفعل</div>
+        {% else %}
+        <div><i class="fa fa-circle red-text"></i> غير مفعل</div>
+        {% endif %}
+        {% endif %}
         <div class="ray-box-footer-icons">
             <div class="">
-                <span><i class="fa fa-clock-o" aria-hidden="true"></i>
-                    <span class='created-time'>{{post.created}}</span>
-                </span>
+                <span class="raykomfi-bold grey-text"><i class="fa fa-clock-o" aria-hidden="true"></i>
+                    <span class='created-time raykomfi-bold grey-text'>{{post.get_created_natural}}</span></span>
             </div>
             <div class="">
-                <span><i class="fa fa-comments" aria-hidden="true"></i> {{post.comments.count}}</span>
+                <span class="raykomfi-bold grey-text"><i class="fa fa-comments" aria-hidden="true"></i>
+                    {{post.comments.count}}</span>
             </div>
             <div class="">
-                <span><i class="fa fa-eye" aria-hidden="true"></i> {% get_hit_count for post %}</span>
+                <span class="raykomfi-bold grey-text"><i class="fa fa-eye" aria-hidden="true"></i> {% get_hit_count for
+                    post %}</span>
             </div>
             <div class="">
-                <span><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</span>
+                <span class="raykomfi-bold grey-text"><i class="fa fa-tags" aria-hidden="true"></i>
+                    {{post.category}}</span>
             </div>
         </div>
     </a>
