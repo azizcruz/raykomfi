@@ -186,6 +186,12 @@
         </div>
     </div>
     <!-- Alert Modal -->
+    <div id="goto-bottom">
+        <i class="fa fa-chevron-circle-down"></i>
+    </div>
+    <div id="goto-top">
+        <i class="fa fa-chevron-circle-up"></i>
+    </div>
     <!--Start of Notifications Modal -->
     {% if user.is_authenticated %}
     <div class="noti-dropdown">
@@ -316,6 +322,7 @@
             {% endif %}
             {% block content %}{% endblock %}
         </div>
+    </div>
         <div class="cookie-message">
             <div class="center">
                 عندما يقوم شخص ما بزيارة منصتنا على الويب, نستخدم ملفات تعريف الارتباط على الويب و خدمة طرف ثالث لتحسين
@@ -329,7 +336,6 @@
             <!-- <div class="cookie-close-button center without-third-party">أتفهم ذلك, لكن بدون خدمة طرف ثالث</div> -->
         </div>
     </div>
-    
     <div class="w3-theme raykomfi-main-background-color">
         <footer class="raykomfi-footer-style" id="footer">
             <div class="raykomfi-max-width w3-container">
@@ -339,22 +345,25 @@
                             <div class="center white-text">تابع آخر الإستفسارات على فيسبوك وتويتر</div>
                             <div class="raykomfi-social-media">
                                 <div>
-                                    <a href="https://web.facebook.com/raykomfi.original" target="_blank" title="فيسبوك رايكم في"><i
-                                            class="fa fa-facebook-square white-text fa-3x"></i></a>
+                                    <a href="https://web.facebook.com/raykomfi.original" target="_blank"
+                                        title="فيسبوك رايكم في"><i class="fa fa-facebook-square white-text fa-3x"></i></a>
                                 </div>
                                 <div>
                                     <a href="https://twitter.com/raykomfi" target="_blank" title="تويتر رايكم في"><i
                                             class="fa fa-twitter-square white-text fa-3x"></i></a>
                                 </div>
                                 <!-- <div>
-                                                                                            <a href=""><i class="fa fa-instagram" title="انستغرام رايكم في"></i></a>
-                                                                                        </div> -->
+                                                                                                <a href=""><i class="fa fa-instagram" title="انستغرام رايكم في"></i></a>
+                                                                                            </div> -->
                             </div>
                             <div class="center w3-small"><span class="raykomfi-bold white-text">للتواصل</span></div>
-                            <div class="center w3-small"> <a href="mailto:info@raykomfi.com" class="white-text">info@raykomfi.com</a></div>
-                            <div class="center w3-small w3-margin-top"><span class="raykomfi-bold white-text">للتبيلغ عن المشاكل في
+                            <div class="center w3-small"> <a href="mailto:info@raykomfi.com"
+                                    class="white-text">info@raykomfi.com</a></div>
+                            <div class="center w3-small w3-margin-top"><span class="raykomfi-bold white-text">للتبيلغ عن
+                                    المشاكل في
                                     المنصة</span></div>
-                            <div class="center w3-small"> <a href="mailto:support@raykomfi.com" class="white-text">support@raykomfi.com</a></div>
+                            <div class="center w3-small"> <a href="mailto:support@raykomfi.com"
+                                    class="white-text">support@raykomfi.com</a></div>
                         </div>
                     </div>
                     <div class="w3-col s12 m8">
@@ -368,13 +377,15 @@
         </footer>
         <div class="under-footer w3-theme raykomfi-secondary-background-color">
             <div class="w3-container">
-                <span class="center w3-small"><a href="{% url 'raykomfi:usage-terms' %}" class="white-text">سياسات و شروط إستخدام المنصة</a>
+                <span class="center w3-small"><a href="{% url 'raykomfi:usage-terms' %}" class="white-text">سياسات و شروط
+                        إستخدام المنصة</a>
                 </span>
-                <span class="center w3-small"><a href="{% url 'raykomfi:about' %}" class="white-text">عن منصة رايكم في</a></span>
+                <span class="center w3-small"><a href="{% url 'raykomfi:about' %}" class="white-text">عن منصة رايكم
+                        في</a></span>
                 <span class="center w3-small white-text">جميع الحقوق محفوظة 2021</span>
             </div>
         </div>
-        </div>
+    </div>
 
     
     

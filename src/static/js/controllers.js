@@ -362,9 +362,7 @@ $(document).on("submit", "form.getMessageForm", function (e) {
           err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
         ) {
           errorAlert("لقد تخطيت الحد المسموح من المحاولات, حاول لاحقا");
-        } else {
-          errorAlert("حدث خطأ غير متوقع, حاول لاحقا");
-        }
+        } 
       });
   }
 });

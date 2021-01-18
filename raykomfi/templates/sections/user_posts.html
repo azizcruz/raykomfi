@@ -4,95 +4,97 @@
 
 {% block content %}
 
-<div class="w3-row-padding raykomfi-main-padding  raykomfi-max-width">
-  <div class="w3-col s12 m6 l4">
-    &nbsp;
-  </div>
-  <div class="w3-col s12 m12 l8">
-    <h3>إستفساراتي</h3>
-    <br>
-    <a href="" class="raykomfi-button btn raykomfi-main-background-color">الأكثر ردا <i class="fa fa-reply"
-        aria-hidden="true"></i></a>
-    <div class="raykomfi-button btn raykomfi-main-background-color" id="search-btn">
-      بحث <i class="fa fa-search"></i></div>
-    <div class="w3-row" id="search-field-wrapper">
-      <br>
-      <div class="w3-col w3-padding  w3-white  z-depth-1">
-        <div class="spinner" id="spinner">
-          <div class="bounce1"></div>
-          <div class="bounce2"></div>
-          <div class="bounce3"></div>
-        </div>
-        <form class="postsSearchForm">
-          {% csrf_token %}
-          <input class="w3-input search-input" type="text" placeholder="بحث عن إستفسار ..." name="q">
-        </form>
-      </div>
+<div class="w3-row-padding raykomfi-main-padding">
+    <div class="w3-col s12 m6 l4">
+      &nbsp;
     </div>
-    {% if posts %}
-    <div id="raykomfi-posts">
-      {% for post in posts %}
-      <div class="w3-padding ray-box  z-depth-1 ">
-        {% if post.creator and post.creator.is_active != False %}
-        <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
+    <div class="w3-col s12 m12 l8">
+      <h3>إستفساراتي</h3>
+      <br>
+      <a href="" class="raykomfi-button btn raykomfi-main-background-color">الأكثر ردا <i class="fa fa-reply"
+          aria-hidden="true"></i></a>
+      <div class="raykomfi-button btn raykomfi-main-background-color" id="search-btn">
+        بحث <i class="fa fa-search"></i></div>
+      <div class="w3-row" id="search-field-wrapper">
+        <br>
+        <div class="w3-col w3-padding  w3-white  z-depth-1">
+          <div class="spinner" id="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+          </div>
+          <form class="postsSearchForm">
+            {% csrf_token %}
+            <input class="w3-input search-input" type="text" placeholder="بحث عن إستفسار ..." name="q">
+          </form>
+        </div>
+      </div>
+      {% if posts %}
+      <div id="raykomfi-posts">
+        {% for post in posts %}
+        <div class="w3-padding ray-box  z-depth-1 ">
+          {% if post.creator and post.creator.is_active != False %}
+          <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
+            <span class="poster-name">
+              <i class="fa fa-user" aria-hidden="true"></i>
+              {{post.creator}}
+            </span>
+          </a>
+          {% else %}
           <span class="poster-name">
             <i class="fa fa-user" aria-hidden="true"></i>
-            {{post.creator}}
+            مجهول
           </span>
-        </a>
-        {% else %}
-        <span class="poster-name">
-          <i class="fa fa-user" aria-hidden="true"></i>
-          مجهول
-        </span>
-        {% endif %}
-        <a href="{{post.get_absolute_url}}">
-          <h2 class="raykomfi-bold">{{post.title |truncatechars:100}}</h2>
-          {% if post.image and post.image_source %}
-          <div class="ray-image-section">
-            <img src="" alt="{{post.title}}" data-src="{{ post.image.url }}" class="lazy-img ">
-            <div>
-              <a href="{{ post.image_source }}" target="_blank">مصدر الصورة</a>
-            </div>
-          </div>
           {% endif %}
-          
-          <br>
-          <div>
-            <a href="{% url 'raykomfi:post-edit' id=post.id slug=post.slug  %}"
-              class="w3-button raykomfi-button ">تعديل</a>
-          </div>
-          <div class="ray-box-footer-icons">
-            <div class="">
-              <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.created | naturaltime}}</span>
+          <a href="{{post.get_absolute_url}}">
+            <h2 class="raykomfi-bold">{{post.title |truncatechars:100}}</h2>
+            {% if post.image and post.image_source %}
+            <div class="ray-image-section">
+              <img src="" alt="{{post.title}}" data-src="{{ post.image.url }}" class="lazy-img ">
+              <div>
+                <a href="{{ post.image_source }}" target="_blank">مصدر الصورة</a>
+              </div>
             </div>
-            <div class="">
-              <span><i class="fa fa-comments" aria-hidden="true"></i> {{post.comments.count}}</span>
+            {% endif %}
+            
+            <br>
+            <div>
+              <a href="{% url 'raykomfi:post-edit' id=post.id slug=post.slug  %}"
+                class="w3-button raykomfi-button ">تعديل</a>
             </div>
-            <div class="">
-              <span><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</span>
+            <div class="ray-box-footer-icons">
+              <div class="">
+                <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.created | naturaltime}}</span>
+              </div>
+              <div class="">
+                <span><i class="fa fa-comments" aria-hidden="true"></i> {{post.comments.count}}</span>
+              </div>
+              <div class="">
+                <span><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</span>
+              </div>
             </div>
-          </div>
-        </a>
+          </a>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="w3-center">لا يوجد لديك أي إستفسار</p>
+        {% endif %}
       </div>
-      {% endfor %}
-      {% else %}
-      <p class="w3-center">لا يوجد لديك أي إستفسار</p>
-      {% endif %}
-    </div>
-    <div class="sk-chase" id="sk-chase">
-      <div class="sk-chase-dot"></div>
-      <div class="sk-chase-dot"></div>
-      <div class="sk-chase-dot"></div>
-      <div class="sk-chase-dot"></div>
-      <div class="sk-chase-dot"></div>
-      <div class="sk-chase-dot"></div>
-    </div>
-    {% if count_posts < 6 %}
+      <div class="sk-chase" id="sk-chase">
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+      </div>
+      {% if count_posts < 6 %}
 
-    {% else %}
-    <div class="lazy-load-linkwrapper w3-center">
-      <a id="lazyLoadLink" class="w3-padding raykomfi-button z-depth-1" href="javascript:void(0);" data-page="2"
-        data-user="{{ user.id }}">عرض المزيد</a>
+      {% else %}
+      <div class="lazy-load-linkwrapper w3-center">
+        <a id="lazyLoadLink" class="w3-padding raykomfi-button z-depth-1" href="javascript:void(0);" data-page="2"
+          data-user="{{ user.id }}">عرض المزيد</a>
+      </div>
+      {% endif %} {% endblock content %}
     </div>
-    {% endif %} {% endblock content %}
+</div>

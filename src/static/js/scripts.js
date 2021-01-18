@@ -11,29 +11,28 @@ $(".without-third-party").on("click", function () {
 //   document.getElementById("mySidebar").style.display = "block";
 //   document.getElementById("myOverlay").style.display = "block";
 //   if(window.innerWidth > 992) {
-    
+
 //    }
 // }
-var sideBar = $('#mySidebar')
+var sideBar = $("#mySidebar");
 function w3_close() {
-  sideBar.hide("slide", {direction: "right"}, 400);
-  sideBar.removeClass('showSideBar')
-  if(window.innerWidth > 992) {
-    
+  sideBar.hide("slide", { direction: "right" }, 400);
+  sideBar.removeClass("showSideBar");
+  if (window.innerWidth > 992) {
   }
 }
 
 // Burger menu button toggle
-$('#sidenav-toggle').on('click', function() {
-  var sideBar = $('#mySidebar')
-  if(sideBar.hasClass('showSideBar')) {
-    sideBar.hide("slide", {direction: "right"}, 400);
-    sideBar.removeClass('showSideBar')
+$("#sidenav-toggle").on("click", function () {
+  var sideBar = $("#mySidebar");
+  if (sideBar.hasClass("showSideBar")) {
+    sideBar.hide("slide", { direction: "right" }, 400);
+    sideBar.removeClass("showSideBar");
   } else {
-    sideBar.show()
-    sideBar.addClass('showSideBar')
+    sideBar.show();
+    sideBar.addClass("showSideBar");
   }
-})
+});
 
 // Change style of top container on scroll
 window.onscroll = function () {
@@ -260,39 +259,27 @@ function fill_notification_list_override(data) {
       var messages = data.unread_list
         .map(function (item) {
           if (item.verb === "comment") {
-            var message = `<a href='${
-              item.description
-            }'>لديك رأي جديد على إستفسارك ${item.target} من ${
-              item.actor
-            }<div class='w3-tiny w3-margin-top'>${item.timestamp}</div></a>`;
+            var message = `<a href='${item.description}'>لديك رأي جديد على إستفسارك ${item.target} من ${item.actor}<div class='w3-tiny w3-margin-top'>${item.timestamp}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
           }
 
           if (item.verb === "reply") {
-            var message = `<a href='${
-              item.description
-            }'>لديك رد جديد على رأيك من ${item.actor}<div class='w3-tiny'>${item.timestamp}</div></a>`;
+            var message = `<a href='${item.description}'>لديك رد جديد على رأيك من ${item.actor}<div class='w3-tiny'>${item.timestamp}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
           }
 
           if (item.verb === "message") {
-            var message = `<a href='${item.description}'>لديك رسالة جديدة من ${
-              item.actor
-            }<div class='w3-tiny w3-margin-top'>${item.timestamp}</div></a>`;
+            var message = `<a href='${item.description}'>لديك رسالة جديدة من ${item.actor}<div class='w3-tiny w3-margin-top'>${item.timestamp}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
           }
 
           if (item.verb === "report") {
-            var message = `<a href='${
-              item.description
-            }'>لديك بلاغ جديد<div class='w3-tiny w3-margin-top'>${item.timestamp}</div></a>`;
+            var message = `<a href='${item.description}'>لديك بلاغ جديد<div class='w3-tiny w3-margin-top'>${item.timestamp}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
           }
 
           if (item.verb === "post_accepted") {
-            var message = `<a href='${item.description}'>تم قبول إستفسارك ${
-              item.target
-            }<div class='w3-tiny w3-margin-top'>${item.timestamp}</div></a>`;
+            var message = `<a href='${item.description}'>تم قبول إستفسارك ${item.target}<div class='w3-tiny w3-margin-top'>${item.timestamp}</div></a>`;
             return "<li class='w3-display-container'>" + message + "</li>";
           }
 
@@ -367,9 +354,9 @@ $("#search-btn").on("click", () => {
 });
 
 // User area dropdown
-$('.dropbtn-user-area').on('click', function() {
-  $('#loggedin-user-area-dropdown').toggleClass('raykomfi-show')
-})
+$(".dropbtn-user-area").on("click", function () {
+  $("#loggedin-user-area-dropdown").toggleClass("raykomfi-show");
+});
 
 // Force Raykomfi in the beginning
 var postCreateTitle = $("#create-post-form #id_title");
@@ -416,9 +403,14 @@ generateStars();
 if (window.location.hash) {
   var anchor = $(window.location.hash);
   if (window.location.hash.indexOf("to") > 0) {
-    $("html,body").animate({ scrollTop: anchor.parent().parent().offset().top - 250 }, "slow");
+    $("html,body").animate(
+      { scrollTop: anchor.parent().parent().offset().top - 250 },
+      "slow"
+    );
     setTimeout(() => {
-      anchor.parent().parent()
+      anchor
+        .parent()
+        .parent()
         .stop()
         .animate({ backgroundColor: "#FFFFE0" }, 250)
         .animate({ backgroundColor: "#FFFFFF" }, 250)
@@ -457,7 +449,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 M.AutoInit();
-
 
 // Share dropdown
 function shareDropdown() {
@@ -509,7 +500,7 @@ $(document).on("click", ".edit-comment-btn", (e) => {
   closestEditCommentForm.css("display", "block");
   closestEditCommentForm.parent().find(".comment").hide();
   closestEditCommentForm.parent().find(".comment-action-btn").hide();
-  $(closestEditCommentForm[0][1]).focus()
+  $(closestEditCommentForm[0][1]).focus();
 });
 
 $(document).on("click", ".close-comment-edit-form", (e) => {
@@ -536,7 +527,7 @@ $(document).on("click", ".edit-reply-btn", (e) => {
   closestEditReplyForm.css("display", "block");
   closestEditReplyForm.parent().find(".reply").hide();
   closestEditReplyForm.parent().find(".reply-action-btn").hide();
-  $(closestEditReplyForm[0][1]).focus()
+  $(closestEditReplyForm[0][1]).focus();
 });
 
 $(document).on("click", ".close-reply-edit-form", (e) => {
@@ -587,89 +578,115 @@ tinymce.init({
 //   postKeywordsWrapper.html(generatedTags)
 // }
 
-
 // Question as anonymous
-$('#anonymous-question-btn').on('click', function() {
-  $('#page-to-add-question').hide()
-  $('#add-question-no-register').show()
-})
+$("#anonymous-question-btn").on("click", function () {
+  $("#page-to-add-question").hide();
+  $("#add-question-no-register").show();
+});
 
 // Set anonymous image
-$('#anonymous-image').attr('src', $('#id_creator_image').val())
+$("#anonymous-image").attr("src", $("#id_creator_image").val());
 
 // Show hide replies
-$(document).on('click', '.show-hide-replies-bar',function() {
-  $(this).parent().prev().toggleClass('raykomfi-show')
-  if($(this).parent().prev().hasClass('raykomfi-show')) {
-    $(this).text('أخفي الردود')
+$(document).on("click", ".show-hide-replies-bar", function () {
+  $(this).parent().prev().toggleClass("raykomfi-show");
+  if ($(this).parent().prev().hasClass("raykomfi-show")) {
+    $(this).text("أخفي الردود");
   } else {
-    $(this).text('أظهر الردود')
+    $(this).text("أظهر الردود");
   }
-})
+});
 
 // Initialize aos animation
 AOS.init();
 
-if($('#typed-strings').length > 0) {
-// Initialize typed js
-var options = {
-  stringsElement: '#typed-strings',
-  typeSpeed: 40
-};
+if ($("#typed-strings").length > 0) {
+  // Initialize typed js
+  var options = {
+    stringsElement: "#typed-strings",
+    typeSpeed: 40,
+  };
 
-var typed = new Typed('.for-typed-js', options);
+  var typed = new Typed(".for-typed-js", options);
 }
 
-$('.top-add-comment').on('click', function() {
+$(".top-add-comment").on("click", function () {
   $(".commentNoRegisterForm").addClass("raykomfi-display-block");
   $(".signed-in-comment").addClass("raykomfi-display-block");
-  setTimeout(function() {
-    $('html, body').animate({
-      scrollTop: $('.add-comment-section').offset().top
-  }, 1000);
-  }, 100)
-})
+  setTimeout(function () {
+    $("html, body").animate(
+      {
+        scrollTop: $(".add-comment-section").offset().top,
+      },
+      1000
+    );
+  }, 100);
+});
 
 // Category Dropdown
-$('.category-button').on('click', function() {
-  var categoryWrapper = $('.category-wrapper');
-  if(categoryWrapper.hasClass('show-category')) {
-    categoryWrapper.removeClass('show-category')
-    categoryWrapper.hide('slide', {direction: 'up'}, 300)
+$(".category-button").on("click", function () {
+  var categoryWrapper = $(".category-wrapper");
+  if (categoryWrapper.hasClass("show-category")) {
+    categoryWrapper.removeClass("show-category");
+    categoryWrapper.hide("slide", { direction: "up" }, 300);
   } else {
-    categoryWrapper.addClass('show-category')
-    categoryWrapper.show('slide', {direction: 'up'}, 300)
+    categoryWrapper.addClass("show-category");
+    categoryWrapper.show("slide", { direction: "up" }, 300);
   }
-})
+});
 
 // Set report comment or reply url
-$(document).on('click', '.raykomfi-report-btn', function() {
-  var data = $(this).data()
+$(document).on("click", ".raykomfi-report-btn", function () {
+  var data = $(this).data();
 
-  if(data.hasOwnProperty('replyUrl')) {
-    $('#reply-reported-url').val(data.replyUrl)
-    $('#reportReply').show()
+  if (data.hasOwnProperty("replyUrl")) {
+    $("#reply-reported-url").val(data.replyUrl);
+    $("#reportReply").show();
   } else {
-    $('#comment-reported-url').val(data.commentUrl)
-    $('#reportComment').show()
+    $("#comment-reported-url").val(data.commentUrl);
+    $("#reportComment").show();
   }
-})
+});
 
 // Change notification circle colour when footer is reached
-$(window).scroll(function() {
-  var hT = $('#footer').offset().top,
-      hH = $('#footer').outerHeight(),
-      wH = $(window).height(),
-      wS = $(this).scrollTop();
-  if (wS > (hT+hH-wH - 120)){
-      $('.noti-dropbtn').css({
-        backgroundColor: '#FFFFFF',
-        color: '#3498db'
-      })
+$(window).scroll(function () {
+  var hT = $("#footer").offset().top,
+    hH = $("#footer").outerHeight(),
+    wH = $(window).height(),
+    wS = $(this).scrollTop(),
+    scrollTop = $(window).scrollTop();
+  if (scrollTop >= 0 && (scrollTop) < $("footer").offset().top - 500) {
+    $("#goto-bottom").show();
+    $("#goto-bottom").css({
+      color: "#3498db",
+    });
   } else {
-    $('.noti-dropbtn').css({
-      backgroundColor: '#3498db',
-      color: '#FFFFFF'
-    })
+    $("#goto-bottom").hide();
   }
+
+  if (wS > hT + hH - wH - 120) {
+    $(".noti-dropbtn").css({
+      backgroundColor: "#FFFFFF",
+      color: "#3498db",
+    });
+    $("#goto-top").show();
+    $("#goto-top").css({
+      color: "#FFFFFF",
+    });
+  } else {
+    $(".noti-dropbtn").css({
+      color: "#FFFFFF",
+      backgroundColor: "#3498db",
+    });
+
+    $("#goto-top").hide();
+  }
+});
+
+// Scroll to top and down
+$("#goto-top").on("click", function () {
+  $("html, body").animate({ scrollTop: 0 }, "slow");
+});
+$("#goto-bottom").on("click", function () {
+  $("html, body").animate({ scrollTop: $("footer").offset().top }, "slow");
 });

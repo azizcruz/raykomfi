@@ -333,7 +333,7 @@ h4 {
 
 .latest-opinions {
   overflow-wrap: break-word;
-  min-height: 1000px;
+  min-height: 1596px;
   position: relative;
 }
 
@@ -680,7 +680,6 @@ footer {
   -o-transition: background-color 0.2s ease-in-out;
   transition: background-color 0.2s ease-in-out;
   margin-bottom: 20px;
-  border: 1px solid #cecece;
   border-radius: 4px;
 }
 
@@ -894,6 +893,27 @@ select:focus {
 .noti-dropbtn:focus {
   background-color: #2980b9;
 }
+
+#goto-top,
+#goto-bottom {
+  position: fixed;
+  left: 115px;
+  bottom: 165px;
+  font-size: 30px;
+  display: none;
+  cursor: pointer;
+  z-index: 9;
+}
+
+#goto-top i {
+  color: #FFF;
+}
+
+#goto-bottom {
+  color: #3498db !important;
+}
+
+
 
 .noti-dropdown {
   position: relative;
@@ -2215,6 +2235,11 @@ input.raykomfi-input:checked + .raykomfi-slider:before {
     left: 25px;
     bottom: 25px;
   }
+
+  #goto-top, #goto-bottom {
+    left: 40px;
+    bottom: 90px;
+}
 
   .noti-dropdown-content {
     left: 0;
