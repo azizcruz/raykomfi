@@ -655,7 +655,7 @@ $(window).scroll(function () {
     wH = $(window).height(),
     wS = $(this).scrollTop(),
     scrollTop = $(window).scrollTop();
-  if (scrollTop >= 0 && (scrollTop) < $("footer").offset().top - 500) {
+  if (scrollTop >= 0 && (scrollTop) < $("footer").offset().top - 1200) {
     $("#goto-bottom").show();
     $("#goto-bottom").css({
       color: "#3498db",
