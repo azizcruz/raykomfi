@@ -588,3 +588,26 @@ class RestorePasswordForm(forms.Form):
                 )
 
         return cleaned_data
+
+
+@parsleyfy
+class ContactUsForm(forms.Form):
+    email = forms.EmailField(label='', validators=[validate_email], widget=forms.TextInput(), error_messages={
+            'invalid': _("بريد إلكتروني غير صالح"),
+        })  
+    content = forms.CharField(widget=forms.Textarea)
+
+    def __init__(self, *args, **kwargs):
+        super(ContactUsForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['email','content']:
+            if fieldname == 'email':
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  '
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].required = True
+                self.fields[fieldname].label = 'بريد إلكتروني'
+            if fieldname == 'content':
+                self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border  textarea-with-preservations'
+                self.fields[fieldname].widget.attrs['placeholder'] = ''
+                self.fields[fieldname].required = True
+                self.fields[fieldname].label = 'محتوى الرسالة'

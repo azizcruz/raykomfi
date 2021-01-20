@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
-from .forms import get_random_image_path, SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, CustomPasswordResetForm, CommentForm, ReplyForm, ProfileForm, MessageForm, RestorePasswordForm, ForgotNoRegistrationCodeForm, ChangeEmailForm, NewPostWithNoRegistrationForm, SignupWithNoRegistrationForm
+from .forms import get_random_image_path, SignupForm, SigninForm, NewPostForm, CustomChangePasswordForm, ContactUsForm, CustomPasswordResetForm, CommentForm, ReplyForm, ProfileForm, MessageForm, RestorePasswordForm, ForgotNoRegistrationCodeForm, ChangeEmailForm, NewPostWithNoRegistrationForm, SignupWithNoRegistrationForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -911,7 +911,8 @@ def privacy_policy_view(request):
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def about_view(request):
-    return render(request, 'sections/about.html', {'view_title': 'منصة رايكم في | عن منصة رايكم في'})
+    form = ContactUsForm(use_required_attribute=False)
+    return render(request, 'sections/about.html', {'view_title': 'منصة رايكم في | عن منصة رايكم في', 'form': form})
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def not_found_handler(request):

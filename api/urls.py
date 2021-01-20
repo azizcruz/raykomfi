@@ -31,6 +31,7 @@ urlpatterns = [
     path('user/activity', views.UserActivityView.as_view()),
     path('admin/action', views.AdminActionsView.as_view()),
     path('categories/', views.Categories.as_view()),
+    path('contact-us/', views.ContactUsView.as_view()),
     path('ad-messages/', views.Categories.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

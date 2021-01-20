@@ -35,7 +35,11 @@ $(document).on("submit", "form.replyForm", function (e) {
         .then((response) => {
           $(this)[0][2].disabled = false;
           let comment_view = $(`#comment-id-${commentId}`);
-          var showMore = $($($(comment_view.parent().children()[0]).children()[2]).children()[0])
+          var showMore = $(
+            $(
+              $(comment_view.parent().children()[0]).children()[2]
+            ).children()[0]
+          );
           view_html = response.data.view;
           comment_view.html(view_html);
           generateStars();
@@ -243,7 +247,7 @@ $(document).on("submit", "form.commentNoRegisterForm", function (e) {
         if (
           err.response.status === 403 &&
           err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
-        ){
+        ) {
           errorAlert("لقد تخطيت الحد المسموح من المحاولات, حاول لاحقا");
         } else {
           errorAlert("حدث خطأ غير متوقع, حاول لاحقا");
@@ -324,9 +328,11 @@ $(document).on("submit", "form.voteForm", function (e) {
           errorAlert("لقد تخطيت الحد المسموح من المحاولات, حاول لاحقا");
         } else if (
           err.response.status === 403 &&
-          err.response.data.detail === "لم يتم تزويد بيانات الدخول.") 
-         {
-          infoAlert("<a href='/user/signin/' class='alert-link'>سجل دخولك</a> أو <a href='/user/register/' class='alert-link'>سجل في المنصة</a> للمشاركة");
+          err.response.data.detail === "لم يتم تزويد بيانات الدخول."
+        ) {
+          infoAlert(
+            "<a href='/user/signin/' class='alert-link'>سجل دخولك</a> أو <a href='/user/register/' class='alert-link'>سجل في المنصة</a> للمشاركة"
+          );
         }
       });
   }
@@ -362,7 +368,7 @@ $(document).on("submit", "form.getMessageForm", function (e) {
           err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
         ) {
           errorAlert("لقد تخطيت الحد المسموح من المحاولات, حاول لاحقا");
-        } 
+        }
       });
   }
 });
@@ -666,6 +672,52 @@ $(document).on("click", ".admin-action-btn", function (e) {
           errorAlert("حدث خطأ غير متوقع, حاول لاحقا");
         }
       });
+  }
+});
+
+// Contact us form
+$(document).on("submit", "form.contactUsForm", function (e) {
+  e.preventDefault();
+  let data = $(this).serializeArray();
+  let sendBtn = $(this)[0][2];
+  sendBtn.disabled = true;
+  $(sendBtn).text("جاري الأرسال...");
+
+  data = {
+    email: data[0].value,
+    content: data[1].value,
+  };
+
+  if (data.email && data.content) {
+    axios({
+      method: "POST",
+      url: "/api/contact-us/",
+      headers: {
+        "X-CSRFTOKEN": Cookies.get("csrftoken"),
+        "Content-Type": "application/json",
+      },
+      data: data,
+    })
+      .then((response) => {
+        sendBtn.disabled = false;
+        $(this).trigger("reset");
+        $(sendBtn).text("إرسال");
+        successAlert(response.data.message);
+      })
+      .catch((err) => {
+        sendBtn.disabled = false;
+        $(sendBtn).text("إرسال");
+        if (
+          err.response.status === 403 &&
+          err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
+        ) {
+          errorAlert("لقد تخطيت الحد المسموح من المحاولات, حاول لاحقا");
+        } else {
+          errorAlert("حدث خطأ غير متوقع, حاول لاحقا");
+        }
+      });
+  } else {
+    errorAlert("حدث خطأ غير متوقع, حاول لاحقا");
   }
 });
 

@@ -592,6 +592,12 @@ nav .nav-links a {
   border-bottom: 15px solid #f1f1f1;
 }
 
+/* About Style */
+.about-content {
+  min-height: 80vh;
+}
+/* About Style */
+
 /* Links inside the dropdown */
 .loggedin-user-area-content .user-area-link {
   color: #484848;

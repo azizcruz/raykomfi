@@ -110,3 +110,9 @@ class FromYourCountryQuestions(serializers.Serializer):
     class Meta:
         fields = ['country']
 
+class ContactUsSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    content = serializers.CharField()
+    class Meta:
+        fields = ['email', 'content']
+

@@ -31,6 +31,8 @@ from .models import BestUserListTrack
 import json
 from random import sample
 from dotenv import load_dotenv
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
 from raykomfi.forms import get_random_image_path
 load_dotenv()
 
@@ -843,3 +845,38 @@ class AdMessages(APIView):
 
         else:
             return JsonResponse({'message': 'غير مخول لعمل هذا الشيء'}, status=status.HTTP_403_FORBIDDEN)
+
+
+class ContactUsView(APIView):
+    '''
+    Contact Us
+    '''
+    permission_classes = [permissions.AllowAny]
+
+    @method_decorator(ratelimit(key='ip', rate='2/m', block=True))
+    def post(self, request):
+        serializer = serializers.ContactUsSerializer(data=request.data)
+
+        if serializer.is_valid():
+            from_email = serializer.data['email']
+            to_email = 'support@raykomfi.com'
+            if len(serializer.data['email']) > 5:
+                mail_subject = serializer.data['content'][:4]
+            else:
+                mail_subject = serializer.data['content']
+
+            msg = EmailMultiAlternatives(
+            f"{mail_subject}", "nothing", to=[to_email])
+            template="email_content.html"
+            html_email_template = get_template(template).render(
+                {
+                    'content': serializer.data['content'],
+                    'email': from_email
+                }
+            )
+            msg.attach_alternative(html_email_template, "text/html")
+            msg.send()
+            return Response({'message': 'تم إرسال رسالتك'})
+
+        else:
+            return JsonResponse({'message': 'خطأ من العميل'}, status=status.HTTP_400_FORBIDDEN)
