@@ -14,6 +14,22 @@ function successAlert(message) {
       });
 }
 
+function generalSuccessMessageAlert(message) {
+  $.toast({
+    text: message,
+    textAlign: "center",
+    hideAfter: 5000,
+    bgColor: "#4caf50",
+    textColor: "#ffffff",
+    position : 'top-center',
+    showHideTransition : 'slide',
+    allowToastClose: false,
+    loader: false,
+    icon: 'success',
+    stack: 3
+  });
+}
+
 function errorAlert(message) {
     $.toast({
         text: message,

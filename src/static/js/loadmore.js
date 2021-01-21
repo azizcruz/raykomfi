@@ -67,6 +67,15 @@
           $("#posts-wrapper").append(data.comments_html);
         }
         generateStars();
+        // Truncate comment
+        var comment = $(".comment");
+        comment.each(function (count, comment) {
+          var commentJq = $(comment);
+          var commentContentWrapper = $($(comment).children()[0]);
+          if (commentJq.height() > 150) {
+            commentContentWrapper.addClass("raykomfi-truncate");
+          }
+        });
       },
       error: function (xhr, status, error) {
         console.log(error);

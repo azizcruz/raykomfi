@@ -137,7 +137,7 @@
                         class="w3-input w3-border  reply-textarea textarea-with-preservations"
                         id="id_reply_content-{{comment.id}}"></textarea>
                     <div class="col s12">
-                        {% if user.is_authenticated and user.email_active %}
+                        {% if user.is_authenticated %}
                         <button class='w3-button z-depth-1 w3-margin-bottom' type="submit"> إضافة رد</button>
                         {% else %}
                         <a href="">سجّل الدخول</a> أو

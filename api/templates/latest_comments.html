@@ -2,7 +2,7 @@
 <div class="w3-row latest-opinion">
     {% if comment.user and comment.user.is_active != False %}
     <a href="{% url 'raykomfi:user-profile' id=comment.user.id %}" class="writer-name">
-        <img src="{{ comment.user.profile_image }}" alt="صورة {{comment.user.username}} على رايكم في"  class="w3-circle" width='20' width='20'>
+        <img src="{{ comment.user.profile_image }}" alt="صورة {{comment.user.username}} على رايكم في"  class="w3-circle creator-profile-image">
         <span class="name">
             {{comment.user.username}}
         </span>

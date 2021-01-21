@@ -86,6 +86,13 @@ $(document).on("submit", "form.replyForm", function (e) {
             err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
           ) {
             errorAlert("لقد تخطيت الحد المسموح من المحاولات, حاول لاحقا");
+          } else if (
+            err.response.status == 403 &&
+            err.response.data.message === "account not activated"
+          ) {
+            infoAlert(
+              'فعل بريدك الإلكتروني أولا, يمكنك طلب رابط التفعيل مرة أخرى من <a href="/user/send-link/">هنا</a>'
+            );
           } else {
             errorAlert("حدث خطأ غير متوقع, حاول لاحقا");
           }
@@ -187,6 +194,13 @@ $(document).on("submit", "form.commentForm", function (e) {
         ) {
           $(this)[0][2].disabled = false;
           errorAlert("لقد تخطيت الحد المسموح من المحاولات, حاول لاحقا");
+        } else if (
+          err.response.status == 403 &&
+          err.response.data.message == "account not activated"
+        ) {
+          infoAlert(
+            'فعل بريدك الإلكتروني أولا, يمكنك طلب رابط التفعيل مرة أخرى من <a href="/user/send-link/">هنا</a>'
+          );
         } else {
           errorAlert("حدث خطأ غير متوقع, حاول لاحقا");
         }
@@ -333,6 +347,15 @@ $(document).on("submit", "form.voteForm", function (e) {
           infoAlert(
             "<a href='/user/signin/' class='alert-link'>سجل دخولك</a> أو <a href='/user/register/' class='alert-link'>سجل في المنصة</a> للمشاركة"
           );
+        } else if (
+          err.response.status == 403 &&
+          err.response.data.message == "account not activated"
+        ) {
+          infoAlert(
+            'فعل بريدك الإلكتروني أولا, يمكنك طلب رابط التفعيل مرة أخرى من <a href="/user/send-link/">هنا</a>'
+          );
+        } else {
+          errorAlert("حدث خطأ غير متوقع, حاول لاحقا");
         }
       });
   }
@@ -368,6 +391,15 @@ $(document).on("submit", "form.getMessageForm", function (e) {
           err.response.data.detail === "ليس لديك صلاحية للقيام بهذا الإجراء."
         ) {
           errorAlert("لقد تخطيت الحد المسموح من المحاولات, حاول لاحقا");
+        } else if (
+          err.response.status == 403 &&
+          err.response.data.message == "account not activated"
+        ) {
+          infoAlert(
+            'فعل بريدك الإلكتروني أولا, يمكنك طلب رابط التفعيل مرة أخرى من <a href="/user/send-link/">هنا</a>'
+          );
+        } else {
+          errorAlert("حدث خطأ غير متوقع, حاول لاحقا");
         }
       });
   }
@@ -580,10 +612,7 @@ $(document).on("submit", "form.reportForm", function (e) {
           sendBtn.text("إرسال");
         }, 60 * 1000);
 
-        $.toast({
-          text: "تم إرسال بلاغك",
-          textAlign: "center",
-        });
+        successAlert('تم إرسال بلاغك')
       })
       .catch((err) => {
         if (

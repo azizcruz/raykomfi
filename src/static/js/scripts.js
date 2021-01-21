@@ -702,11 +702,16 @@ comment.each(function(count, comment) {
   }
 })
 
-comment.on('click', function() {
+$(document).on('click', '.comment', function() {
   var theClickedCommentShowMore = $($(this).children(0)[0])
 
   if(theClickedCommentShowMore.hasClass('raykomfi-truncate')) {
     theClickedCommentShowMore.removeClass('raykomfi-truncate')
   }
 
+})
+
+// Email not active btn 
+$('#email-not-active-btn').on('click', function() {
+  infoAlert('فعل بريدك الإلكتروني أولا, يمكنك طلب رابط التفعيل مرة أخرى من <a href="/user/send-link/">هنا</a>')
 })

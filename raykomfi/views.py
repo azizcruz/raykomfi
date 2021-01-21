@@ -124,7 +124,7 @@ def profile_view(request, id):
                 request.user.bio = form.cleaned_data['bio']
                 request.user.save()
                 messages.success(
-                    request, 'تم الحفظ بنجاح', extra_tags='pale-green w3-border')
+                    request, 'تم الحفظ بنجاح', extra_tags='green raykomfi-border-green')
                 return render(request, 'user/profile.html', context={'form': form, 'view_title': f'رايكم في | { request.user.username }'})
             else:
                 return render(request, 'user/profile.html', context={'form': form, 'view_title': f'رايكم في | { request.user.username }'})
@@ -139,7 +139,7 @@ def profile_view(request, id):
     except Exception as e:
         print("Exception ========>>>>>>>>> ",e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 @ratelimit(key='ip', rate='10/m', block=True)
@@ -168,7 +168,7 @@ def sign_in_view(request):
                             return HttpResponseRedirect(reverse('raykomfi:raykomfi-home'))
                 else:
                     messages.success(
-                        request, 'البريد الإكتروني أو كلمة المرور خاطئة', extra_tags='pale-red w3-border')
+                        request, 'البريد الإكتروني أو كلمة المرور خاطئة', extra_tags='red raykomfi-border-red')
                     form = SigninForm(use_required_attribute=False)
                     return render(request, 'user/signin.html', context={'form': form, 'view_title': f'منصة رايكم في | تسجيل الدخول'})
             else:
@@ -178,17 +178,17 @@ def sign_in_view(request):
             context = {'form': form, 'view_title': f'رايكم في | تسجيل الدخول', 'url_name': 'signin_view'}
             if request.user.is_anonymous and 'next' in request.GET:
                 messages.success(
-                    request, 'يجب عليك تسجيل الدخول أولا', extra_tags='pale-yellow w3-border')
+                    request, 'يجب عليك تسجيل الدخول أولا', extra_tags='orange raykomfi-border-orange')
                 context['next'] = request.GET.get('next')
             if request.user.is_authenticated:
                 messages.success(
-                    request, 'أنت مسجل الدخول بالفعل', extra_tags='pale-green w3-border')
+                    request, 'أنت مسجل الدخول بالفعل', extra_tags='green raykomfi-border-green')
                 return redirect('/')
             return render(request, 'user/signin.html', context=context)
     except Exception as e:
         print("Exception ========>>>>>>>>> ",e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 @ratelimit(key='ip', rate='10/m', block=True)
@@ -196,12 +196,12 @@ def user_logout(request):
     try:
         logout(request)
         messages.success(
-            request, 'تم تسجيل الخروج', extra_tags='pale-green w3-border')
+            request, 'تم تسجيل الخروج', extra_tags='green raykomfi-border-green')
         return HttpResponseRedirect('/user/signin/')
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 @ratelimit(key='ip', rate='10/m', block=True)
@@ -234,7 +234,7 @@ def sign_up_view(request):
                 # send email
                 send_email(html_email_template=html_email_template, mail_subject=mail_subject, to_email=to_email, from_email=from_email, token=token)
                 messages.success(
-                    request, 'تم انشاء الحساب, يرجى مراجعة بريدك الالكتروني لتفعيل حسابك', extra_tags='pale-green w3-border')
+                    request, 'تم انشاء الحساب, يرجى مراجعة بريدك الالكتروني لتفعيل حسابك', extra_tags='green raykomfi-border-green')
 
                 return HttpResponseRedirect('/user/signin')
 
@@ -247,7 +247,7 @@ def sign_up_view(request):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 @ratelimit(key='ip', rate='10/m', block=True)
@@ -258,7 +258,7 @@ def sign_up_with_no_registration_view(request):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 @ratelimit(key='ip', rate='10/m', block=True)
@@ -272,7 +272,7 @@ def forgot_no_registration_code(request):
                 obj = NoRegistrationCode.objects.filter(email=to_email).first()
                 if not obj:
                     messages.success(
-                    request, 'يرجى طلب رمز مشاركة جديد', extra_tags='pale-green w3-border')
+                    request, 'يرجى طلب رمز مشاركة جديد', extra_tags='green raykomfi-border-green')
 
                     return HttpResponseRedirect('/')
 
@@ -288,7 +288,7 @@ def forgot_no_registration_code(request):
                 # send email
                 send_email(html_email_template=html_email_template, mail_subject=mail_subject, to_email=to_email, from_email=from_email, token=token)
                 messages.success(
-                    request, 'تم إرسال رمز المشاركة إلى بريدك الإلكتروني', extra_tags='pale-green w3-border')
+                    request, 'تم إرسال رمز المشاركة إلى بريدك الإلكتروني', extra_tags='green raykomfi-border-green')
 
                 return HttpResponseRedirect('/')
 
@@ -301,7 +301,7 @@ def forgot_no_registration_code(request):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 
@@ -320,14 +320,14 @@ def delete_user(request, id):
             user.username = f"{rand_num}_deleted_user"
             user.save()
             messages.success(
-                    request, 'تم حذف حسابك, لكن إستفساراتك, تعليقاتك و ردودك ستبقى لكن بدون إسمك الشخصي.', extra_tags='pale-green w3-border')
+                    request, 'تم حذف حسابك, لكن إستفساراتك, تعليقاتك و ردودك ستبقى لكن بدون إسمك الشخصي.', extra_tags='green raykomfi-border-green')
             return redirect('raykomfi:user-signin')
         else:
             return render(request, 'sections/are_you_sure.html')
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 @ratelimit(key='ip', rate='10/m', block=True)
@@ -339,7 +339,7 @@ def post_view(request, id, slug):
 
         if not post:
             messages.success(
-                    request, 'ما تبحث عنه غير موجود', extra_tags='pale-red w3-border')
+                    request, 'ما تبحث عنه غير موجود', extra_tags='red raykomfi-border-red')
             return redirect('raykomfi:raykomfi-home')
 
         comments_count = 0
@@ -353,7 +353,7 @@ def post_view(request, id, slug):
         if post.isActive == False:
             if request.user.id == None:
                 messages.success(
-                    request, 'تتم مراجعة الإستفسار الان, سيتم نشر إستفسارك قريبا, إذا لم تجد إستفسارك نشر خلال 24 ساعة هذا يعني أنه مخالف', extra_tags='pale-green w3-border')
+                    request, 'تتم مراجعة الإستفسار الان, سيتم نشر إستفسارك قريبا, إذا لم تجد إستفسارك نشر خلال 24 ساعة هذا يعني أنه مخالف', extra_tags='green raykomfi-border-green')
                 return redirect('raykomfi:raykomfi-home')
             if request.user and not request.user.is_staff and request.user.id != post.creator.id:
                 return redirect('raykomfi:raykomfi-home')
@@ -383,7 +383,7 @@ def post_view(request, id, slug):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 
@@ -397,7 +397,7 @@ def my_posts_view(request, user_id):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 @ login_required
@@ -410,7 +410,7 @@ def my_comments_view(request, user_id):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 @ login_required
@@ -423,7 +423,7 @@ def my_comments_most_replied_view(request, user_id):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 @ login_required
@@ -436,7 +436,7 @@ def my_comments_most_voted_view(request, user_id):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 
@@ -468,7 +468,7 @@ def post_edit(request, id, slug):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 
@@ -492,7 +492,7 @@ def create_post(request):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 @ratelimit(key='ip', rate='10/m', block=True)
@@ -514,7 +514,7 @@ def create_post_with_no_registration(request):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 @login_required
@@ -528,7 +528,7 @@ def change_password_view(request):
                 user = form.save()
                 update_session_auth_hash(request, user)
                 messages.success(
-                    request, 'تم تغيير كلمة المرور بنجاح', extra_tags='pale-green w3-border')
+                    request, 'تم تغيير كلمة المرور بنجاح', extra_tags='green raykomfi-border-green')
                 return redirect('raykomfi:raykomfi-home')
             else:
                 return render(request, 'user/change_password.html', {
@@ -543,7 +543,7 @@ def change_password_view(request):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 @ratelimit(key='ip', rate='10/m', block=True)
@@ -562,7 +562,7 @@ def restore_password_view(request):
                     user.set_password(password)
                     user.save()
                     messages.success(
-                        request, 'تم إعادة تعيين كلمة المرور بنجاح', extra_tags='pale-green w3-border')
+                        request, 'تم إعادة تعيين كلمة المرور بنجاح', extra_tags='green raykomfi-border-green')
                     return redirect('raykomfi:user-signin')
                 else:
                     return render(request, 'user/restore_password.html', {
@@ -575,7 +575,7 @@ def restore_password_view(request):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 @ratelimit(key='ip', rate='10/m', block=True)
@@ -607,7 +607,7 @@ def forgot_password_view(request):
                 # send email
                 send_email(html_email_template=html_email_template, mail_subject=mail_subject, to_email=to_email, from_email=from_email, token=token)
                 messages.success(
-                    request, 'تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني', extra_tags='pale-green w3-border')
+                    request, 'تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني', extra_tags='green raykomfi-border-green')
 
                 return HttpResponseRedirect('/user/signin')
             else:
@@ -618,7 +618,7 @@ def forgot_password_view(request):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 @login_required
@@ -652,7 +652,7 @@ def change_email_view(request):
                 # send email
                 send_email(html_email_template=html_email_template, mail_subject=mail_subject, to_email=to_email, from_email=from_email, token=token)
                 messages.success(
-                    request, 'تم إرسال رابط  تأكيد البريد الإلكتروني إلى بريدك الإلكتروني الجديد', extra_tags='pale-green w3-border')
+                    request, 'تم إرسال رابط  تأكيد البريد الإلكتروني إلى بريدك الإلكتروني الجديد', extra_tags='green raykomfi-border-green')
 
                 return HttpResponseRedirect('/')
             else:
@@ -663,7 +663,7 @@ def change_email_view(request):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 @login_required
@@ -679,12 +679,12 @@ def confirm_new_email(request, uid, token, new_email):
         user.save()
         logout(request)
         messages.success(
-            request, 'تم تغيير بريدك الإلكتروني بنجاح', extra_tags='pale-green w3-border')
+            request, 'تم تغيير بريدك الإلكتروني بنجاح', extra_tags='green raykomfi-border-green')
         return redirect('raykomfi:user-signin')
     else:
         logout(request)
         messages.success(
-                request, 'رابط غير صالح, أعد المحاولة', extra_tags='pale-red w3-border')
+                request, 'رابط غير صالح, أعد المحاولة', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:user-signin')
 
 @login_required
@@ -698,6 +698,10 @@ def messages_view(request, user_id, message_id=0):
             user_messages = Message.objects.filter(receiver__exact=user_id)
             return render(request, 'sections/messages.html', {'user_messages': user_messages, 'fetched_message': message, 'view_title': f'منصة رايكم في | الرسائل'})
         else:
+            if request.user.email_active == False:
+                messages.success(
+                    request, 'فعل حسابك أولا', extra_tags='orange raykomfi-border-orange')
+                return redirect('raykomfi:raykomfi-home')
             if message_id != 0:
                 message = get_object_or_404(Message, id=message_id)
                 message.is_read = True
@@ -710,7 +714,7 @@ def messages_view(request, user_id, message_id=0):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
         
 @login_required
@@ -724,7 +728,7 @@ def new_message_view(request, code):
             if form.is_valid():
                 message = Message.objects.create(user=request.user, receiver=receiver, title=form.cleaned_data['title'], content=form.cleaned_data['content'])
                 messages.success(
-                request, f'تم إرسال الرسالة الى {receiver.username} بنجاح', extra_tags='pale-green w3-border')
+                request, f'تم إرسال الرسالة الى {receiver.username} بنجاح', extra_tags='green raykomfi-border-green')
                 if receiver.id != request.user.id:
                     notify.send(request.user, recipient=receiver ,action_object=message, description=message.get_noti_url(), target=message, verb='message')
                 return redirect(receiver.get_absolute_url())
@@ -736,7 +740,7 @@ def new_message_view(request, code):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
     
 
@@ -752,14 +756,14 @@ def add_comment(request, post_id):
             comment = Comment.objects.create(
                 content=comment_form.cleaned_data['content'], user=request.user, post=post)
             messages.success(
-                request, 'تم إضافة رأيك بنجاح', extra_tags='pale-green w3-border')
+                request, 'تم إضافة رأيك بنجاح', extra_tags='green raykomfi-border-green')
             return HttpResponseRedirect(post.get_absolute_url())
         else:
             return render(request, 'sections/post_view.html', {'post': post, 'comment_form': comment_form})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 
@@ -793,7 +797,7 @@ def comment_vote(request, comment_id):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 @login_required
@@ -814,7 +818,7 @@ def add_reply(request, post_id, comment_id):
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
 def activate(request, uid, token):
@@ -827,7 +831,7 @@ def activate(request, uid, token):
     if user is not None and user.verification_code_expire is not None and current_date_and_time < user.verification_code_expire and user.verification_code == token:
         if user.email_active == True:
             messages.success(
-            request, 'حسابك مفعل من قبل', extra_tags='pale-green w3-border')
+            request, 'حسابك مفعل من قبل', extra_tags='green raykomfi-border-green')
             return redirect('raykomfi:user-signin')
         user.email_active = True
         user.verification_code = ""
@@ -835,7 +839,7 @@ def activate(request, uid, token):
         user.save()
         logout(request)
         messages.success(
-            request, 'تم تفعيل حسابك, يمكنك الان استخدام المنصة', extra_tags='pale-green w3-border')
+            request, 'تم تفعيل حسابك, يمكنك الان استخدام المنصة', extra_tags='green raykomfi-border-green')
         return redirect('raykomfi:user-signin')
     else:
         return render(request, 'user/activate_fail.html')
@@ -855,7 +859,7 @@ def restore_password(request, uid, token):
         return render(request, 'user/restore_password.html', {'form': form, 'user': user})
     else:
         messages.success(
-                request, 'رابط غير صالح, أعد المحاولة', extra_tags='pale-red w3-border')
+                request, 'رابط غير صالح, أعد المحاولة', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:user-signin')
 
 @ratelimit(key='ip', rate='50/m', block=True)
@@ -866,13 +870,13 @@ def send_link(request):
             email = request.POST.get('email')
             if email.find('@') == -1:
                 messages.success(
-                    request, 'أدخل بريد إلكتروني صحيح, أعد المحاولة مرة أخرى', extra_tags='pale-red w3-border')
+                    request, 'أدخل بريد إلكتروني صحيح, أعد المحاولة مرة أخرى', extra_tags='red raykomfi-border-red')
                 return redirect('raykomfi:user-signin')
             to_email = email
             user = get_object_or_404(User, email=to_email)
             if user.email_active == True or not user:
                 messages.success(
-                    request, 'البريد الألكتروني مفعل أو حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'البريد الألكتروني مفعل أو حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
                 return redirect('raykomfi:user-signin')
             user.verification_code = token
             current_date_and_time =timezone.now()
@@ -893,12 +897,12 @@ def send_link(request):
             # send email
             send_email(html_email_template=html_email_template, mail_subject=mail_subject, to_email=to_email, from_email=from_email, token=token)
             messages.success(
-                request, 'تم إرسال رابط التفعيل الى بريدك الإلكتروني', extra_tags='pale-green w3-border')
+                request, 'تم إرسال رابط التفعيل الى بريدك الإلكتروني', extra_tags='green raykomfi-border-green')
             return HttpResponseRedirect(reverse('raykomfi:user-signin'))
         except Exception as e:
             print("Exception ========>>>>>>>>> ", e)
             messages.success(
-                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='pale-red w3-border')
+                    request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
             return redirect('raykomfi:user-signin')
         
 

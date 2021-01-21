@@ -4,7 +4,7 @@
 
 <div class="w3-container">
     <div class="row raykomfi-main-padding  raykomfi-max-width">
-        {% if user.is_authenticated and user.email_active %}
+        {% if user.is_authenticated %}
         <div class="raykomfi-form">
             <h3 class="w3-center">إستفسار جديد</h3>
             <div class="w3-margin-bottom w3-margin-top">
@@ -14,13 +14,12 @@
             <form action="{% url 'raykomfi:post-new' %}" enctype="multipart/form-data" method='post' id="create-post-form">
                 {% csrf_token %}
                 {{ form }}
-                <button class="w3-button raykomfi-button ">تأكيد</button>
+                {% if user.email_active %}
+                    <button class="w3-button raykomfi-button">تأكيد</button>
+                {% else %}
+                    <div class="w3-button raykomfi-button white-text" id="email-not-active-btn">تأكيد</div>
+                {% endif %}
             </form>
-        </div>
-    
-        {% else %}
-        <div class="w3-display-container w3-panel w3-pale-yellow w3-border message-wrapper">
-            <p class="w3-center">فعل حسابك للإستفسار عن ماذا تريد </p>
         </div>
     {% endif %}
     </div>

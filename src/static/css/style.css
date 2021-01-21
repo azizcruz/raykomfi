@@ -765,7 +765,11 @@ footer {
 }
 
 .message-wrapper {
-  margin-top: 0px;
+  margin: 0px 18px;
+}
+
+.message-wrapper > p {
+  padding: 5px 0px;
 }
 
 .register-message {
@@ -1730,8 +1734,8 @@ input ~ .parsley-errors-list.filled {
 }
 
 .user-profile-image {
-  width: 35%;
-  height: auto;
+  width: 250px;
+  height: 250px;
 }
 .another-user-profile {
   padding: 15px;
@@ -2376,7 +2380,8 @@ input.raykomfi-input:checked + .raykomfi-slider:before {
   }
 
   .user-profile-image {
-    width: 30%; 
+    width: 150px; 
+    height: 150px;
   }
   .add-question-wrapper > div {
     font-size: 11px;

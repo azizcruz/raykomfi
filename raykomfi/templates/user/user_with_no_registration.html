@@ -27,6 +27,10 @@
           <form action="{% url 'raykomfi:post-new-withnoregistration' %}" enctype="multipart/form-data" method='post' id="create-post-with-no-registration-form">
               {% csrf_token %}
               {{ form }}
+              <div class="w3-margin-bottom center">
+                <a href="{% url 'raykomfi:usage-terms' %}" class="blue-text w3-small" target="_blank">بإضافة إستفسارك أنت توافق على سياسات و شروط
+                    إستخدام المنصة</a>
+               </div>
               <button class="w3-button raykomfi-button ">تأكيد</button>
           </form>
       </div>
