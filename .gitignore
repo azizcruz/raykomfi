@@ -3,7 +3,6 @@ db.sqlite3
 __pycache__
 env
 .vscode
-media
 node_modules
 .env
 CACHE

@@ -853,7 +853,7 @@ if (latestCommentWrapper.length > 0) {
   loadLatestComments();
   setInterval(function () {
     loadLatestComments();
-  }, 30000);
+  }, 90000);
 }
 
 if (similarQuestionsWrapper.length > 0) {
