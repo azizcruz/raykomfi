@@ -22,7 +22,7 @@ def get_random_image_path():
     profile_images_path = os.path.join(media_root, 'profile_images')
     profile_images = os.listdir(profile_images_path)
     count_images = len(profile_images)
-    random_image_number = randint(1, 1)
+    random_image_number = randint(1, count_images - 1)
     path = os.path.join('/media', 'profile_images', f'{random_image_number}.png')
     return path
 

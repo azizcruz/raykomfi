@@ -337,7 +337,7 @@
                                     </a>
                                     {% else %}
                                     <span class="poster-name">
-                                        <img src="{{ comment.user_image }}" alt="صورة مجهول على رايكم في"  class="w3-circle creator-profile-image">
+                                        <img src="{{ reply.user_image }}" alt="صورة مجهول على رايكم في"  class="w3-circle creator-profile-image">
                                         مجهول
                                     </span>
                                     {% endif %}
@@ -391,6 +391,10 @@
                                         {% else %}
                                         <a href="">سجّل الدخول</a> أو
                                         <button class='w3-button z-depth-1 w3-margin-bottom' type="submit" data-as-anonymous="true"> رد كمجهول</button>
+                                        <div class="w3-margin-bottom">
+                                            <a href="{% url 'raykomfi:usage-terms' %}" class="blue-text w3-small" target="_blank">بإضافة ردك أنت توافق على سياسات و شروط
+                                               إستخدام المنصة</a>
+                                        </div>
                                         {% endif %}
                                     </div>
                                 </form>
@@ -498,6 +502,10 @@
                             <div class="col s12">
                                 <button class='w3-button raykomfi-button z-depth-1 w3-margin-right'>
                                     إضافة رأي</button>
+                                <div class="w3-margin-bottom w3-margin-right">
+                                    <a href="{% url 'raykomfi:usage-terms' %}" class="blue-text w3-small" target="_blank">بإضافة رأيك أنت توافق على سياسات و شروط
+                                        إستخدام المنصة</a>
+                                </div>
                             </div>
                             <div id="noRegisterCommentError" class="red-text w3-margin-top">
                     

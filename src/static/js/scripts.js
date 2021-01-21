@@ -690,3 +690,23 @@ $("#goto-top").on("click", function () {
 $("#goto-bottom").on("click", function () {
   $("html, body").animate({ scrollTop: $("footer").offset().top }, "slow");
 });
+
+
+// Truncate comment
+var comment = $('.comment')
+comment.each(function(count, comment) {
+  var commentJq = $(comment)
+  var commentContentWrapper = $($(comment).children()[0])
+  if(commentJq.height() > 150) {
+    commentContentWrapper.addClass('raykomfi-truncate')
+  }
+})
+
+comment.on('click', function() {
+  var theClickedCommentShowMore = $($(this).children(0)[0])
+
+  if(theClickedCommentShowMore.hasClass('raykomfi-truncate')) {
+    theClickedCommentShowMore.removeClass('raykomfi-truncate')
+  }
+
+})

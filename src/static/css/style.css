@@ -400,6 +400,27 @@ h4 {
   padding: 20px !important;
 }
 
+.raykomfi-truncate {
+  max-height: 150px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.raykomfi-truncate::after {
+  content: 'إقرأ المزيد...';
+  font-weight: bold;
+  text-align: center;
+  display: block;
+  cursor: pointer;
+  color: #2196f3;
+  position: absolute;
+  width: 100%;
+  background-color: rgba(255, 255, 255, .8);
+  right: 0;
+  bottom: 0px;
+}
+
 .ray-box h2 {
   font-size: 1.4rem;
   overflow-wrap: break-word;
@@ -2382,6 +2403,9 @@ input.raykomfi-input:checked + .raykomfi-slider:before {
   }
   .order-menu > div {
     flex: 1 0 auto;
+  }
+  .similar-questions {
+    margin-top: 30px;
   }
 }
 
