@@ -403,11 +403,14 @@ generateStars();
 if (window.location.hash) {
   var anchor = $(window.location.hash);
   if (window.location.hash.indexOf("to") > 0) {
+    var showHideRepliesBtn = $($(anchor.parent().parent()[0]).find('.show-hide-replies-bar')[0])
+    
     $("html,body").animate(
       { scrollTop: anchor.parent().parent().offset().top - 250 },
       "slow"
     );
     setTimeout(() => {
+      showHideRepliesBtn.click()
       anchor
         .parent()
         .parent()

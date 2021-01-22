@@ -235,6 +235,9 @@
 
             </div>
             <a href="{% url 'raykomfi:users-ranking' %}">ترتيب أعضاء رايكم في</a>
+            {% if user.is_staff %}
+            <a href="{% url 'raykomfi:users-ranking' %}">اخر الأنشطة <i class="fa fa-dashboard"></i></a>
+            {% endif %}
             <a href="{% url 'raykomfi:about' %}">عن رايكم في</a>
             <div class="raykomfi-social-media side-nav-social-media">
                 <div>
@@ -245,6 +248,7 @@
                     <a href="https://twitter.com/raykomfi" target="_blank" title="تويتر رايكم في"><i
                             class="fa fa-twitter-square blue-text fa-2x"></i></a>
                 </div>
+               
                 <!-- <div>
                                                                                 <a href=""><i class="fa fa-instagram" title="انستغرام رايكم في"></i></a>
                                                                             </div> -->
@@ -436,8 +440,7 @@
     {% endcompress %}
 
     {% if user.is_authenticated %}
-    {% register_notify_callbacks refresh_period=40
-    callbacks='fill_notification_list_override,fill_notification_badge_override' %}
+    {% register_notify_callbacks refresh_period=40 callbacks='fill_notification_list_override,fill_notification_badge_override' %}
     {% endif %}
 </body>
 
