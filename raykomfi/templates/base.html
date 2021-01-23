@@ -235,9 +235,9 @@
 
             </div>
             <a href="{% url 'raykomfi:users-ranking' %}">ترتيب أعضاء رايكم في</a>
-            {% if user.is_staff %}
-            <a href="{% url 'raykomfi:users-ranking' %}">اخر الأنشطة <i class="fa fa-dashboard"></i></a>
-            {% endif %}
+           
+            <a href="{% url 'raykomfi:last_activities' %}">اخر الأنشطة <i class="fa fa-dashboard"></i></a>
+            
             <a href="{% url 'raykomfi:about' %}">عن رايكم في</a>
             <div class="raykomfi-social-media side-nav-social-media">
                 <div>

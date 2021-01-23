@@ -65,5 +65,8 @@ urlpatterns = [
     path('usage-terms/', views.privacy_policy_view, name='usage-terms'),
     path('about/', views.about_view, name='about'),
     path('about/users-ranking', views.users_ranking_view, name='users-ranking'),
+    path('about/hjhjdhsfuhuehoksjjaskk41245452drvshvas66f62f6fal', views.last_activities_view, name='last_activities'),
+
+
 
 ]

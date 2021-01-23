@@ -919,8 +919,19 @@ def about_view(request):
     return render(request, 'sections/about.html', {'view_title': 'منصة رايكم في | عن منصة رايكم في', 'form': form})
 
 @ratelimit(key='ip', rate='50/m', block=True)
+def last_activities_view(request):
+    latest_users = User.objects.all().order_by('-date_joined')[:10]
+    latest_posts = Post.objects.all().order_by('-created')[:10]
+    latest_comments = Comment.objects.all().order_by('-created')[:10]
+    latest_replies = Reply.objects.all().order_by('-created')[:10]
+    return render(request, 'sections/admin_mini_dashboard.html', {'view_title': 'منصة رايكم في | اخر الأنشطة', 'latest_users': latest_users, 'latest_posts': latest_posts, 'latest_comments': latest_comments, 'latest_replies': latest_replies})
+
+
+@ratelimit(key='ip', rate='50/m', block=True)
 def not_found_handler(request):
     return JsonResponse({'message': ''}, status=status.HTTP_404_NOT_FOUND)
+
+
 
 def suspicious_limit(request , exception=None):
     print('LimitedError:', 'with ip', request.META.get('X-Real-IP'))

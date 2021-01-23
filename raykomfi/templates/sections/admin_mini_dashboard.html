@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="w3-container">
+    <div class="w3-col s12 m12 l12">
+        <div class="card white about-content w3-padding">
+           <div class="latest-admin-users">
+            <h3 class="center">اخر الاعضاء</h3>
+            <table class="highlight responsive-table centered">
+                <thead>
+                  <tr>
+                      <th>إسم العضو</th>
+                      <th>رابط الصفحة الشخصية</th>
+                      <th>اخر ظهور</th>
+                  </tr>
+                </thead>
+        
+                <tbody>
+                  {% for user in latest_users %}
+                  <tr>
+                    <td>{{user.username}}</td>
+                    <td><a href="{{user.get_absolute_url}}">ذهاب</a></td>
+                    <td>{{user.online}}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+           </div>
+           <hr>
+           <div class="latest-admin-posts">
+            <h3 class="center">اخر الاستفسارات</h3>
+            <table class="highlight responsive-table centered">
+                <thead>
+                  <tr>
+                      <th>عنوان الاستفسار</th>
+                      <th>رابط الإستفسار</th>
+                      <th>تاريخ الإستفسار</th>
+                  </tr>
+                </thead>
+        
+                <tbody>
+                  {% for post in latest_posts %}
+                  <tr>
+                    <td>{{post.title|truncatechars:50}}</td>
+                    <td><a href="{{post.get_noti_url}}">ذهاب</a></td>
+                    <td>{{post.get_created_natural}}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+           </div>
+           <hr>
+           <div class="latest-admin-comments">
+            <h3 class="center">اخر الاراء</h3>
+            <table class="highlight responsive-table centered">
+                <thead>
+                  <tr>
+                      <th>محتوى الرأي</th>
+                      <th>رابط الرأي</th>
+                      <th>تاريخ الرأي</th>
+                  </tr>
+                </thead>
+        
+                <tbody>
+                  {% for comment in latest_comments %}
+                  <tr>
+                    <td>{{comment.content|truncatechars:50}}</td>
+                    <td><a href="{{comment.get_noti_url}}">ذهاب</a></td>
+                    <td>{{comment.get_created_natural}}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+           </div>
+           <hr>
+           <div class="latest-admin-replies">
+            <h3 class="center">اخر الردود</h3>
+            <table class="highlight responsive-table centered">
+                <thead>
+                  <tr>
+                      <th>محتوى الرد</th>
+                      <th>رابط الرد</th>
+                      <th>تاريخ الرد</th>
+                  </tr>
+                </thead>
+        
+                <tbody>
+                  {% for reply in latest_replies %}
+                  <tr>
+                    <td>{{reply.content|truncatechars:50}}</td>
+                    <td><a href="{{reply.get_noti_url}}">ذهاب</a></td>
+                    <td>{{reply.get_created_natural}}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+           </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
