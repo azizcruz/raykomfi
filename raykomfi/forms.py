@@ -57,9 +57,9 @@ class SignupForm(UserCreationForm):
         parsley_extras = {
             'username': {
                 # 'pattern': '^(?=.*[a-zA-Z0-9])\w{6,}$',
-                'pattern': '^.{6,15}$',
+                'pattern': '^.{6,11}$',
                 # 'pattern-message': 'إسم المستخدم يجب أن يكون على الأقل 6 أحرف و باللغة الإنجليزية',
-                'pattern-message': 'إسم المستخدم يجب أن يكون بين 6 و 15 حرف',
+                'pattern-message': 'إسم المستخدم يجب أن يكون بين 6 و 11 حرف',
             },
             'password1': {
                 'pattern': '^(?=.*[a-zA-Z])(?=\w*[0-9])\w{8,}$',

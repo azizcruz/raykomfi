@@ -1,0 +1,50 @@
+{% if posts %}
+      <div id="raykomfi-posts">
+        {% for post in posts %}
+        <div class="w3-padding ray-box  z-depth-1 ">
+          {% if post.creator and post.creator.is_active != False %}
+          <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
+            <span class="poster-name">
+              <i class="fa fa-user" aria-hidden="true"></i>
+              {{post.creator}}
+            </span>
+          </a>
+          {% else %}
+          <span class="poster-name">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            مجهول
+          </span>
+          {% endif %}
+          <a href="{{post.get_absolute_url}}">
+            <h2 class="raykomfi-bold">{{post.title |truncatechars:100}}</h2>
+            {% if post.image and post.image_source %}
+            <div class="ray-image-section">
+              <img src="" alt="{{post.title}}" data-src="{{ post.image.url }}" class="lazy-img ">
+              <div>
+                <a href="{{ post.image_source }}" target="_blank">مصدر الصورة</a>
+              </div>
+            </div>
+            {% endif %}
+            
+            <br>
+            <div>
+              <a href="{% url 'raykomfi:post-edit' id=post.id slug=post.slug  %}"
+                class="w3-button raykomfi-button ">تعديل</a>
+            </div>
+            <div class="ray-box-footer-icons">
+              <div class="">
+                <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.get_created_natural}}</span>
+              </div>
+              <div class="">
+                <span><i class="fa fa-comments" aria-hidden="true"></i> {{post.comments.count}}</span>
+              </div>
+              <div class="">
+                <span><i class="fa fa-tags" aria-hidden="true"></i> {{post.category}}</span>
+              </div>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="w3-center">لا توجد نتيجة لبحثك</p>
+{% endif %}

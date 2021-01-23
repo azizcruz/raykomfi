@@ -32,7 +32,7 @@ from django.db.models import Count
 from ratelimit.decorators import ratelimit
 from hitcount.utils import get_hitcount_model
 from hitcount.views import HitCountMixin
-from django.db.models import F
+from django.db.models import F, Count, Sum
 import secrets
 from django.utils import timezone
 from background_task import background
@@ -391,7 +391,7 @@ def post_view(request, id, slug):
 @ratelimit(key='ip', rate='10/m', block=True)
 def my_posts_view(request, user_id):
     try:
-        posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(creator__id=user_id)[:5]
+        posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(creator__id=user_id).annotate(counted_comments=Sum('comments')).order_by('-counted_comments')[:5]
         count = Post.objects.prefetch_related('creator', 'category', 'comments').filter(creator__id=user_id).count()
         return render(request, 'sections/user_posts.html', context={'posts': posts, 'count_posts': count, 'view_title': f'منصة رايكم في | إستفساراتي'})
     except Exception as e:
@@ -920,11 +920,14 @@ def about_view(request):
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def last_activities_view(request):
-    latest_users = User.objects.all().order_by('-date_joined')[:10]
-    latest_posts = Post.objects.all().order_by('-created')[:10]
-    latest_comments = Comment.objects.all().order_by('-created')[:10]
-    latest_replies = Reply.objects.all().order_by('-created')[:10]
-    return render(request, 'sections/admin_mini_dashboard.html', {'view_title': 'منصة رايكم في | اخر الأنشطة', 'latest_users': latest_users, 'latest_posts': latest_posts, 'latest_comments': latest_comments, 'latest_replies': latest_replies})
+    if request.user.is_authenticated and request.user.is_staff:
+        latest_users = User.objects.all().order_by('-date_joined')[:10]
+        latest_posts = Post.objects.all().order_by('-created')[:10]
+        latest_comments = Comment.objects.all().order_by('-created')[:10]
+        latest_replies = Reply.objects.all().order_by('-created')[:10]
+        return render(request, 'sections/admin_mini_dashboard.html', {'view_title': 'منصة رايكم في | اخر الأنشطة', 'latest_users': latest_users, 'latest_posts': latest_posts, 'latest_comments': latest_comments, 'latest_replies': latest_replies})
+    else:
+         return redirect('raykomfi:raykomfi-home')
 
 
 @ratelimit(key='ip', rate='50/m', block=True)

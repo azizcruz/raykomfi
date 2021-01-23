@@ -56,7 +56,7 @@ class LazyPostsView(APIView):
         user_id = request.POST.get('user_id')
         posts = None
         if user_id != 'false':
-            posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(creator__id=int(user_id), isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')
+            posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(creator__id=int(user_id)).annotate(max_activity=Max('comments__created')).order_by('-max_activity')
         elif category != 'false':
             posts = Post.objects.prefetch_related('creator', 'category', 'comments').filter(category__name__exact=category, isActive=True).annotate(max_activity=Max('comments__created')).order_by('-max_activity')
         else:
@@ -75,10 +75,27 @@ class LazyPostsView(APIView):
         data_to_render = {'posts': posts}
         if(user_id != 'false'):
             data_to_render['show_edit'] = True
-        posts_html = loader.render_to_string(
+
+        if user_id != 'false':
+            csrf_token = get_token(request)
+            csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
+            data_to_render['csrf_token'] = csrf_token
+            posts_html = loader.render_to_string(
+            'user_posts.html',
+            data_to_render
+        )
+        elif category != 'false':
+            posts_html = loader.render_to_string(
             'posts.html',
             data_to_render
         )
+        else:
+            posts_html = loader.render_to_string(
+            'posts.html',
+            data_to_render
+        )    
+        
+
         # package output data and return it as a JSON object
         output_data = {
             'posts_html': posts_html,
@@ -508,15 +525,24 @@ class SearchPostsView(APIView):
         serializer = serializers.SearchBarSerializer(data=request.data)
         if serializer.is_valid():
             q = serializer.data['searchField']
+            is_users_posts = serializer.data['users_posts']
             if q == '':
                 return Response({'message': 'not found'}, status=status.HTTP_404_NOT_FOUND)
-            if request.user.is_authenticated:
-                posts = Post.objects.prefetch_related('creator', 'comments', 'category').filter(Q(creator__email=request.user.email) & Q(title__icontains=q) | Q(content__icontains=q)).annotate(counted_comments=Sum('comments')).order_by('-counted_comments')
+
+            if is_users_posts == True:
+                posts = Post.objects.prefetch_related('creator', 'comments', 'category').filter(Q(title__icontains=q) | Q(content__icontains=q)).filter(creator__email=request.user.email).annotate(counted_comments=Sum('comments')).order_by('-counted_comments')
             else:
-                posts = Post.objects.prefetch_related('creator', 'comments', 'category').filter(Q(title__icontains=q) | Q(content__icontains=q)).annotate(counted_comments=Sum('comments')).order_by('-counted_comments')
+                posts = Post.objects.prefetch_related('creator', 'comments', 'category').filter(Q(title__icontains=q) | Q(content__icontains=q)).annotate(counted_comments=Sum('comments')).filter(isActive=True).order_by('-counted_comments')
+            
             csrf_token = get_token(request)
             csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
-            referesh_posts_view_html = loader.render_to_string('posts.html', {'posts': posts, 'user': request.user, 'search_request': True, 'csrf_token': csrf_token})
+
+            if is_users_posts == True:
+                referesh_posts_view_html = loader.render_to_string('user_posts.html', {'posts': posts, 'user': request.user, 'search_request': True})
+            else:
+                referesh_posts_view_html = loader.render_to_string('posts.html', {'posts': posts, 'user': request.user, 'search_request': True, 'csrf_token': csrf_token})
+
+
             output_data = {
                 'view': referesh_posts_view_html,
                 'message': 'success'
@@ -527,10 +553,16 @@ class SearchPostsView(APIView):
 
             return JsonResponse(output_data)
         else:
-            posts = Post.objects.prefetch_related('creator', 'comments', 'category').filter(creator__email=request.user.email).annotate(counted_comments=Sum('comments')).order_by('-counted_comments')
             csrf_token = get_token(request)
             csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
-            referesh_posts_view_html = loader.render_to_string('posts.html', {'posts': posts, 'user': request.user, 'search_request': True, 'csrf_token': csrf_token})
+            if  request.data['users_posts'] == True:
+                posts = Post.objects.prefetch_related('creator', 'comments', 'category').filter(creator__email=request.user.email).annotate(counted_comments=Sum('comments')).order_by('-counted_comments')
+                referesh_posts_view_html = loader.render_to_string('user_posts.html', {'posts': posts, 'user': request.user, 'search_request': True, 'csrf_token': csrf_token})
+
+            else:
+                posts = Post.objects.prefetch_related('creator', 'comments', 'category').annotate(counted_comments=Sum('comments')).order_by('-counted_comments')
+                referesh_posts_view_html = loader.render_to_string('posts.html', {'posts': posts, 'user': request.user, 'search_request': True, 'csrf_token': csrf_token})
+
             output_data = {
                 'view': referesh_posts_view_html,
                 'message': 'success'
@@ -550,10 +582,10 @@ class SearchCommentsView(APIView):
 
     @method_decorator(ratelimit(key='ip', rate='10/m', block=True))
     def post(self, request):
-        serializer = serializers.SearchBarSerializer(data=request.data)
+        serializer = serializers.SearchBarCommentsSerializer(data=request.data)
         if serializer.is_valid():
             q = serializer.data['searchField']
-            comments = Comment.objects.prefetch_related('user', 'replies').filter(content__icontains=q, user__email=request.user.email).annotate(counted_replies=Sum('replies')).order_by('-counted_replies')
+            comments = Comment.objects.prefetch_related('user', 'replies').filter(content__icontains=q, user__email=request.user.email)
             csrf_token = get_token(request)
             csrf_token_html = '<input type="hidden" name="csrfmiddlewaretoken" value="{}" />'.format(csrf_token)
             referesh_user_comments_view_html = loader.render_to_string('user_comments.html', {'comments': comments, 'user': request.user, 'search_request': True, 'csrf_token': csrf_token})

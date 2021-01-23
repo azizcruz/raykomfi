@@ -235,8 +235,9 @@
 
             </div>
             <a href="{% url 'raykomfi:users-ranking' %}">ترتيب أعضاء رايكم في</a>
-           
+            {% if user.is_authenticated and user.is_staff %}
             <a href="{% url 'raykomfi:last_activities' %}">اخر الأنشطة <i class="fa fa-dashboard"></i></a>
+            {% endif %}
             
             <a href="{% url 'raykomfi:about' %}">عن رايكم في</a>
             <div class="raykomfi-social-media side-nav-social-media">
@@ -306,7 +307,7 @@
                     <i class="fa fa-bars w3-button w3-xxlarge remove-button-hover raykomfi-burger-menu"
                         id="sidenav-toggle"></i>
                     <a href="/"><img src="{% static 'img/logo.png' %}" class="logo" alt="شعار رايكم في"></a>
-                    <span class="raykomfi-motto">أن تكون مطمئن!</span>
+                    <span class="raykomfi-motto">لتتخذ القرار الصحيح!</span>
                 </div>
             </div>
         </div>
@@ -392,7 +393,7 @@
                     <div class="w3-col s12 m8">
                         <div class="footer-logo">
                             <a href="/"><img src="{% static 'img/logo.png' %}" class="logo" alt="شعار رايكم في"></a>
-                            <span class="raykomfi-motto white-text">أن تكون مطمئن!</span>
+                            <span class="raykomfi-motto white-text">لتتخذ القرار الصحيح!</span>
                         </div>
                     </div>
                 </div>

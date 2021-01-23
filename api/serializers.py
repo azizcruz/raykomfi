@@ -80,11 +80,17 @@ class LikeDislikeSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ['action_type', 'comment_id', 'user_id']
 
-class SearchBarSerializer(serializers.ModelSerializer):
+class SearchBarSerializer(serializers.Serializer):
+    searchField = serializers.CharField()
+    users_posts = serializers.BooleanField()
+
+    class Meta:
+        fields = ['searchField', 'users_posts']
+
+class SearchBarCommentsSerializer(serializers.Serializer):
     searchField = serializers.CharField()
 
     class Meta:
-        model = Post
         fields = ['searchField']
 
 class UploadImageSerialzer(serializers.Serializer):

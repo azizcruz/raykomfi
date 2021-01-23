@@ -409,6 +409,7 @@ $(document).on("submit", "form.getMessageForm", function (e) {
 $(document).on("submit", "form.postsSearchForm", function (e) {
   e.preventDefault();
   let link = $(this);
+  let isUsersPosts = link.data().usersPosts || false
   let q = link.serializeArray()[1].value;
   loading.css("display", "block");
   if (q) {
@@ -421,6 +422,7 @@ $(document).on("submit", "form.postsSearchForm", function (e) {
       },
       data: {
         searchField: q,
+        users_posts: isUsersPosts
       },
     })
       .then((response) => {
@@ -452,6 +454,7 @@ $(document).on("submit", "form.postsSearchForm", function (e) {
       },
       data: {
         searchField: "",
+        users_posts: isUsersPosts
       },
     })
       .then((response) => {

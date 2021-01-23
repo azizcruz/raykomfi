@@ -23,13 +23,13 @@
             <div class="bounce2"></div>
             <div class="bounce3"></div>
           </div>
-          <form class="postsSearchForm">
+          <form class="postsSearchForm" data-users-posts="true">
             {% csrf_token %}
             <input class="w3-input search-input" type="text" placeholder="بحث عن إستفسار ..." name="q">
           </form>
         </div>
       </div>
-      {% if posts %}
+      {% if posts|length > 0 %}
       <div id="raykomfi-posts">
         {% for post in posts %}
         <div class="w3-padding ray-box  z-depth-1 ">
@@ -64,7 +64,7 @@
             </div>
             <div class="ray-box-footer-icons">
               <div class="">
-                <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.created | naturaltime}}</span>
+                <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{post.get_created_natural}}</span>
               </div>
               <div class="">
                 <span><i class="fa fa-comments" aria-hidden="true"></i> {{post.comments.count}}</span>

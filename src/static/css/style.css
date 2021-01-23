@@ -1290,6 +1290,10 @@ select:focus {
   padding-bottom: 20px;
 }
 
+#typed-strings {
+  display: none;
+}
+
 .similar-questions-wrapper > div {
   margin-top: 1em;
 }
