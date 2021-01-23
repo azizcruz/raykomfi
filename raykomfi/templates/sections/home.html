@@ -47,7 +47,7 @@
                 <div id="typed-strings">
                     <p></p>
                     {% for ad_message in ad_messages %}
-                        <p>{{ad_message.message}}</p>
+                        <p>{{ad_message.message|safe}}</p>
                     {% endfor %}
                 </div>
                 <div class="for-typed-js">
