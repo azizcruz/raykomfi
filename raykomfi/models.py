@@ -74,6 +74,7 @@ class User(AbstractUser):
     user_trust = models.FloatField(validators=[MaxValueValidator(6.0), MinValueValidator(0.0)], default=0.0, verbose_name='قوة الرأي')
     accepted_conditions_terms = models.BooleanField(default=False)
     continent = models.CharField(max_length=155, default='')
+    is_deleted = models.BooleanField(default=False, verbose_name='حساب محذوف؟')
 
 
     def get_absolute_url(self):

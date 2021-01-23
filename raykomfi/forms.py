@@ -27,7 +27,7 @@ def get_random_image_path():
     return path
 
 # username_validator = RegexValidator(r"^(?=.*[a-zA-Z0-9])\w{6,}$", "إسم المستخدم يجب أن يكون على الأقل 6 أحرف و باللغة الإنجليزية")
-username_validator = RegexValidator(r"^.{6,15}$", "إسم المستخدم يجب أن يكون على الأقل 6 أحرف")
+username_validator = RegexValidator(r"^.{6,11}$", "إسم المستخدم يجب أن يكون على الأقل 6 أحرف")
 
 
 @parsleyfy
@@ -198,7 +198,7 @@ class ForgotNoRegistrationCodeForm(forms.Form):
 
 @parsleyfy
 class ProfileForm(forms.ModelForm):
-    username = forms.CharField(validators=[MinLengthValidator(6), MaxLengthValidator(15), username_validator])
+    username = forms.CharField(validators=[MinLengthValidator(6), MaxLengthValidator(11), username_validator])
     first_name = forms.CharField(
         label='', required=False, widget=forms.TextInput())
     last_name = forms.CharField(
@@ -212,9 +212,9 @@ class ProfileForm(forms.ModelForm):
         parsley_extras = {
             'username': {
                 # 'pattern': '^(?=.*[a-zA-Z0-9])\w{6,}$',
-                'pattern': '^.{6,15}$',
+                'pattern': '^.{6,11}$',
                 # 'pattern-message': 'إسم المستخدم يجب أن يكون على الأقل 6 أحرف و باللغة الإنجليزية',
-                'pattern-message': 'إسم المستخدم يجب أن يكون بين 6 و 15 حرف',
+                'pattern-message': 'إسم المستخدم يجب أن يكون بين 6 و 11 حرف',
             },
             'bio': {
                 'maxlength-message': "تعديت الحد المسموح",

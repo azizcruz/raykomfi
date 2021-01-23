@@ -314,6 +314,7 @@ def delete_user(request, id):
         if question != 'true':
             rand_num = randint(100000, 999999)
             user.is_active = False
+            user.is_deleted = True
             user.first_name = ""
             user.last_name = ""
             user.email = f"{rand_num}@delete_user.com"

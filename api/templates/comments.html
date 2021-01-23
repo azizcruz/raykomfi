@@ -7,7 +7,7 @@
     <div class="talktext">
         <div class="w3-col s10 m11 l11" id="comment-id-{{comment.id}}">
             <div class="comment-side">
-                {% if comment.user and reply.user.is_active != False %}
+                {% if comment.user and comment.user.is_deleted != True %}
                 <a href="{% url 'raykomfi:user-profile' id=comment.user.id %}" class="writer-name">
                     <div class="name">
                         <img src="{{ comment.user.profile_image }}" alt="صورة {{comment.user.username}} على رايكم في"
@@ -72,7 +72,7 @@
             <div class="comment-reply-side w3-padding post-replies">
                 {% for reply in comment.replies.all %}
                 <div class="w3-panel z-depth-1" id="to-{{reply.id}}">
-                    {% if reply.user and reply.user.is_active != False and reply.user.email != 'anonymous@anonymous.com' %}
+                    {% if reply.user and reply.user.is_deleted != True and reply.user.email != 'anonymous@anonymous.com' %}
                     <a href="{% url 'raykomfi:user-profile' id=reply.user.id %}" class="writer-name">
                         <img src="{{ reply.user.profile_image }}" alt="صورة {{reply.user.username}} على رايكم في"
                             class="w3-circle creator-profile-image">
