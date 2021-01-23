@@ -56,8 +56,8 @@ def index(request):
 
     if request.user.is_authenticated:
         # If user does not have a profile image, give him one
-        if request.user.profile_image == '/media/profile_images/0.png/':
-            request.user.profile_image = get_random_image_path() + '/'
+        if request.user.profile_image == '/media/profile_images/0.png':
+            request.user.profile_image = get_random_image_path()
             request.user.save()
 
         # If user set stay online always, this will update last login whenever user comes back
