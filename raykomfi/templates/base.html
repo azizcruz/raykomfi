@@ -229,7 +229,13 @@
         <input type="hidden" name="" id="csrf_token" value="{{ csrf_token }}">
         <div class="nav-links">
             <a href="/">الرئيسية</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'raykomfi:post-new' %}">
+                أضف إستفسار</i>
+            </a>
+            {% else %}
             <a href="{% url 'raykomfi:user-register-withnosignup' %}">أضف أستفسار</a>
+            {% endif %}
             <a class="category-button">التصنيفات <i class="fa fa-caret-down"></i></a>
             <div class="category-wrapper w3-margin-bottom" id="categories-wrapper">
 
