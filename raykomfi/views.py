@@ -331,7 +331,7 @@ def delete_user(request, id):
                     request, 'حدث خطأ ما يرجى المحاولة لاحقا', extra_tags='red raykomfi-border-red')
         return redirect('raykomfi:raykomfi-home')
 
-@ratelimit(key='ip', rate='10/m', block=True)
+@ratelimit(key='ip', rate='50/m', block=True)
 def post_view(request, id, slug):
     try:
 
