@@ -448,7 +448,7 @@ def my_comments_most_voted_view(request, user_id):
 def post_edit(request, id, slug):
     try:
         instance = get_object_or_404(Post, id=id, slug=slug)
-        if request.method == 'POST' and request.user and request.user.id == instance.creator.id or request.user.is_staff:
+        if request.method == 'POST' and instance.creator != None and request.user and request.user.id == instance.creator.id or request.user.is_staff:
             form = NewPostForm(request.POST or None, request.FILES or None, instance=instance,
                             use_required_attribute=False)
             if form.is_valid():
@@ -460,7 +460,8 @@ def post_edit(request, id, slug):
             else:
                 return render(request, 'sections/edit_post.html', context={'form': form, 'post': instance, 'view_title': f'رايكم في | {instance.title}'})
         else:
-            if request.user and request.user.id == instance.creator.id or request.user.is_staff:
+            print(instance.creator != None)
+            if instance.creator != None or request.user and request.user.id == instance.creator.id or request.user.is_staff:
                 post = Post.objects.get(Q(id__exact=id) & Q(slug__exact=slug))
                 form = NewPostForm(instance=instance, use_required_attribute=False)
                 return render(request, 'sections/edit_post.html', context={'form': form, 'post': post, 'view_title': f'رايكم في | {post.title}'})
