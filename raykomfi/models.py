@@ -203,6 +203,9 @@ class Post(models.Model, HitCountMixin):
                     creator = anonymousUser
 
                 notify.send(admin, recipient=creator ,action_object=self, description=self.get_noti_url(), target=self, verb='post_accepted')
+                super(Post, self).save(*args, **kwargs)
+            else:
+                super(Post, self).save(*args, **kwargs)
                 
             # Generate slug
         self.slug = slugify(self.title)
