@@ -192,15 +192,15 @@
         </div>
     </div>
     <!-- Alert Modal -->
-    <div id="goto-bottom">
-        <i class="fa fa-chevron-circle-down"></i>
-    </div>
-    <div id="goto-top">
-        <i class="fa fa-chevron-circle-up"></i>
-    </div>
     <!--Start of Notifications Modal -->
     {% if user.is_authenticated %}
     <div class="noti-dropdown">
+        <div id="goto-bottom">
+            <i class="fa fa-chevron-circle-down"></i>
+        </div>
+        <div id="goto-top">
+            <i class="fa fa-chevron-circle-up"></i>
+        </div>
         <i class="fa fa-bell noti-dropbtn z-depth-2" id="noti-btn"> <span class="live_notify_badge_override"></span></i>
         <div id="noti-dropdown" class="noti-dropdown-content">
             {% live_notify_list %}

@@ -149,7 +149,7 @@
     <div class="w3-col s12 m8 l8">
         <div class="w3-row white post-box raykomfi-border z-depth-1">
             <div class="w3-mobile">
-                {% if post.creator and post.creator.is_deleted != True %}
+                {% if post.creator and post.creator.is_devared != True %}
                 <a href="{% url 'raykomfi:user-profile' id=post.creator.id %}">
                     <img src="{{ post.creator_image }}" alt="صورة {{user.username}} على رايكم في"  class="w3-circle creator-profile-image">
                     <span class="poster-name">
@@ -217,7 +217,7 @@
                             <a href="#"
                             class="raykomfi-action-btn orange darken-3 btn admin-action-btn" data-request-type="post" data-action="reportAsNotAllowed" data-url="{{request.get_full_path}}" data-id="{{post.id}}">إبلاغ كمخالف</a>
                             <a href="#"
-                            class="raykomfi-action-btn blue-grey darken-2 btn admin-action-btn" data-request-type="post" data-action="delete" data-url="{{request.get_full_path}}" data-id="{{post.id}}">حذف</a>
+                            class="raykomfi-action-btn blue-grey darken-2 btn admin-action-btn" data-request-type="post" data-action="devare" data-url="{{request.get_full_path}}" data-id="{{post.id}}">حذف</a>
                     {% endif %}
                     <div id="share-dropdown" class="w3-dropdown-content raykomfi-share-dropdown w3-bar-block z-depth-1">
                         <a href="https://twitter.com/intent/tweet?text={{request.build_absolute_uri}}"
@@ -270,7 +270,7 @@
                     <div class="talktext">
                         <div class="w3-col s10 m11 l11" id="comment-id-{{comment.id}}">
                             <div class="comment-side">
-                                {% if comment.user and comment.user.is_deleted != True %}
+                                {% if comment.user and comment.user.is_devared != True %}
                                 <a href="{% url 'raykomfi:user-profile' id=comment.user.id %}" class="writer-name">
                                     <div class="name">
                                         <img src="{{ comment.user.profile_image }}" alt="صورة {{comment.user.username}} على رايكم في"  class="w3-circle creator-profile-image">
@@ -317,7 +317,7 @@
                                 <a href="#"
                                 class="raykomfi-action-btn orange darken-3 btn admin-action-btn" data-request-type="comment" data-action="reportAsNotAllowed" data-url="{{request.get_full_path}}" data-id="{{comment.id}}">إبلاغ كمخالف</a>
                                 <a href="#"
-                                class="raykomfi-action-btn blue-grey darken-2 btn admin-action-btn" data-request-type="comment" data-action="delete" data-url="{{request.get_full_path}}" data-id="{{comment.id}}">حذف</a>
+                                class="raykomfi-action-btn blue-grey darken-2 btn admin-action-btn" data-request-type="comment" data-action="devare" data-url="{{request.get_full_path}}" data-id="{{comment.id}}">حذف</a>
                                 <div class="w3-margin"></div>
                                 <p class="green-text raykomfi-bold admin-action-message"></p>
                                 {% endif %}
@@ -328,7 +328,7 @@
                             <div class="comment-reply-side w3-padding post-replies">
                                 {% for reply in comment.replies.all %}
                                 <div class="w3-panel z-depth-1" id="to-{{reply.id}}">
-                                    {% if reply.user and reply.user.is_deleted != True and reply.user.email != 'anonymous@anonymous.com' %}
+                                    {% if reply.user and reply.user.is_devared != True and reply.user.email != 'anonymous@anonymous.com' %}
                                     <a href="{% url 'raykomfi:user-profile' id=reply.user.id %}" class="writer-name">
                                         <img src="{{ reply.user.profile_image }}" alt="صورة {{reply.user.username}} على رايكم في"  class="w3-circle creator-profile-image">
                                         <span class="name">
@@ -366,7 +366,7 @@
                                     <a href="#"
                                     class="raykomfi-action-btn orange darken-3 btn admin-action-btn" data-request-type="reply" data-action="reportAsNotAllowed" data-url="{{request.get_full_path}}" data-id="{{reply.id}}">إبلاغ كمخالف</a>
                                     <a href="#"
-                                    class="raykomfi-action-btn blue-grey darken-2 btn admin-action-btn" data-request-type="reply" data-action="delete" data-url="{{request.get_full_path}}" data-id="{{reply.id}}">حذف</a>
+                                    class="raykomfi-action-btn blue-grey darken-2 btn admin-action-btn" data-request-type="reply" data-action="devare" data-url="{{request.get_full_path}}" data-id="{{reply.id}}">حذف</a>
                                     <div class="w3-margin"></div>
                                     <p class="green-text raykomfi-bold admin-action-message"></p>
                                     {% endif %}
