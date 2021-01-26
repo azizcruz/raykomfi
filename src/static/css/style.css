@@ -952,7 +952,7 @@ select:focus {
 #goto-bottom {
   position: fixed;
   left: 60px;
-  bottom: 110px;
+  bottom: 104px;
   font-size: 40px;
   display: none;
   cursor: pointer;
