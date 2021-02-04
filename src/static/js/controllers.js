@@ -892,6 +892,3 @@ if (similarQuestionsWrapper.length > 0) {
   loadSimilarQuestions();
 }
 
-if (questionsNearYouWrapper.length > 0) {
-  loadNearYouQuestions();
-}

@@ -171,6 +171,9 @@ setInterval(function () {
       .then((data) => {
         sessionStorage.setItem("country", data.data.country_name);
         sessionStorage.setItem("continent", data.data.time_zone.split("/")[0]);
+        if (questionsNearYouWrapper.length > 0) {
+          loadNearYouQuestions();
+        }        
       })
       .catch((err) => {
         console.error(err.status);
