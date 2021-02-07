@@ -409,7 +409,7 @@ $(document).on("submit", "form.getMessageForm", function (e) {
 $(document).on("submit", "form.postsSearchForm", function (e) {
   e.preventDefault();
   let link = $(this);
-  let isUsersPosts = link.data().usersPosts || false
+  let isUsersPosts = link.data().usersPosts || false;
   let q = link.serializeArray()[1].value;
   loading.css("display", "block");
   if (q) {
@@ -422,7 +422,7 @@ $(document).on("submit", "form.postsSearchForm", function (e) {
       },
       data: {
         searchField: q,
-        users_posts: isUsersPosts
+        users_posts: isUsersPosts,
       },
     })
       .then((response) => {
@@ -454,7 +454,7 @@ $(document).on("submit", "form.postsSearchForm", function (e) {
       },
       data: {
         searchField: "",
-        users_posts: isUsersPosts
+        users_posts: isUsersPosts,
       },
     })
       .then((response) => {
@@ -615,7 +615,7 @@ $(document).on("submit", "form.reportForm", function (e) {
           sendBtn.text("إرسال");
         }, 60 * 1000);
 
-        successAlert('تم إرسال بلاغك')
+        successAlert("تم إرسال بلاغك");
       })
       .catch((err) => {
         if (
@@ -671,6 +671,7 @@ $(document).on("click", ".admin-action-btn", function (e) {
   var ans = confirm("هل أنت متأكد");
   if (ans) {
     let { id, requestType, action, url } = e.target.dataset;
+    console.log(action);
     theBtn.removeClass("admin-action-btn");
     axios({
       method: "POST",
@@ -891,4 +892,3 @@ if (latestCommentWrapper.length > 0) {
 if (similarQuestionsWrapper.length > 0) {
   loadSimilarQuestions();
 }
-
