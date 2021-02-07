@@ -823,6 +823,7 @@ class QuestionsNearYou(APIView):
         if serializer.is_valid():
             rand_ids = Post.objects.select_related('creator', 'category').filter(creator__country__icontains=serializer.data['country']).values_list('id', flat=True)
             related_posts = []
+                        
             if len(rand_ids) > 5:
                 rand_ids = list(rand_ids)
                 rand_ids = sample(rand_ids, 5)

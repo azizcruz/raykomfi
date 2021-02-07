@@ -181,6 +181,10 @@ setInterval(function () {
   }
 }, 3000);
 
+if (questionsNearYouWrapper.length > 0) {
+  loadNearYouQuestions();
+}
+
 var countryInput = $("#id_country");
 var continentInput = $("#id_continent");
 var registerForm = $("#raykomfi-register-form");
