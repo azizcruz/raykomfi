@@ -447,6 +447,20 @@ class NewPostWithNoRegistrationForm(forms.ModelForm):
             if fieldname == 'creator_image':
                 self.fields[fieldname].widget.attrs['class'] = 'w3-input w3-border anonymous-image'
                 self.fields[fieldname].widget.attrs['value'] = get_random_image_path()
+
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        ALLOWED_EXT = ['jpg', 'png', 'jpeg']
+        
+        if title.find('رايكم في') == -1:
+            raise forms.ValidationError(
+                    "يجب أن يبدأ عنوان الإستفسار بعبارة رايكم في")
+
+        if len(title) - 15 < 0 :
+            raise forms.ValidationError(
+                    "إستفسر عن شيء حقيقي")
+
+        return title
                 
 @parsleyfy
 class CustomChangePasswordForm(PasswordChangeForm):

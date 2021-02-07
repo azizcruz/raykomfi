@@ -503,6 +503,7 @@ def create_post_with_no_registration(request):
         if request.method == 'POST':
             form = NewPostWithNoRegistrationForm(request.POST or None, request.FILES or None,
                             use_required_attribute=False)
+            set_trace()
             if form.is_valid():
                 post = form.save(commit=False)
                 post.creator = None
@@ -512,7 +513,7 @@ def create_post_with_no_registration(request):
                 return render(request, 'sections/create_post_with_no_registration.html', context={'form': form, 'view_title': f'منصة رايكم في | إستفسار جديد'})
         else:
             form = NewPostWithNoRegistrationForm(use_required_attribute=False)
-            return render(request, 'sections/create_post_with_no_registration.html', context={'form': form, 'view_title': f'منصة رايكم في | إستفسار جديد', 'url_name': 'ask_people_view'})
+            return render(request, 'sections/create_post_with_no_registration.html', context={'form': form, 'view_title': f'منصة رايكم في | إستفسار جديد', 'url_name':'ask_people_view'})
     except Exception as e:
         print("Exception ========>>>>>>>>> ", e)
         messages.success(
