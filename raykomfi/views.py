@@ -503,7 +503,6 @@ def create_post_with_no_registration(request):
         if request.method == 'POST':
             form = NewPostWithNoRegistrationForm(request.POST or None, request.FILES or None,
                             use_required_attribute=False)
-            set_trace()
             if form.is_valid():
                 post = form.save(commit=False)
                 post.creator = None

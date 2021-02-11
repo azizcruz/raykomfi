@@ -173,7 +173,7 @@ setInterval(function () {
         sessionStorage.setItem("continent", data.data.time_zone.split("/")[0]);
         if (questionsNearYouWrapper.length > 0) {
           loadNearYouQuestions();
-        }        
+        }
       })
       .catch((err) => {
         console.error(err.status);
@@ -410,14 +410,16 @@ generateStars();
 if (window.location.hash) {
   var anchor = $(window.location.hash);
   if (window.location.hash.indexOf("to") > 0) {
-    var showHideRepliesBtn = $($(anchor.parent().parent()[0]).find('.show-hide-replies-bar')[0])
-    
+    var showHideRepliesBtn = $(
+      $(anchor.parent().parent()[0]).find(".show-hide-replies-bar")[0]
+    );
+
     $("html,body").animate(
       { scrollTop: anchor.parent().parent().offset().top - 250 },
       "slow"
     );
     setTimeout(() => {
-      showHideRepliesBtn.click()
+      showHideRepliesBtn.click();
       anchor
         .parent()
         .parent()
@@ -665,7 +667,7 @@ $(window).scroll(function () {
     wH = $(window).height(),
     wS = $(this).scrollTop(),
     scrollTop = $(window).scrollTop();
-  if (scrollTop >= 0 && (scrollTop) < $("footer").offset().top - 1200) {
+  if (scrollTop >= 0 && scrollTop < $("footer").offset().top - 1200) {
     $("#goto-bottom").show();
     $("#goto-bottom").css({
       color: "#3498db",
@@ -701,27 +703,27 @@ $("#goto-bottom").on("click", function () {
   $("html, body").animate({ scrollTop: $("footer").offset().top }, "slow");
 });
 
-
 // Truncate comment
-var comment = $('.comment')
-comment.each(function(count, comment) {
-  var commentJq = $(comment)
-  var commentContentWrapper = $($(comment).children()[0])
-  if(commentJq.height() > 150) {
-    commentContentWrapper.addClass('raykomfi-truncate')
+var comment = $(".comment");
+comment.each(function (count, comment) {
+  var commentJq = $(comment);
+  var commentContentWrapper = $($(comment).children()[0]);
+  if (commentJq.height() > 150) {
+    commentContentWrapper.addClass("raykomfi-truncate");
   }
-})
+});
 
-$(document).on('click', '.comment', function() {
-  var theClickedCommentShowMore = $($(this).children(0)[0])
+$(document).on("click", ".comment", function () {
+  var theClickedCommentShowMore = $($(this).children(0)[0]);
 
-  if(theClickedCommentShowMore.hasClass('raykomfi-truncate')) {
-    theClickedCommentShowMore.removeClass('raykomfi-truncate')
+  if (theClickedCommentShowMore.hasClass("raykomfi-truncate")) {
+    theClickedCommentShowMore.removeClass("raykomfi-truncate");
   }
+});
 
-})
-
-// Email not active btn 
-$('#email-not-active-btn').on('click', function() {
-  infoAlert('فعل بريدك الإلكتروني أولا, يمكنك طلب رابط التفعيل مرة أخرى من <a href="/user/send-link/">هنا</a>')
-})
+// Email not active btn
+$("#email-not-active-btn").on("click", function () {
+  infoAlert(
+    'فعل بريدك الإلكتروني أولا, يمكنك طلب رابط التفعيل مرة أخرى من <a href="/user/send-link/">هنا</a>'
+  );
+});
