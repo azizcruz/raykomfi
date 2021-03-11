@@ -389,6 +389,19 @@ if (
   }
 
   if (postTitle !== false) {
+    postTitle.on("keyup", (e) => {
+      var val = postTitle.val();
+      if (
+        val.indexOf("https") > 0 ||
+        val.indexOf("http") > 0 ||
+        val.indexOf(".com") > 0 ||
+        val.indexOf("www") > 0
+      ) {
+        postTitle.val("رايكم في ");
+        errorAlert("لا يمكنك إضافة رابط في عنوان الموضوع");
+      }
+    });
+
     postTitle.on("keydown", (e) => {
       var currentVal = e.target.value;
       if (currentVal.length <= 9) {

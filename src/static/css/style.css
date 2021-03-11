@@ -1,3 +1,5 @@
+
+
 /*
 * Prefixed by https://autoprefixer.github.io
 * PostCSS: v7.0.29,
@@ -127,7 +129,7 @@ noscript span {
 .box-overlay {
   position: absolute;
   z-index: 0;
-  top: 95px;
+  top: 82px;
   left: 0;
   bottom: 0;
   right: 0;
@@ -349,8 +351,13 @@ h4 {
 
 .near-you-questions {
   overflow-wrap: break-word;
-  min-height: 500px;
+  min-height: 440px;
   position: relative;
+}
+
+.questions-near-you-title {
+  margin-top: 10px;
+  font-size: .7rem;
 }
 
 .no-results-now-style {
@@ -951,7 +958,7 @@ select:focus {
 #goto-top,
 #goto-bottom {
   position: fixed;
-  left: 60px;
+  left: 57px;
   bottom: 104px;
   font-size: 40px;
   display: none;
@@ -980,8 +987,8 @@ select:focus {
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.3);
   z-index: 999;
   word-break: break-word;
-  left: 176px;
-  bottom: 103px;
+  left: 117px;
+  bottom: 49px;
   min-height: 200px;
   text-align: right;
   border-radius: 8px;
@@ -1189,6 +1196,10 @@ select:focus {
 .post-info > div {
   margin-bottom: 5px;
   font-size: 12px;
+}
+
+.post-box p {
+  font-size: 1rem;
 }
 
 .comment-wrapper {
@@ -2298,8 +2309,12 @@ input.raykomfi-input:checked + .raykomfi-slider:before {
 
   #goto-top,
   #goto-bottom {
-    left: 36px;
-    bottom: 90px;
+    bottom: 10px;
+    left: 50%;
+    -webkit-transform: translate(-50%, 0);
+        -ms-transform: translate(-50%, 0);
+            transform: translate(-50%, 0);
+    opacity: .7;
   }
 
   .noti-dropdown-content {

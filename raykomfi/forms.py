@@ -412,9 +412,14 @@ class NewPostForm(forms.ModelForm):
     def clean_title(self):
         title = self.cleaned_data.get('title')
         ALLOWED_EXT = ['jpg', 'png', 'jpeg']
+
         if title.find('رايكم في') == -1:
             raise forms.ValidationError(
                     "يجب أن يبدأ عنوان الإستفسار بعبارة رايكم في")
+                    
+        if title.find('https') > 0 or title.find('http') or title.find('.com') > 0 or title.find('www') > 0:
+            raise forms.ValidationError(
+                    "لا يمكنك إضافة رابط في عنوان الموضوع")
 
         if len(title) - 15 < 0 :
             raise forms.ValidationError(
@@ -459,6 +464,10 @@ class NewPostWithNoRegistrationForm(forms.ModelForm):
         if len(title) - 15 < 0 :
             raise forms.ValidationError(
                     "إستفسر عن شيء حقيقي")
+
+        if title.find('https') > 0 or title.find('http') or title.find('.com') > 0 or title.find('www') > 0:
+            raise forms.ValidationError(
+                    "لا يمكنك إضافة رابط في عنوان الموضوع")
 
         return title
                 

@@ -1,14 +1,20 @@
 {% for related_post in related_posts %}
-    <div class="similar-question">
-        <a href="{{ related_post.get_absolute_url }}">
-            {% if related_post.creator and related_post.creator.is_active != False %}
-            <span class="w3-round-small w3-right">
-                {{related_post.creator}}
+<div class="similar-question">
+    <a href="{{ related_post.get_absolute_url }}">
+        {% if related_post.creator and related_post.creator.is_deleted != True %}
+        <a href="{% url 'raykomfi:user-profile' id=related_post.creator.id %}" class="writer-name">
+            <img src="{{ related_post.creator.profile_image }}" alt="صورة {{related_post.creator.username}} على رايكم في"
+                class="w3-circle creator-profile-image">
+            <span class="name">
+                {{related_post.creator.username}}
             </span>
-            {% else %}
-            <span class="w3-round-small w3-right">مجهول</span>
-            {% endif %}
-
-            &nbsp; <span class="raykomfi-color">{{related_post.title}}</span></a>
-    </div>
+        </a>
+        {% else %}
+        <span class="poster-name">
+            <img src="{{ related_post.user_image }}" alt="صورة مجهول على رايكم في" class="w3-circle creator-profile-image">
+            مجهول
+        </span>
+        {% endif %}
+        &nbsp; <span class="raykomfi-color truncate questions-near-you-title">{{related_post.title}}</span></a>
+</div>
 {% endfor %}

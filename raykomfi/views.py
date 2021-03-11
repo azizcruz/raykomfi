@@ -71,7 +71,7 @@ def index(request):
     ad_messages = HomeAdMessages.objects.all()
     if request.user.is_staff:
         posts = Post.objects.prefetch_related('creator', 'category', 'comments').all()
-    return render(request, 'sections/home.html', context={'posts': posts, 'ad_messages': ad_messages, 'view_title': f'منصة رايكم في | إستفسر رأي الناس عن أي شي ', 'count': count})
+    return render(request, 'sections/home.html', context={'posts': posts, 'ad_messages': ad_messages, 'view_title': f'منصة رايكم في | إستفسر عن أي شي ', 'count': count})
 
 @ratelimit(key='ip', rate='50/m', block=True)
 def posts_with_latests_comment_order(request):
