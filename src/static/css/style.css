@@ -967,7 +967,7 @@ select:focus {
 }
 
 #goto-top i {
-  color: #fff;
+  color: grey;
 }
 
 #goto-bottom {
@@ -2310,10 +2310,7 @@ input.raykomfi-input:checked + .raykomfi-slider:before {
   #goto-top,
   #goto-bottom {
     bottom: 10px;
-    left: 50%;
-    -webkit-transform: translate(-50%, 0);
-        -ms-transform: translate(-50%, 0);
-            transform: translate(-50%, 0);
+    right: 10px;
     opacity: .7;
   }
 

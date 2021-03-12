@@ -680,13 +680,17 @@ $(window).scroll(function () {
     wH = $(window).height(),
     wS = $(this).scrollTop(),
     scrollTop = $(window).scrollTop();
-  if (scrollTop >= 0 && scrollTop < $("footer").offset().top - 1200) {
-    $("#goto-bottom").show();
-    $("#goto-bottom").css({
+    footerPosition = $('#footer').offset().top
+  if (scrollTop > 0) {
+    $("#goto-top").show();
+    $("#goto-top").css({
       color: "#3498db",
     });
   } else {
-    $("#goto-bottom").hide();
+    $("#goto-top").hide();
+    $("#goto-top").css({
+      color: "#3498db",
+    });
   }
 
   if (wS > hT + hH - wH - 120) {
@@ -694,17 +698,13 @@ $(window).scroll(function () {
       backgroundColor: "#FFFFFF",
       color: "#3498db",
     });
-    $("#goto-top").show();
-    $("#goto-top").css({
-      color: "#FFFFFF",
-    });
+    
+    
   } else {
     $(".noti-dropbtn").css({
       color: "#FFFFFF",
       backgroundColor: "#3498db",
     });
-
-    $("#goto-top").hide();
   }
 });
 
