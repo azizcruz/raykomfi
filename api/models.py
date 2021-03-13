@@ -12,3 +12,7 @@ class BestUserListTrack(models.Model):
         ordering = ('-created',)
         verbose_name = "ترتيب الاعضاء"
         verbose_name_plural = "الترتيب"
+
+
+class Hashtags(models.Model):
+    hashtags = models.TextField(blank=True, null=True)

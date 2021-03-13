@@ -671,6 +671,7 @@ $(document).on("click", ".admin-action-btn", function (e) {
   var ans = confirm("هل أنت متأكد");
   if (ans) {
     let { id, requestType, action, url } = e.target.dataset;
+    $('#sk-chase').show()
     console.log(action);
     theBtn.removeClass("admin-action-btn");
     axios({
@@ -689,6 +690,7 @@ $(document).on("click", ".admin-action-btn", function (e) {
     })
       .then((response) => {
         adminActionMessage.text(response.data.message);
+        $('#sk-chase').hide()
         setTimeout(() => {
           theBtn.addClass("admin-action-btn");
           adminActionMessage.text("");

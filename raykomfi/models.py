@@ -16,6 +16,7 @@ from datetime import datetime
 from datetime import timedelta
 from django.conf import settings
 from django_countries.fields import CountryField
+from api.models import Hashtags
 
 from hitcount.models import HitCountMixin, HitCount
 from django.contrib.contenttypes.fields import GenericRelation
@@ -32,6 +33,9 @@ from summa import keywords
 import requests
 import json
 import arrow
+from .utils import write_into_instgram_image
+from instabot import Bot 
+from shutil import rmtree
 utc=pytz.UTC
 
 BASE_URL = 'https://www.raykomfi.com' if os.getenv('environment') == 'prod' else 'http://localhost:8000'
@@ -143,6 +147,7 @@ class Post(models.Model, HitCountMixin):
     updated = models.DateTimeField(auto_now=True)
     hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk', related_query_name='hit_count_generic_relation')
     keywords = models.CharField(max_length=255, blank=True, null=True)
+    is_uploaded_on_social = models.BooleanField(default=False)
 
     class Meta:
         ordering = ('-created', )
@@ -176,7 +181,7 @@ class Post(models.Model, HitCountMixin):
         # When post gets accepted
         prev_post_status = Post.objects.filter(pk=self.pk).first()
         if prev_post_status:
-            if prev_post_status != self.isActive and self.isActive == True and os.getenv('environment') == 'prod':
+            if prev_post_status != self.isActive and self.isActive == True and os.getenv('environment') == 'prod' and self.is_uploaded_on_social == False:
                 # Post to twitter and facebook
                 try:
                     # headers = {
@@ -188,11 +193,29 @@ class Post(models.Model, HitCountMixin):
 
                     # response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, data=json.dumps(data))
                     
+                    # Post to twitter
                     t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
                     t.statuses.update(status=f'{self.title} \n \n ☟ إفتح صفحة الإستفسار من هنا وشارك رأيك مع المستفسر  ☟  \n {self.get_twitter_url()} ', media_ids="")
+
+                    # Post to instgram
+                    bot = Bot()
+                    bot.login(username = os.getenv('insta_username'),  password = os.getenv('insta_password'), is_threaded=True)
+                    if len(self.title) > 60:
+                        title = self.title[:60] + '...'
+                    else:
+                        title = self.title
+
+                    write_into_instgram_image(title, text_size=len(self.title))
+                    hashtags = Hashtags.objects.all().first()
+                    bot.upload_photo("media/instgram/generated_post_image/output.jpg", caption=f'رابط الإستفسار {self.get_twitter_url()} \n \n {hashtags.hashtags}')
+                    rmtree('./config')
+
+                    # Post to facebook
                     token = os.getenv('fb_token')
                     fb = facebook.GraphAPI(access_token=token)
                     fb.put_object(parent_object='me', connection_name='feed', message=f'{self.title} \n \n ☟ إفتح صفحة الإستفسار من هنا وشارك رأيك مع المستفسر  ☟ \n {self.get_twitter_url()}')
+
+                    self.is_uploaded_on_social = True
                 except Exception as e:
                     print('=======================>', e)
 
@@ -391,3 +414,13 @@ class HomeAdMessages(models.Model):
     class Meta:
         verbose_name = "رسالة ترويجية"
         verbose_name_plural = "رسائل ترويجية"
+
+class Hashtags(models.Model):
+    hashtags = models.TextField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = "هاشتاق"
+        verbose_name_plural = "هاشتاقات"
+    
+    def __str__(self):
+        return 'هاشتاقات'

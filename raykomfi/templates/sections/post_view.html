@@ -208,6 +208,15 @@
                     <button id="share-btn"
                         class="btn raykomfi-main-background-color raykomfi-action-btn">مشاركة</button>
                     {% if user.is_staff %}
+                    <div class="sk-chase" id="sk-chase">
+                            <div class="sk-chase-dot"></div>
+                            <div class="sk-chase-dot"></div>
+                            <div class="sk-chase-dot"></div>
+                            <div class="sk-chase-dot"></div>
+                            <div class="sk-chase-dot"></div>
+                            <div class="sk-chase-dot"></div>
+                        </div>
+                
                         <a href="{% url 'raykomfi:post-edit' id=post.id slug=post.slug  %}"
                             class="raykomfi-action-btn green btn">تعديل</a>
                         <a href="#"

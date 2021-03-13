@@ -44,8 +44,6 @@ from random import randint
 import os
 from django.db.models import Max
 from datetime import datetime, timedelta
-from .utils import write_into_instgram_image
-
 
 
 
@@ -71,7 +69,7 @@ def index(request):
     count = posts.count()
     ad_messages = HomeAdMessages.objects.all()
     if request.user.is_staff:
-        posts = Post.objects.prefetch_related('creator', 'category', 'comments').all()
+        posts = Post.objects.prefetch_related('creator', 'category', 'comments').all().order_by('isActive')
     return render(request, 'sections/home.html', context={'posts': posts, 'ad_messages': ad_messages, 'view_title': f'منصة رايكم في | إستفسر عن أي شي ', 'count': count})
 
 @ratelimit(key='ip', rate='50/m', block=True)

@@ -417,7 +417,7 @@ class NewPostForm(forms.ModelForm):
             raise forms.ValidationError(
                     "يجب أن يبدأ عنوان الإستفسار بعبارة رايكم في")
                     
-        if title.find('https') > 0 or title.find('http') or title.find('.com') > 0 or title.find('www') > 0:
+        if title.find('https') > 0 or title.find('http') > 0 or title.find('.com') > 0 or title.find('www') > 0:
             raise forms.ValidationError(
                     "لا يمكنك إضافة رابط في عنوان الموضوع")
 

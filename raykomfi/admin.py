@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import User, Post, Message, Reply, Comment, Category, NoRegistrationCode, ImportantAdminMessages, HomeAdMessages
-from api.models import BestUserListTrack
+from api.models import BestUserListTrack, Hashtags
 from admin_auto_filters.filters import AutocompleteFilter
 
 
@@ -59,6 +59,9 @@ class AdminMessages(admin.ModelAdmin):
 class AdMessages(admin.ModelAdmin):
     list_display = ('message',)
 
+class HashtagAdmin(admin.ModelAdmin):
+    list_display = ('hashtags',)
+
 
 
 # Register your models here.
@@ -72,5 +75,7 @@ admin.site.register(NoRegistrationCode, NoRegistrationCodeAdmin)
 admin.site.register(ImportantAdminMessages, AdminMessages)
 admin.site.register(BestUserListTrack, BestUserListTrackAdmin)
 admin.site.register(HomeAdMessages, AdMessages)
+admin.site.register(Hashtags, HashtagAdmin)
+
 
 
