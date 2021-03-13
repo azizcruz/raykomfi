@@ -199,7 +199,7 @@ class Post(models.Model, HitCountMixin):
 
                     # Post to instgram
                     bot = Bot()
-                    bot.login(username = os.getenv('insta_username'),  password = os.getenv('insta_password'), is_threaded=True)
+                    bot.login(username = os.getenv('insta_username'),  password = os.getenv('insta_password'))
                     if len(self.title) > 60:
                         title = self.title[:60] + '...'
                     else:
