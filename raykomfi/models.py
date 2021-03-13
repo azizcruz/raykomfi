@@ -207,7 +207,7 @@ class Post(models.Model, HitCountMixin):
 
                     write_into_instgram_image(title, text_size=len(self.title))
                     hashtags = Hashtags.objects.all().first()
-                    bot.upload_photo("media/instgram/generated_post_image/output.jpg", caption=f'رابط الإستفسار {self.get_twitter_url()} \n \n {hashtags.hashtags}')
+                    bot.upload_photo("raykomfi/media/instgram/generated_post_image/output.jpg", caption=f'رابط الإستفسار {self.get_twitter_url()} \n \n {hashtags.hashtags}')
                     rmtree('./config')
 
                     # Post to facebook
