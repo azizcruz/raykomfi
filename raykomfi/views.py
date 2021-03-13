@@ -44,6 +44,7 @@ from random import randint
 import os
 from django.db.models import Max
 from datetime import datetime, timedelta
+from .utils import write_into_instgram_image
 
 
 
