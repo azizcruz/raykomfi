@@ -217,6 +217,7 @@ class Post(models.Model, HitCountMixin):
 
                     self.is_uploaded_on_social = True
                 except Exception as e:
+                    print('instgram ====>', os.getcwd())
                     print('=======================Error instgram>', e)
 
                 admin = User.objects.get(email=os.getenv('ADMIN_EMAIL'))
