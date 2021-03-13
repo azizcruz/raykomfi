@@ -194,8 +194,8 @@ class Post(models.Model, HitCountMixin):
                     # response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, data=json.dumps(data))
                     
                     # Post to twitter
-                    t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
-                    t.statuses.update(status=f'{self.title} \n \n ☟ إفتح صفحة الإستفسار من هنا وشارك رأيك مع المستفسر  ☟  \n {self.get_twitter_url()} ', media_ids="")
+                    # t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
+                    # t.statuses.update(status=f'{self.title} \n \n ☟ إفتح صفحة الإستفسار من هنا وشارك رأيك مع المستفسر  ☟  \n {self.get_twitter_url()} ', media_ids="")
 
                     # Post to instgram
                     bot = Bot()
@@ -211,9 +211,9 @@ class Post(models.Model, HitCountMixin):
                     rmtree('./config')
 
                     # Post to facebook
-                    token = os.getenv('fb_token')
-                    fb = facebook.GraphAPI(access_token=token)
-                    fb.put_object(parent_object='me', connection_name='feed', message=f'{self.title} \n \n ☟ إفتح صفحة الإستفسار من هنا وشارك رأيك مع المستفسر  ☟ \n {self.get_twitter_url()}')
+                    # token = os.getenv('fb_token')
+                    # fb = facebook.GraphAPI(access_token=token)
+                    # fb.put_object(parent_object='me', connection_name='feed', message=f'{self.title} \n \n ☟ إفتح صفحة الإستفسار من هنا وشارك رأيك مع المستفسر  ☟ \n {self.get_twitter_url()}')
 
                     self.is_uploaded_on_social = True
                 except Exception as e:
