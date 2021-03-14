@@ -417,13 +417,3 @@ class HomeAdMessages(models.Model):
     class Meta:
         verbose_name = "رسالة ترويجية"
         verbose_name_plural = "رسائل ترويجية"
-
-class Hashtags(models.Model):
-    hashtags = models.TextField(blank=True, null=True)
-
-    class Meta:
-        verbose_name = "هاشتاق"
-        verbose_name_plural = "هاشتاقات"
-
-    def __str__(self):
-        return 'هاشتاقات'
