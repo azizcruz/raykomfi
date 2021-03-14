@@ -33,7 +33,7 @@ from summa import keywords
 import requests
 import json
 import arrow
-from .utils import write_into_instgram_image
+from .utils import write_into_instgram_image, BASE_DIR
 from instabot import Bot
 from shutil import rmtree
 utc=pytz.UTC
@@ -178,47 +178,56 @@ class Post(models.Model, HitCountMixin):
 
 
     def save(self, *args, **kwargs):
+        if len(self.title) > 60:
+            title = self.title[:60] + '...'
+        else:
+            title = self.title
+        write_into_instgram_image(title, text_size=len(self.title))
+        import pdb; pdb.set_trace()
+
         # When post gets accepted
         prev_post_status = Post.objects.filter(pk=self.pk).first()
         if prev_post_status:
             if prev_post_status != self.isActive and self.isActive == True and os.getenv('environment') == 'prod' and self.is_uploaded_on_social == False:
                 # Post to twitter and facebook
+                # headers = {
+                # 'Authorization': f'Bearer {os.getenv("bitly_token")}',
+                # 'Content-Type': 'application/json',
+                # }
+
+                # data = { "long_url": f"{self.get_twitter_url()}", "domain": "bit.ly", "group_guid": "BkcriP1cZcS" }
+
+                # response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, data=json.dumps(data))
+
+                # Post to twitter
+                # t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
+                # t.statuses.update(status=f'{self.title} \n \n ☟ إفتح صفحة الإستفسار من هنا وشارك رأيك مع المستفسر  ☟  \n {self.get_twitter_url()} ', media_ids="")
+
+                # Post to instgram
                 try:
-                    # headers = {
-                    # 'Authorization': f'Bearer {os.getenv("bitly_token")}',
-                    # 'Content-Type': 'application/json',
-                    # }
-
-                    # data = { "long_url": f"{self.get_twitter_url()}", "domain": "bit.ly", "group_guid": "BkcriP1cZcS" }
-
-                    # response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, data=json.dumps(data))
-
-                    # Post to twitter
-                    # t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
-                    # t.statuses.update(status=f'{self.title} \n \n ☟ إفتح صفحة الإستفسار من هنا وشارك رأيك مع المستفسر  ☟  \n {self.get_twitter_url()} ', media_ids="")
-
-                    # Post to instgram
+                    hashtags = Hashtags.objects.all().first().hashtags
                     bot = Bot()
-                    bot.login(username = os.getenv('insta_username'),  password = os.getenv('insta_password'))
+                    bot.login(username = os.getenv('insta_username'),  password = os.getenv('insta_password'), is_threaded=True)
                     if len(self.title) > 60:
                         title = self.title[:60] + '...'
                     else:
                         title = self.title
 
                     write_into_instgram_image(title, text_size=len(self.title))
-                    hashtags = Hashtags.objects.all().first()
-                    bot.upload_photo("../media/instgram/generated_post_image/output.jpg", caption=f'رابط الإستفسار {self.get_twitter_url()} \n \n {hashtags.hashtags}')
-                    rmtree('../../config')
-
-                    # Post to facebook
-                    # token = os.getenv('fb_token')
-                    # fb = facebook.GraphAPI(access_token=token)
-                    # fb.put_object(parent_object='me', connection_name='feed', message=f'{self.title} \n \n ☟ إفتح صفحة الإستفسار من هنا وشارك رأيك مع المستفسر  ☟ \n {self.get_twitter_url()}')
-
-                    self.is_uploaded_on_social = True
+                    bot.upload_photo(BASE_DIR + '/media/instgram/generated_post_image/output.jpg', caption=f'رابط الإستفسار {self.get_twitter_url()} \n \n {hashtags}')
+                    bot.logout()
+                    rmtree(BASE_DIR + '/../config', ignore_errors=True)
                 except Exception as e:
-                    print('instgram ====>', os.listdir())
-                    print('=======================Error instgram>', e)
+                    print('instegram =======>',e)
+                    bot.logout()
+                    rmtree(BASE_DIR + '/../config', ignore_errors=True)
+
+                # Post to facebook
+                # token = os.getenv('fb_token')
+                # fb = facebook.GraphAPI(access_token=token)
+                # fb.put_object(parent_object='me', connection_name='feed', message=f'{self.title} \n \n ☟ إفتح صفحة الإستفسار من هنا وشارك رأيك مع المستفسر  ☟ \n {self.get_twitter_url()}')
+
+                self.is_uploaded_on_social = True
 
                 admin = User.objects.get(email=os.getenv('ADMIN_EMAIL'))
                 anonymousUser = User.objects.filter(email="anonymous@anonymous.com").first()
