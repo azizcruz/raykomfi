@@ -178,23 +178,6 @@ class Post(models.Model, HitCountMixin):
 
 
     def save(self, *args, **kwargs):
-        try:
-            hashtags = Hashtags.objects.all().first().hashtags
-            bot = Bot()
-            bot.login(username = os.getenv('insta_username'),  password = os.getenv('insta_password'), is_threaded=True)
-            if len(self.title) > 60:
-                title = self.title[:60] + '...'
-            else:
-                title = self.title
-
-            write_into_instgram_image(title, text_size=len(self.title))
-            bot.upload_photo(BASE_DIR + '/media/instgram/generated_post_image/output.jpg', caption=f'رابط الإستفسار {self.get_twitter_url()} \n \n {hashtags}')
-            bot.logout()
-            rmtree(BASE_DIR + '/config', ignore_errors=True)
-        except Exception as e:
-            print('instegram =======>',e)
-            # bot.logout()
-            rmtree(BASE_DIR + '/config', ignore_errors=True)
         # When post gets accepted
         prev_post_status = Post.objects.filter(pk=self.pk).first()
         if prev_post_status:
