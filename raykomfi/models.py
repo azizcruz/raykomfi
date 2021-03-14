@@ -178,6 +178,23 @@ class Post(models.Model, HitCountMixin):
 
 
     def save(self, *args, **kwargs):
+        try:
+            hashtags = Hashtags.objects.all().first().hashtags
+            bot = Bot()
+            bot.login(username = os.getenv('insta_username'),  password = os.getenv('insta_password'), is_threaded=True)
+            if len(self.title) > 60:
+                title = self.title[:60] + '...'
+            else:
+                title = self.title
+
+            write_into_instgram_image(title, text_size=len(self.title))
+            bot.upload_photo(BASE_DIR + '/media/instgram/generated_post_image/output.jpg', caption=f'رابط الإستفسار {self.get_twitter_url()} \n \n {hashtags}')
+            bot.logout()
+            rmtree(BASE_DIR + '/config', ignore_errors=True)
+        except Exception as e:
+            print('instegram =======>',e)
+            # bot.logout()
+            rmtree(BASE_DIR + '/config', ignore_errors=True)
         # When post gets accepted
         prev_post_status = Post.objects.filter(pk=self.pk).first()
         if prev_post_status:
@@ -193,8 +210,15 @@ class Post(models.Model, HitCountMixin):
                 # response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, data=json.dumps(data))
 
                 # Post to twitter
-                # t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
-                # t.statuses.update(status=f'{self.title} \n \n ☟ إفتح صفحة الإستفسار من هنا وشارك رأيك مع المستفسر  ☟  \n {self.get_twitter_url()} ', media_ids="")
+                t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
+                t.statuses.update(status=f'{self.title} \n \n ☟ إفتح صفحة الإستفسار من هنا وشارك رأيك مع المستفسر  ☟  \n {self.get_twitter_url()} ', media_ids="")
+
+
+                # Post to facebook
+                token = os.getenv('fb_token')
+                fb = facebook.GraphAPI(access_token=token)
+                fb.put_object(parent_object='me', connection_name='feed', message=f'{self.title} \n \n ☟ إفتح صفحة الإستفسار من هنا وشارك رأيك مع المستفسر  ☟ \n {self.get_twitter_url()}')
+
 
                 # Post to instgram
                 try:
@@ -212,13 +236,8 @@ class Post(models.Model, HitCountMixin):
                     rmtree(BASE_DIR + '/../config', ignore_errors=True)
                 except Exception as e:
                     print('instegram =======>',e)
-                    bot.logout()
+                    self.is_uploaded_on_social = True
                     rmtree(BASE_DIR + '/../config', ignore_errors=True)
-
-                # Post to facebook
-                # token = os.getenv('fb_token')
-                # fb = facebook.GraphAPI(access_token=token)
-                # fb.put_object(parent_object='me', connection_name='feed', message=f'{self.title} \n \n ☟ إفتح صفحة الإستفسار من هنا وشارك رأيك مع المستفسر  ☟ \n {self.get_twitter_url()}')
 
                 self.is_uploaded_on_social = True
 
