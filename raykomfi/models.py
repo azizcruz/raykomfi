@@ -11,7 +11,7 @@ from uuid import uuid4, uuid1
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
-from django.core.cache import cache 
+from django.core.cache import cache
 from datetime import datetime
 from datetime import timedelta
 from django.conf import settings
@@ -34,7 +34,7 @@ import requests
 import json
 import arrow
 from .utils import write_into_instgram_image
-from instabot import Bot 
+from instabot import Bot
 from shutil import rmtree
 utc=pytz.UTC
 
@@ -97,7 +97,7 @@ class User(AbstractUser):
                 return False
         else:
             return False
-    
+
     def last_seen(self):
         last_seen = cache.get(f'seen_{self.username}')
 
@@ -166,7 +166,7 @@ class Post(models.Model, HitCountMixin):
 
     def get_noti_url(self):
         return reverse('raykomfi:post-view', args=[self.id, self.slug]) + f'?read={self.id}'
-    
+
     def get_twitter_url(self):
         return BASE_URL + reverse('raykomfi:post-view', args=[self.id, self.slug])
 
@@ -192,7 +192,7 @@ class Post(models.Model, HitCountMixin):
                     # data = { "long_url": f"{self.get_twitter_url()}", "domain": "bit.ly", "group_guid": "BkcriP1cZcS" }
 
                     # response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, data=json.dumps(data))
-                    
+
                     # Post to twitter
                     # t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
                     # t.statuses.update(status=f'{self.title} \n \n ☟ إفتح صفحة الإستفسار من هنا وشارك رأيك مع المستفسر  ☟  \n {self.get_twitter_url()} ', media_ids="")
@@ -207,8 +207,8 @@ class Post(models.Model, HitCountMixin):
 
                     write_into_instgram_image(title, text_size=len(self.title))
                     hashtags = Hashtags.objects.all().first()
-                    bot.upload_photo("raykomfi/media/instgram/generated_post_image/output.jpg", caption=f'رابط الإستفسار {self.get_twitter_url()} \n \n {hashtags.hashtags}')
-                    rmtree('./config')
+                    bot.upload_photo("../media/instgram/generated_post_image/output.jpg", caption=f'رابط الإستفسار {self.get_twitter_url()} \n \n {hashtags.hashtags}')
+                    rmtree('../../config')
 
                     # Post to facebook
                     # token = os.getenv('fb_token')
@@ -217,7 +217,7 @@ class Post(models.Model, HitCountMixin):
 
                     self.is_uploaded_on_social = True
                 except Exception as e:
-                    print('instgram ====>', os.getcwd())
+                    print('instgram ====>', os.listdir())
                     print('=======================Error instgram>', e)
 
                 admin = User.objects.get(email=os.getenv('ADMIN_EMAIL'))
@@ -230,7 +230,7 @@ class Post(models.Model, HitCountMixin):
                 super(Post, self).save(*args, **kwargs)
             else:
                 super(Post, self).save(*args, **kwargs)
-                
+
             # Generate slug
         self.slug = slugify(self.title)
         k = self.title
@@ -249,8 +249,8 @@ class Post(models.Model, HitCountMixin):
 
         self.keywords = ','.join(final_keywords)
         super(Post, self).save(*args, **kwargs)
-       
-        
+
+
 
 class Comment(models.Model):
 
@@ -323,10 +323,10 @@ class Reply(models.Model):
 
     def get_absolute_url(self):
         return reverse('raykomfi:post-view', args=[self.comment.post.id, self.comment.post.slug]) + f'#to-{self.id}'
-    
+
     def get_noti_url(self):
         return reverse('raykomfi:post-view', args=[self.comment.post.id, self.comment.post.slug])+ f'?all_comments=true' + f'&read={self.id}' + f'#to-{self.id}'
-    
+
     def get_created_natural(self):
         return natural_time(self.created)
 
@@ -355,20 +355,20 @@ class Message(models.Model):
 
     def get_absolute_url(self):
         return reverse('raykomfi:get-message', args=[self.user.id, self.message.id])
-    
+
     def get_noti_url(self):
         return reverse('raykomfi:get-message', args=[self.receiver.id, self.id])
 
     def __str__(self):
         return self.content
-    
+
     def get_created_natural(self):
         return natural_time(self.created)
 
     def get_updated_natural(self):
         return natural_time(self.updated)
 
-    
+
 class Report(models.Model):
     user = models.ForeignKey(User, related_name='reported', on_delete=models.CASCADE, verbose_name='المبلغ')
     content = models.CharField(max_length=255)
@@ -422,6 +422,6 @@ class Hashtags(models.Model):
     class Meta:
         verbose_name = "هاشتاق"
         verbose_name_plural = "هاشتاقات"
-    
+
     def __str__(self):
         return 'هاشتاقات'

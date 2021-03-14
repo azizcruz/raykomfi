@@ -15,7 +15,7 @@ def write_into_instgram_image(text, text_size=0):
     fontFile = "media/instgram/fonts/t.ttf"
 
     # this was a 400x400 jpg file
-    imageFile = "media/instgram/post_image.png"
+    imageFile = "../media/instgram/post_image.png"
     font = ImageFont.truetype(fontFile, 50)
     font2 = ImageFont.truetype(fontFile, 30)
     image = Image.open(imageFile)
@@ -33,7 +33,7 @@ def write_into_instgram_image(text, text_size=0):
 
     W, H = (1000,840)
 
-    
+
 
     # start drawing on image
     draw = ImageDraw.Draw(image)
