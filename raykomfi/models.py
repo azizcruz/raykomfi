@@ -178,13 +178,6 @@ class Post(models.Model, HitCountMixin):
 
 
     def save(self, *args, **kwargs):
-        if len(self.title) > 60:
-            title = self.title[:60] + '...'
-        else:
-            title = self.title
-        write_into_instgram_image(title, text_size=len(self.title))
-        import pdb; pdb.set_trace()
-
         # When post gets accepted
         prev_post_status = Post.objects.filter(pk=self.pk).first()
         if prev_post_status:
