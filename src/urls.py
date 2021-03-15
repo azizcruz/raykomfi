@@ -25,9 +25,16 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 from django.views.generic import RedirectView
-
+from raykomfi.utils import write_into_instgram_image, BASE_DIR
+from shutil import rmtree
+from raykomfi.insta_login import bot
 
 import debug_toolbar
+
+try:
+    bot.login(username = os.getenv('insta_username'),  password = os.getenv('insta_password'), is_threaded=True)
+except:
+    rmtree(BASE_DIR + '../config', ignore_errors=True)
 
 sitemaps = {
 	"posts": PostSitemap,
