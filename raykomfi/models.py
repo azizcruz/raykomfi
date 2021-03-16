@@ -23,6 +23,7 @@ from django.contrib.contenttypes.fields import GenericRelation
 from tinymce.models import HTMLField
 from notifications.signals import notify
 from twitter import *
+import tweepy
 import facebook
 from dotenv import load_dotenv
 load_dotenv()
@@ -36,6 +37,7 @@ import arrow
 from .utils import write_into_instgram_image, BASE_DIR
 from shutil import rmtree
 from .insta_login import bot
+from operator import itemgetter
 
 utc=pytz.UTC
 
@@ -193,9 +195,32 @@ class Post(models.Model, HitCountMixin):
                 # response = requests.post('https://api-ssl.bitly.com/v4/shorten', headers=headers, data=json.dumps(data))
 
                 # Post to twitter
-                t = Twitter(auth=OAuth(os.getenv('access_token'), os.getenv('access_token_secret'), os.getenv('consumer_key'), os.getenv('consumer_secret')))
-                t.statuses.update(status=f'{self.title} \n \n ☟ إفتح صفحة الإستفسار من هنا وشارك رأيك مع المستفسر  ☟  \n {self.get_twitter_url()} ', media_ids="")
+                auth = tweepy.OAuthHandler(os.getenv('consumer_key'), os.getenv('consumer_secret'))
+                auth.set_access_token(os.getenv('access_token'), os.getenv('access_token_secret'))
+                # Create API object
+                api = tweepy.API(auth)
+                saudi_woeid = 23424938
+                trend_results = api.trends_place(saudi_woeid)
 
+                twitter_hashtags = []
+                ranked_twitter = []
+                for trend in trend_results[0]["trends"]:
+                    not_allowed = ["ملك", "عهد", "المملكة", "السعودية", "بن سلمان", "محمد", "ولي العهد", "سلمان", "حكومة"]
+                    if trend['tweet_volume'] != None and trend['name'][0] == '#' and trend['name'] not in not_allowed:
+                        d = {
+                            'name': '\n' + trend['name'],
+                            'rank': trend['tweet_volume']
+                        }
+                        twitter_hashtags.append(d)
+                
+                twitter_hashtags = sorted(twitter_hashtags, key=itemgetter('rank'), reverse=True)
+
+                for h in twitter_hashtags[:2]:
+                    ranked_twitter.append(h.get('name'))
+
+                ranked_twitter = "".join(ranked_twitter)
+
+                api.update_status(f'{self.title} \n {ranked_twitter} \n \n ☟ إفتح صفحة الإستفسار من هنا وشارك رأيك مع المستفسر  ☟ \n {self.get_twitter_url()}')
 
                 # Post to facebook
                 token = os.getenv('fb_token')
