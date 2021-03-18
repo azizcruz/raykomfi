@@ -218,7 +218,7 @@ class Post(models.Model, HitCountMixin):
                 for h in twitter_hashtags[:2]:
                     ranked_twitter.append(h.get('name'))
 
-                ranked_twitter = "".join(ranked_twitter)
+                ranked_twitter = "".join(ranked_twitter)  
 
                 api.update_status(f'{self.title} \n {ranked_twitter} \n \n ☟ إفتح صفحة الإستفسار من هنا وشارك رأيك مع المستفسر  ☟ \n {self.get_twitter_url()}')
 
@@ -237,7 +237,7 @@ class Post(models.Model, HitCountMixin):
                         title = self.title
 
                     write_into_instgram_image(title, text_size=len(self.title))
-                    bot.upload_photo(BASE_DIR + '/media/instgram/generated_post_image/output.jpg', caption=f'رابط الإستفسار {self.get_twitter_url()} \n \n {hashtags}')
+                    bot.upload_photo(BASE_DIR + '/media/instgram/generated_post_image/output.jpg', caption=f'تابعونا ليصلك كل إستفسار جديد بشكل تلقائي @raykomfi \n \n {hashtags}')
                 except Exception as e:
                     print('instegram =======>',e)
                     self.is_uploaded_on_social = True
