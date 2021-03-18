@@ -183,7 +183,7 @@ class Post(models.Model, HitCountMixin):
     def save(self, *args, **kwargs):
         prev_post_status = Post.objects.filter(pk=self.pk).first()
         if prev_post_status:
-            if prev_post_status != self.isActive and self.isActive == True and os.getenv('environment') == 'prod' and self.is_uploaded_on_social == False:
+            if prev_post_status != self.isActive and self.isActive == True and self.is_uploaded_on_social == False:
                 # Post to twitter and facebook
                 # headers = {
                 # 'Authorization': f'Bearer {os.getenv("bitly_token")}',
@@ -205,8 +205,13 @@ class Post(models.Model, HitCountMixin):
                 twitter_hashtags = []
                 ranked_twitter = []
                 for trend in trend_results[0]["trends"]:
-                    not_allowed = ["ملك", "عهد", "المملكة", "السعودية", "بن سلمان", "محمد", "ولي العهد", "سلمان", "حكومة"]
-                    if trend['tweet_volume'] != None and trend['name'][0] == '#' and trend['name'] not in not_allowed:
+                    not_allowed = "ملك المملكة السعودية بن سلمان محمد ولي العهد سلمان حكومة"
+                    string_list = trend['name'][1:].split('_')
+                    is_allowed = True
+                    for word in string_list:
+                        if word in not_allowed:
+                            is_allowed = False
+                    if trend['tweet_volume'] != None and trend['name'][0] == '#' and os.getenv('environment') == 'prod' and trend['name'] and is_allowed:
                         d = {
                             'name': '\n' + trend['name'],
                             'rank': trend['tweet_volume']
@@ -237,7 +242,7 @@ class Post(models.Model, HitCountMixin):
                         title = self.title
 
                     write_into_instgram_image(title, text_size=len(self.title))
-                    bot.upload_photo(BASE_DIR + '/media/instgram/generated_post_image/output.jpg', caption=f'تابعونا ليصلك كل إستفسار جديد بشكل تلقائي @raykomfi \n \n {hashtags}')
+                    bot.upload_photo(BASE_DIR + '/media/instgram/generated_post_image/output.jpg', caption=f'تابعونا ليصلك كل جديد بشكل تلقائي @raykomfi \n \n {hashtags}')
                 except Exception as e:
                     print('instegram =======>',e)
                     self.is_uploaded_on_social = True
