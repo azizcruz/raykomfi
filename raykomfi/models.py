@@ -183,7 +183,7 @@ class Post(models.Model, HitCountMixin):
     def save(self, *args, **kwargs):
         prev_post_status = Post.objects.filter(pk=self.pk).first()
         if prev_post_status:
-            if prev_post_status != self.isActive and self.isActive == True and self.is_uploaded_on_social == False:
+            if prev_post_status != self.isActive and self.isActive == True and os.getenv('environment') != 'prod' and self.is_uploaded_on_social == False:
                 # Post to twitter and facebook
                 # headers = {
                 # 'Authorization': f'Bearer {os.getenv("bitly_token")}',
@@ -204,14 +204,16 @@ class Post(models.Model, HitCountMixin):
 
                 twitter_hashtags = []
                 ranked_twitter = []
+                reg = re.compile('[a-zA-Z]')
+
                 for trend in trend_results[0]["trends"]:
                     not_allowed = "ملك المملكة السعودية بن سلمان محمد ولي العهد سلمان حكومة"
                     string_list = trend['name'][1:].split('_')
                     is_allowed = True
                     for word in string_list:
-                        if word in not_allowed:
+                        if word in not_allowed or reg.search(word) != None:
                             is_allowed = False
-                    if trend['tweet_volume'] != None and trend['name'][0] == '#' and os.getenv('environment') == 'prod' and trend['name'] and is_allowed:
+                    if trend['tweet_volume'] != None and trend['name'][0] == '#' and trend['name'] and is_allowed:
                         d = {
                             'name': '\n' + trend['name'],
                             'rank': trend['tweet_volume']

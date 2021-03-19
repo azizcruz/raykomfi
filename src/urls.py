@@ -32,7 +32,7 @@ from raykomfi.insta_login import bot
 import debug_toolbar
 
 try:
-    bot.login(username = os.getenv('insta_username'),  password = os.getenv('insta_password'), is_threaded=True)
+    bot.login(username = os.getenv('insta_username'),  password = os.getenv('insta_password'))
 except:
     rmtree(BASE_DIR + '../config', ignore_errors=True)
 
