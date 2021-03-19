@@ -183,7 +183,7 @@ class Post(models.Model, HitCountMixin):
     def save(self, *args, **kwargs):
         prev_post_status = Post.objects.filter(pk=self.pk).first()
         if prev_post_status:
-            if prev_post_status != self.isActive and self.isActive == True and os.getenv('environment') != 'prod' and self.is_uploaded_on_social == False:
+            if prev_post_status != self.isActive and self.isActive == True and os.getenv('environment') == 'prod' and self.is_uploaded_on_social == False:
                 # Post to twitter and facebook
                 # headers = {
                 # 'Authorization': f'Bearer {os.getenv("bitly_token")}',
